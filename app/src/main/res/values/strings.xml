@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Sensey</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="firstGesture">Shake Gesture</string>
+    <string name="secondGesture">Flip Gesture</string>
+    <string name="thirdGesture">Orientation Gesture</string>
+    <string name="fourthGesture">Proximity Gesture</string>
 </resources>
