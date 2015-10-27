@@ -1,11 +1,12 @@
 package in.excogitation.sensey;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.widget.CompoundButton;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import in.excogitation.lib.sensey.FlipDetector;
 import in.excogitation.lib.sensey.OrientationDetector;
@@ -16,8 +17,10 @@ import in.excogitation.lib.sensey.ShakeDetector;
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     private final String LOGTAG = getClass().getSimpleName().toString();
+    private boolean DEBUG = false;
 
     private SwitchCompat swt1, swt2, swt3, swt4;
+    private TextView txt_result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         // Init Sensey
         Sensey.getInstance().init(MainActivity.this);
+
+        txt_result = (TextView) findViewById(R.id.textView_result);
 
         swt1 = (SwitchCompat) findViewById(R.id.Switch1);
         swt1.setOnCheckedChangeListener(this);
@@ -45,6 +50,16 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     }
 
+    void resetResultInView(final TextView txt) {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                txt.setText("..Results show here...");
+            }
+        }, 2000);
+    }
+
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -55,8 +70,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     Sensey.getInstance().startShakeDetection(new ShakeDetector.ShakeListener() {
                         @Override
                         public void onShakeDetected() {
-                            Toast.makeText(MainActivity.this, "Shake Detected !", Toast.LENGTH_SHORT).show();
-                            Log.i(LOGTAG, "Shake Detected!");
+                            txt_result.setText("Shake Detected!");
+                            resetResultInView(txt_result);
+                            if (DEBUG)
+                                Log.i(LOGTAG, "Shake Detected!");
                         }
                     });
                 } else {
@@ -68,12 +85,18 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     Sensey.getInstance().startFlipDetection(new FlipDetector.FlipListener() {
                         @Override
                         public void onFaceUp() {
-                            Log.i(LOGTAG, "FaceUp");
+                            txt_result.setText("FaceUp");
+                            resetResultInView(txt_result);
+                            if (DEBUG)
+                                Log.i(LOGTAG, "FaceUp");
                         }
 
                         @Override
                         public void onFaceDown() {
-                            Log.i(LOGTAG, "FaceDown");
+                            txt_result.setText("FaceDown");
+                            resetResultInView(txt_result);
+                            if (DEBUG)
+                                Log.i(LOGTAG, "FaceDown");
                         }
                     });
                 } else {
@@ -86,22 +109,34 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     Sensey.getInstance().startOrientationDetection(new OrientationDetector.OrientationListener() {
                         @Override
                         public void onTopSideUp() {
-                            Log.i(LOGTAG, "Top Up");
+                            txt_result.setText("Top Side Up");
+                            resetResultInView(txt_result);
+                            if (DEBUG)
+                                Log.i(LOGTAG, "Top Side Up");
                         }
 
                         @Override
                         public void onBottomSideUp() {
-                            Log.d(LOGTAG, "Bottom Up");
+                            txt_result.setText("Bottom Side Up");
+                            resetResultInView(txt_result);
+                            if (DEBUG)
+                                Log.d(LOGTAG, "Bottom Side Up");
                         }
 
                         @Override
                         public void onRightSideUp() {
-                            Log.i(LOGTAG, "Right Up");
+                            txt_result.setText("Right Side Up");
+                            resetResultInView(txt_result);
+                            if (DEBUG)
+                                Log.i(LOGTAG, "Right Side Up");
                         }
 
                         @Override
                         public void onLeftSideUp() {
-                            Log.i(LOGTAG, "Left Up");
+                            txt_result.setText("Left Side Up");
+                            resetResultInView(txt_result);
+                            if (DEBUG)
+                                Log.i(LOGTAG, "Left Side Up");
                         }
                     });
                 } else {
@@ -114,12 +149,18 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     Sensey.getInstance().startProximityDetection(new ProximityDetector.ProximityListener() {
                         @Override
                         public void onNear() {
-                            Log.i(LOGTAG, "Near");
+                            txt_result.setText("Near");
+                            resetResultInView(txt_result);
+                            if (DEBUG)
+                                Log.i(LOGTAG, "Near");
                         }
 
                         @Override
                         public void onFar() {
-                            Log.i(LOGTAG, "Far");
+                            txt_result.setText("Far");
+                            resetResultInView(txt_result);
+                            if (DEBUG)
+                                Log.i(LOGTAG, "Far");
                         }
                     });
                 } else {

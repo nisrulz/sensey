@@ -1,0 +1,104 @@
+in.excogitation.lib.sensey.BuildConfig -> in.excogitation.lib.sensey.BuildConfig:
+    boolean DEBUG -> DEBUG
+    java.lang.String APPLICATION_ID -> APPLICATION_ID
+    java.lang.String BUILD_TYPE -> BUILD_TYPE
+    java.lang.String FLAVOR -> FLAVOR
+    int VERSION_CODE -> VERSION_CODE
+    java.lang.String VERSION_NAME -> VERSION_NAME
+    6:6:void <init>() -> <init>
+in.excogitation.lib.sensey.FlipDetector -> in.excogitation.lib.sensey.FlipDetector:
+    in.excogitation.lib.sensey.FlipDetector$FlipListener flipListener -> a
+    android.hardware.SensorEventListener sensorEventListener -> b
+    8:35:void <init>() -> <init>
+    8:8:in.excogitation.lib.sensey.FlipDetector$FlipListener access$000(in.excogitation.lib.sensey.FlipDetector) -> a
+in.excogitation.lib.sensey.FlipDetector$1 -> in.excogitation.lib.sensey.FlipDetector$1:
+    in.excogitation.lib.sensey.FlipDetector this$0 -> a
+    18:18:void <init>(in.excogitation.lib.sensey.FlipDetector) -> <init>
+    21:27:void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
+    32:32:void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
+in.excogitation.lib.sensey.FlipDetector$FlipListener -> in.excogitation.lib.sensey.FlipDetector$FlipListener:
+    void onFaceUp() -> onFaceUp
+    void onFaceDown() -> onFaceDown
+in.excogitation.lib.sensey.OrientationDetector -> in.excogitation.lib.sensey.OrientationDetector:
+    in.excogitation.lib.sensey.OrientationDetector$OrientationListener orientationListener -> a
+    android.hardware.SensorEventListener sensorEventListener -> b
+    8:41:void <init>() -> <init>
+    8:8:in.excogitation.lib.sensey.OrientationDetector$OrientationListener access$000(in.excogitation.lib.sensey.OrientationDetector) -> a
+in.excogitation.lib.sensey.OrientationDetector$1 -> in.excogitation.lib.sensey.OrientationDetector$1:
+    in.excogitation.lib.sensey.OrientationDetector this$0 -> a
+    18:18:void <init>(in.excogitation.lib.sensey.OrientationDetector) -> <init>
+    21:33:void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
+    38:38:void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
+in.excogitation.lib.sensey.OrientationDetector$OrientationListener -> in.excogitation.lib.sensey.OrientationDetector$OrientationListener:
+    void onTopSideUp() -> onTopSideUp
+    void onBottomSideUp() -> onBottomSideUp
+    void onRightSideUp() -> onRightSideUp
+    void onLeftSideUp() -> onLeftSideUp
+in.excogitation.lib.sensey.ProximityDetector -> in.excogitation.lib.sensey.ProximityDetector:
+    in.excogitation.lib.sensey.ProximityDetector$ProximityListener proximityListener -> a
+    float max -> b
+    android.hardware.SensorEventListener sensorEventListener -> c
+    8:40:void <init>() -> <init>
+    8:8:in.excogitation.lib.sensey.ProximityDetector$ProximityListener access$000(in.excogitation.lib.sensey.ProximityDetector) -> a
+in.excogitation.lib.sensey.ProximityDetector$1 -> in.excogitation.lib.sensey.ProximityDetector$1:
+    in.excogitation.lib.sensey.ProximityDetector this$0 -> a
+    21:21:void <init>(in.excogitation.lib.sensey.ProximityDetector) -> <init>
+    24:31:void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
+    36:36:void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
+in.excogitation.lib.sensey.ProximityDetector$ProximityListener -> in.excogitation.lib.sensey.ProximityDetector$ProximityListener:
+    void onNear() -> onNear
+    void onFar() -> onFar
+in.excogitation.lib.sensey.Sensey -> in.excogitation.lib.sensey.Sensey:
+    android.hardware.SensorManager sensorManager -> a
+    in.excogitation.lib.sensey.ShakeDetector shakeDetector -> b
+    in.excogitation.lib.sensey.FlipDetector flipDetector -> c
+    in.excogitation.lib.sensey.OrientationDetector orientationDetector -> d
+    in.excogitation.lib.sensey.ProximityDetector proximityDetector -> e
+    17:18:void <init>() -> <init>
+    25:25:in.excogitation.lib.sensey.Sensey getInstance() -> getInstance
+    29:30:void init(android.content.Context) -> init
+    33:40:void startShakeDetection(in.excogitation.lib.sensey.ShakeDetector$ShakeListener) -> startShakeDetection
+    1018:1023:void in.excogitation.lib.sensey.ShakeDetector.init(in.excogitation.lib.sensey.ShakeDetector$ShakeListener):18:23 -> startShakeDetection
+    1018:1023:void startShakeDetection(in.excogitation.lib.sensey.ShakeDetector$ShakeListener):38 -> startShakeDetection
+    43:45:void stopShakeDetection() -> stopShakeDetection
+    48:55:void startFlipDetection(in.excogitation.lib.sensey.FlipDetector$FlipListener) -> startFlipDetection
+    2014:2015:void in.excogitation.lib.sensey.FlipDetector.init(in.excogitation.lib.sensey.FlipDetector$FlipListener):14:15 -> startFlipDetection
+    2014:2015:void startFlipDetection(in.excogitation.lib.sensey.FlipDetector$FlipListener):53 -> startFlipDetection
+    58:60:void stopFlipDetection() -> stopFlipDetection
+    64:73:void startOrientationDetection(in.excogitation.lib.sensey.OrientationDetector$OrientationListener) -> startOrientationDetection
+    3014:3015:void in.excogitation.lib.sensey.OrientationDetector.init(in.excogitation.lib.sensey.OrientationDetector$OrientationListener):14:15 -> startOrientationDetection
+    3014:3015:void startOrientationDetection(in.excogitation.lib.sensey.OrientationDetector$OrientationListener):71 -> startOrientationDetection
+    76:78:void stopOrientationDetection() -> stopOrientationDetection
+    81:92:void startProximityDetection(in.excogitation.lib.sensey.ProximityDetector$ProximityListener) -> startProximityDetection
+    3017:3018:void in.excogitation.lib.sensey.ProximityDetector.init(in.excogitation.lib.sensey.ProximityDetector$ProximityListener):17:18 -> startProximityDetection
+    3017:3018:void startProximityDetection(in.excogitation.lib.sensey.ProximityDetector$ProximityListener):90 -> startProximityDetection
+    96:99:void stopProximityDetector() -> stopProximityDetector
+    7:7:void <init>(byte) -> <init>
+in.excogitation.lib.sensey.Sensey$LazyHolder -> in.excogitation.lib.sensey.Sensey$a:
+    in.excogitation.lib.sensey.Sensey INSTANCE -> a
+    20:20:in.excogitation.lib.sensey.Sensey access$100() -> a
+    21:21:void <clinit>() -> <clinit>
+in.excogitation.lib.sensey.ShakeDetector -> in.excogitation.lib.sensey.ShakeDetector:
+    float[] mGravity -> f
+    float mAccel -> a
+    float mAccelCurrent -> b
+    float mAccelLast -> c
+    in.excogitation.lib.sensey.ShakeDetector$ShakeListener shakeListener -> d
+    android.hardware.SensorEventListener sensorEventListener -> e
+    8:50:void <init>() -> <init>
+    8:8:float[] access$002(in.excogitation.lib.sensey.ShakeDetector,float[]) -> a
+    8:8:float[] access$000(in.excogitation.lib.sensey.ShakeDetector) -> a
+    8:8:float access$102(in.excogitation.lib.sensey.ShakeDetector,float) -> a
+    8:8:float access$200(in.excogitation.lib.sensey.ShakeDetector) -> b
+    8:8:float access$202(in.excogitation.lib.sensey.ShakeDetector,float) -> b
+    8:8:float access$100(in.excogitation.lib.sensey.ShakeDetector) -> c
+    8:8:float access$302(in.excogitation.lib.sensey.ShakeDetector,float) -> c
+    8:8:float access$300(in.excogitation.lib.sensey.ShakeDetector) -> d
+    8:8:in.excogitation.lib.sensey.ShakeDetector$ShakeListener access$400(in.excogitation.lib.sensey.ShakeDetector) -> e
+in.excogitation.lib.sensey.ShakeDetector$1 -> in.excogitation.lib.sensey.ShakeDetector$1:
+    in.excogitation.lib.sensey.ShakeDetector this$0 -> a
+    25:25:void <init>(in.excogitation.lib.sensey.ShakeDetector) -> <init>
+    28:42:void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
+    46:46:void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
+in.excogitation.lib.sensey.ShakeDetector$ShakeListener -> in.excogitation.lib.sensey.ShakeDetector$ShakeListener:
+    void onShakeDetected() -> onShakeDetected
