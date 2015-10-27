@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                         }
                     });
                 } else {
-                    Sensey.getInstance().stopProximityDetector();
+                    Sensey.getInstance().stopProximityDetection();
                 }
                 break;
         }
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         Sensey.getInstance().stopShakeDetection();
         Sensey.getInstance().stopFlipDetection();
         Sensey.getInstance().stopOrientationDetection();
-        Sensey.getInstance().stopProximityDetector();
+        Sensey.getInstance().stopProximityDetection();
     }
 
     @Override

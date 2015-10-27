@@ -72,7 +72,7 @@ in.excogitation.lib.sensey.Sensey -> in.excogitation.lib.sensey.Sensey:
     81:92:void startProximityDetection(in.excogitation.lib.sensey.ProximityDetector$ProximityListener) -> startProximityDetection
     3017:3018:void in.excogitation.lib.sensey.ProximityDetector.init(in.excogitation.lib.sensey.ProximityDetector$ProximityListener):17:18 -> startProximityDetection
     3017:3018:void startProximityDetection(in.excogitation.lib.sensey.ProximityDetector$ProximityListener):90 -> startProximityDetection
-    96:99:void stopProximityDetector() -> stopProximityDetector
+    96:99:void stopProximityDetection() -> stopProximityDetection
     7:7:void <init>(byte) -> <init>
 in.excogitation.lib.sensey.Sensey$LazyHolder -> in.excogitation.lib.sensey.Sensey$a:
     in.excogitation.lib.sensey.Sensey INSTANCE -> a

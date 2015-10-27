@@ -92,7 +92,7 @@ public class Sensey {
     }
 
 
-    public void stopProximityDetector() {
+    public void stopProximityDetection() {
         if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null && proximityDetector != null) {
             sensorManager.unregisterListener(proximityDetector.sensorEventListener);
         }

@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
 def libraryVersionCode = 2
-def libraryVersion = '1.0.0'
+def libraryVersion = '1.0.1'
 def libraryArtifactId = 'sensey'
 def libraryGroupID = POM_GROUP_ID_GITHUB
 
