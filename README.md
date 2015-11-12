@@ -1,7 +1,11 @@
 
+![enter image description here](https://github.com/nisrulz/Sensey/raw/master/app/src/main/res/mipmap-xhdpi/ic_launcher.png)
+
 #Sensey
 
 Making gesture detection a breeze.
+
+Checkout the code on [here](https://github.com/nisrulz/Sensey).
 
 #Integration
 - Include the below into your app's ***build.gradle*** right at the very bottom.
