@@ -1,1 +1,1 @@
-include ':app', ':sensey_lib'
+include ':sample', ':library'
