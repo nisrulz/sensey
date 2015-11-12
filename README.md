@@ -1,5 +1,5 @@
 
-![enter image description here](https://github.com/nisrulz/Sensey/raw/master/app/src/main/res/mipmap-xhdpi/ic_launcher.png)
+![enter image description here](https://github.com/nisrulz/Sensey/raw/master/sample/src/main/res/mipmap-xhdpi/ic_launcher.png)
 
 #Sensey
 
