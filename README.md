@@ -33,6 +33,7 @@ Sensey.getInstance().init(context);
                       }
                   });
     ```
+    
   + Flip
     ```java
     Sensey.getInstance().startFlipDetection(new FlipDetector.FlipListener() {
