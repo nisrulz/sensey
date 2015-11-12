@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Sensey by nisrulz</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Sensey</h1>
+        <h2>Android library to make detecting gestures easy</h2>
+        <a href="https://github.com/nisrulz/Sensey" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p><img src="https://github.com/nisrulz/Sensey/raw/master/sample/src/main/res/mipmap-xhdpi/ic_launcher.png" alt="enter image description here"></p>
+
+<h1>
+<a id="sensey" class="anchor" href="#sensey" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sensey</h1>
+
+<p>Making gesture detection a breeze.</p>
+
+<p>Checkout the code on <a href="https://github.com/nisrulz/Sensey">here</a>.</p>
+
+<h1>
+<a id="integration" class="anchor" href="#integration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Integration</h1>
+
+<ul>
+<li>Sensey is available in the MavenCentral, so getting it as simple as adding it as a dependency</li>
+</ul>
+
+<div class="highlight highlight-source-groovy-gradle"><pre>compile <span class="pl-s"><span class="pl-pds">'</span>com.github.nisrulz:sensey:1.0.1<span class="pl-pds">'</span></span></pre></div>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<ul>
+<li>Initialize Sensey under your onCreate() in the activity/service</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>init(context);</pre></div>
+
+<ul>
+<li>
+<p>Next to enable detection for</p>
+
+<ul>
+<li>
+<p>Shake</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>startShakeDetection(<span class="pl-k">new</span> <span class="pl-smi">ShakeDetector</span>.<span class="pl-smi">ShakeListener</span>() {
+                  <span class="pl-k">@Override</span>
+                  <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onShakeDetected</span>() {
+                      <span class="pl-c">// Shake detected, do something</span>
+                  }
+              });</pre></div>
+</li>
+<li>
+<p>Flip</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>startFlipDetection(<span class="pl-k">new</span> <span class="pl-smi">FlipDetector</span>.<span class="pl-smi">FlipListener</span>() {
+                    <span class="pl-k">@Override</span>
+                    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onFaceUp</span>() {
+                        <span class="pl-c">// Face up detected, do something</span>
+                    }
+
+                    <span class="pl-k">@Override</span>
+                    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onFaceDown</span>() {
+                        <span class="pl-c">// Face down detected, do something</span>
+                    }
+                });</pre></div>
+</li>
+<li>
+<p>Orientation</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>startOrientationDetection(<span class="pl-k">new</span> <span class="pl-smi">OrientationDetector</span>.<span class="pl-smi">OrientationListener</span>() {
+                    <span class="pl-k">@Override</span>
+                    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onTopSideUp</span>() {
+                        <span class="pl-c">// Top side up detected, do something</span>
+                    }
+
+                    <span class="pl-k">@Override</span>
+                    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onBottomSideUp</span>() {
+                         <span class="pl-c">// Bottom side up detected, do something</span>
+                    }
+
+                    <span class="pl-k">@Override</span>
+                    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onRightSideUp</span>() {
+                        <span class="pl-c">// Right side up detected, do something</span>
+                    }
+
+                    <span class="pl-k">@Override</span>
+                    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onLeftSideUp</span>() {
+                         <span class="pl-c">// Left side up detected, do something</span>
+                    }
+                });</pre></div>
+</li>
+<li>
+<p>Proximity</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>startProximityDetection(<span class="pl-k">new</span> <span class="pl-smi">ProximityDetector</span>.<span class="pl-smi">ProximityListener</span>() {
+                    <span class="pl-k">@Override</span>
+                    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onNear</span>() {
+                        <span class="pl-c">// Near, do something</span>
+                    }
+
+                    <span class="pl-k">@Override</span>
+                    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onFar</span>() {
+                        <span class="pl-c">// far, do something</span>
+                    }
+                });</pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p>To disable detection for</p>
+
+<ul>
+<li>Shake</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre> <span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopShakeDetection();</pre></div>
+
+<ul>
+<li>Flip</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre>  <span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopFlipDetection();</pre></div>
+
+<ul>
+<li>Orientation</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre> <span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopOrientationDetection();</pre></div>
+
+<ul>
+<li>Proximity</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre> <span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopProximityDetection();</pre></div>
+
+<hr>
+
+<blockquote>
+<p><em>NOTE : Some variables used in build.gradle correspond to</em></p>
+
+<p><strong>COMPILE_SDK_VERSION</strong>=23</p>
+
+<p><strong>BUILDTOOLS_VERSION</strong>=23.0.1</p>
+
+<p><strong>VERSION_NAME</strong>=1.0.1</p>
+
+<p><strong>VERSION_CODE</strong>=2</p>
+</blockquote>
+</li>
+</ul>
+
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
+
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache License 2.0</a></p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/nisrulz/Sensey/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/nisrulz/Sensey/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/nisrulz/Sensey"></a> is maintained by <a href="https://github.com/nisrulz">nisrulz</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
