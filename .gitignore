@@ -1,11 +1,4 @@
-# IDE Files
-/.idea/workspace.xml
-/.idea/libraries
-/captures
-
-# Mac Files
-.DS_Store
-
+# [Android] ========================
 # Built application files
 *.apk
 *.ap_
@@ -21,10 +14,9 @@ bin/
 gen/
 
 # Gradle files
-.gradle
-/build
+.gradle/
+build/
 /*/build/
-gradle.properties
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -34,3 +26,61 @@ proguard/
 
 # Log Files
 *.log
+
+
+## Directory-based project format:
+.idea/
+
+## File-based project format:
+*.ipr
+*.iws
+
+## Plugin-specific files:
+
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+
+
+# [Maven] ========================
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+
+# [Gradle-Android] ========================
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Properties
+gradle.properties
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Misc
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/captures
+**/*.iml
+*.class

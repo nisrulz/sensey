@@ -8,15 +8,7 @@ Making gesture detection a breeze.
 Checkout the code on [here](https://github.com/nisrulz/Sensey).
 
 #Integration
-- Include the below into your app's ***build.gradle*** right at the very bottom.
-```gradle
-repositories {
-    maven{
-        url 'http://maven.excogitation.in/'
-    }
-}
-```
-- Next add the dependency
+- Sensey is available in the MavenCentral, so getting it as simple as adding it as a dependency
 ```gradle
 compile 'com.github.nisrulz:sensey:1.0.1'
 ```
@@ -37,7 +29,7 @@ Sensey.getInstance().init(context);
                       }
                   });
     ```
-    
+
   + Flip
     ```java
     Sensey.getInstance().startFlipDetection(new FlipDetector.FlipListener() {
@@ -109,6 +101,13 @@ Sensey.getInstance().init(context);
 	```java
 	 Sensey.getInstance().stopProximityDetection();
 	```
+
+  ---
+  > *NOTE : Some variables used in build.gradle correspond to*
+  > **COMPILE_SDK_VERSION**=23
+  > **BUILDTOOLS_VERSION**=23.0.1
+  > **VERSION_NAME**=1.0.1
+  > **VERSION_CODE**=2
 
 # License
 
