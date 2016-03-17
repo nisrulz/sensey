@@ -17,6 +17,7 @@ gen/
 .gradle/
 build/
 /*/build/
+.gradletasknamecache
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -83,4 +84,3 @@ hs_err_pid*
 .DS_Store
 /captures
 **/*.iml
-*.class

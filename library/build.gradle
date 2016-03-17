@@ -1,28 +1,17 @@
 apply plugin: 'com.android.library'
-apply from: 'maven-push.gradle'
+apply from: 'https://raw.github.com/nisrulz/gradle-mvn-push/master/gradle-mvn-push.gradle'
+
+
 
 android {
-    signingConfigs {
-        release {
-            try {
-                keyAlias exKEYSTORE_ALIAS
-                keyPassword exKEY_PASSWORD
-                storeFile file(exKEYSTORE_FILEPATH)
-                storePassword exKEYSTORE_PASSWORD
-            }
-            catch (ex) {
-                throw new InvalidUserDataException("You should define exKEYSTORE_ALIAS, exKEYSTORE_FILEPATH, exKEYSTORE_PASSWORD and exKEY_PASSWORD in gradle.properties.")
-            }
-        }
-    }
-    compileSdkVersion COMPILE_SDK_VERSION.toInteger()
-    buildToolsVersion BUILDTOOLS_VERSION
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 23
-        versionCode VERSION_CODE.toInteger()
-        versionName VERSION_NAME
+        versionCode 2
+        versionName '1.0.1'
     }
     buildTypes {
         debug {
@@ -30,7 +19,6 @@ android {
             debuggable true
         }
         release {
-            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
