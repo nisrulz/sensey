@@ -1,6 +1,7 @@
 ![enter image description here](https://github.com/nisrulz/Sensey/raw/master/sample/src/main/res/mipmap-xhdpi/ic_launcher.png)
 
-#Sensey
+#Sensey    [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey)
+
 
 Making gesture detection a breeze.
 
