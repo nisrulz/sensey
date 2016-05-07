@@ -1,6 +1,6 @@
 ![enter image description here](https://github.com/nisrulz/Sensey/raw/master/sample/src/main/res/mipmap-xhdpi/ic_launcher.png)
 
-#Sensey    [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey)
+#Sensey    [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Sensey-green.svg?style=true)](https://android-arsenal.com/details/1/3550)
 
 
 Making gesture detection a breeze.
