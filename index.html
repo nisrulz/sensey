@@ -1,44 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <title>Sensey by nisrulz</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>Sensey by nisrulz</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
+    <div class="wrapper">
+      <header>
         <h1>Sensey</h1>
-        <h2>Android library to make detecting gestures easy</h2>
-        <a href="https://github.com/nisrulz/Sensey" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
-
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <p><img src="https://github.com/nisrulz/Sensey/raw/master/sample/src/main/res/mipmap-xhdpi/ic_launcher.png" alt="enter image description here"></p>
+        <p>Android library to make detecting gestures easy</p>
+        <p class="view"><a href="https://github.com/nisrulz/sensey">View the Project on GitHub <small>nisrulz/sensey</small></a></p>
+        <ul>
+          <li><a href="https://github.com/nisrulz/sensey/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/nisrulz/sensey/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/nisrulz/sensey">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><img src="https://github.com/nisrulz/Sensey/raw/master/sample/src/main/res/mipmap-xhdpi/ic_launcher.png" alt="enter image description here"></p>
 
 <h1>
-<a id="sensey" class="anchor" href="#sensey" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sensey</h1>
+<a id="sensey-----" class="anchor" href="#sensey-----" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sensey    <a href="https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg" alt="Maven Central"></a> <a href="https://android-arsenal.com/details/1/3550"><img src="https://img.shields.io/badge/Android%20Arsenal-Sensey-green.svg?style=true" alt="Android Arsenal"></a>
+</h1>
 
 <p>Making gesture detection a breeze.</p>
 
-<p>Checkout the code on <a href="https://github.com/nisrulz/Sensey">here</a>.</p>
-
 <h1>
-<a id="integration" class="anchor" href="#integration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Integration</h1>
+<a id="integration" class="anchor" href="#integration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Integration</h1>
 
 <ul>
 <li>Sensey is available in the MavenCentral, so getting it as simple as adding it as a dependency</li>
@@ -47,7 +45,7 @@
 <div class="highlight highlight-source-groovy-gradle"><pre>compile <span class="pl-s"><span class="pl-pds">'</span>com.github.nisrulz:sensey:1.0.1<span class="pl-pds">'</span></span></pre></div>
 
 <h1>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
 
 <ul>
 <li>Initialize Sensey under your onCreate() in the activity/service</li>
@@ -153,46 +151,33 @@
 </ul>
 
 <div class="highlight highlight-source-java"><pre> <span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopProximityDetection();</pre></div>
-
-<hr>
-
-<blockquote>
-<p><em>NOTE : Some variables used in build.gradle correspond to</em></p>
-
-<p><strong>COMPILE_SDK_VERSION</strong>=23</p>
-
-<p><strong>BUILDTOOLS_VERSION</strong>=23.0.1</p>
-
-<p><strong>VERSION_NAME</strong>=1.0.1</p>
-
-<p><strong>VERSION_CODE</strong>=2</p>
-</blockquote>
 </li>
 </ul>
 
 <h1>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>
 
-<p><a href="http://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache License 2.0</a></p>
-        </section>
+<pre><code>Copyright 2016 Nishant Srivastava
 
-        <aside id="sidebar">
-          <a href="https://github.com/nisrulz/Sensey/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/nisrulz/Sensey/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-          <p class="repo-owner"><a href="https://github.com/nisrulz/Sensey"></a> is maintained by <a href="https://github.com/nisrulz">nisrulz</a>.</p>
+   http://www.apache.org/licenses/LICENSE-2.0
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
+      </section>
     </div>
-
-  
+    <footer>
+      <p>Project maintained by <a href="https://github.com/nisrulz">nisrulz</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
   </body>
 </html>
