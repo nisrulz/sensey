@@ -2,6 +2,7 @@
 
 #Sensey    [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Sensey-green.svg?style=true)](https://android-arsenal.com/details/1/3550)
 
+[![Twitter](https://img.shields.io/badge/Twitter-@nisrulz-blue.svg?style=flat)](http://twitter.com/nisrulz)
 
 Making gesture detection a breeze.
 
