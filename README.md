@@ -1,8 +1,8 @@
 ![enter image description here](https://github.com/nisrulz/Sensey/raw/master/sample/src/main/res/mipmap-xhdpi/ic_launcher.png)
 
-#Sensey    [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Sensey-green.svg?style=true)](https://android-arsenal.com/details/1/3550)
+#Sensey 
 
-<a href="http://www.methodscount.com/?lib=com.github.nisrulz%3Asensey%3A1.0.1"><img src="https://img.shields.io/badge/Methods and size-60 | 9 KB-e91e63.svg"></img></a> [![Twitter](https://img.shields.io/badge/Twitter-@nisrulz-blue.svg?style=flat)](http://twitter.com/nisrulz)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Sensey-green.svg?style=true)](https://android-arsenal.com/details/1/3550) <a href="http://www.methodscount.com/?lib=com.github.nisrulz%3Asensey%3A1.0.1"><img src="https://img.shields.io/badge/Methods and size-60 | 9 KB-e91e63.svg"></img></a> [![Twitter](https://img.shields.io/badge/Twitter-@nisrulz-blue.svg?style=flat)](http://twitter.com/nisrulz)
 
 Making gesture detection a breeze.
 
