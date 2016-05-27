@@ -6,6 +6,8 @@
 
 Making gesture detection a breeze.
 
+> Features in [#AndroidSweets - Issue #20](https://androidsweets.ongoodbits.com/2016/05/26/issue-20)
+
 #Integration
 - Sensey is available in the MavenCentral, so getting it as simple as adding it as a dependency
 ```gradle
