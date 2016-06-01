@@ -10,6 +10,8 @@ The library is built for simplicity and ease of use. It eliminates most boilerpl
 
 Go build awesome stuff with it!  :smile:
 
+> Featured in [#AndroidSweets - Issue #20](https://androidsweets.ongoodbits.com/2016/05/26/issue-20)
+
 # Changelog
 
 Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/nisrulz/sensey/releases).
