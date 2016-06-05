@@ -21,7 +21,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "in.excogitation.sensey"
+        applicationId "com.github.nisrulz.senseysample"
         minSdkVersion 9
         targetSdkVersion 23
         versionCode 1

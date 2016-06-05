@@ -16,7 +16,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.excogitation.sensey" >
+    package="com.github.nisrulz.senseysample" >
 
     <application
         android:allowBackup="true"
