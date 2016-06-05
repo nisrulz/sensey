@@ -39,7 +39,6 @@ public class LightDetector {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
       if (sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT) {
         float lux = sensorEvent.values[0];
-        System.out.println("-----------"+lux);
         if (lux < threshold) {
           // Dark
           lightListener.onDark();
