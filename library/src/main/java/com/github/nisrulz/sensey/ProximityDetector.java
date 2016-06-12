@@ -26,7 +26,7 @@ public class ProximityDetector {
 
   float max;
 
-  void init(ProximityListener proximityListener) {
+  public ProximityDetector(ProximityListener proximityListener) {
     this.proximityListener = proximityListener;
   }
 
@@ -44,7 +44,7 @@ public class ProximityDetector {
     }
 
     @Override public void onAccuracyChanged(Sensor sensor, int i) {
-
+      // do nothing
     }
   };
 

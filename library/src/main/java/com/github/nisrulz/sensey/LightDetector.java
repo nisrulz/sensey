@@ -25,7 +25,7 @@ public class LightDetector {
   private LightListener lightListener;
   private float threshold;
 
-  void init(LightListener lightListener) {
+  public LightDetector(LightListener lightListener) {
     threshold = 3.0f;
     this.lightListener = lightListener;
   }
@@ -50,7 +50,7 @@ public class LightDetector {
     }
 
     @Override public void onAccuracyChanged(Sensor sensor, int i) {
-
+      // do nothing
     }
   };
 

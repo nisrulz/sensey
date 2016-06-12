@@ -24,7 +24,7 @@ public class OrientationDetector {
 
   private OrientationListener orientationListener;
 
-  void init(OrientationListener orientationListener) {
+  public OrientationDetector(OrientationListener orientationListener) {
     this.orientationListener = orientationListener;
   }
 
@@ -47,7 +47,7 @@ public class OrientationDetector {
     }
 
     @Override public void onAccuracyChanged(Sensor sensor, int i) {
-
+      // do nothing
     }
   };
 

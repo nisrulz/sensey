@@ -24,7 +24,7 @@ public class FlipDetector {
 
   private FlipListener flipListener;
 
-  void init(FlipListener flipListener) {
+  public FlipDetector(FlipListener flipListener) {
     this.flipListener = flipListener;
   }
 
@@ -39,7 +39,7 @@ public class FlipDetector {
     }
 
     @Override public void onAccuracyChanged(Sensor sensor, int i) {
-
+      // do nothing
     }
   };
 

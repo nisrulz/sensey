@@ -30,7 +30,7 @@ public class ShakeDetector {
 
   private ShakeListener shakeListener;
 
-  void init(ShakeListener shakeListener) {
+  public ShakeDetector(ShakeListener shakeListener) {
     mAccel = 0.00f;
     mAccelCurrent = SensorManager.GRAVITY_EARTH;
     mAccelLast = SensorManager.GRAVITY_EARTH;
@@ -57,6 +57,7 @@ public class ShakeDetector {
     }
 
     @Override public void onAccuracyChanged(Sensor sensor, int i) {
+      // do nothing
     }
   };
 
