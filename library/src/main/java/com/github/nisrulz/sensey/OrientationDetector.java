@@ -28,15 +28,15 @@ public class OrientationDetector {
   private final int ORIENTATION_LANDSCAPE_REVERSE = ExifInterface.ORIENTATION_ROTATE_180; // 3
   private final int ORIENTATION_LANDSCAPE = ExifInterface.ORIENTATION_NORMAL; // 1
   private final int ORIENTATION_PORTRAIT_REVERSE = ExifInterface.ORIENTATION_ROTATE_270; // 8
-  int smoothness = 1;
-  private OrientationListener orientationListener;
+  private final int smoothness = 1;
+  private final OrientationListener orientationListener;
   private float averagePitch = 0;
   private float averageRoll = 0;
   private int orientation = ORIENTATION_PORTRAIT;
 
-  private float[] pitches;
-  private float[] rolls;
-  SensorEventListener sensorEventListener = new SensorEventListener() {
+  private final float[] pitches;
+  private final float[] rolls;
+  final SensorEventListener sensorEventListener = new SensorEventListener() {
     float[] mGravity;
     float[] mGeomagnetic;
 
@@ -66,6 +66,9 @@ public class OrientationDetector {
             case ORIENTATION_PORTRAIT_REVERSE:
               orientationListener.onBottomSideUp();
               break;
+            default:
+              // do nothing
+              break;
           }
         }
       }
@@ -84,14 +87,14 @@ public class OrientationDetector {
   }
 
   private float addValue(float value, float[] values) {
-    value = (float) Math.round((Math.toDegrees(value)));
+    float temp_value = (float) Math.round((Math.toDegrees(value)));
     float average = 0;
     for (int i = 1; i < smoothness; i++) {
       values[i - 1] = values[i];
       average += values[i];
     }
-    values[smoothness - 1] = value;
-    average = (average + value) / smoothness;
+    values[smoothness - 1] = temp_value;
+    average = (average + temp_value) / smoothness;
     return average;
   }
 

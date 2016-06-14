@@ -33,8 +33,8 @@ import com.github.nisrulz.sensey.ShakeDetector;
 public class MainActivity extends AppCompatActivity
     implements CompoundButton.OnCheckedChangeListener {
 
-  private final String LOGTAG = getClass().getSimpleName().toString();
-  private boolean DEBUG = false;
+  private final String LOGTAG = getClass().getSimpleName();
+  private final boolean DEBUG = false;
 
   private SwitchCompat swt1, swt2, swt3, swt4, swt5;
   private TextView txt_result;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     swt5.setChecked(false);
   }
 
-  void resetResultInView(final TextView txt) {
+  private void resetResultInView(final TextView txt) {
     Handler handler = new Handler();
     handler.postDelayed(new Runnable() {
       @Override public void run() {
@@ -196,10 +196,5 @@ public class MainActivity extends AppCompatActivity
     Sensey.getInstance().stopOrientationDetection();
     Sensey.getInstance().stopProximityDetection();
     Sensey.getInstance().stopLightDetection();
-  }
-
-  @Override protected void onResume() {
-    super.onResume();
-    // TODO: Start Gesture Detections
   }
 }

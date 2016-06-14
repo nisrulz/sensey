@@ -22,9 +22,9 @@ import android.hardware.SensorEventListener;
 
 public class LightDetector {
 
-  private LightListener lightListener;
-  private float threshold;
-  SensorEventListener sensorEventListener = new SensorEventListener() {
+  private final LightListener lightListener;
+  private final float threshold;
+  final SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
       if (sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT) {
         float lux = sensorEvent.values[0];

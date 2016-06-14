@@ -22,9 +22,15 @@ import android.hardware.SensorEventListener;
 
 public class ProximityDetector {
 
-  float threshold;
-  private ProximityListener proximityListener;
-  SensorEventListener sensorEventListener = new SensorEventListener() {
+  private final float threshold;
+  private final ProximityListener proximityListener;
+
+  public ProximityDetector(ProximityListener proximityListener) {
+    this.proximityListener = proximityListener;
+    this.threshold = (float) 3;
+  }
+
+  final SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
       if (sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY) {
         float distance = sensorEvent.values[0];
@@ -40,11 +46,6 @@ public class ProximityDetector {
       // do nothing
     }
   };
-
-  public ProximityDetector(float threshold, ProximityListener proximityListener) {
-    this.proximityListener = proximityListener;
-    this.threshold = threshold;
-  }
 
   public interface ProximityListener {
     void onNear();

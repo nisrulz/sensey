@@ -128,7 +128,7 @@ public class Sensey {
   public void startProximityDetection(ProximityDetector.ProximityListener proximityListener) {
     final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
     if (sensor != null) {
-      proximityDetector = new ProximityDetector(3, proximityListener);
+      proximityDetector = new ProximityDetector(proximityListener);
       sensorManager.registerListener(proximityDetector.sensorEventListener, sensor,
           SensorManager.SENSOR_DELAY_NORMAL);
     }
