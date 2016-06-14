@@ -1,48 +1,54 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="UTF-8">
     <title>Sensey by nisrulz</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-dark.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Sensey</h1>
-        <p>Android library to make detecting gestures easy</p>
-        <p class="view"><a href="https://github.com/nisrulz/sensey">View the Project on GitHub <small>nisrulz/sensey</small></a></p>
-        <ul>
-          <li><a href="https://github.com/nisrulz/sensey/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/nisrulz/sensey/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/nisrulz/sensey">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <p><img src="https://github.com/nisrulz/Sensey/raw/master/sample/src/main/res/mipmap-xhdpi/ic_launcher.png" alt="enter image description here"></p>
+    <section class="page-header">
+      <h1 class="project-name">Sensey</h1>
+      <h2 class="project-tagline">Android library to make detecting gestures easy</h2>
+      <a href="https://github.com/nisrulz/sensey" class="btn">View on GitHub</a>
+      <a href="https://github.com/nisrulz/sensey/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/nisrulz/sensey/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p><a href="https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg" alt="Maven Central"></a> <a href="https://android-arsenal.com/details/1/3550"><img src="https://img.shields.io/badge/Android%20Arsenal-Sensey-green.svg?style=true" alt="Android Arsenal"></a> <a href="http://www.methodscount.com/?lib=com.github.nisrulz%3Asensey%3A1.2.0"><img src="https://img.shields.io/badge/Methods%20and%20size-88%20%7C%2013%20KB-e91e63.svg"></a> <a href="http://androidweekly.net/issues/issue-209"><img src="https://img.shields.io/badge/Android%20Weekly-%23209-blue.svg" alt="Android Weekly"></a> <a href="http://twitter.com/nisrulz"><img src="https://img.shields.io/badge/Twitter-@nisrulz-blue.svg?style=flat" alt="Twitter"></a></p>
+
+<p>Android library which makes detecting gestures a breeze.</p>
+
+<p>The library is built for simplicity and ease of use. It eliminates most boilerplate code for dealing with setting up gesture detection on Android.</p>
+
+<p>Go build awesome stuff with it!  <g-emoji alias="smile" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png">😄</g-emoji></p>
+
+<blockquote>
+<p>Featured in <a href="https://androidsweets.ongoodbits.com/2016/05/26/issue-20">#AndroidSweets - Issue #20</a></p>
+</blockquote>
 
 <h1>
-<a id="sensey-----" class="anchor" href="#sensey-----" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sensey    <a href="https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg" alt="Maven Central"></a> <a href="https://android-arsenal.com/details/1/3550"><img src="https://img.shields.io/badge/Android%20Arsenal-Sensey-green.svg?style=true" alt="Android Arsenal"></a>
-</h1>
+<a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Changelog</h1>
 
-<p>Making gesture detection a breeze.</p>
+<p>Starting with <code>1.0.1</code>, Changes exist in the <a href="https://github.com/nisrulz/sensey/releases">releases tab</a>.</p>
 
 <h1>
-<a id="integration" class="anchor" href="#integration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Integration</h1>
+<a id="usage-docswiki" class="anchor" href="#usage-docswiki" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage Docs/Wiki</h1>
+
+<p>For more detailed usage, check the <a href="https://github.com/nisrulz/sensey/wiki">Wiki</a></p>
+
+<h1>
+<a id="including-in-your-project" class="anchor" href="#including-in-your-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Including in your project</h1>
 
 <ul>
 <li>Sensey is available in the MavenCentral, so getting it as simple as adding it as a dependency</li>
 </ul>
 
-<div class="highlight highlight-source-groovy-gradle"><pre>compile <span class="pl-s"><span class="pl-pds">'</span>com.github.nisrulz:sensey:1.0.1<span class="pl-pds">'</span></span></pre></div>
+<div class="highlight highlight-source-groovy-gradle"><pre>compile <span class="pl-s"><span class="pl-pds">'</span>com.github.nisrulz:sensey:1.2.0<span class="pl-pds">'</span></span></pre></div>
 
 <h1>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
@@ -62,6 +68,15 @@
 <p>Shake</p>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>startShakeDetection(<span class="pl-k">new</span> <span class="pl-smi">ShakeDetector</span>.<span class="pl-smi">ShakeListener</span>() {
+                  <span class="pl-k">@Override</span>
+                  <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onShakeDetected</span>() {
+                      <span class="pl-c">// Shake detected, do something</span>
+                  }
+              });</pre></div>
+
+<p>If you want to modify the <code>threshold</code> , pass an <code>int</code> as value</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>startShakeDetection(threshold, <span class="pl-k">new</span> <span class="pl-smi">ShakeDetector</span>.<span class="pl-smi">ShakeListener</span>() {
                   <span class="pl-k">@Override</span>
                   <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onShakeDetected</span>() {
                       <span class="pl-c">// Shake detected, do something</span>
@@ -123,6 +138,31 @@
                     }
                 });</pre></div>
 </li>
+<li>
+<p>Light</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>startLightetection(<span class="pl-k">new</span> <span class="pl-smi">LightDetector</span>.<span class="pl-smi">LightListener</span>() {
+        <span class="pl-k">@Override</span> <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onDark</span>() {
+          <span class="pl-c">// Dark</span>
+        }
+
+        <span class="pl-k">@Override</span> <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onLight</span>() {
+          <span class="pl-c">// Light</span>
+        }
+      });</pre></div>
+
+<p>If you want to modify the <code>threshold</code> , pass an <code>int</code> as value</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>startLightetection(threshold,<span class="pl-k">new</span> <span class="pl-smi">LightDetector</span>.<span class="pl-smi">LightListener</span>() {
+        <span class="pl-k">@Override</span> <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onDark</span>() {
+          <span class="pl-c">// Dark</span>
+        }
+
+        <span class="pl-k">@Override</span> <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onLight</span>() {
+          <span class="pl-c">// Light</span>
+        }
+      });</pre></div>
+</li>
 </ul>
 </li>
 <li>
@@ -151,8 +191,34 @@
 </ul>
 
 <div class="highlight highlight-source-java"><pre> <span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopProximityDetection();</pre></div>
+
+<ul>
+<li>Light</li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre> <span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopLightDetection();</pre></div>
 </li>
 </ul>
+
+<h1>
+<a id="pull-requests" class="anchor" href="#pull-requests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pull Requests</h1>
+
+<p>I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request. Here are some basic rules to follow to ensure timely addition of your request:</p>
+
+<ol>
+<li>Match coding style (braces, spacing, etc.) This is best achieved using CMD+Option+L (Reformat code) on Mac (not sure for Windows) with Android Studio defaults.</li>
+<li>If its a feature, bugfix, or anything please only change code to what you specify.</li>
+<li>Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge :)</li>
+<li>Pull requests <em>must</em> be made against <code>develop</code> branch. Any other branch (unless specified by the maintainers) will get rejected.</li>
+<li>Check for existing <a href="https://github.com/nisrulz/sensey/issues">issues</a> first, before filing an issue.<br>
+</li>
+<li>Have fun!</li>
+</ol>
+
+<h3>
+<a id="created--maintained-by" class="anchor" href="#created--maintained-by" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Created &amp; Maintained By</h3>
+
+<p><a href="https://github.com/nisrulz">Nishant Srivastava</a> (<a href="https://www.twitter.com/nisrulz">@nisrulz</a>)</p>
 
 <h1>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>
@@ -171,13 +237,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 </code></pre>
-      </section>
-    </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/nisrulz">nisrulz</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/nisrulz/sensey">Sensey</a> is maintained by <a href="https://github.com/nisrulz">nisrulz</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
   </body>
 </html>
