@@ -45,6 +45,15 @@ public class Sensey {
     sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
   }
 
+  public void startShakeDetection(int threshold, ShakeDetector.ShakeListener shakeListener) {
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    if (sensor != null) {
+      shakeDetector = new ShakeDetector(threshold, shakeListener);
+      sensorManager.registerListener(shakeDetector.sensorEventListener, sensor,
+          SensorManager.SENSOR_DELAY_NORMAL);
+    }
+  }
+
   public void startShakeDetection(ShakeDetector.ShakeListener shakeListener) {
     final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     if (sensor != null) {
@@ -65,6 +74,15 @@ public class Sensey {
     final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
     if (sensor != null) {
       lightDetector = new LightDetector(lightListener);
+      sensorManager.registerListener(lightDetector.sensorEventListener, sensor,
+          SensorManager.SENSOR_DELAY_NORMAL);
+    }
+  }
+
+  public void startLightetection(int threshold, LightDetector.LightListener lightListener) {
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+    if (sensor != null) {
+      lightDetector = new LightDetector(threshold, lightListener);
       sensorManager.registerListener(lightDetector.sensorEventListener, sensor,
           SensorManager.SENSOR_DELAY_NORMAL);
     }
