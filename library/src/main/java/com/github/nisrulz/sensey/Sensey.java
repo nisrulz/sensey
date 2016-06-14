@@ -33,10 +33,6 @@ public class Sensey {
   private Sensey() {
   }
 
-  private static class LazyHolder {
-    private static final Sensey INSTANCE = new Sensey();
-  }
-
   public static Sensey getInstance() {
     return LazyHolder.INSTANCE;
   }
@@ -45,13 +41,21 @@ public class Sensey {
     sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
   }
 
-  public void startShakeDetection(ShakeDetector.ShakeListener shakeListener) {
-    if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
-      shakeDetector = new ShakeDetector();
-      sensorManager.registerListener(shakeDetector.sensorEventListener,
-          sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+  public void startShakeDetection(int threshold, ShakeDetector.ShakeListener shakeListener) {
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    if (sensor != null) {
+      shakeDetector = new ShakeDetector(threshold, shakeListener);
+      sensorManager.registerListener(shakeDetector.sensorEventListener, sensor,
           SensorManager.SENSOR_DELAY_NORMAL);
-      shakeDetector.init(shakeListener);
+    }
+  }
+
+  public void startShakeDetection(ShakeDetector.ShakeListener shakeListener) {
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    if (sensor != null) {
+      shakeDetector = new ShakeDetector(shakeListener);
+      sensorManager.registerListener(shakeDetector.sensorEventListener, sensor,
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 
@@ -63,11 +67,20 @@ public class Sensey {
   }
 
   public void startLightetection(LightDetector.LightListener lightListener) {
-    if (sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT) != null) {
-      lightDetector = new LightDetector();
-      sensorManager.registerListener(lightDetector.sensorEventListener,
-          sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT), SensorManager.SENSOR_DELAY_NORMAL);
-      lightDetector.init(lightListener);
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+    if (sensor != null) {
+      lightDetector = new LightDetector(lightListener);
+      sensorManager.registerListener(lightDetector.sensorEventListener, sensor,
+          SensorManager.SENSOR_DELAY_NORMAL);
+    }
+  }
+
+  public void startLightetection(int threshold, LightDetector.LightListener lightListener) {
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+    if (sensor != null) {
+      lightDetector = new LightDetector(threshold, lightListener);
+      sensorManager.registerListener(lightDetector.sensorEventListener, sensor,
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 
@@ -78,12 +91,11 @@ public class Sensey {
   }
 
   public void startFlipDetection(FlipDetector.FlipListener flipListener) {
-    if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
-      flipDetector = new FlipDetector();
-      sensorManager.registerListener(flipDetector.sensorEventListener,
-          sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    if (sensor != null) {
+      flipDetector = new FlipDetector(flipListener);
+      sensorManager.registerListener(flipDetector.sensorEventListener, sensor,
           SensorManager.SENSOR_DELAY_NORMAL);
-      flipDetector.init(flipListener);
     }
   }
 
@@ -95,35 +107,30 @@ public class Sensey {
 
   public void startOrientationDetection(
       OrientationDetector.OrientationListener orientationListener) {
-    if (sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION) != null) {
-      orientationDetector = new OrientationDetector();
 
-      sensorManager.registerListener(orientationDetector.sensorEventListener,
-          sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+    Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+    if (accelerometer != null && magnetometer != null) {
+      orientationDetector = new OrientationDetector(orientationListener);
+      sensorManager.registerListener(orientationDetector.sensorEventListener, accelerometer,
           SensorManager.SENSOR_DELAY_NORMAL);
-
-      orientationDetector.init(orientationListener);
+      sensorManager.registerListener(orientationDetector.sensorEventListener, magnetometer,
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 
   public void stopOrientationDetection() {
-    if (sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION) != null
-        && orientationDetector != null) {
+    if (sensorManager != null && orientationDetector != null) {
       sensorManager.unregisterListener(orientationDetector.sensorEventListener);
     }
   }
 
   public void startProximityDetection(ProximityDetector.ProximityListener proximityListener) {
-    if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null) {
-
-      proximityDetector = new ProximityDetector();
-      proximityDetector.max =
-          sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY).getMaximumRange();
-
-      sensorManager.registerListener(proximityDetector.sensorEventListener,
-          sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY), SensorManager.SENSOR_DELAY_NORMAL);
-
-      proximityDetector.init(proximityListener);
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+    if (sensor != null) {
+      proximityDetector = new ProximityDetector(3, proximityListener);
+      sensorManager.registerListener(proximityDetector.sensorEventListener, sensor,
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 
@@ -132,5 +139,9 @@ public class Sensey {
         && proximityDetector != null) {
       sensorManager.unregisterListener(proximityDetector.sensorEventListener);
     }
+  }
+
+  private static class LazyHolder {
+    private static final Sensey INSTANCE = new Sensey();
   }
 }

@@ -24,17 +24,6 @@ public class LightDetector {
 
   private LightListener lightListener;
   private float threshold;
-
-  void init(LightListener lightListener) {
-    threshold = 3.0f;
-    this.lightListener = lightListener;
-  }
-
-  void init(float threshold, LightListener lightListener) {
-    this.threshold = threshold;
-    this.lightListener = lightListener;
-  }
-
   SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
       if (sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT) {
@@ -50,9 +39,19 @@ public class LightDetector {
     }
 
     @Override public void onAccuracyChanged(Sensor sensor, int i) {
-
+      // do nothing
     }
   };
+
+  public LightDetector(LightListener lightListener) {
+    threshold = 3.0f;
+    this.lightListener = lightListener;
+  }
+
+  public LightDetector(float threshold, LightListener lightListener) {
+    this.threshold = threshold;
+    this.lightListener = lightListener;
+  }
 
   public interface LightListener {
     void onDark();

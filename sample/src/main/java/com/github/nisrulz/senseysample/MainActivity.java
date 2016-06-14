@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
 
       case R.id.Switch1:
         if (isChecked) {
-          Sensey.getInstance().startShakeDetection(new ShakeDetector.ShakeListener() {
+          Sensey.getInstance().startShakeDetection(10, new ShakeDetector.ShakeListener() {
             @Override public void onShakeDetected() {
               txt_result.setText("Shake Detected!");
               resetResultInView(txt_result);
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity
         break;
       case R.id.Switch5:
         if (isChecked) {
-          Sensey.getInstance().startLightetection(new LightDetector.LightListener() {
+          Sensey.getInstance().startLightetection(10, new LightDetector.LightListener() {
             @Override public void onDark() {
               txt_result.setText("Dark");
               resetResultInView(txt_result);
