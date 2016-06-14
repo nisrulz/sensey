@@ -33,10 +33,6 @@ public class Sensey {
   private Sensey() {
   }
 
-  private static class LazyHolder {
-    private static final Sensey INSTANCE = new Sensey();
-  }
-
   public static Sensey getInstance() {
     return LazyHolder.INSTANCE;
   }
@@ -143,5 +139,9 @@ public class Sensey {
         && proximityDetector != null) {
       sensorManager.unregisterListener(proximityDetector.sensorEventListener);
     }
+  }
+
+  private static class LazyHolder {
+    private static final Sensey INSTANCE = new Sensey();
   }
 }

@@ -23,11 +23,6 @@ import android.hardware.SensorEventListener;
 public class FlipDetector {
 
   private FlipListener flipListener;
-
-  public FlipDetector(FlipListener flipListener) {
-    this.flipListener = flipListener;
-  }
-
   SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
       float z = sensorEvent.values[2];
@@ -42,6 +37,10 @@ public class FlipDetector {
       // do nothing
     }
   };
+
+  public FlipDetector(FlipListener flipListener) {
+    this.flipListener = flipListener;
+  }
 
   public interface FlipListener {
     void onFaceUp();

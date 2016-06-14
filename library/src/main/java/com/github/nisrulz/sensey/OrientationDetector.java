@@ -21,29 +21,21 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.ExifInterface;
-public class OrientationDetector {
 
-  private OrientationListener orientationListener;
+public class OrientationDetector {
 
   private final int ORIENTATION_PORTRAIT = ExifInterface.ORIENTATION_ROTATE_90; // 6
   private final int ORIENTATION_LANDSCAPE_REVERSE = ExifInterface.ORIENTATION_ROTATE_180; // 3
   private final int ORIENTATION_LANDSCAPE = ExifInterface.ORIENTATION_NORMAL; // 1
   private final int ORIENTATION_PORTRAIT_REVERSE = ExifInterface.ORIENTATION_ROTATE_270; // 8
   int smoothness = 1;
+  private OrientationListener orientationListener;
   private float averagePitch = 0;
   private float averageRoll = 0;
   private int orientation = ORIENTATION_PORTRAIT;
 
   private float[] pitches;
   private float[] rolls;
-
-  public OrientationDetector(OrientationListener orientationListener) {
-    this.orientationListener = orientationListener;
-
-    pitches = new float[smoothness];
-    rolls = new float[smoothness];
-  }
-
   SensorEventListener sensorEventListener = new SensorEventListener() {
     float[] mGravity;
     float[] mGeomagnetic;
@@ -83,6 +75,13 @@ public class OrientationDetector {
       // do nothing
     }
   };
+
+  public OrientationDetector(OrientationListener orientationListener) {
+    this.orientationListener = orientationListener;
+
+    pitches = new float[smoothness];
+    rolls = new float[smoothness];
+  }
 
   private float addValue(float value, float[] values) {
     value = (float) Math.round((Math.toDegrees(value)));

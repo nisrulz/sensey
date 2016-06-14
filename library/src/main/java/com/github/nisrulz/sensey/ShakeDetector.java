@@ -30,24 +30,6 @@ public class ShakeDetector {
 
   private ShakeListener shakeListener;
   private int threshold;
-
-  public ShakeDetector(ShakeListener shakeListener) {
-    mAccel = 0.00f;
-    mAccelCurrent = SensorManager.GRAVITY_EARTH;
-    mAccelLast = SensorManager.GRAVITY_EARTH;
-
-    this.shakeListener = shakeListener;
-    this.threshold = 3;
-  }
-
-  public ShakeDetector(int threshold, ShakeListener shakeListener) {
-    mAccel = 0.00f;
-    mAccelCurrent = SensorManager.GRAVITY_EARTH;
-    mAccelLast = SensorManager.GRAVITY_EARTH;
-    this.shakeListener = shakeListener;
-    this.threshold = threshold;
-  }
-
   SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
       mGravity = sensorEvent.values.clone();
@@ -70,6 +52,23 @@ public class ShakeDetector {
       // do nothing
     }
   };
+
+  public ShakeDetector(ShakeListener shakeListener) {
+    mAccel = 0.00f;
+    mAccelCurrent = SensorManager.GRAVITY_EARTH;
+    mAccelLast = SensorManager.GRAVITY_EARTH;
+
+    this.shakeListener = shakeListener;
+    this.threshold = 3;
+  }
+
+  public ShakeDetector(int threshold, ShakeListener shakeListener) {
+    mAccel = 0.00f;
+    mAccelCurrent = SensorManager.GRAVITY_EARTH;
+    mAccelLast = SensorManager.GRAVITY_EARTH;
+    this.shakeListener = shakeListener;
+    this.threshold = threshold;
+  }
 
   public interface ShakeListener {
     void onShakeDetected();
