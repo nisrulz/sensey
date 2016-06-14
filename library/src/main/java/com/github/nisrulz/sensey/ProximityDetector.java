@@ -24,18 +24,18 @@ public class ProximityDetector {
 
   private ProximityListener proximityListener;
 
-  float max;
+  float threshold;
 
-  public ProximityDetector(ProximityListener proximityListener) {
+  public ProximityDetector(float threshold, ProximityListener proximityListener) {
     this.proximityListener = proximityListener;
+    this.threshold = threshold;
   }
 
   SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
       if (sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY) {
         float distance = sensorEvent.values[0];
-
-        if (distance < max) {
+        if (distance < threshold) {
           proximityListener.onNear();
         } else {
           proximityListener.onFar();

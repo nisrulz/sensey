@@ -30,7 +30,7 @@ public class LightDetector {
     this.lightListener = lightListener;
   }
 
-  void init(float threshold, LightListener lightListener) {
+  public LightDetector(float threshold, LightListener lightListener) {
     this.threshold = threshold;
     this.lightListener = lightListener;
   }
