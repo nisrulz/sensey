@@ -25,18 +25,16 @@ public class ShakeDetector {
 
   private float mAccel;
   private float mAccelCurrent = SensorManager.GRAVITY_EARTH;
-  private float mAccelLast = SensorManager.GRAVITY_EARTH;
 
   private final ShakeListener shakeListener;
   private final float threshold;
   final SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
-      float[] mGravity = sensorEvent.values.clone();
       // Shake detection
-      float x = mGravity[0];
-      float y = mGravity[1];
-      float z = mGravity[2];
-      mAccelLast = mAccelCurrent;
+      float x = sensorEvent.values[0];
+      float y = sensorEvent.values[1];
+      float z = sensorEvent.values[2];
+      float mAccelLast = mAccelCurrent;
       mAccelCurrent = (float) Math.sqrt(x * x + y * y + z * z);
       float delta = mAccelCurrent - mAccelLast;
       mAccel = mAccel * 0.9f + delta;
