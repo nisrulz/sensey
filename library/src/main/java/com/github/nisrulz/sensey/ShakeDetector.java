@@ -24,11 +24,11 @@ import android.hardware.SensorManager;
 public class ShakeDetector {
 
   private float mAccel;
-  private float mAccelCurrent;
-  private float mAccelLast;
+  private float mAccelCurrent = SensorManager.GRAVITY_EARTH;
+  private float mAccelLast = SensorManager.GRAVITY_EARTH;
 
   private final ShakeListener shakeListener;
-  private final int threshold;
+  private final float threshold;
   final SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
       float[] mGravity = sensorEvent.values.clone();
@@ -53,18 +53,10 @@ public class ShakeDetector {
   };
 
   public ShakeDetector(ShakeListener shakeListener) {
-    mAccel = 0.00f;
-    mAccelCurrent = SensorManager.GRAVITY_EARTH;
-    mAccelLast = SensorManager.GRAVITY_EARTH;
-
-    this.shakeListener = shakeListener;
-    this.threshold = 3;
+    this(3f, shakeListener);
   }
 
-  public ShakeDetector(int threshold, ShakeListener shakeListener) {
-    mAccel = 0.00f;
-    mAccelCurrent = SensorManager.GRAVITY_EARTH;
-    mAccelLast = SensorManager.GRAVITY_EARTH;
+  public ShakeDetector(float threshold, ShakeListener shakeListener) {
     this.shakeListener = shakeListener;
     this.threshold = threshold;
   }
