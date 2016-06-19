@@ -25,11 +25,13 @@ public class FlipDetector {
   private final FlipListener flipListener;
   final SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
-      float z = sensorEvent.values[2];
-      if (z > 9 && z < 10) {
-        flipListener.onFaceUp();
-      } else if (z > -10 && z < -9) {
-        flipListener.onFaceDown();
+      if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        float z = sensorEvent.values[2];
+        if (z > 9 && z < 10) {
+          flipListener.onFaceUp();
+        } else if (z > -10 && z < -9) {
+          flipListener.onFaceDown();
+        }
       }
     }
 
