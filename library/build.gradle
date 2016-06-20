@@ -15,7 +15,7 @@
  */
 
 apply plugin: 'com.android.library'
-apply from: 'https://raw.github.com/nisrulz/gradle-mvn-push/master/gradle-mvn-push.gradle'
+//apply from: 'https://raw.github.com/nisrulz/gradle-mvn-push/master/gradle-mvn-push.gradle'
 
 
 
@@ -45,6 +45,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.0.69-beta'
+    testCompile "org.robolectric:robolectric:3.1"
 }
 
 // Place this in the 'build.gradle' of the library module
