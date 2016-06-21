@@ -23,4 +23,5 @@
   <string name="thirdGesture">Orientation Gesture</string>
   <string name="fourthGesture">Proximity Gesture</string>
   <string name="fifthGesture">Light Detection</string>
+  <string name="sixthGesture">Touch Detection</string>
 </resources>

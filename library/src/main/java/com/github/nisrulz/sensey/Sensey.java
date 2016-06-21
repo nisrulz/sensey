@@ -19,6 +19,7 @@ package com.github.nisrulz.sensey;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.view.MotionEvent;
 
 public class Sensey {
 
@@ -29,6 +30,8 @@ public class Sensey {
   private OrientationDetector orientationDetector;
   private ProximityDetector proximityDetector;
   private LightDetector lightDetector;
+  private TouchTypeDetector touchTypeDetector;
+  private Context context;
 
   private Sensey() {
   }
@@ -39,6 +42,7 @@ public class Sensey {
 
   public void init(Context context) {
     sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+    this.context = context;
   }
 
   public void startShakeDetection(int threshold, ShakeDetector.ShakeListener shakeListener) {
@@ -149,6 +153,22 @@ public class Sensey {
         && proximityDetector != null) {
       sensorManager.unregisterListener(proximityDetector.sensorEventListener);
     }
+  }
+
+  public void startTouchTypeDetection(TouchTypeDetector.TouchTypListener touchTypListener) {
+    if (touchTypListener != null) {
+      touchTypeDetector = new TouchTypeDetector(context, touchTypListener);
+    }
+  }
+
+  public void setupDispatchTouchEvent(MotionEvent event) {
+    if (touchTypeDetector != null) {
+      touchTypeDetector.onTouchEvent(event);
+    }
+  }
+
+  public void stopTouchTypeDetection() {
+    touchTypeDetector = null;
   }
 
   private static class LazyHolder {
