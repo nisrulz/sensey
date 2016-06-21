@@ -50,7 +50,7 @@ public class TouchActivity extends AppCompatActivity
     swt6.setChecked(false);
   }
 
-  @Override public void onCheckedChanged(CompoundButton switchbtn, boolean isChecked) {
+  @Override public void onCheckedChanged(final CompoundButton switchbtn, boolean isChecked) {
     switch (switchbtn.getId()) {
 
       case R.id.Switch6:
@@ -60,12 +60,20 @@ public class TouchActivity extends AppCompatActivity
               setResultTextView("Double Tap");
             }
 
-            @Override public void onScroll(boolean scrollingTop) {
-
-              if (scrollingTop) {
-                setResultTextView("Scrolling Top");
-              } else {
-                setResultTextView("Scrolling Down");
+            @Override public void onScroll(int scroll_dir) {
+              switch (scroll_dir) {
+                case TouchTypeDetector.SCROLL_DIR_UP:
+                  setResultTextView("Scrolling Up");
+                  break;
+                case TouchTypeDetector.SCROLL_DIR_DOWN:
+                  setResultTextView("Scrolling Down");
+                  break;
+                case TouchTypeDetector.SCROLL_DIR_LEFT:
+                  setResultTextView("Scrolling Left");
+                  break;
+                case TouchTypeDetector.SCROLL_DIR_RIGHT:
+                  setResultTextView("Scrolling Right");
+                  break;
               }
             }
 

@@ -18,7 +18,6 @@ package com.github.nisrulz.sensey;
 
 import android.content.Context;
 import android.support.v4.view.GestureDetectorCompat;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -28,6 +27,11 @@ public class TouchTypeDetector {
   private GestureDetectorCompat gDetect;
 
   private TouchTypListener touchTypListener;
+
+  public static final int SCROLL_DIR_UP = 1;
+  public static final int SCROLL_DIR_RIGHT = 2;
+  public static final int SCROLL_DIR_DOWN = 3;
+  public static final int SCROLL_DIR_LEFT = 4;
 
   public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
     gDetect = new GestureDetectorCompat(context, new GestureListener());
@@ -42,11 +46,6 @@ public class TouchTypeDetector {
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
-    //user will move forward through messages on fling up or left
-    boolean forward = false;
-    //user will move backward through messages on fling down or right
-    boolean backward = false;
 
     @Override public boolean onDoubleTap(MotionEvent e) {
       touchTypListener.onDoubleTap();
@@ -66,10 +65,12 @@ public class TouchTypeDetector {
     public boolean onFling(MotionEvent startevent, MotionEvent finishevent, float velocityX,
         float velocityY) {
 
-      if (Math.abs(startevent.getY() - finishevent.getY()) > SWIPE_MAX_OFF_PATH) return false;
+      final float deltaX = startevent.getX() - finishevent.getX();
+      final float deltaY = startevent.getY() - finishevent.getY();
+
+      if (Math.abs(deltaY) > SWIPE_MAX_OFF_PATH) return false;
       // right to left swipe
-      if (startevent.getX() - finishevent.getX() > SWIPE_MIN_DISTANCE
-          && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+      if (deltaX > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
         touchTypListener.onSwipeLeft();
       } else if (finishevent.getX() - startevent.getX() > SWIPE_MIN_DISTANCE
           && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
@@ -82,31 +83,28 @@ public class TouchTypeDetector {
     public boolean onScroll(MotionEvent startevent, MotionEvent finishevent, float distanceX,
         float distanceY) {
 
-      boolean isScrollingTowardsTop;
       float deltaX = startevent.getX() - finishevent.getX();
       float deltaY = startevent.getY() - finishevent.getY();
 
-      Log.i("Touch", "Delta X =" + deltaX + " | Delta Y : " + deltaY);
-
-      if (Math.abs(deltaX) < 0) {
-        Log.i("Touch1", "Delta X =" + deltaX + " | Scrolling Left");
-      } else if (Math.abs(deltaX) > 0) {
-        Log.i("Touch1", "Delta X =" + deltaX + " | Scrolling Right");
-      }
-
-      if (Math.abs(deltaY) < 0) {
-        Log.i("Touch1", "Delta Y =" + deltaY + " | Scrolling Top");
-      } else if (Math.abs(deltaY) > 0) {
-        Log.i("Touch1", "Delta Y =" + deltaY + " | Scrolling Bottom");
-      }
-
-      if (deltaY > 120 && deltaX < 5) {
-        isScrollingTowardsTop = true;
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        //Scrolling Horizontal
+        if (Math.abs(deltaX) > SWIPE_MIN_DISTANCE) {
+          if (deltaX > 0) {
+            touchTypListener.onScroll(SCROLL_DIR_LEFT);
+          } else {
+            touchTypListener.onScroll(SCROLL_DIR_RIGHT);
+          }
+        }
       } else {
-        isScrollingTowardsTop = false;
+        //Scrolling Vertical
+        if (Math.abs(deltaY) > SWIPE_MIN_DISTANCE) {
+          if (deltaX > 0) {
+            touchTypListener.onScroll(SCROLL_DIR_DOWN);
+          } else {
+            touchTypListener.onScroll(SCROLL_DIR_UP);
+          }
+        }
       }
-
-      touchTypListener.onScroll(isScrollingTowardsTop);
 
       return super.onScroll(startevent, finishevent, distanceX, distanceY);
     }
@@ -124,7 +122,7 @@ public class TouchTypeDetector {
   public interface TouchTypListener {
     void onDoubleTap();
 
-    void onScroll(boolean scrollingTowardsTop);
+    void onScroll(int scroll_dir);
 
     void onSingleTap();
 
