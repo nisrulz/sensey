@@ -8,6 +8,7 @@ import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
 import static com.github.nisrulz.sensey.SensorUtils.testAccelerometerEvent;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 @RunWith(RobolectricTestRunner.class)
 public class OrientationDetectorTest {
 
-    private OrientationListener mockListener;
+    @Mock private OrientationListener mockListener;
     private OrientationDetector testOrientationDetector;
 
     @Before

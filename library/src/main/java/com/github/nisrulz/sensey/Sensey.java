@@ -66,7 +66,12 @@ public class Sensey {
     }
   }
 
+  @Deprecated
   public void startLightetection(LightDetector.LightListener lightListener) {
+    startLightDetection(lightListener);
+  }
+
+  public void startLightDetection(LightDetector.LightListener lightListener) {
     final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
     if (sensor != null) {
       lightDetector = new LightDetector(lightListener);
@@ -75,7 +80,12 @@ public class Sensey {
     }
   }
 
+  @Deprecated
   public void startLightetection(int threshold, LightDetector.LightListener lightListener) {
+    startLightDetection(threshold, lightListener);
+  }
+
+  public void startLightDetection(int threshold, LightDetector.LightListener lightListener) {
     final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
     if (sensor != null) {
       lightDetector = new LightDetector(threshold, lightListener);

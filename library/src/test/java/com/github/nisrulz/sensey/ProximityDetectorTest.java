@@ -21,8 +21,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class ProximityDetectorTest {
 
-    @Mock
-    private ProximityListener mockListener;
+    @Mock private ProximityListener mockListener;
 
     @Test
     public void detectOnNearWithLuxLessThanDefaultThreshold() {
