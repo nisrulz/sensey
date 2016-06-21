@@ -18,6 +18,7 @@ package com.github.nisrulz.sensey;
 
 import android.content.Context;
 import android.support.v4.view.GestureDetectorCompat;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -38,8 +39,9 @@ public class TouchTypeDetector {
   }
 
   private class GestureListener extends GestureDetector.SimpleOnGestureListener {
-    private float flingMin = 100;
-    private float velocityMin = 100;
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
     //user will move forward through messages on fling up or left
     boolean forward = false;
@@ -61,51 +63,44 @@ public class TouchTypeDetector {
     }
 
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+    public boolean onFling(MotionEvent startevent, MotionEvent finishevent, float velocityX,
+        float velocityY) {
 
-      //calculate the change in X position within the fling gesture
-      float horizontalDiff = e2.getX() - e1.getX();
-      //calculate the change in Y position within the fling gesture
-      float verticalDiff = e2.getY() - e1.getY();
-
-      float absHDiff = Math.abs(horizontalDiff);
-      float absVDiff = Math.abs(verticalDiff);
-      float absVelocityX = Math.abs(velocityX);
-      float absVelocityY = Math.abs(velocityY);
-
-      if (absHDiff > absVDiff && absHDiff > flingMin && absVelocityX > velocityMin) {
-        //move forward or backward
-        if (horizontalDiff > 0) {
-          backward = true;
-        } else if (absVDiff > flingMin && absVelocityY > velocityMin) {
-          if (verticalDiff > 0) {
-            backward = true;
-            forward = false;
-          } else {
-            forward = true;
-            backward = false;
-          }
-        }
-      }
-
-      //user is cycling forward through messages
-      if (forward) {
+      if (Math.abs(startevent.getY() - finishevent.getY()) > SWIPE_MAX_OFF_PATH) return false;
+      // right to left swipe
+      if (startevent.getX() - finishevent.getX() > SWIPE_MIN_DISTANCE
+          && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+        touchTypListener.onSwipeLeft();
+      } else if (finishevent.getX() - startevent.getX() > SWIPE_MIN_DISTANCE
+          && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
         touchTypListener.onSwipeRight();
       }
-      //user is cycling backwards through messages
-      else if (backward) {
-        touchTypListener.onSwipeLeft();
-      }
-
-      return true;
+      return false;
     }
 
     @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+    public boolean onScroll(MotionEvent startevent, MotionEvent finishevent, float distanceX,
+        float distanceY) {
 
       boolean isScrollingTowardsTop;
+      float deltaX = startevent.getX() - finishevent.getX();
+      float deltaY = startevent.getY() - finishevent.getY();
 
-      if (e1.getY() > e2.getY()) {
+      Log.i("Touch", "Delta X =" + deltaX + " | Delta Y : " + deltaY);
+
+      if (Math.abs(deltaX) < 0) {
+        Log.i("Touch1", "Delta X =" + deltaX + " | Scrolling Left");
+      } else if (Math.abs(deltaX) > 0) {
+        Log.i("Touch1", "Delta X =" + deltaX + " | Scrolling Right");
+      }
+
+      if (Math.abs(deltaY) < 0) {
+        Log.i("Touch1", "Delta Y =" + deltaY + " | Scrolling Top");
+      } else if (Math.abs(deltaY) > 0) {
+        Log.i("Touch1", "Delta Y =" + deltaY + " | Scrolling Bottom");
+      }
+
+      if (deltaY > 120 && deltaX < 5) {
         isScrollingTowardsTop = true;
       } else {
         isScrollingTowardsTop = false;
@@ -113,7 +108,7 @@ public class TouchTypeDetector {
 
       touchTypListener.onScroll(isScrollingTowardsTop);
 
-      return super.onScroll(e1, e2, distanceX, distanceY);
+      return super.onScroll(startevent, finishevent, distanceX, distanceY);
     }
 
     @Override public boolean onSingleTapConfirmed(MotionEvent e) {

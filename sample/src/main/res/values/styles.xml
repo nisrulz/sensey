@@ -16,19 +16,21 @@
 
 <resources>
 
-    <style name="AppTheme" parent="AppTheme.Base"/>
+  <style name="AppTheme" parent="AppTheme.Base"/>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+  <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <!-- ...and here we setting appcompat’s color theming attrs -->
-        <!-- colorPrimary is used for the default action bar background -->
-        <item name="colorPrimary">@color/primary</item>
-        <!-- colorPrimaryDark is used for the status bar -->
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <!-- colorAccent is used as the default value for colorControlActivated
-         which is used to tint widgets -->
-        <item name="colorAccent">@color/accent</item>
+    <!-- ...and here we setting appcompat’s color theming attrs -->
+    <!-- colorPrimary is used for the default action bar background -->
+    <item name="colorPrimary">@color/primary</item>
+    <!-- colorPrimaryDark is used for the status bar -->
+    <item name="colorPrimaryDark">@color/primary_dark</item>
+    <!-- colorAccent is used as the default value for colorControlActivated
+     which is used to tint widgets -->
+    <item name="colorAccent">@color/accent</item>
 
-    </style>
+    <item name="android:background">@color/primary</item>
+
+  </style>
 
 </resources>
