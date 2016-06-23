@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 @RunWith(RobolectricTestRunner.class)
 public class OrientationDetectorTest {
 
-    @Mock private OrientationListener mockListener;
+    private OrientationListener mockListener;
     private OrientationDetector testOrientationDetector;
 
     @Before

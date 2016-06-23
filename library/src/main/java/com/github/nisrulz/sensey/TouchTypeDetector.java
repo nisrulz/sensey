@@ -27,9 +27,11 @@ public class TouchTypeDetector {
   private GestureDetectorCompat gDetect;
 
   private TouchTypListener touchTypListener;
+  final GestureListener listener = new GestureListener();
 
   public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
-    gDetect = new GestureDetectorCompat(context, new GestureListener());
+    gDetect = new GestureDetectorCompat(context, listener);
+    gDetect.setOnDoubleTapListener(listener);
     this.touchTypListener = touchTypListener;
   }
 
@@ -37,7 +39,7 @@ public class TouchTypeDetector {
     gDetect.onTouchEvent(event);
   }
 
-  private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+  class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private float flingMin = 100;
     private float velocityMin = 100;
 
