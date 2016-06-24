@@ -94,7 +94,7 @@ public class Sensey {
     if (sensor != null) {
       lightDetector = new LightDetector(threshold, lightListener);
       sensorManager.registerListener(lightDetector.sensorEventListener, sensor,
-              SensorManager.SENSOR_DELAY_NORMAL);
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 
@@ -109,7 +109,7 @@ public class Sensey {
     if (sensor != null) {
       flipDetector = new FlipDetector(flipListener);
       sensorManager.registerListener(flipDetector.sensorEventListener, sensor,
-              SensorManager.SENSOR_DELAY_NORMAL);
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 
@@ -120,16 +120,16 @@ public class Sensey {
   }
 
   public void startOrientationDetection(
-          OrientationDetector.OrientationListener orientationListener) {
+      OrientationDetector.OrientationListener orientationListener) {
 
     Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     if (accelerometer != null && magnetometer != null) {
       orientationDetector = new OrientationDetector(orientationListener);
       sensorManager.registerListener(orientationDetector.sensorEventListener, accelerometer,
-              SensorManager.SENSOR_DELAY_NORMAL);
+          SensorManager.SENSOR_DELAY_NORMAL);
       sensorManager.registerListener(orientationDetector.sensorEventListener, magnetometer,
-              SensorManager.SENSOR_DELAY_NORMAL);
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 
@@ -144,13 +144,13 @@ public class Sensey {
     if (sensor != null) {
       proximityDetector = new ProximityDetector(proximityListener);
       sensorManager.registerListener(proximityDetector.sensorEventListener, sensor,
-              SensorManager.SENSOR_DELAY_NORMAL);
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 
   public void stopProximityDetection() {
     if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null
-            && proximityDetector != null) {
+        && proximityDetector != null) {
       sensorManager.unregisterListener(proximityDetector.sensorEventListener);
     }
   }
