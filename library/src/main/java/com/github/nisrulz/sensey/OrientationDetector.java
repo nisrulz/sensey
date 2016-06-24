@@ -24,15 +24,14 @@ import android.media.ExifInterface;
 
 public class OrientationDetector {
 
-  private static final int ORIENTATION_PORTRAIT = ExifInterface.ORIENTATION_ROTATE_90; // 6
-  private static final int ORIENTATION_LANDSCAPE_REVERSE = ExifInterface.ORIENTATION_ROTATE_180; // 3
-  private static final int ORIENTATION_LANDSCAPE = ExifInterface.ORIENTATION_NORMAL; // 1
-  private static final int ORIENTATION_PORTRAIT_REVERSE = ExifInterface.ORIENTATION_ROTATE_270; // 8
-
-  private final int smoothness;
+  private final int ORIENTATION_PORTRAIT = ExifInterface.ORIENTATION_ROTATE_90; // 6
+  private final int ORIENTATION_LANDSCAPE_REVERSE = ExifInterface.ORIENTATION_ROTATE_180; // 3
+  private final int ORIENTATION_LANDSCAPE = ExifInterface.ORIENTATION_NORMAL; // 1
+  private final int ORIENTATION_PORTRAIT_REVERSE = ExifInterface.ORIENTATION_ROTATE_270; // 8
+  private final int smoothness = 1;
   private final OrientationListener orientationListener;
-  private float averagePitch;
-  private float averageRoll;
+  private float averagePitch = 0;
+  private float averageRoll = 0;
   private int orientation = ORIENTATION_PORTRAIT;
 
   private final float[] pitches;
@@ -81,12 +80,7 @@ public class OrientationDetector {
   };
 
   public OrientationDetector(OrientationListener orientationListener) {
-    this(1, orientationListener);
-  }
-
-  public OrientationDetector(int smoothness, OrientationListener orientationListener) {
     this.orientationListener = orientationListener;
-    this.smoothness = smoothness;
 
     pitches = new float[smoothness];
     rolls = new float[smoothness];
@@ -107,8 +101,8 @@ public class OrientationDetector {
   private int calculateOrientation() {
     // finding local orientation dip
     if (((orientation == ORIENTATION_PORTRAIT || orientation == ORIENTATION_PORTRAIT_REVERSE) && (
-        averageRoll > -30
-            && averageRoll < 30))) {
+            averageRoll > -30
+                    && averageRoll < 30))) {
       if (averagePitch > 0) {
         return ORIENTATION_PORTRAIT_REVERSE;
       } else {
