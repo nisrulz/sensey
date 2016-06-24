@@ -23,16 +23,14 @@ import android.view.MotionEvent;
 
 public class TouchTypeDetector {
 
-  //gesture detector
-  private GestureDetectorCompat gDetect;
-
-  private TouchTypListener touchTypListener;
-  final GestureListener listener = new GestureListener();
-
   public static final int SCROLL_DIR_UP = 1;
   public static final int SCROLL_DIR_RIGHT = 2;
   public static final int SCROLL_DIR_DOWN = 3;
   public static final int SCROLL_DIR_LEFT = 4;
+  final GestureListener listener = new GestureListener();
+  //gesture detector
+  private GestureDetectorCompat gDetect;
+  private TouchTypListener touchTypListener;
 
   public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
     gDetect = new GestureDetectorCompat(context, listener);
@@ -42,6 +40,20 @@ public class TouchTypeDetector {
 
   void onTouchEvent(MotionEvent event) {
     gDetect.onTouchEvent(event);
+  }
+
+  public interface TouchTypListener {
+    void onDoubleTap();
+
+    void onScroll(int scroll_dir);
+
+    void onSingleTap();
+
+    void onSwipeLeft();
+
+    void onSwipeRight();
+
+    void onLongPress();
   }
 
   class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -92,9 +104,9 @@ public class TouchTypeDetector {
         //Scrolling Horizontal
         if (Math.abs(deltaX) > SWIPE_MIN_DISTANCE) {
           if (deltaX > 0) {
-            touchTypListener.onScroll(SCROLL_DIR_LEFT);
-          } else {
             touchTypListener.onScroll(SCROLL_DIR_RIGHT);
+          } else {
+            touchTypListener.onScroll(SCROLL_DIR_LEFT);
           }
         }
       } else {
@@ -119,19 +131,5 @@ public class TouchTypeDetector {
     @Override public boolean onSingleTapUp(MotionEvent e) {
       return super.onSingleTapUp(e);
     }
-  }
-
-  public interface TouchTypListener {
-    void onDoubleTap();
-
-    void onScroll(int scroll_dir);
-
-    void onSingleTap();
-
-    void onSwipeLeft();
-
-    void onSwipeRight();
-
-    void onLongPress();
   }
 }

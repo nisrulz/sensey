@@ -23,12 +23,11 @@ import android.hardware.SensorManager;
 
 public class ShakeDetector {
 
+  private final ShakeListener shakeListener;
+  private final int threshold;
   private float mAccel;
   private float mAccelCurrent;
   private float mAccelLast;
-
-  private final ShakeListener shakeListener;
-  private final int threshold;
   final SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
       float[] mGravity = sensorEvent.values.clone();
