@@ -46,17 +46,18 @@ public class Sensey {
   }
 
   public void startShakeDetection(int threshold, ShakeDetector.ShakeListener shakeListener) {
-    startShakeDetection(new ShakeDetector(threshold, shakeListener));
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    if (sensor != null) {
+      shakeDetector = new ShakeDetector(threshold, shakeListener);
+      sensorManager.registerListener(shakeDetector.sensorEventListener, sensor,
+              SensorManager.SENSOR_DELAY_NORMAL);
+    }
   }
 
   public void startShakeDetection(ShakeDetector.ShakeListener shakeListener) {
-    startShakeDetection(new ShakeDetector(shakeListener));
-  }
-
-  private void startShakeDetection(ShakeDetector shakeDetector) {
     final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     if (sensor != null) {
-      this.shakeDetector = shakeDetector;
+      shakeDetector = new ShakeDetector(shakeListener);
       sensorManager.registerListener(shakeDetector.sensorEventListener, sensor,
               SensorManager.SENSOR_DELAY_NORMAL);
     }
@@ -64,23 +65,34 @@ public class Sensey {
 
   public void stopShakeDetection() {
     if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null
-        && shakeDetector != null) {
+            && shakeDetector != null) {
       sensorManager.unregisterListener(shakeDetector.sensorEventListener);
     }
   }
 
+  @Deprecated
+  public void startLightetection(LightDetector.LightListener lightListener) {
+    startLightDetection(lightListener);
+  }
+
   public void startLightDetection(LightDetector.LightListener lightListener) {
-    startLightDetection(new LightDetector(lightListener));
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+    if (sensor != null) {
+      lightDetector = new LightDetector(lightListener);
+      sensorManager.registerListener(lightDetector.sensorEventListener, sensor,
+              SensorManager.SENSOR_DELAY_NORMAL);
+    }
+  }
+
+  @Deprecated
+  public void startLightetection(int threshold, LightDetector.LightListener lightListener) {
+    startLightDetection(threshold, lightListener);
   }
 
   public void startLightDetection(int threshold, LightDetector.LightListener lightListener) {
-    startLightDetection(new LightDetector(threshold, lightListener));
-  }
-
-  private void startLightDetection(LightDetector lightDetector) {
     final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
     if (sensor != null) {
-      this.lightDetector = lightDetector;
+      lightDetector = new LightDetector(threshold, lightListener);
       sensorManager.registerListener(lightDetector.sensorEventListener, sensor,
               SensorManager.SENSOR_DELAY_NORMAL);
     }
@@ -109,19 +121,11 @@ public class Sensey {
 
   public void startOrientationDetection(
           OrientationDetector.OrientationListener orientationListener) {
-    startOrientationDetection(new OrientationDetector(orientationListener));
-  }
 
-  public void startOrientationDetection(int smoothness,
-          OrientationDetector.OrientationListener orientationListener) {
-    startOrientationDetection(new OrientationDetector(smoothness, orientationListener));
-  }
-
-  private void startOrientationDetection(OrientationDetector orientationDetector) {
     Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     if (accelerometer != null && magnetometer != null) {
-      this.orientationDetector = orientationDetector;
+      orientationDetector = new OrientationDetector(orientationListener);
       sensorManager.registerListener(orientationDetector.sensorEventListener, accelerometer,
               SensorManager.SENSOR_DELAY_NORMAL);
       sensorManager.registerListener(orientationDetector.sensorEventListener, magnetometer,
@@ -136,17 +140,9 @@ public class Sensey {
   }
 
   public void startProximityDetection(ProximityDetector.ProximityListener proximityListener) {
-    startProximityDetection(new ProximityDetector(proximityListener));
-  }
-
-  public void startProximityDetection(float threshold, ProximityDetector.ProximityListener proximityListener) {
-    startProximityDetection(new ProximityDetector(threshold, proximityListener));
-  }
-
-  private void startProximityDetection(ProximityDetector proximityDetector) {
     final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
     if (sensor != null) {
-      this.proximityDetector = proximityDetector;
+      proximityDetector = new ProximityDetector(proximityListener);
       sensorManager.registerListener(proximityDetector.sensorEventListener, sensor,
               SensorManager.SENSOR_DELAY_NORMAL);
     }
@@ -154,7 +150,7 @@ public class Sensey {
 
   public void stopProximityDetection() {
     if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null
-        && proximityDetector != null) {
+            && proximityDetector != null) {
       sensorManager.unregisterListener(proximityDetector.sensorEventListener);
     }
   }
