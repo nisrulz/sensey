@@ -27,6 +27,7 @@ public class TouchTypeDetector {
   private GestureDetectorCompat gDetect;
 
   private TouchTypListener touchTypListener;
+  final GestureListener listener = new GestureListener();
 
   public static final int SCROLL_DIR_UP = 1;
   public static final int SCROLL_DIR_RIGHT = 2;
@@ -34,7 +35,8 @@ public class TouchTypeDetector {
   public static final int SCROLL_DIR_LEFT = 4;
 
   public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
-    gDetect = new GestureDetectorCompat(context, new GestureListener());
+    gDetect = new GestureDetectorCompat(context, listener);
+    gDetect.setOnDoubleTapListener(listener);
     this.touchTypListener = touchTypListener;
   }
 
@@ -42,7 +44,7 @@ public class TouchTypeDetector {
     gDetect.onTouchEvent(event);
   }
 
-  private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+  class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -83,8 +85,8 @@ public class TouchTypeDetector {
     public boolean onScroll(MotionEvent startevent, MotionEvent finishevent, float distanceX,
         float distanceY) {
 
-      float deltaX = startevent.getX() - finishevent.getX();
-      float deltaY = startevent.getY() - finishevent.getY();
+      float deltaX = finishevent.getX() - startevent.getX();
+      float deltaY = finishevent.getY() - startevent.getY();
 
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         //Scrolling Horizontal
@@ -98,7 +100,7 @@ public class TouchTypeDetector {
       } else {
         //Scrolling Vertical
         if (Math.abs(deltaY) > SWIPE_MIN_DISTANCE) {
-          if (deltaX > 0) {
+          if (deltaY > 0) {
             touchTypListener.onScroll(SCROLL_DIR_DOWN);
           } else {
             touchTypListener.onScroll(SCROLL_DIR_UP);
