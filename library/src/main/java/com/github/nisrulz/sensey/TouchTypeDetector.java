@@ -29,6 +29,11 @@ public class TouchTypeDetector {
   private TouchTypListener touchTypListener;
   final GestureListener listener = new GestureListener();
 
+  public static final int SCROLL_DIR_UP = 1;
+  public static final int SCROLL_DIR_RIGHT = 2;
+  public static final int SCROLL_DIR_DOWN = 3;
+  public static final int SCROLL_DIR_LEFT = 4;
+
   public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
     gDetect = new GestureDetectorCompat(context, listener);
     gDetect.setOnDoubleTapListener(listener);
@@ -40,13 +45,9 @@ public class TouchTypeDetector {
   }
 
   class GestureListener extends GestureDetector.SimpleOnGestureListener {
-    private float flingMin = 100;
-    private float velocityMin = 100;
-
-    //user will move forward through messages on fling up or left
-    boolean forward = false;
-    //user will move backward through messages on fling down or right
-    boolean backward = false;
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
     @Override public boolean onDoubleTap(MotionEvent e) {
       touchTypListener.onDoubleTap();
@@ -63,59 +64,51 @@ public class TouchTypeDetector {
     }
 
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+    public boolean onFling(MotionEvent startevent, MotionEvent finishevent, float velocityX,
+        float velocityY) {
 
-      //calculate the change in X position within the fling gesture
-      float horizontalDiff = e2.getX() - e1.getX();
-      //calculate the change in Y position within the fling gesture
-      float verticalDiff = e2.getY() - e1.getY();
+      final float deltaX = startevent.getX() - finishevent.getX();
+      final float deltaY = startevent.getY() - finishevent.getY();
 
-      float absHDiff = Math.abs(horizontalDiff);
-      float absVDiff = Math.abs(verticalDiff);
-      float absVelocityX = Math.abs(velocityX);
-      float absVelocityY = Math.abs(velocityY);
+      if (Math.abs(deltaY) > SWIPE_MAX_OFF_PATH) return false;
+      // right to left swipe
+      if (deltaX > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+        touchTypListener.onSwipeLeft();
+      } else if (finishevent.getX() - startevent.getX() > SWIPE_MIN_DISTANCE
+          && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+        touchTypListener.onSwipeRight();
+      }
+      return false;
+    }
 
-      if (absHDiff > absVDiff && absHDiff > flingMin && absVelocityX > velocityMin) {
-        //move forward or backward
-        if (horizontalDiff > 0) {
-          backward = true;
-        } else if (absVDiff > flingMin && absVelocityY > velocityMin) {
-          if (verticalDiff > 0) {
-            backward = true;
-            forward = false;
+    @Override
+    public boolean onScroll(MotionEvent startevent, MotionEvent finishevent, float distanceX,
+        float distanceY) {
+
+      float deltaX = startevent.getX() - finishevent.getX();
+      float deltaY = startevent.getY() - finishevent.getY();
+
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        //Scrolling Horizontal
+        if (Math.abs(deltaX) > SWIPE_MIN_DISTANCE) {
+          if (deltaX > 0) {
+            touchTypListener.onScroll(SCROLL_DIR_LEFT);
           } else {
-            forward = true;
-            backward = false;
+            touchTypListener.onScroll(SCROLL_DIR_RIGHT);
+          }
+        }
+      } else {
+        //Scrolling Vertical
+        if (Math.abs(deltaY) > SWIPE_MIN_DISTANCE) {
+          if (deltaX > 0) {
+            touchTypListener.onScroll(SCROLL_DIR_DOWN);
+          } else {
+            touchTypListener.onScroll(SCROLL_DIR_UP);
           }
         }
       }
 
-      //user is cycling forward through messages
-      if (forward) {
-        touchTypListener.onSwipeRight();
-      }
-      //user is cycling backwards through messages
-      else if (backward) {
-        touchTypListener.onSwipeLeft();
-      }
-
-      return true;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-
-      boolean isScrollingTowardsTop;
-
-      if (e1.getY() > e2.getY()) {
-        isScrollingTowardsTop = true;
-      } else {
-        isScrollingTowardsTop = false;
-      }
-
-      touchTypListener.onScroll(isScrollingTowardsTop);
-
-      return super.onScroll(e1, e2, distanceX, distanceY);
+      return super.onScroll(startevent, finishevent, distanceX, distanceY);
     }
 
     @Override public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -131,7 +124,7 @@ public class TouchTypeDetector {
   public interface TouchTypListener {
     void onDoubleTap();
 
-    void onScroll(boolean scrollingTowardsTop);
+    void onScroll(int scroll_dir);
 
     void onSingleTap();
 

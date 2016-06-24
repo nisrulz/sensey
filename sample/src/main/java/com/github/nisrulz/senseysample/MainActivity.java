@@ -16,12 +16,14 @@
 
 package com.github.nisrulz.senseysample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import com.github.nisrulz.sensey.FlipDetector;
@@ -30,15 +32,14 @@ import com.github.nisrulz.sensey.OrientationDetector;
 import com.github.nisrulz.sensey.ProximityDetector;
 import com.github.nisrulz.sensey.Sensey;
 import com.github.nisrulz.sensey.ShakeDetector;
-import com.github.nisrulz.sensey.TouchTypeDetector;
 
 public class MainActivity extends AppCompatActivity
     implements CompoundButton.OnCheckedChangeListener {
 
   private final String LOGTAG = getClass().getSimpleName();
-  private final boolean DEBUG = false;
+  private final boolean DEBUG = true;
 
-  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6;
+  private SwitchCompat swt1, swt2, swt3, swt4, swt5;
   private TextView txt_result;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +71,16 @@ public class MainActivity extends AppCompatActivity
     swt5.setOnCheckedChangeListener(this);
     swt5.setChecked(false);
 
-    swt5 = (SwitchCompat) findViewById(R.id.Switch6);
-    swt5.setOnCheckedChangeListener(this);
-    swt5.setChecked(false);
+    Button btn_touchevent = (Button) findViewById(R.id.btn_touchevent);
+    btn_touchevent.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        startActivity(new Intent(MainActivity.this, TouchActivity.class));
+      }
+    });
   }
 
-  @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-    switch (buttonView.getId()) {
+  @Override public void onCheckedChanged(CompoundButton switchbtn, boolean isChecked) {
+    switch (switchbtn.getId()) {
 
       case R.id.Switch1:
         if (isChecked) {
@@ -160,49 +164,7 @@ public class MainActivity extends AppCompatActivity
           Sensey.getInstance().stopLightDetection();
         }
         break;
-      case R.id.Switch6:
-        if (isChecked) {
-          Sensey.getInstance().startTouchTypeDetection(new TouchTypeDetector.TouchTypListener() {
-            @Override public void onDoubleTap() {
-              setResultTextView("Double Tap");
-            }
-
-            @Override public void onScroll(boolean scrollingTop) {
-              
-              if (scrollingTop) {
-                setResultTextView("Scrolling Top");
-              } else {
-                setResultTextView("Scrolling Down");
-              }
-            }
-
-            @Override public void onSingleTap() {
-              setResultTextView("Single Tap");
-            }
-
-            @Override public void onSwipeLeft() {
-              setResultTextView("Swipe Left");
-            }
-
-            @Override public void onSwipeRight() {
-              setResultTextView("Swipe Right");
-            }
-
-            @Override public void onLongPress() {
-              setResultTextView("Long press");
-            }
-          });
-        } else {
-          Sensey.getInstance().stopTouchTypeDetection();
-        }
-        break;
     }
-  }
-
-  @Override public boolean dispatchTouchEvent(MotionEvent event) {
-    // Setup onTouchEvent for detecting type of touch gesture
-    Sensey.getInstance().setupDispatchTouchEvent(event);
-    return super.dispatchTouchEvent(event);
   }
 
   @Override protected void onPause() {
@@ -213,7 +175,6 @@ public class MainActivity extends AppCompatActivity
     Sensey.getInstance().stopOrientationDetection();
     Sensey.getInstance().stopProximityDetection();
     Sensey.getInstance().stopLightDetection();
-    Sensey.getInstance().stopTouchTypeDetection();
   }
 
   private void setResultTextView(String text) {
