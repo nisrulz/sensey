@@ -16,11 +16,14 @@
 
 package com.github.nisrulz.senseysample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import com.github.nisrulz.sensey.FlipDetector;
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity
     implements CompoundButton.OnCheckedChangeListener {
 
   private final String LOGTAG = getClass().getSimpleName();
-  private final boolean DEBUG = false;
+  private final boolean DEBUG = true;
 
   private SwitchCompat swt1, swt2, swt3, swt4, swt5;
   private TextView txt_result;
@@ -67,27 +70,23 @@ public class MainActivity extends AppCompatActivity
     swt5 = (SwitchCompat) findViewById(R.id.Switch5);
     swt5.setOnCheckedChangeListener(this);
     swt5.setChecked(false);
-  }
 
-  private void resetResultInView(final TextView txt) {
-    Handler handler = new Handler();
-    handler.postDelayed(new Runnable() {
-      @Override public void run() {
-        txt.setText("..Results show here...");
+    Button btn_touchevent = (Button) findViewById(R.id.btn_touchevent);
+    btn_touchevent.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        startActivity(new Intent(MainActivity.this, TouchActivity.class));
       }
-    }, 2000);
+    });
   }
 
-  @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-    switch (buttonView.getId()) {
+  @Override public void onCheckedChanged(CompoundButton switchbtn, boolean isChecked) {
+    switch (switchbtn.getId()) {
 
       case R.id.Switch1:
         if (isChecked) {
           Sensey.getInstance().startShakeDetection(10, new ShakeDetector.ShakeListener() {
             @Override public void onShakeDetected() {
-              txt_result.setText("Shake Detected!");
-              resetResultInView(txt_result);
-              if (DEBUG) Log.i(LOGTAG, "Shake Detected!");
+              setResultTextView("Shake Detected!");
             }
           });
         } else {
@@ -98,15 +97,11 @@ public class MainActivity extends AppCompatActivity
         if (isChecked) {
           Sensey.getInstance().startFlipDetection(new FlipDetector.FlipListener() {
             @Override public void onFaceUp() {
-              txt_result.setText("FaceUp");
-              resetResultInView(txt_result);
-              if (DEBUG) Log.i(LOGTAG, "FaceUp");
+              setResultTextView("Face UP");
             }
 
             @Override public void onFaceDown() {
-              txt_result.setText("FaceDown");
-              resetResultInView(txt_result);
-              if (DEBUG) Log.i(LOGTAG, "FaceDown");
+              setResultTextView("Face Down");
             }
           });
         } else {
@@ -119,27 +114,19 @@ public class MainActivity extends AppCompatActivity
           Sensey.getInstance()
               .startOrientationDetection(new OrientationDetector.OrientationListener() {
                 @Override public void onTopSideUp() {
-                  txt_result.setText("Top Side Up");
-                  resetResultInView(txt_result);
-                  if (DEBUG) Log.i(LOGTAG, "Top Side Up");
+                  setResultTextView("Top Side Up");
                 }
 
                 @Override public void onBottomSideUp() {
-                  txt_result.setText("Bottom Side Up");
-                  resetResultInView(txt_result);
-                  if (DEBUG) Log.d(LOGTAG, "Bottom Side Up");
+                  setResultTextView("Bottom Side Up!");
                 }
 
                 @Override public void onRightSideUp() {
-                  txt_result.setText("Right Side Up");
-                  resetResultInView(txt_result);
-                  if (DEBUG) Log.i(LOGTAG, "Right Side Up");
+                  setResultTextView("Right Side Up");
                 }
 
                 @Override public void onLeftSideUp() {
-                  txt_result.setText("Left Side Up");
-                  resetResultInView(txt_result);
-                  if (DEBUG) Log.i(LOGTAG, "Left Side Up");
+                  setResultTextView("Left Side Up");
                 }
               });
         } else {
@@ -151,15 +138,11 @@ public class MainActivity extends AppCompatActivity
         if (isChecked) {
           Sensey.getInstance().startProximityDetection(new ProximityDetector.ProximityListener() {
             @Override public void onNear() {
-              txt_result.setText("Near");
-              resetResultInView(txt_result);
-              if (DEBUG) Log.i(LOGTAG, "Near");
+              setResultTextView("Near");
             }
 
             @Override public void onFar() {
-              txt_result.setText("Far");
-              resetResultInView(txt_result);
-              if (DEBUG) Log.i(LOGTAG, "Far");
+              setResultTextView("Far");
             }
           });
         } else {
@@ -170,15 +153,11 @@ public class MainActivity extends AppCompatActivity
         if (isChecked) {
           Sensey.getInstance().startLightDetection(10, new LightDetector.LightListener() {
             @Override public void onDark() {
-              txt_result.setText("Dark");
-              resetResultInView(txt_result);
-              if (DEBUG) Log.i(LOGTAG, "Dark");
+              setResultTextView("Dark Detected!");
             }
 
             @Override public void onLight() {
-              txt_result.setText("Light");
-              resetResultInView(txt_result);
-              if (DEBUG) Log.i(LOGTAG, "Light");
+              setResultTextView("Light Detected!");
             }
           });
         } else {
@@ -196,5 +175,22 @@ public class MainActivity extends AppCompatActivity
     Sensey.getInstance().stopOrientationDetection();
     Sensey.getInstance().stopProximityDetection();
     Sensey.getInstance().stopLightDetection();
+  }
+
+  private void setResultTextView(String text) {
+    if (txt_result != null) {
+      txt_result.setText(text);
+      resetResultInView(txt_result);
+      if (DEBUG) Log.i(LOGTAG, text);
+    }
+  }
+
+  private void resetResultInView(final TextView txt) {
+    Handler handler = new Handler();
+    handler.postDelayed(new Runnable() {
+      @Override public void run() {
+        txt.setText("..Results show here...");
+      }
+    }, 3000);
   }
 }
