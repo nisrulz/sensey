@@ -30,8 +30,7 @@ public class ShakeDetector {
   private final ShakeListener shakeListener;
   private final int threshold;
   final SensorEventListener sensorEventListener = new SensorEventListener() {
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
+    @Override public void onSensorChanged(SensorEvent sensorEvent) {
       float[] mGravity = sensorEvent.values.clone();
       // Shake detection
       float x = mGravity[0];

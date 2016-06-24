@@ -50,7 +50,7 @@ public class Sensey {
     if (sensor != null) {
       shakeDetector = new ShakeDetector(threshold, shakeListener);
       sensorManager.registerListener(shakeDetector.sensorEventListener, sensor,
-              SensorManager.SENSOR_DELAY_NORMAL);
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 
