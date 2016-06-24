@@ -101,8 +101,8 @@ public class OrientationDetector {
   private int calculateOrientation() {
     // finding local orientation dip
     if (((orientation == ORIENTATION_PORTRAIT || orientation == ORIENTATION_PORTRAIT_REVERSE) && (
-            averageRoll > -30
-                    && averageRoll < 30))) {
+        averageRoll > -30
+            && averageRoll < 30))) {
       if (averagePitch > 0) {
         return ORIENTATION_PORTRAIT_REVERSE;
       } else {
