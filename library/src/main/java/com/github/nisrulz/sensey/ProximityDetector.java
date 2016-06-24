@@ -26,12 +26,8 @@ public class ProximityDetector {
   private final ProximityListener proximityListener;
 
   public ProximityDetector(ProximityListener proximityListener) {
-    this(3f, proximityListener);
-  }
-
-  public ProximityDetector(float threshold, ProximityListener proximityListener) {
     this.proximityListener = proximityListener;
-    this.threshold = threshold;
+    this.threshold = (float) 3;
   }
 
   final SensorEventListener sensorEventListener = new SensorEventListener() {
