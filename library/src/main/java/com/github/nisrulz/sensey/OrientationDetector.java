@@ -30,12 +30,11 @@ public class OrientationDetector {
   private final int ORIENTATION_PORTRAIT_REVERSE = ExifInterface.ORIENTATION_ROTATE_270; // 8
   private final int smoothness = 1;
   private final OrientationListener orientationListener;
+  private final float[] pitches;
+  private final float[] rolls;
   private float averagePitch = 0;
   private float averageRoll = 0;
   private int orientation = ORIENTATION_PORTRAIT;
-
-  private final float[] pitches;
-  private final float[] rolls;
   final SensorEventListener sensorEventListener = new SensorEventListener() {
     float[] mGravity;
     float[] mGeomagnetic;

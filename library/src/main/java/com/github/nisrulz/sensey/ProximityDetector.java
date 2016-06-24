@@ -24,12 +24,6 @@ public class ProximityDetector {
 
   private final float threshold;
   private final ProximityListener proximityListener;
-
-  public ProximityDetector(ProximityListener proximityListener) {
-    this.proximityListener = proximityListener;
-    this.threshold = (float) 3;
-  }
-
   final SensorEventListener sensorEventListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent sensorEvent) {
       if (sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY) {
@@ -46,6 +40,11 @@ public class ProximityDetector {
       // do nothing
     }
   };
+
+  public ProximityDetector(ProximityListener proximityListener) {
+    this.proximityListener = proximityListener;
+    this.threshold = (float) 3;
+  }
 
   public interface ProximityListener {
     void onNear();
