@@ -2,28 +2,19 @@ package com.github.nisrulz.sensey;
 
 import android.content.Context;
 import android.view.MotionEvent;
-
 import com.github.nisrulz.sensey.TouchTypeDetector.TouchTypListener;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.shadows.ShadowLooper;
 
-import static android.view.MotionEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_UP;
 import static com.github.nisrulz.sensey.TouchTypeDetector.SCROLL_DIR_DOWN;
 import static com.github.nisrulz.sensey.TouchTypeDetector.SCROLL_DIR_LEFT;
 import static com.github.nisrulz.sensey.TouchTypeDetector.SCROLL_DIR_RIGHT;
 import static com.github.nisrulz.sensey.TouchTypeDetector.SCROLL_DIR_UP;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -127,8 +118,8 @@ public class TouchTypeDetectorTest {
 
     @Test
     public void detectOnScrollRight() {
-        MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 200, 0, 0);
-        MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 50, 0, 0);
+        MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 50, 0, 0);
+        MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 200, 0, 0);
         testTouchTypeDetector.listener.onScroll(ev1, ev2, 0, 0);
         verify(mockListener, only()).onScroll(SCROLL_DIR_RIGHT);
     }
@@ -159,8 +150,8 @@ public class TouchTypeDetectorTest {
 
     @Test
     public void detectOnScrollLeft() {
-        MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 50, 0, 0);
-        MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 200, 0, 0);
+        MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 200, 0, 0);
+        MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 50, 0, 0);
         testTouchTypeDetector.listener.onScroll(ev1, ev2, 0, 0);
         verify(mockListener, only()).onScroll(SCROLL_DIR_LEFT);
     }

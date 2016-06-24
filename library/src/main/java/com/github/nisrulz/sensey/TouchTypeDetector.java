@@ -92,9 +92,9 @@ public class TouchTypeDetector {
         //Scrolling Horizontal
         if (Math.abs(deltaX) > SWIPE_MIN_DISTANCE) {
           if (deltaX > 0) {
-            touchTypListener.onScroll(SCROLL_DIR_LEFT);
-          } else {
             touchTypListener.onScroll(SCROLL_DIR_RIGHT);
+          } else {
+            touchTypListener.onScroll(SCROLL_DIR_LEFT);
           }
         }
       } else {
