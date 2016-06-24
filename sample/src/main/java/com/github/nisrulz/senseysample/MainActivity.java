@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity
         break;
       case R.id.Switch5:
         if (isChecked) {
-          Sensey.getInstance().startLightetection(10, new LightDetector.LightListener() {
+          Sensey.getInstance().startLightDetection(10, new LightDetector.LightListener() {
             @Override public void onDark() {
               setResultTextView("Dark Detected!");
             }
