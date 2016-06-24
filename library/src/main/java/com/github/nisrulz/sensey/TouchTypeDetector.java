@@ -85,8 +85,8 @@ public class TouchTypeDetector {
     public boolean onScroll(MotionEvent startevent, MotionEvent finishevent, float distanceX,
         float distanceY) {
 
-      float deltaX = startevent.getX() - finishevent.getX();
-      float deltaY = startevent.getY() - finishevent.getY();
+      float deltaX = finishevent.getX() - startevent.getX();
+      float deltaY = finishevent.getY() - startevent.getY();
 
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         //Scrolling Horizontal
@@ -100,7 +100,7 @@ public class TouchTypeDetector {
       } else {
         //Scrolling Vertical
         if (Math.abs(deltaY) > SWIPE_MIN_DISTANCE) {
-          if (deltaX > 0) {
+          if (deltaY > 0) {
             touchTypListener.onScroll(SCROLL_DIR_DOWN);
           } else {
             touchTypListener.onScroll(SCROLL_DIR_UP);
