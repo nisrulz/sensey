@@ -59,20 +59,15 @@ public class Sensey {
     if (sensor != null) {
       shakeDetector = new ShakeDetector(shakeListener);
       sensorManager.registerListener(shakeDetector.sensorEventListener, sensor,
-              SensorManager.SENSOR_DELAY_NORMAL);
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 
   public void stopShakeDetection() {
     if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null
-            && shakeDetector != null) {
+        && shakeDetector != null) {
       sensorManager.unregisterListener(shakeDetector.sensorEventListener);
     }
-  }
-
-  @Deprecated
-  public void startLightetection(LightDetector.LightListener lightListener) {
-    startLightDetection(lightListener);
   }
 
   public void startLightDetection(LightDetector.LightListener lightListener) {
@@ -80,13 +75,8 @@ public class Sensey {
     if (sensor != null) {
       lightDetector = new LightDetector(lightListener);
       sensorManager.registerListener(lightDetector.sensorEventListener, sensor,
-              SensorManager.SENSOR_DELAY_NORMAL);
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
-  }
-
-  @Deprecated
-  public void startLightetection(int threshold, LightDetector.LightListener lightListener) {
-    startLightDetection(threshold, lightListener);
   }
 
   public void startLightDetection(int threshold, LightDetector.LightListener lightListener) {
