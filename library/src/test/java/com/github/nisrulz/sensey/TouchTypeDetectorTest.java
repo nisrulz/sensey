@@ -27,10 +27,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-/**
- * @author Michael Spitsin
- * @since 2016-06-23
- */
 @RunWith(RobolectricTestRunner.class)
 public class TouchTypeDetectorTest {
 

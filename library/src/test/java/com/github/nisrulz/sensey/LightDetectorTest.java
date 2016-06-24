@@ -14,10 +14,6 @@ import static com.github.nisrulz.sensey.SensorUtils.testSensorEvent;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 
-/**
- * @author Michael Spitsin
- * @since 2016-06-18
- */
 @RunWith(MockitoJUnitRunner.class)
 public class LightDetectorTest {
 

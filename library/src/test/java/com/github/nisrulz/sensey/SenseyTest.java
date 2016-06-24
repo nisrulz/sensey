@@ -31,10 +31,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
-/**
- * @author Michael Spitsin
- * @since 2016-06-21
- */
 @RunWith(RobolectricTestRunner.class)
 public class SenseyTest {
     private Sensey sensey;

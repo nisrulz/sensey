@@ -10,10 +10,7 @@ import java.lang.reflect.Field;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Michael Spitsin
- * @since 2016-06-18
- */
+
 public class SensorUtils {
 
     public static SensorEvent testAccelerometerEvent(float[] values) {

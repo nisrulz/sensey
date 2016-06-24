@@ -18,10 +18,6 @@ import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-/**
- * @author Michael Spitsin
- * @since 2016-06-19
- */
 @RunWith(RobolectricTestRunner.class)
 public class OrientationDetectorTest {
 

@@ -17,10 +17,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-/**
- * @author Michael Spitsin
- * @since 2016-06-21
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public class ShakeDetectorTest {
 
