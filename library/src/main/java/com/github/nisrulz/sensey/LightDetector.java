@@ -44,7 +44,8 @@ public class LightDetector {
   };
 
   public LightDetector(LightListener lightListener) {
-    this(3f, lightListener);
+    threshold = 3.0f;
+    this.lightListener = lightListener;
   }
 
   public LightDetector(float threshold, LightListener lightListener) {
