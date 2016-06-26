@@ -16,39 +16,15 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-public class ShakeDetector {
+public class ShakeDetector extends SensorDetector {
 
   private final ShakeListener shakeListener;
   private final float threshold;
   private float mAccel;
   private float mAccelCurrent = SensorManager.GRAVITY_EARTH;
-
-  final SensorEventListener sensorEventListener = new SensorEventListener() {
-    @Override public void onSensorChanged(SensorEvent sensorEvent) {
-      // Shake detection
-      float x = sensorEvent.values[0];
-      float y = sensorEvent.values[1];
-      float z = sensorEvent.values[2];
-      float mAccelLast = mAccelCurrent;
-      mAccelCurrent = (float) Math.sqrt(x * x + y * y + z * z);
-      float delta = mAccelCurrent - mAccelLast;
-      mAccel = mAccel * 0.9f + delta;
-      // Make this higher or lower according to how much
-      // motion you want to detect
-      if (mAccel > threshold) {
-        shakeListener.onShakeDetected();
-      }
-    }
-
-    @Override public void onAccuracyChanged(Sensor sensor, int i) {
-      // do nothing
-    }
-  };
 
   public ShakeDetector(ShakeListener shakeListener) {
     this(3f, shakeListener);
@@ -57,6 +33,22 @@ public class ShakeDetector {
   public ShakeDetector(float threshold, ShakeListener shakeListener) {
     this.shakeListener = shakeListener;
     this.threshold = threshold;
+  }
+
+  @Override public void onSensorChanged(SensorEvent sensorEvent) {
+    // Shake detection
+    float x = sensorEvent.values[0];
+    float y = sensorEvent.values[1];
+    float z = sensorEvent.values[2];
+    float mAccelLast = mAccelCurrent;
+    mAccelCurrent = (float) Math.sqrt(x * x + y * y + z * z);
+    float delta = mAccelCurrent - mAccelLast;
+    mAccel = mAccel * 0.9f + delta;
+    // Make this higher or lower according to how much
+    // motion you want to detect
+    if (mAccel > threshold) {
+      shakeListener.onShakeDetected();
+    }
   }
 
   public interface ShakeListener {

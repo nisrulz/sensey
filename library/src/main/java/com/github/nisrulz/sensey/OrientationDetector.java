@@ -22,7 +22,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.ExifInterface;
 
-public class OrientationDetector {
+public class OrientationDetector extends SensorDetector {
 
   private static final int ORIENTATION_PORTRAIT = ExifInterface.ORIENTATION_ROTATE_90; // 6
   private static final int ORIENTATION_LANDSCAPE_REVERSE = ExifInterface.ORIENTATION_ROTATE_180; // 3
@@ -37,48 +37,9 @@ public class OrientationDetector {
   private float averagePitch = 0;
   private float averageRoll = 0;
   private int orientation = ORIENTATION_PORTRAIT;
-  final SensorEventListener sensorEventListener = new SensorEventListener() {
-    float[] mGravity;
-    float[] mGeomagnetic;
 
-    @Override public void onSensorChanged(SensorEvent event) {
-      if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) mGravity = event.values;
-      if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) mGeomagnetic = event.values;
-      if (mGravity != null && mGeomagnetic != null) {
-        float R[] = new float[9];
-        float I[] = new float[9];
-        boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
-        if (success) {
-          float orientationData[] = new float[3];
-          SensorManager.getOrientation(R, orientationData);
-          averagePitch = addValue(orientationData[1], pitches);
-          averageRoll = addValue(orientationData[2], rolls);
-          orientation = calculateOrientation();
-          switch (orientation) {
-            case ORIENTATION_LANDSCAPE:
-              orientationListener.onRightSideUp();
-              break;
-            case ORIENTATION_LANDSCAPE_REVERSE:
-              orientationListener.onLeftSideUp();
-              break;
-            case ORIENTATION_PORTRAIT:
-              orientationListener.onTopSideUp();
-              break;
-            case ORIENTATION_PORTRAIT_REVERSE:
-              orientationListener.onBottomSideUp();
-              break;
-            default:
-              // do nothing
-              break;
-          }
-        }
-      }
-    }
-
-    @Override public void onAccuracyChanged(Sensor sensor, int i) {
-      // do nothing
-    }
-  };
+  float[] mGravity;
+  float[] mGeomagnetic;
 
   public OrientationDetector(OrientationListener orientationListener) {
     this(1, orientationListener);
@@ -90,6 +51,40 @@ public class OrientationDetector {
 
     pitches = new float[smoothness];
     rolls = new float[smoothness];
+  }
+
+  @Override public void onSensorChanged(SensorEvent event) {
+    if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) mGravity = event.values;
+    if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) mGeomagnetic = event.values;
+    if (mGravity != null && mGeomagnetic != null) {
+      float R[] = new float[9];
+      float I[] = new float[9];
+      boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+      if (success) {
+        float orientationData[] = new float[3];
+        SensorManager.getOrientation(R, orientationData);
+        averagePitch = addValue(orientationData[1], pitches);
+        averageRoll = addValue(orientationData[2], rolls);
+        orientation = calculateOrientation();
+        switch (orientation) {
+          case ORIENTATION_LANDSCAPE:
+            orientationListener.onRightSideUp();
+            break;
+          case ORIENTATION_LANDSCAPE_REVERSE:
+            orientationListener.onLeftSideUp();
+            break;
+          case ORIENTATION_PORTRAIT:
+            orientationListener.onTopSideUp();
+            break;
+          case ORIENTATION_PORTRAIT_REVERSE:
+            orientationListener.onBottomSideUp();
+            break;
+          default:
+            // do nothing
+            break;
+        }
+      }
+    }
   }
 
   private float addValue(float value, float[] values) {

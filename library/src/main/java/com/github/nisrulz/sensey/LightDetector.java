@@ -20,28 +20,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
-public class LightDetector {
+public class LightDetector extends SensorDetector {
 
   private final LightListener lightListener;
   private final float threshold;
-  final SensorEventListener sensorEventListener = new SensorEventListener() {
-    @Override public void onSensorChanged(SensorEvent sensorEvent) {
-      if (sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT) {
-        float lux = sensorEvent.values[0];
-        if (lux < threshold) {
-          // Dark
-          lightListener.onDark();
-        } else {
-          // Not Dark
-          lightListener.onLight();
-        }
-      }
-    }
-
-    @Override public void onAccuracyChanged(Sensor sensor, int i) {
-      // do nothing
-    }
-  };
 
   public LightDetector(LightListener lightListener) {
     this(3f, lightListener);
@@ -50,6 +32,19 @@ public class LightDetector {
   public LightDetector(float threshold, LightListener lightListener) {
     this.threshold = threshold;
     this.lightListener = lightListener;
+  }
+
+  @Override public void onSensorChanged(SensorEvent sensorEvent) {
+    if (sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT) {
+      float lux = sensorEvent.values[0];
+      if (lux < threshold) {
+        // Dark
+        lightListener.onDark();
+      } else {
+        // Not Dark
+        lightListener.onLight();
+      }
+    }
   }
 
   public interface LightListener {
