@@ -24,12 +24,14 @@ import android.media.ExifInterface;
 
 public class OrientationDetector {
 
-  private final int ORIENTATION_PORTRAIT = ExifInterface.ORIENTATION_ROTATE_90; // 6
-  private final int ORIENTATION_LANDSCAPE_REVERSE = ExifInterface.ORIENTATION_ROTATE_180; // 3
-  private final int ORIENTATION_LANDSCAPE = ExifInterface.ORIENTATION_NORMAL; // 1
-  private final int ORIENTATION_PORTRAIT_REVERSE = ExifInterface.ORIENTATION_ROTATE_270; // 8
-  private final int smoothness = 1;
+  private static final int ORIENTATION_PORTRAIT = ExifInterface.ORIENTATION_ROTATE_90; // 6
+  private static final int ORIENTATION_LANDSCAPE_REVERSE = ExifInterface.ORIENTATION_ROTATE_180; // 3
+  private static final int ORIENTATION_LANDSCAPE = ExifInterface.ORIENTATION_NORMAL; // 1
+  private static final int ORIENTATION_PORTRAIT_REVERSE = ExifInterface.ORIENTATION_ROTATE_270; // 8
+
+  private final int smoothness;
   private final OrientationListener orientationListener;
+
   private final float[] pitches;
   private final float[] rolls;
   private float averagePitch = 0;
@@ -79,6 +81,11 @@ public class OrientationDetector {
   };
 
   public OrientationDetector(OrientationListener orientationListener) {
+    this(1, orientationListener);
+  }
+
+  public OrientationDetector(int smoothness, OrientationListener orientationListener) {
+    this.smoothness = smoothness;
     this.orientationListener = orientationListener;
 
     pitches = new float[smoothness];
