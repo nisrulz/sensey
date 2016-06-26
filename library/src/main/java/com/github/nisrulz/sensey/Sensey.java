@@ -123,6 +123,20 @@ public class Sensey {
     }
   }
 
+  public void startOrientationDetection(int smoothness,
+      OrientationDetector.OrientationListener orientationListener) {
+
+    Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+    if (accelerometer != null && magnetometer != null) {
+      orientationDetector = new OrientationDetector(smoothness, orientationListener);
+      sensorManager.registerListener(orientationDetector.sensorEventListener, accelerometer,
+          SensorManager.SENSOR_DELAY_NORMAL);
+      sensorManager.registerListener(orientationDetector.sensorEventListener, magnetometer,
+          SensorManager.SENSOR_DELAY_NORMAL);
+    }
+  }
+
   public void stopOrientationDetection() {
     if (sensorManager != null && orientationDetector != null) {
       sensorManager.unregisterListener(orientationDetector.sensorEventListener);
@@ -133,6 +147,15 @@ public class Sensey {
     final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
     if (sensor != null) {
       proximityDetector = new ProximityDetector(proximityListener);
+      sensorManager.registerListener(proximityDetector.sensorEventListener, sensor,
+          SensorManager.SENSOR_DELAY_NORMAL);
+    }
+  }
+
+  public void startProximityDetection(float smoothness, ProximityDetector.ProximityListener proximityListener) {
+    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+    if (sensor != null) {
+      proximityDetector = new ProximityDetector(smoothness, proximityListener);
       sensorManager.registerListener(proximityDetector.sensorEventListener, sensor,
           SensorManager.SENSOR_DELAY_NORMAL);
     }
