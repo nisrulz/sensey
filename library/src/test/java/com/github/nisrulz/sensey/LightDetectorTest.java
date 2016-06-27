@@ -17,43 +17,43 @@ import static org.mockito.Mockito.verify;
   @Mock private LightListener mockListener;
 
   @Test public void detectOnDarkWithLuxLessThanDefaultThreshold() {
-    testDetector().sensorEventListener.onSensorChanged(testLightEvent(new float[] { 1 }));
+    testDetector().onSensorChanged(testLightEvent(new float[] { 1 }));
     verify(mockListener, only()).onDark();
   }
 
   @Test public void detectOnLightWithLuxMoreThanDefaultThreshold() {
-    testDetector().sensorEventListener.onSensorChanged(testLightEvent(new float[] { 10 }));
+    testDetector().onSensorChanged(testLightEvent(new float[] { 10 }));
     verify(mockListener, only()).onLight();
   }
 
   @Test public void detectOnLightWithLuxEqualsToDefaultThreshold() {
-    testDetector().sensorEventListener.onSensorChanged(testLightEvent(new float[] { 3 }));
+    testDetector().onSensorChanged(testLightEvent(new float[] { 3 }));
     verify(mockListener, only()).onLight();
   }
 
   @Test public void detectOnDarkWithLuxLessThanCustomThreshold() {
-    testDetector(9).sensorEventListener.onSensorChanged(testLightEvent(new float[] { 3 }));
+    testDetector(9).onSensorChanged(testLightEvent(new float[] { 3 }));
     verify(mockListener, only()).onDark();
   }
 
   @Test public void detectOnLightWithLuxMoreThanCustomThreshold() {
-    testDetector(9).sensorEventListener.onSensorChanged(testLightEvent(new float[] { 12 }));
+    testDetector(9).onSensorChanged(testLightEvent(new float[] { 12 }));
     verify(mockListener, only()).onLight();
   }
 
   @Test public void detectOnLightWithLuxEqualsToCustomThreshold() {
-    testDetector(9).sensorEventListener.onSensorChanged(testLightEvent(new float[] { 9 }));
+    testDetector(9).onSensorChanged(testLightEvent(new float[] { 9 }));
     verify(mockListener, only()).onLight();
   }
 
   @Test public void detectOnLightWithExtraValues() {
-    testDetector().sensorEventListener.onSensorChanged(
+    testDetector().onSensorChanged(
         testLightEvent(new float[] { 10, 0, 43, 3, -423 }));
     verify(mockListener, only()).onLight();
   }
 
   @Test(expected = ArrayIndexOutOfBoundsException.class) public void exceptionWithEmptyValues() {
-    testDetector().sensorEventListener.onSensorChanged(testLightEvent(new float[] {}));
+    testDetector().onSensorChanged(testLightEvent(new float[] {}));
   }
 
   private LightDetector testDetector() {

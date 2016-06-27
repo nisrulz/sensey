@@ -53,7 +53,7 @@ import static org.mockito.Mockito.mock;
     ShakeDetector detector = getDetector(ShakeDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for shake",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+          shadowSensorManager.hasListener(detector));
     } else {
       fail(
           "There should be shake detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
@@ -67,7 +67,7 @@ import static org.mockito.Mockito.mock;
     ShakeDetector detector = getDetector(ShakeDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for shake",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+          shadowSensorManager.hasListener(detector));
     } else {
       fail(
           "There should be shake detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
@@ -81,10 +81,10 @@ import static org.mockito.Mockito.mock;
     ShakeDetector detector = getDetector(ShakeDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for shake",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+          shadowSensorManager.hasListener(detector));
       sensey.stopShakeDetection();
       assertFalse("There should be no more sensor event listener in sensor manager",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+              shadowSensorManager.hasListener(detector));
     } else {
       fail(
           "There should be shake detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
@@ -98,7 +98,7 @@ import static org.mockito.Mockito.mock;
     LightDetector detector = getDetector(LightDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for light",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+              shadowSensorManager.hasListener(detector));
     } else {
       fail(
           "There should be light detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
@@ -112,7 +112,7 @@ import static org.mockito.Mockito.mock;
     LightDetector detector = getDetector(LightDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for light",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+          shadowSensorManager.hasListener(detector));
     } else {
       fail(
           "There should be light detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
@@ -126,10 +126,10 @@ import static org.mockito.Mockito.mock;
     LightDetector detector = getDetector(LightDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for light",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+          shadowSensorManager.hasListener(detector));
       sensey.stopLightDetection();
       assertFalse("There should be no more sensor event listener in sensor manager",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+              shadowSensorManager.hasListener(detector));
     } else {
       fail(
           "There should be light detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
@@ -143,7 +143,7 @@ import static org.mockito.Mockito.mock;
     FlipDetector detector = getDetector(FlipDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for flip",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+              shadowSensorManager.hasListener(detector));
     } else {
       fail(
           "There should be flip detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
@@ -157,10 +157,10 @@ import static org.mockito.Mockito.mock;
     FlipDetector detector = getDetector(FlipDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for flip",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+          shadowSensorManager.hasListener(detector));
       sensey.stopFlipDetection();
       assertFalse("There should be no more sensor event listener in sensor manager",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+              shadowSensorManager.hasListener(detector));
     } else {
       fail(
           "There should be flip detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
@@ -175,10 +175,25 @@ import static org.mockito.Mockito.mock;
     OrientationDetector detector = getDetector(OrientationDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for orientation",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+              shadowSensorManager.hasListener(detector));
     } else {
       fail(
-          "There should be orientation detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
+              "There should be orientation detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
+    }
+  }
+
+  @Test public void detectListenerWithStartOrientationDetectionWithCustomSmoothness() {
+    addSensor(TYPE_ACCELEROMETER);
+    addSensor(TYPE_MAGNETIC_FIELD);
+    OrientationListener fakeListener = mock(OrientationListener.class);
+    sensey.startOrientationDetection(3, fakeListener);
+    OrientationDetector detector = getDetector(OrientationDetector.class);
+    if (detector != null) {
+      assertTrue("Sensor Manager must contain sensor event listener for orientation",
+              shadowSensorManager.hasListener(detector));
+    } else {
+      fail(
+              "There should be orientation detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
     }
   }
 
@@ -190,10 +205,10 @@ import static org.mockito.Mockito.mock;
     OrientationDetector detector = getDetector(OrientationDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for orientation",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+          shadowSensorManager.hasListener(detector));
       sensey.stopOrientationDetection();
       assertFalse("There should be no more sensor event listener in sensor manager",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+              shadowSensorManager.hasListener(detector));
     } else {
       fail(
           "There should be orientation detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
@@ -207,10 +222,24 @@ import static org.mockito.Mockito.mock;
     ProximityDetector detector = getDetector(ProximityDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for proximity",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+              shadowSensorManager.hasListener(detector));
     } else {
       fail(
-          "There should be proximity detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
+              "There should be proximity detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
+    }
+  }
+
+  @Test public void detectListenerWithStartProximityDetectionWithCustomThreshold() {
+    addSensor(TYPE_PROXIMITY);
+    ProximityListener fakeListener = mock(ProximityListener.class);
+    sensey.startProximityDetection(10f, fakeListener);
+    ProximityDetector detector = getDetector(ProximityDetector.class);
+    if (detector != null) {
+      assertTrue("Sensor Manager must contain sensor event listener for proximity",
+              shadowSensorManager.hasListener(detector));
+    } else {
+      fail(
+              "There should be proximity detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
     }
   }
 
@@ -221,10 +250,10 @@ import static org.mockito.Mockito.mock;
     ProximityDetector detector = getDetector(ProximityDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for proximity",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+          shadowSensorManager.hasListener(detector));
       sensey.stopProximityDetection();
       assertFalse("There should be no more sensor event listener in sensor manager",
-          shadowSensorManager.hasListener(detector.sensorEventListener));
+          shadowSensorManager.hasListener(detector));
     } else {
       fail(
           "There should be proximity detector in sensey. If not, please, check last version of class and update reflection accessing to it field");

@@ -21,6 +21,14 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.view.MotionEvent;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import static android.hardware.Sensor.TYPE_ACCELEROMETER;
+import static android.hardware.Sensor.TYPE_LIGHT;
+import static android.hardware.Sensor.TYPE_MAGNETIC_FIELD;
+import static android.hardware.Sensor.TYPE_PROXIMITY;
+
 public class Sensey {
 
   private SensorManager sensorManager;
@@ -45,103 +53,120 @@ public class Sensey {
     this.context = context;
   }
 
-  public void startShakeDetection(int threshold, ShakeDetector.ShakeListener shakeListener) {
-    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-    if (sensor != null) {
-      shakeDetector = new ShakeDetector(threshold, shakeListener);
-      sensorManager.registerListener(shakeDetector.sensorEventListener, sensor,
-          SensorManager.SENSOR_DELAY_NORMAL);
-    }
+  public void startShakeDetection(ShakeDetector.ShakeListener shakeListener) {
+    startShakeDetection(new ShakeDetector(shakeListener));
   }
 
-  public void startShakeDetection(ShakeDetector.ShakeListener shakeListener) {
-    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-    if (sensor != null) {
-      shakeDetector = new ShakeDetector(shakeListener);
-      sensorManager.registerListener(shakeDetector.sensorEventListener, sensor,
-          SensorManager.SENSOR_DELAY_NORMAL);
-    }
+  public void startShakeDetection(int threshold, ShakeDetector.ShakeListener shakeListener) {
+    startShakeDetection(new ShakeDetector(threshold, shakeListener));
+  }
+
+  private void startShakeDetection(ShakeDetector detector) {
+    shakeDetector = detector;
+    startSensorDetection(detector, TYPE_ACCELEROMETER);
   }
 
   public void stopShakeDetection() {
-    if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null
-        && shakeDetector != null) {
-      sensorManager.unregisterListener(shakeDetector.sensorEventListener);
-    }
+    stopSensorDetection(shakeDetector);
   }
 
   public void startLightDetection(LightDetector.LightListener lightListener) {
-    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-    if (sensor != null) {
-      lightDetector = new LightDetector(lightListener);
-      sensorManager.registerListener(lightDetector.sensorEventListener, sensor,
-          SensorManager.SENSOR_DELAY_NORMAL);
-    }
+    startLightDetection(new LightDetector(lightListener));
   }
 
   public void startLightDetection(int threshold, LightDetector.LightListener lightListener) {
-    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-    if (sensor != null) {
-      lightDetector = new LightDetector(threshold, lightListener);
-      sensorManager.registerListener(lightDetector.sensorEventListener, sensor,
-          SensorManager.SENSOR_DELAY_NORMAL);
-    }
+    startLightDetection(new LightDetector(threshold, lightListener));
+  }
+
+  private void startLightDetection(LightDetector detector) {
+    lightDetector = detector;
+    startSensorDetection(detector, TYPE_LIGHT);
   }
 
   public void stopLightDetection() {
-    if (sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT) != null && lightDetector != null) {
-      sensorManager.unregisterListener(lightDetector.sensorEventListener);
-    }
+    stopSensorDetection(lightDetector);
   }
 
   public void startFlipDetection(FlipDetector.FlipListener flipListener) {
-    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-    if (sensor != null) {
-      flipDetector = new FlipDetector(flipListener);
-      sensorManager.registerListener(flipDetector.sensorEventListener, sensor,
-          SensorManager.SENSOR_DELAY_NORMAL);
-    }
+    flipDetector = new FlipDetector(flipListener);
+    startSensorDetection(flipDetector, TYPE_ACCELEROMETER);
   }
 
   public void stopFlipDetection() {
-    if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null && flipDetector != null) {
-      sensorManager.unregisterListener(flipDetector.sensorEventListener);
-    }
+    stopSensorDetection(flipDetector);
   }
 
   public void startOrientationDetection(
       OrientationDetector.OrientationListener orientationListener) {
+    startOrientationDetection(new OrientationDetector(orientationListener));
+  }
 
-    Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-    Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-    if (accelerometer != null && magnetometer != null) {
-      orientationDetector = new OrientationDetector(orientationListener);
-      sensorManager.registerListener(orientationDetector.sensorEventListener, accelerometer,
-          SensorManager.SENSOR_DELAY_NORMAL);
-      sensorManager.registerListener(orientationDetector.sensorEventListener, magnetometer,
-          SensorManager.SENSOR_DELAY_NORMAL);
-    }
+  public void startOrientationDetection(int smoothness,
+      OrientationDetector.OrientationListener orientationListener) {
+    startOrientationDetection(new OrientationDetector(smoothness, orientationListener));
+  }
+
+  private void startOrientationDetection(OrientationDetector detector) {
+    orientationDetector = detector;
+    startSensorDetection(detector, TYPE_ACCELEROMETER, TYPE_MAGNETIC_FIELD);
   }
 
   public void stopOrientationDetection() {
-    if (sensorManager != null && orientationDetector != null) {
-      sensorManager.unregisterListener(orientationDetector.sensorEventListener);
-    }
+    stopSensorDetection(orientationDetector);
   }
 
   public void startProximityDetection(ProximityDetector.ProximityListener proximityListener) {
-    final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-    if (sensor != null) {
-      proximityDetector = new ProximityDetector(proximityListener);
-      sensorManager.registerListener(proximityDetector.sensorEventListener, sensor,
-          SensorManager.SENSOR_DELAY_NORMAL);
-    }
+    startProximityDetection(new ProximityDetector(proximityListener));
+  }
+
+  public void startProximityDetection(float threshold, ProximityDetector.ProximityListener proximityListener) {
+    startProximityDetection(new ProximityDetector(threshold, proximityListener));
+  }
+
+  private void startProximityDetection(ProximityDetector detector) {
+    proximityDetector = detector;
+    startSensorDetection(detector, TYPE_PROXIMITY);
   }
 
   public void stopProximityDetection() {
-    if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null
-        && proximityDetector != null) {
-      sensorManager.unregisterListener(proximityDetector.sensorEventListener);
+    stopSensorDetection(proximityDetector);
+  }
+
+  public void startSensorDetection(SensorDetector detector, int... sensorTypes) {
+    final Iterable<Sensor> sensors = convertTypesToSensors(sensorTypes);
+    if (areAllSensorsValid(sensors)) {
+      registerDetectorForAllSensors(detector, sensors);
+    }
+  }
+
+  public void stopSensorDetection(SensorDetector detector) {
+    if (detector != null) {
+      sensorManager.unregisterListener(detector);
+    }
+  }
+
+  private Iterable<Sensor> convertTypesToSensors(int... sensorTypes) {
+    Collection<Sensor> sensors = new ArrayList<>();
+    for (int sensorType : sensorTypes) {
+      sensors.add(sensorManager.getDefaultSensor(sensorType));
+    }
+    return sensors;
+  }
+
+  private boolean areAllSensorsValid(Iterable<Sensor> sensors) {
+    for (Sensor sensor : sensors) {
+      if (sensor == null) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private void registerDetectorForAllSensors(SensorDetector detector, Iterable<Sensor> sensors) {
+    for (Sensor sensor: sensors) {
+      sensorManager.registerListener(detector, sensor,
+          SensorManager.SENSOR_DELAY_NORMAL);
     }
   }
 

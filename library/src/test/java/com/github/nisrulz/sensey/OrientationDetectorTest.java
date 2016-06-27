@@ -15,6 +15,7 @@ import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+//TODO add tests for smoothness > 1
 @RunWith(RobolectricTestRunner.class) public class OrientationDetectorTest {
 
   private OrientationListener mockListener;
@@ -26,45 +27,45 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
   }
 
   @Test public void detectNothingForOnlyMagneticEvent() {
-    testOrientationDetector.sensorEventListener.onSensorChanged(
+    testOrientationDetector.onSensorChanged(
         testMagneticEvent(new float[] { 1, 2, 3 }));
     verifyNoMoreInteractions(mockListener);
   }
 
   @Test public void detectNothingForOnlyAccelerometerEvent() {
-    testOrientationDetector.sensorEventListener.onSensorChanged(
+    testOrientationDetector.onSensorChanged(
         testAccelerometerEvent(new float[] { 1, 2, 3 }));
     verifyNoMoreInteractions(mockListener);
   }
 
   @Test public void detectTopSideUp() {
-    testOrientationDetector.sensorEventListener.onSensorChanged(
+    testOrientationDetector.onSensorChanged(
         testAccelerometerEvent(new float[] { 9.81f, 9.81f, 9.81f }));
-    testOrientationDetector.sensorEventListener.onSensorChanged(
+    testOrientationDetector.onSensorChanged(
         testMagneticEvent(new float[] { 0, 0, 1 }));
     verify(mockListener, only()).onTopSideUp();
   }
 
   @Test public void detectBottomSideUp() {
-    testOrientationDetector.sensorEventListener.onSensorChanged(
+    testOrientationDetector.onSensorChanged(
         testAccelerometerEvent(new float[] { -9.81f, -9.81f, -9.81f }));
-    testOrientationDetector.sensorEventListener.onSensorChanged(
+    testOrientationDetector.onSensorChanged(
         testMagneticEvent(new float[] { 0, 0, 1 }));
     verify(mockListener, only()).onBottomSideUp();
   }
 
   @Test public void detectRightSideUp() {
-    testOrientationDetector.sensorEventListener.onSensorChanged(
+    testOrientationDetector.onSensorChanged(
         testAccelerometerEvent(new float[] { 9.81f, 0, 9.81f }));
-    testOrientationDetector.sensorEventListener.onSensorChanged(
+    testOrientationDetector.onSensorChanged(
         testMagneticEvent(new float[] { 0, 0, 1 }));
     verify(mockListener, only()).onRightSideUp();
   }
 
   @Test public void detectLeftSideUp() {
-    testOrientationDetector.sensorEventListener.onSensorChanged(
+    testOrientationDetector.onSensorChanged(
         testAccelerometerEvent(new float[] { -9.81f, 0, -9.81f }));
-    testOrientationDetector.sensorEventListener.onSensorChanged(
+    testOrientationDetector.onSensorChanged(
         testMagneticEvent(new float[] { 0, 0, 1 }));
     verify(mockListener, only()).onLeftSideUp();
   }
