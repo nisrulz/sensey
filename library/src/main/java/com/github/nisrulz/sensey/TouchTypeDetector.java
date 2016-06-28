@@ -27,6 +27,12 @@ public class TouchTypeDetector {
   public static final int SCROLL_DIR_RIGHT = 2;
   public static final int SCROLL_DIR_DOWN = 3;
   public static final int SCROLL_DIR_LEFT = 4;
+
+  public static final int SWIPE_DIR_UP = 5;
+  public static final int SWIPE_DIR_RIGHT = 6;
+  public static final int SWIPE_DIR_DOWN = 7;
+  public static final int SWIPE_DIR_LEFT = 8;
+
   final GestureListener gestureListener;
   //gesture detector
   private GestureDetectorCompat gDetect;
@@ -45,13 +51,11 @@ public class TouchTypeDetector {
   public interface TouchTypListener {
     void onDoubleTap();
 
-    void onScroll(int scroll_dir);
+    void onScroll(int scrollDirection);
 
     void onSingleTap();
 
-    void onSwipeLeft();
-
-    void onSwipeRight();
+    void onSwipe(int swipeDirection);
 
     void onLongPress();
   }
@@ -79,17 +83,29 @@ public class TouchTypeDetector {
     public boolean onFling(MotionEvent startevent, MotionEvent finishevent, float velocityX,
         float velocityY) {
 
-      final float deltaX = startevent.getX() - finishevent.getX();
-      final float deltaY = startevent.getY() - finishevent.getY();
+      final float deltaX = finishevent.getX() - startevent.getX();
+      final float deltaY = finishevent.getY() - startevent.getY();
 
-      if (Math.abs(deltaY) > SWIPE_MAX_OFF_PATH) return false;
-      // right to left swipe
-      if (deltaX > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-        touchTypListener.onSwipeLeft();
-      } else if (finishevent.getX() - startevent.getX() > SWIPE_MIN_DISTANCE
-          && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-        touchTypListener.onSwipeRight();
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (Math.abs(deltaX) > SWIPE_MIN_DISTANCE
+            && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+          if (deltaX > 0) {
+            touchTypListener.onSwipe(SWIPE_DIR_RIGHT);
+          } else {
+            touchTypListener.onSwipe(SWIPE_DIR_LEFT);
+          }
+        }
+      } else {
+        if (Math.abs(deltaY) > SWIPE_MIN_DISTANCE
+            && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+          if (deltaY > 0) {
+            touchTypListener.onSwipe(SWIPE_DIR_DOWN);
+          } else {
+            touchTypListener.onSwipe(SWIPE_DIR_UP);
+          }
+        }
       }
+
       return false;
     }
 

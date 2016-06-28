@@ -66,8 +66,8 @@ public class TouchActivity extends AppCompatActivity
               setResultTextView("Double Tap");
             }
 
-            @Override public void onScroll(int scroll_dir) {
-              switch (scroll_dir) {
+            @Override public void onScroll(int scrollDirection) {
+              switch (scrollDirection) {
                 case TouchTypeDetector.SCROLL_DIR_UP:
                   setResultTextView("Scrolling Up");
                   break;
@@ -87,12 +87,21 @@ public class TouchActivity extends AppCompatActivity
               setResultTextView("Single Tap");
             }
 
-            @Override public void onSwipeLeft() {
-              setResultTextView("Swipe Left");
-            }
-
-            @Override public void onSwipeRight() {
-              setResultTextView("Swipe Right");
+            @Override public void onSwipe(int swipeDirection) {
+              switch (swipeDirection) {
+                case TouchTypeDetector.SWIPE_DIR_UP:
+                  setResultTextView("Swipe Up");
+                  break;
+                case TouchTypeDetector.SWIPE_DIR_DOWN:
+                  setResultTextView("Swipe Down");
+                  break;
+                case TouchTypeDetector.SWIPE_DIR_LEFT:
+                  setResultTextView("Swipe Left");
+                  break;
+                case TouchTypeDetector.SWIPE_DIR_RIGHT:
+                  setResultTextView("Swipe Right");
+                  break;
+              }
             }
 
             @Override public void onLongPress() {
