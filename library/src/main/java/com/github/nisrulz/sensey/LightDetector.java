@@ -18,7 +18,6 @@ package com.github.nisrulz.sensey;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 
 public class LightDetector extends SensorDetector {
 

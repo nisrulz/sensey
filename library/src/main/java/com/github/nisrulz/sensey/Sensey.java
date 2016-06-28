@@ -44,10 +44,6 @@ public class Sensey {
   private Sensey() {
   }
 
-  private static class LazyHolder {
-    private static final Sensey INSTANCE = new Sensey();
-  }
-
   public static Sensey getInstance() {
     return LazyHolder.INSTANCE;
   }
@@ -202,5 +198,9 @@ public class Sensey {
     if (pinchScaleDetector != null) {
       pinchScaleDetector.onTouchEvent(event);
     }
+  }
+
+  private static class LazyHolder {
+    private static final Sensey INSTANCE = new Sensey();
   }
 }

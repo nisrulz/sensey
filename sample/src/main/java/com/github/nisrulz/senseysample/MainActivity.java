@@ -36,11 +36,15 @@ import com.github.nisrulz.sensey.ShakeDetector;
 public class MainActivity extends AppCompatActivity
     implements CompoundButton.OnCheckedChangeListener {
 
-  private final String LOGTAG = getClass().getSimpleName();
-  private final boolean DEBUG = true;
+  private static final String LOGTAG = "MainActivity";
+  private static final boolean DEBUG = true;
 
-  private SwitchCompat swt1, swt2, swt3, swt4, swt5;
-  private TextView txt_result;
+  private SwitchCompat swt1;
+  private SwitchCompat swt2;
+  private SwitchCompat swt3;
+  private SwitchCompat swt4;
+  private SwitchCompat swt5;
+  private TextView txtResult;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     // Init Sensey
     Sensey.getInstance().init(MainActivity.this);
 
-    txt_result = (TextView) findViewById(R.id.textView_result);
+    txtResult = (TextView) findViewById(R.id.textView_result);
 
     swt1 = (SwitchCompat) findViewById(R.id.Switch1);
     swt1.setOnCheckedChangeListener(this);
@@ -71,8 +75,8 @@ public class MainActivity extends AppCompatActivity
     swt5.setOnCheckedChangeListener(this);
     swt5.setChecked(false);
 
-    Button btn_touchevent = (Button) findViewById(R.id.btn_touchevent);
-    btn_touchevent.setOnClickListener(new View.OnClickListener() {
+    Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
+    btnTouchEvent.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         startActivity(new Intent(MainActivity.this, TouchActivity.class));
       }
@@ -164,6 +168,10 @@ public class MainActivity extends AppCompatActivity
           Sensey.getInstance().stopLightDetection();
         }
         break;
+
+      default:
+        // Do nothing
+        break;
     }
   }
 
@@ -178,9 +186,9 @@ public class MainActivity extends AppCompatActivity
   }
 
   private void setResultTextView(String text) {
-    if (txt_result != null) {
-      txt_result.setText(text);
-      resetResultInView(txt_result);
+    if (txtResult != null) {
+      txtResult.setText(text);
+      resetResultInView(txtResult);
       if (DEBUG) Log.i(LOGTAG, text);
     }
   }

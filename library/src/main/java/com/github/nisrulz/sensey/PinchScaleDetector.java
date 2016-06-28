@@ -6,13 +6,11 @@ import android.view.ScaleGestureDetector;
 
 public class PinchScaleDetector {
 
-  private ScaleGestureDetector scaleGestureDetector;
-  private ScaleGestureListener scaleGestureListener;
-  private PinchScaleListener pinchScaleListener;
+  private final ScaleGestureDetector scaleGestureDetector;
+  private final PinchScaleListener pinchScaleListener;
 
   public PinchScaleDetector(Context context, PinchScaleListener pinchScaleListener) {
-    scaleGestureListener = new ScaleGestureListener();
-    scaleGestureDetector = new ScaleGestureDetector(context, scaleGestureListener);
+    scaleGestureDetector = new ScaleGestureDetector(context, new ScaleGestureListener());
     this.pinchScaleListener = pinchScaleListener;
   }
 
@@ -21,7 +19,7 @@ public class PinchScaleDetector {
   }
 
   public interface PinchScaleListener {
-    void onScale(ScaleGestureDetector scaleGestureDetector, boolean isZoominOut);
+    void onScale(ScaleGestureDetector scaleGestureDetector, boolean isScalingOut);
 
     void onScaleStart(ScaleGestureDetector scaleGestureDetector);
 

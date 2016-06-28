@@ -32,11 +32,12 @@ import com.github.nisrulz.sensey.TouchTypeDetector;
 public class TouchActivity extends AppCompatActivity
     implements CompoundButton.OnCheckedChangeListener {
 
-  private final String LOGTAG = getClass().getSimpleName();
-  private final boolean DEBUG = true;
+  private static final String LOGTAG = "TouchActivity";
+  private static final boolean DEBUG = true;
 
-  private SwitchCompat swt6, swt7;
-  private TextView txt_result;
+  private SwitchCompat swt6;
+  private SwitchCompat swt7;
+  private TextView txtResult;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -45,7 +46,7 @@ public class TouchActivity extends AppCompatActivity
     // Init Sensey
     Sensey.getInstance().init(TouchActivity.this);
 
-    txt_result = (TextView) findViewById(R.id.textView_result);
+    txtResult = (TextView) findViewById(R.id.textView_result);
 
     swt6 = (SwitchCompat) findViewById(R.id.Switch6);
     swt6.setOnCheckedChangeListener(this);
@@ -58,88 +59,24 @@ public class TouchActivity extends AppCompatActivity
 
   @Override public void onCheckedChanged(final CompoundButton switchbtn, boolean isChecked) {
     switch (switchbtn.getId()) {
-
       case R.id.Switch6:
         if (isChecked) {
-          Sensey.getInstance().startTouchTypeDetection(new TouchTypeDetector.TouchTypListener() {
-            @Override public void onDoubleTap() {
-              setResultTextView("Double Tap");
-            }
-
-            @Override public void onScroll(int scrollDirection) {
-              switch (scrollDirection) {
-                case TouchTypeDetector.SCROLL_DIR_UP:
-                  setResultTextView("Scrolling Up");
-                  break;
-                case TouchTypeDetector.SCROLL_DIR_DOWN:
-                  setResultTextView("Scrolling Down");
-                  break;
-                case TouchTypeDetector.SCROLL_DIR_LEFT:
-                  setResultTextView("Scrolling Left");
-                  break;
-                case TouchTypeDetector.SCROLL_DIR_RIGHT:
-                  setResultTextView("Scrolling Right");
-                  break;
-              }
-            }
-
-            @Override public void onSingleTap() {
-              setResultTextView("Single Tap");
-            }
-
-            @Override public void onSwipe(int swipeDirection) {
-              switch (swipeDirection) {
-                case TouchTypeDetector.SWIPE_DIR_UP:
-                  setResultTextView("Swipe Up");
-                  break;
-                case TouchTypeDetector.SWIPE_DIR_DOWN:
-                  setResultTextView("Swipe Down");
-                  break;
-                case TouchTypeDetector.SWIPE_DIR_LEFT:
-                  setResultTextView("Swipe Left");
-                  break;
-                case TouchTypeDetector.SWIPE_DIR_RIGHT:
-                  setResultTextView("Swipe Right");
-                  break;
-              }
-            }
-
-            @Override public void onLongPress() {
-              setResultTextView("Long press");
-            }
-          });
+          startTouchTypeDetection();
         } else {
           Sensey.getInstance().stopTouchTypeDetection();
         }
         break;
-
-      case R.id.Switch7: {
+      case R.id.Switch7:
         if (isChecked) {
-
-          Sensey.getInstance()
-              .startPinchScaleDetection(new PinchScaleDetector.PinchScaleListener() {
-                @Override public void onScale(ScaleGestureDetector scaleGestureDetector,
-                    boolean isZoomingOut) {
-                  if (isZoomingOut) {
-                    setResultTextView("Scaling Out");
-                  } else {
-                    setResultTextView("Scaling In");
-                  }
-                }
-
-                @Override public void onScaleStart(ScaleGestureDetector scaleGestureDetector) {
-                  setResultTextView("Scaling : Started");
-                }
-
-                @Override public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
-                  setResultTextView("Scaling : Stopped");
-                }
-              });
+          startPinchDetection();
         } else {
           Sensey.getInstance().stopPinchScaleDetection();
         }
         break;
-      }
+
+      default:
+        // Do nothing
+        break;
     }
   }
 
@@ -157,10 +94,12 @@ public class TouchActivity extends AppCompatActivity
   }
 
   private void setResultTextView(String text) {
-    if (txt_result != null) {
-      txt_result.setText(text);
-      resetResultInView(txt_result);
-      if (DEBUG) Log.i(LOGTAG, text);
+    if (txtResult != null) {
+      txtResult.setText(text);
+      resetResultInView(txtResult);
+      if (DEBUG) {
+        Log.i(LOGTAG, text);
+      }
     }
   }
 
@@ -171,5 +110,82 @@ public class TouchActivity extends AppCompatActivity
         txt.setText("..Results show here...");
       }
     }, 3000);
+  }
+
+  private void startPinchDetection() {
+    Sensey.getInstance().startPinchScaleDetection(new PinchScaleDetector.PinchScaleListener() {
+      @Override
+      public void onScale(ScaleGestureDetector scaleGestureDetector, boolean isScalingOut) {
+        if (isScalingOut) {
+          setResultTextView("Scaling Out");
+        } else {
+          setResultTextView("Scaling In");
+        }
+      }
+
+      @Override public void onScaleStart(ScaleGestureDetector scaleGestureDetector) {
+        setResultTextView("Scaling : Started");
+      }
+
+      @Override public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+        setResultTextView("Scaling : Stopped");
+      }
+    });
+  }
+
+  private void startTouchTypeDetection() {
+    Sensey.getInstance().startTouchTypeDetection(new TouchTypeDetector.TouchTypListener() {
+      @Override public void onDoubleTap() {
+        setResultTextView("Double Tap");
+      }
+
+      @Override public void onScroll(int scrollDirection) {
+        switch (scrollDirection) {
+          case TouchTypeDetector.SCROLL_DIR_UP:
+            setResultTextView("Scrolling Up");
+            break;
+          case TouchTypeDetector.SCROLL_DIR_DOWN:
+            setResultTextView("Scrolling Down");
+            break;
+          case TouchTypeDetector.SCROLL_DIR_LEFT:
+            setResultTextView("Scrolling Left");
+            break;
+          case TouchTypeDetector.SCROLL_DIR_RIGHT:
+            setResultTextView("Scrolling Right");
+            break;
+          default:
+            // Do nothing
+            break;
+        }
+      }
+
+      @Override public void onSingleTap() {
+        setResultTextView("Single Tap");
+      }
+
+      @Override public void onSwipe(int swipeDirection) {
+        switch (swipeDirection) {
+          case TouchTypeDetector.SWIPE_DIR_UP:
+            setResultTextView("Swipe Up");
+            break;
+          case TouchTypeDetector.SWIPE_DIR_DOWN:
+            setResultTextView("Swipe Down");
+            break;
+          case TouchTypeDetector.SWIPE_DIR_LEFT:
+            setResultTextView("Swipe Left");
+            break;
+          case TouchTypeDetector.SWIPE_DIR_RIGHT:
+            setResultTextView("Swipe Right");
+            break;
+          default:
+            //do nothing
+            break;
+        }
+      }
+
+      @Override public void onLongPress() {
+        setResultTextView("Long press");
+      }
+    });
   }
 }

@@ -33,14 +33,12 @@ public class TouchTypeDetector {
   public static final int SWIPE_DIR_DOWN = 7;
   public static final int SWIPE_DIR_LEFT = 8;
 
-  final GestureListener gestureListener;
   //gesture detector
-  private GestureDetectorCompat gDetect;
-  private TouchTypListener touchTypListener;
+  private final GestureDetectorCompat gDetect;
+  private final TouchTypListener touchTypListener;
 
   public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
-    gestureListener = new GestureListener();
-    gDetect = new GestureDetectorCompat(context, gestureListener);
+    gDetect = new GestureDetectorCompat(context, new GestureListener());
     this.touchTypListener = touchTypListener;
   }
 
@@ -62,7 +60,6 @@ public class TouchTypeDetector {
 
   class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private static final int SWIPE_MIN_DISTANCE = 120;
-    private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
     @Override public boolean onDoubleTap(MotionEvent e) {
