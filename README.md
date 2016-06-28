@@ -20,6 +20,15 @@ The library is built for simplicity and ease of use. It eliminates most boilerpl
 Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/nisrulz/sensey/releases).
 
 # Usage Docs/Wiki
+Available sensor based gesture detectors
+ 1. Flip
+ 1. Light
+ 1. Orientation
+ 1. PinchScale
+ 1. Proximity
+ 1. Shake
+ 1. TouchType
+
 For more detailed usage, check the [Wiki](https://github.com/nisrulz/sensey/wiki)
 
 # Including in your project
