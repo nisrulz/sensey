@@ -22,8 +22,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import com.github.nisrulz.sensey.PinchScaleDetector;
 import com.github.nisrulz.sensey.Sensey;
 import com.github.nisrulz.sensey.TouchTypeDetector;
 
@@ -33,7 +35,7 @@ public class TouchActivity extends AppCompatActivity
   private final String LOGTAG = getClass().getSimpleName();
   private final boolean DEBUG = true;
 
-  private SwitchCompat swt6;
+  private SwitchCompat swt6, swt7;
   private TextView txt_result;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,10 @@ public class TouchActivity extends AppCompatActivity
     swt6 = (SwitchCompat) findViewById(R.id.Switch6);
     swt6.setOnCheckedChangeListener(this);
     swt6.setChecked(false);
+
+    swt7 = (SwitchCompat) findViewById(R.id.Switch7);
+    swt7.setOnCheckedChangeListener(this);
+    swt7.setChecked(false);
   }
 
   @Override public void onCheckedChanged(final CompoundButton switchbtn, boolean isChecked) {
@@ -97,6 +103,34 @@ public class TouchActivity extends AppCompatActivity
           Sensey.getInstance().stopTouchTypeDetection();
         }
         break;
+
+      case R.id.Switch7: {
+        if (isChecked) {
+
+          Sensey.getInstance()
+              .startPinchScaleDetection(new PinchScaleDetector.PinchScaleListener() {
+                @Override public void onScale(ScaleGestureDetector scaleGestureDetector,
+                    boolean isZoomingOut) {
+                  if (isZoomingOut) {
+                    setResultTextView("Scaling Out");
+                  } else {
+                    setResultTextView("Scaling In");
+                  }
+                }
+
+                @Override public void onScaleStart(ScaleGestureDetector scaleGestureDetector) {
+                  setResultTextView("Scaling : Started");
+                }
+
+                @Override public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+                  setResultTextView("Scaling : Stopped");
+                }
+              });
+        } else {
+          Sensey.getInstance().stopPinchScaleDetection();
+        }
+        break;
+      }
     }
   }
 
@@ -110,6 +144,7 @@ public class TouchActivity extends AppCompatActivity
     super.onPause();
 
     Sensey.getInstance().stopTouchTypeDetection();
+    Sensey.getInstance().stopPinchScaleDetection();
   }
 
   private void setResultTextView(String text) {

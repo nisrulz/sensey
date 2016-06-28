@@ -20,7 +20,6 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.view.MotionEvent;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -39,9 +38,14 @@ public class Sensey {
   private ProximityDetector proximityDetector;
   private LightDetector lightDetector;
   private TouchTypeDetector touchTypeDetector;
+  private PinchScaleDetector pinchScaleDetector;
   private Context context;
 
   private Sensey() {
+  }
+
+  private static class LazyHolder {
+    private static final Sensey INSTANCE = new Sensey();
   }
 
   public static Sensey getInstance() {
@@ -119,7 +123,8 @@ public class Sensey {
     startProximityDetection(new ProximityDetector(proximityListener));
   }
 
-  public void startProximityDetection(float threshold, ProximityDetector.ProximityListener proximityListener) {
+  public void startProximityDetection(float threshold,
+      ProximityDetector.ProximityListener proximityListener) {
     startProximityDetection(new ProximityDetector(threshold, proximityListener));
   }
 
@@ -164,10 +169,19 @@ public class Sensey {
   }
 
   private void registerDetectorForAllSensors(SensorDetector detector, Iterable<Sensor> sensors) {
-    for (Sensor sensor: sensors) {
-      sensorManager.registerListener(detector, sensor,
-          SensorManager.SENSOR_DELAY_NORMAL);
+    for (Sensor sensor : sensors) {
+      sensorManager.registerListener(detector, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
+  }
+
+  public void startPinchScaleDetection(PinchScaleDetector.PinchScaleListener pinchScaleListener) {
+    if (pinchScaleListener != null) {
+      pinchScaleDetector = new PinchScaleDetector(context, pinchScaleListener);
+    }
+  }
+
+  public void stopPinchScaleDetection() {
+    pinchScaleDetector = null;
   }
 
   public void startTouchTypeDetection(TouchTypeDetector.TouchTypListener touchTypListener) {
@@ -176,17 +190,17 @@ public class Sensey {
     }
   }
 
-  public void setupDispatchTouchEvent(MotionEvent event) {
-    if (touchTypeDetector != null) {
-      touchTypeDetector.onTouchEvent(event);
-    }
-  }
-
   public void stopTouchTypeDetection() {
     touchTypeDetector = null;
   }
 
-  private static class LazyHolder {
-    private static final Sensey INSTANCE = new Sensey();
+  public void setupDispatchTouchEvent(MotionEvent event) {
+    if (touchTypeDetector != null) {
+      touchTypeDetector.onTouchEvent(event);
+    }
+
+    if (pinchScaleDetector != null) {
+      pinchScaleDetector.onTouchEvent(event);
+    }
   }
 }

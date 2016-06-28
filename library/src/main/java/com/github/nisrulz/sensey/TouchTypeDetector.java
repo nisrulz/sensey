@@ -27,19 +27,19 @@ public class TouchTypeDetector {
   public static final int SCROLL_DIR_RIGHT = 2;
   public static final int SCROLL_DIR_DOWN = 3;
   public static final int SCROLL_DIR_LEFT = 4;
-  final GestureListener listener = new GestureListener();
+  final GestureListener gestureListener;
   //gesture detector
   private GestureDetectorCompat gDetect;
   private TouchTypListener touchTypListener;
 
   public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
-    gDetect = new GestureDetectorCompat(context, listener);
-    gDetect.setOnDoubleTapListener(listener);
+    gestureListener = new GestureListener();
+    gDetect = new GestureDetectorCompat(context, gestureListener);
     this.touchTypListener = touchTypListener;
   }
 
-  void onTouchEvent(MotionEvent event) {
-    gDetect.onTouchEvent(event);
+  boolean onTouchEvent(MotionEvent event) {
+    return gDetect.onTouchEvent(event);
   }
 
   public interface TouchTypListener {
