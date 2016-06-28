@@ -20,6 +20,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
+/**
+ * The type Sensor detector.
+ */
 public abstract class SensorDetector implements SensorEventListener {
   @Override public void onSensorChanged(SensorEvent sensorEvent) {
   }

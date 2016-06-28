@@ -19,6 +19,9 @@ package com.github.nisrulz.sensey;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 
+/**
+ * The type Shake detector.
+ */
 public class ShakeDetector extends SensorDetector {
 
   private final ShakeListener shakeListener;
@@ -26,10 +29,21 @@ public class ShakeDetector extends SensorDetector {
   private float mAccel;
   private float mAccelCurrent = SensorManager.GRAVITY_EARTH;
 
+  /**
+   * Instantiates a new Shake detector.
+   *
+   * @param shakeListener the shake listener
+   */
   public ShakeDetector(ShakeListener shakeListener) {
     this(3f, shakeListener);
   }
 
+  /**
+   * Instantiates a new Shake detector.
+   *
+   * @param threshold the threshold
+   * @param shakeListener the shake listener
+   */
   public ShakeDetector(float threshold, ShakeListener shakeListener) {
     this.shakeListener = shakeListener;
     this.threshold = threshold;
@@ -51,7 +65,13 @@ public class ShakeDetector extends SensorDetector {
     }
   }
 
+  /**
+   * The interface Shake listener.
+   */
   public interface ShakeListener {
+    /**
+     * On shake detected.
+     */
     void onShakeDetected();
   }
 }

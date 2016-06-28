@@ -28,6 +28,9 @@ import static android.hardware.Sensor.TYPE_LIGHT;
 import static android.hardware.Sensor.TYPE_MAGNETIC_FIELD;
 import static android.hardware.Sensor.TYPE_PROXIMITY;
 
+/**
+ * The type Sensey.
+ */
 public class Sensey {
 
   private SensorManager sensorManager;
@@ -44,19 +47,40 @@ public class Sensey {
   private Sensey() {
   }
 
+  /**
+   * Gets instance.
+   *
+   * @return the instance
+   */
   public static Sensey getInstance() {
     return LazyHolder.INSTANCE;
   }
 
+  /**
+   * Init.
+   *
+   * @param context the context
+   */
   public void init(Context context) {
     sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     this.context = context;
   }
 
+  /**
+   * Start shake detection.
+   *
+   * @param shakeListener the shake listener
+   */
   public void startShakeDetection(ShakeDetector.ShakeListener shakeListener) {
     startShakeDetection(new ShakeDetector(shakeListener));
   }
 
+  /**
+   * Start shake detection.
+   *
+   * @param threshold the threshold
+   * @param shakeListener the shake listener
+   */
   public void startShakeDetection(int threshold, ShakeDetector.ShakeListener shakeListener) {
     startShakeDetection(new ShakeDetector(threshold, shakeListener));
   }
@@ -66,14 +90,28 @@ public class Sensey {
     startSensorDetection(detector, TYPE_ACCELEROMETER);
   }
 
+  /**
+   * Stop shake detection.
+   */
   public void stopShakeDetection() {
     stopSensorDetection(shakeDetector);
   }
 
+  /**
+   * Start light detection.
+   *
+   * @param lightListener the light listener
+   */
   public void startLightDetection(LightDetector.LightListener lightListener) {
     startLightDetection(new LightDetector(lightListener));
   }
 
+  /**
+   * Start light detection.
+   *
+   * @param threshold the threshold
+   * @param lightListener the light listener
+   */
   public void startLightDetection(int threshold, LightDetector.LightListener lightListener) {
     startLightDetection(new LightDetector(threshold, lightListener));
   }
@@ -83,24 +121,46 @@ public class Sensey {
     startSensorDetection(detector, TYPE_LIGHT);
   }
 
+  /**
+   * Stop light detection.
+   */
   public void stopLightDetection() {
     stopSensorDetection(lightDetector);
   }
 
+  /**
+   * Start flip detection.
+   *
+   * @param flipListener the flip listener
+   */
   public void startFlipDetection(FlipDetector.FlipListener flipListener) {
     flipDetector = new FlipDetector(flipListener);
     startSensorDetection(flipDetector, TYPE_ACCELEROMETER);
   }
 
+  /**
+   * Stop flip detection.
+   */
   public void stopFlipDetection() {
     stopSensorDetection(flipDetector);
   }
 
+  /**
+   * Start orientation detection.
+   *
+   * @param orientationListener the orientation listener
+   */
   public void startOrientationDetection(
       OrientationDetector.OrientationListener orientationListener) {
     startOrientationDetection(new OrientationDetector(orientationListener));
   }
 
+  /**
+   * Start orientation detection.
+   *
+   * @param smoothness the smoothness
+   * @param orientationListener the orientation listener
+   */
   public void startOrientationDetection(int smoothness,
       OrientationDetector.OrientationListener orientationListener) {
     startOrientationDetection(new OrientationDetector(smoothness, orientationListener));
@@ -111,14 +171,28 @@ public class Sensey {
     startSensorDetection(detector, TYPE_ACCELEROMETER, TYPE_MAGNETIC_FIELD);
   }
 
+  /**
+   * Stop orientation detection.
+   */
   public void stopOrientationDetection() {
     stopSensorDetection(orientationDetector);
   }
 
+  /**
+   * Start proximity detection.
+   *
+   * @param proximityListener the proximity listener
+   */
   public void startProximityDetection(ProximityDetector.ProximityListener proximityListener) {
     startProximityDetection(new ProximityDetector(proximityListener));
   }
 
+  /**
+   * Start proximity detection.
+   *
+   * @param threshold the threshold
+   * @param proximityListener the proximity listener
+   */
   public void startProximityDetection(float threshold,
       ProximityDetector.ProximityListener proximityListener) {
     startProximityDetection(new ProximityDetector(threshold, proximityListener));
@@ -129,10 +203,19 @@ public class Sensey {
     startSensorDetection(detector, TYPE_PROXIMITY);
   }
 
+  /**
+   * Stop proximity detection.
+   */
   public void stopProximityDetection() {
     stopSensorDetection(proximityDetector);
   }
 
+  /**
+   * Start sensor detection.
+   *
+   * @param detector the detector
+   * @param sensorTypes the sensor types
+   */
   public void startSensorDetection(SensorDetector detector, int... sensorTypes) {
     final Iterable<Sensor> sensors = convertTypesToSensors(sensorTypes);
     if (areAllSensorsValid(sensors)) {
@@ -140,6 +223,11 @@ public class Sensey {
     }
   }
 
+  /**
+   * Stop sensor detection.
+   *
+   * @param detector the detector
+   */
   public void stopSensorDetection(SensorDetector detector) {
     if (detector != null) {
       sensorManager.unregisterListener(detector);
@@ -170,26 +258,47 @@ public class Sensey {
     }
   }
 
+  /**
+   * Start pinch scale detection.
+   *
+   * @param pinchScaleListener the pinch scale listener
+   */
   public void startPinchScaleDetection(PinchScaleDetector.PinchScaleListener pinchScaleListener) {
     if (pinchScaleListener != null) {
       pinchScaleDetector = new PinchScaleDetector(context, pinchScaleListener);
     }
   }
 
+  /**
+   * Stop pinch scale detection.
+   */
   public void stopPinchScaleDetection() {
     pinchScaleDetector = null;
   }
 
+  /**
+   * Start touch type detection.
+   *
+   * @param touchTypListener the touch typ listener
+   */
   public void startTouchTypeDetection(TouchTypeDetector.TouchTypListener touchTypListener) {
     if (touchTypListener != null) {
       touchTypeDetector = new TouchTypeDetector(context, touchTypListener);
     }
   }
 
+  /**
+   * Stop touch type detection.
+   */
   public void stopTouchTypeDetection() {
     touchTypeDetector = null;
   }
 
+  /**
+   * Sets dispatch touch event.
+   *
+   * @param event the event
+   */
   public void setupDispatchTouchEvent(MotionEvent event) {
     if (touchTypeDetector != null) {
       touchTypeDetector.onTouchEvent(event);

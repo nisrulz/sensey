@@ -21,6 +21,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.media.ExifInterface;
 
+/**
+ * The type Orientation detector.
+ */
 public class OrientationDetector extends SensorDetector {
 
   private static final int ORIENTATION_PORTRAIT = ExifInterface.ORIENTATION_ROTATE_90; // 6
@@ -33,16 +36,33 @@ public class OrientationDetector extends SensorDetector {
 
   private final float[] pitches;
   private final float[] rolls;
+  /**
+   * The M gravity.
+   */
   float[] mGravity;
+  /**
+   * The M geomagnetic.
+   */
   float[] mGeomagnetic;
   private float averagePitch = 0;
   private float averageRoll = 0;
   private int orientation = ORIENTATION_PORTRAIT;
 
+  /**
+   * Instantiates a new Orientation detector.
+   *
+   * @param orientationListener the orientation listener
+   */
   public OrientationDetector(OrientationListener orientationListener) {
     this(1, orientationListener);
   }
 
+  /**
+   * Instantiates a new Orientation detector.
+   *
+   * @param smoothness the smoothness
+   * @param orientationListener the orientation listener
+   */
   public OrientationDetector(int smoothness, OrientationListener orientationListener) {
     this.smoothness = smoothness;
     this.orientationListener = orientationListener;
@@ -129,13 +149,28 @@ public class OrientationDetector extends SensorDetector {
     }
   }
 
+  /**
+   * The interface Orientation listener.
+   */
   public interface OrientationListener {
+    /**
+     * On top side up.
+     */
     void onTopSideUp();
 
+    /**
+     * On bottom side up.
+     */
     void onBottomSideUp();
 
+    /**
+     * On right side up.
+     */
     void onRightSideUp();
 
+    /**
+     * On left side up.
+     */
     void onLeftSideUp();
   }
 }

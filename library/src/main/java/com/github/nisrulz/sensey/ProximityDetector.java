@@ -19,15 +19,29 @@ package com.github.nisrulz.sensey;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 
+/**
+ * The type Proximity detector.
+ */
 public class ProximityDetector extends SensorDetector {
 
   private final float threshold;
   private final ProximityListener proximityListener;
 
+  /**
+   * Instantiates a new Proximity detector.
+   *
+   * @param proximityListener the proximity listener
+   */
   public ProximityDetector(ProximityListener proximityListener) {
     this(3f, proximityListener);
   }
 
+  /**
+   * Instantiates a new Proximity detector.
+   *
+   * @param threshold the threshold
+   * @param proximityListener the proximity listener
+   */
   public ProximityDetector(float threshold, ProximityListener proximityListener) {
     this.proximityListener = proximityListener;
     this.threshold = threshold;
@@ -44,9 +58,18 @@ public class ProximityDetector extends SensorDetector {
     }
   }
 
+  /**
+   * The interface Proximity listener.
+   */
   public interface ProximityListener {
+    /**
+     * On near.
+     */
     void onNear();
 
+    /**
+     * On far.
+     */
     void onFar();
   }
 }

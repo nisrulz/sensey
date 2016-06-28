@@ -21,43 +21,107 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+/**
+ * The type Touch type detector.
+ */
 public class TouchTypeDetector {
 
+  /**
+   * The constant SCROLL_DIR_UP.
+   */
   public static final int SCROLL_DIR_UP = 1;
+  /**
+   * The constant SCROLL_DIR_RIGHT.
+   */
   public static final int SCROLL_DIR_RIGHT = 2;
+  /**
+   * The constant SCROLL_DIR_DOWN.
+   */
   public static final int SCROLL_DIR_DOWN = 3;
+  /**
+   * The constant SCROLL_DIR_LEFT.
+   */
   public static final int SCROLL_DIR_LEFT = 4;
 
+  /**
+   * The constant SWIPE_DIR_UP.
+   */
   public static final int SWIPE_DIR_UP = 5;
+  /**
+   * The constant SWIPE_DIR_RIGHT.
+   */
   public static final int SWIPE_DIR_RIGHT = 6;
+  /**
+   * The constant SWIPE_DIR_DOWN.
+   */
   public static final int SWIPE_DIR_DOWN = 7;
+  /**
+   * The constant SWIPE_DIR_LEFT.
+   */
   public static final int SWIPE_DIR_LEFT = 8;
 
   //gesture detector
   private final GestureDetectorCompat gDetect;
   private final TouchTypListener touchTypListener;
 
+  /**
+   * Instantiates a new Touch type detector.
+   *
+   * @param context the context
+   * @param touchTypListener the touch typ listener
+   */
   public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
     gDetect = new GestureDetectorCompat(context, new GestureListener());
     this.touchTypListener = touchTypListener;
   }
 
+  /**
+   * On touch event boolean.
+   *
+   * @param event the event
+   * @return the boolean
+   */
   boolean onTouchEvent(MotionEvent event) {
     return gDetect.onTouchEvent(event);
   }
 
+  /**
+   * The interface Touch typ listener.
+   */
   public interface TouchTypListener {
+    /**
+     * On double tap.
+     */
     void onDoubleTap();
 
+    /**
+     * On scroll.
+     *
+     * @param scrollDirection the scroll direction
+     */
     void onScroll(int scrollDirection);
 
+    /**
+     * On single tap.
+     */
     void onSingleTap();
 
+    /**
+     * On swipe.
+     *
+     * @param swipeDirection the swipe direction
+     */
     void onSwipe(int swipeDirection);
 
+    /**
+     * On long press.
+     */
     void onLongPress();
   }
 
+  /**
+   * The type Gesture listener.
+   */
   class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
