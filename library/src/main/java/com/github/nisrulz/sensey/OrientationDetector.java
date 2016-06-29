@@ -21,6 +21,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.media.ExifInterface;
 
+import static android.hardware.Sensor.TYPE_ACCELEROMETER;
+import static android.hardware.Sensor.TYPE_MAGNETIC_FIELD;
+
 /**
  * The type Orientation detector.
  */
@@ -32,7 +35,7 @@ public class OrientationDetector extends SensorDetector {
   private static final int ORIENTATION_PORTRAIT_REVERSE = ExifInterface.ORIENTATION_ROTATE_270; // 8
 
   private final int smoothness;
-  private final OrientationListener orientationListener;
+  final OrientationListener orientationListener;
 
   private final float[] pitches;
   private final float[] rolls;
@@ -64,6 +67,7 @@ public class OrientationDetector extends SensorDetector {
    * @param orientationListener the orientation listener
    */
   public OrientationDetector(int smoothness, OrientationListener orientationListener) {
+    super(TYPE_ACCELEROMETER, TYPE_MAGNETIC_FIELD);
     this.smoothness = smoothness;
     this.orientationListener = orientationListener;
 
@@ -71,11 +75,11 @@ public class OrientationDetector extends SensorDetector {
     rolls = new float[smoothness];
   }
 
-  @Override public void onSensorChanged(SensorEvent event) {
-    if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+  @Override protected void onSensorEvent(SensorEvent event) {
+    if (event.sensor.getType() == TYPE_ACCELEROMETER) {
       mGravity = event.values;
     }
-    if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+    if (event.sensor.getType() == TYPE_MAGNETIC_FIELD) {
       mGeomagnetic = event.values;
     }
     if (mGravity != null && mGeomagnetic != null) {

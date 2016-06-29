@@ -22,11 +22,8 @@ import android.hardware.SensorManager;
 import android.view.MotionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import static android.hardware.Sensor.TYPE_ACCELEROMETER;
-import static android.hardware.Sensor.TYPE_LIGHT;
-import static android.hardware.Sensor.TYPE_MAGNETIC_FIELD;
-import static android.hardware.Sensor.TYPE_PROXIMITY;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Sensey.
@@ -35,6 +32,21 @@ public class Sensey {
 
   private SensorManager sensorManager;
 
+
+  /**
+   * Map from any of default listeners (
+   * {@link com.github.nisrulz.sensey.FlipDetector.FlipListener flipListener},
+   * {@link com.github.nisrulz.sensey.LightDetector.LightListener lightListener},
+   * {@link com.github.nisrulz.sensey.OrientationDetector.OrientationListener orientationListener}
+   * {@link com.github.nisrulz.sensey.ProximityDetector.ProximityListener proximityListener}
+   * and {@link com.github.nisrulz.sensey.ShakeDetector.ShakeListener shakeListener})
+   * to SensorDetectors created by those listeners.
+   *
+   * This map is needed to hold reference to all started detections <strong>NOT</strong>
+   * through {@link this#startSensorDetection(SensorDetector)}, because the last one
+   * passes task to hold reference of {@link SensorDetector sensorDetector} to the client
+   */
+  private final Map<Object, SensorDetector> defaultSensorsMap = new HashMap<>();
   private ShakeDetector shakeDetector;
   private FlipDetector flipDetector;
   private OrientationDetector orientationDetector;
@@ -87,7 +99,7 @@ public class Sensey {
 
   private void startShakeDetection(ShakeDetector detector) {
     shakeDetector = detector;
-    startSensorDetection(detector, TYPE_ACCELEROMETER);
+    startSensorDetection(detector);
   }
 
   /**
@@ -118,7 +130,7 @@ public class Sensey {
 
   private void startLightDetection(LightDetector detector) {
     lightDetector = detector;
-    startSensorDetection(detector, TYPE_LIGHT);
+    startSensorDetection(detector);
   }
 
   /**
@@ -135,7 +147,7 @@ public class Sensey {
    */
   public void startFlipDetection(FlipDetector.FlipListener flipListener) {
     flipDetector = new FlipDetector(flipListener);
-    startSensorDetection(flipDetector, TYPE_ACCELEROMETER);
+    startSensorDetection(flipDetector);
   }
 
   /**
@@ -168,7 +180,7 @@ public class Sensey {
 
   private void startOrientationDetection(OrientationDetector detector) {
     orientationDetector = detector;
-    startSensorDetection(detector, TYPE_ACCELEROMETER, TYPE_MAGNETIC_FIELD);
+    startSensorDetection(detector);
   }
 
   /**
@@ -200,7 +212,7 @@ public class Sensey {
 
   private void startProximityDetection(ProximityDetector detector) {
     proximityDetector = detector;
-    startSensorDetection(detector, TYPE_PROXIMITY);
+    startSensorDetection(detector);
   }
 
   /**
@@ -214,10 +226,9 @@ public class Sensey {
    * Start sensor detection.
    *
    * @param detector the detector
-   * @param sensorTypes the sensor types
    */
-  public void startSensorDetection(SensorDetector detector, int... sensorTypes) {
-    final Iterable<Sensor> sensors = convertTypesToSensors(sensorTypes);
+  public void startSensorDetection(SensorDetector detector) {
+    final Iterable<Sensor> sensors = convertTypesToSensors(detector.getSensorTypes());
     if (areAllSensorsValid(sensors)) {
       registerDetectorForAllSensors(detector, sensors);
     }
