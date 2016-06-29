@@ -63,6 +63,7 @@ public class TouchTypeDetector {
   //gesture detector
   private final GestureDetectorCompat gDetect;
   private final TouchTypListener touchTypListener;
+  final GestureListener gestureListener; // it's needed for TouchTypeDetectorTest, don't remove
 
   /**
    * Instantiates a new Touch type detector.
@@ -71,7 +72,8 @@ public class TouchTypeDetector {
    * @param touchTypListener the touch typ listener
    */
   public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
-    gDetect = new GestureDetectorCompat(context, new GestureListener());
+    gestureListener = new GestureListener();
+    gDetect = new GestureDetectorCompat(context, gestureListener);
     this.touchTypListener = touchTypListener;
   }
 

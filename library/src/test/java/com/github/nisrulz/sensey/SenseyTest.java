@@ -260,6 +260,22 @@ import static org.mockito.Mockito.mock;
     }
   }
 
+  @Test public void detectNoListenerWithStopingTwoSameDetections() {
+    addSensor(TYPE_PROXIMITY);
+    ProximityDetector detector1 = startProximityDetection();
+    ProximityDetector detector2 = startProximityDetection();
+    sensey.stopProximityDetection();
+    sensey.stopProximityDetection();
+    assertFalse("Sensor manager need to contain no detectors", shadowSensorManager.hasListener(detector2));
+    assertFalse("Sensor manager need to contain no detectors", shadowSensorManager.hasListener(detector1));
+  }
+
+  private ProximityDetector startProximityDetection() {
+    ProximityListener fakeListener = mock(ProximityListener.class);
+    sensey.startProximityDetection(fakeListener);
+    return getDetector(ProximityDetector.class);
+  }
+
   private void addSensor(int type) {
     shadowSensorManager.addSensor(type, mock(Sensor.class));
   }
