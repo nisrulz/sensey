@@ -20,13 +20,17 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.view.MotionEvent;
+
+import com.github.nisrulz.sensey.FlipDetector.FlipListener;
+import com.github.nisrulz.sensey.LightDetector.LightListener;
+import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
+import com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
+import com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import static android.hardware.Sensor.TYPE_ACCELEROMETER;
-import static android.hardware.Sensor.TYPE_LIGHT;
-import static android.hardware.Sensor.TYPE_MAGNETIC_FIELD;
-import static android.hardware.Sensor.TYPE_PROXIMITY;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Sensey.
@@ -35,11 +39,21 @@ public class Sensey {
 
   private SensorManager sensorManager;
 
-  private ShakeDetector shakeDetector;
-  private FlipDetector flipDetector;
-  private OrientationDetector orientationDetector;
-  private ProximityDetector proximityDetector;
-  private LightDetector lightDetector;
+  /**
+   * Map from any of default listeners (
+   * {@link FlipListener flipListener},
+   * {@link LightListener lightListener},
+   * {@link OrientationListener orientationListener}
+   * {@link ProximityListener proximityListener}
+   * and {@link ShakeListener shakeListener})
+   * to SensorDetectors created by those listeners.
+   *
+   * This map is needed to hold reference to all started detections <strong>NOT</strong>
+   * through {@link Sensey#startSensorDetection(SensorDetector)}, because the last one
+   * passes task to hold reference of {@link SensorDetector sensorDetector} to the client
+   */
+  private final Map<Object, SensorDetector> defaultSensorsMap = new HashMap<>();
+
   private TouchTypeDetector touchTypeDetector;
   private PinchScaleDetector pinchScaleDetector;
   private Context context;
@@ -71,8 +85,8 @@ public class Sensey {
    *
    * @param shakeListener the shake listener
    */
-  public void startShakeDetection(ShakeDetector.ShakeListener shakeListener) {
-    startShakeDetection(new ShakeDetector(shakeListener));
+  public void startShakeDetection(ShakeListener shakeListener) {
+    startLibrarySensorDetection(new ShakeDetector(shakeListener), shakeListener);
   }
 
   /**
@@ -81,20 +95,15 @@ public class Sensey {
    * @param threshold the threshold
    * @param shakeListener the shake listener
    */
-  public void startShakeDetection(int threshold, ShakeDetector.ShakeListener shakeListener) {
-    startShakeDetection(new ShakeDetector(threshold, shakeListener));
-  }
-
-  private void startShakeDetection(ShakeDetector detector) {
-    shakeDetector = detector;
-    startSensorDetection(detector, TYPE_ACCELEROMETER);
+  public void startShakeDetection(int threshold, ShakeListener shakeListener) {
+    startLibrarySensorDetection(new ShakeDetector(threshold, shakeListener), shakeListener);
   }
 
   /**
    * Stop shake detection.
    */
-  public void stopShakeDetection() {
-    stopSensorDetection(shakeDetector);
+  public void stopShakeDetection(ShakeListener shakeListener) {
+    stopLibrarySensorDetection(shakeListener);
   }
 
   /**
@@ -102,8 +111,8 @@ public class Sensey {
    *
    * @param lightListener the light listener
    */
-  public void startLightDetection(LightDetector.LightListener lightListener) {
-    startLightDetection(new LightDetector(lightListener));
+  public void startLightDetection(LightListener lightListener) {
+    startLibrarySensorDetection(new LightDetector(lightListener), lightListener);
   }
 
   /**
@@ -112,20 +121,15 @@ public class Sensey {
    * @param threshold the threshold
    * @param lightListener the light listener
    */
-  public void startLightDetection(int threshold, LightDetector.LightListener lightListener) {
-    startLightDetection(new LightDetector(threshold, lightListener));
-  }
-
-  private void startLightDetection(LightDetector detector) {
-    lightDetector = detector;
-    startSensorDetection(detector, TYPE_LIGHT);
+  public void startLightDetection(int threshold, LightListener lightListener) {
+    startLibrarySensorDetection(new LightDetector(threshold, lightListener), lightListener);
   }
 
   /**
    * Stop light detection.
    */
-  public void stopLightDetection() {
-    stopSensorDetection(lightDetector);
+  public void stopLightDetection(LightListener lightListener) {
+    stopLibrarySensorDetection(lightListener);
   }
 
   /**
@@ -133,16 +137,15 @@ public class Sensey {
    *
    * @param flipListener the flip listener
    */
-  public void startFlipDetection(FlipDetector.FlipListener flipListener) {
-    flipDetector = new FlipDetector(flipListener);
-    startSensorDetection(flipDetector, TYPE_ACCELEROMETER);
+  public void startFlipDetection(FlipListener flipListener) {
+    startLibrarySensorDetection(new FlipDetector(flipListener), flipListener);
   }
 
   /**
    * Stop flip detection.
    */
-  public void stopFlipDetection() {
-    stopSensorDetection(flipDetector);
+  public void stopFlipDetection(FlipListener flipListener) {
+    stopLibrarySensorDetection(flipListener);
   }
 
   /**
@@ -151,8 +154,8 @@ public class Sensey {
    * @param orientationListener the orientation listener
    */
   public void startOrientationDetection(
-      OrientationDetector.OrientationListener orientationListener) {
-    startOrientationDetection(new OrientationDetector(orientationListener));
+      OrientationListener orientationListener) {
+    startLibrarySensorDetection(new OrientationDetector(orientationListener), orientationListener);
   }
 
   /**
@@ -162,20 +165,15 @@ public class Sensey {
    * @param orientationListener the orientation listener
    */
   public void startOrientationDetection(int smoothness,
-      OrientationDetector.OrientationListener orientationListener) {
-    startOrientationDetection(new OrientationDetector(smoothness, orientationListener));
-  }
-
-  private void startOrientationDetection(OrientationDetector detector) {
-    orientationDetector = detector;
-    startSensorDetection(detector, TYPE_ACCELEROMETER, TYPE_MAGNETIC_FIELD);
+      OrientationListener orientationListener) {
+    startLibrarySensorDetection(new OrientationDetector(smoothness, orientationListener), orientationListener);
   }
 
   /**
    * Stop orientation detection.
    */
-  public void stopOrientationDetection() {
-    stopSensorDetection(orientationDetector);
+  public void stopOrientationDetection(OrientationListener orientationListener) {
+    stopLibrarySensorDetection(orientationListener);
   }
 
   /**
@@ -183,8 +181,8 @@ public class Sensey {
    *
    * @param proximityListener the proximity listener
    */
-  public void startProximityDetection(ProximityDetector.ProximityListener proximityListener) {
-    startProximityDetection(new ProximityDetector(proximityListener));
+  public void startProximityDetection(ProximityListener proximityListener) {
+    startLibrarySensorDetection(new ProximityDetector(proximityListener), proximityListener);
   }
 
   /**
@@ -194,30 +192,36 @@ public class Sensey {
    * @param proximityListener the proximity listener
    */
   public void startProximityDetection(float threshold,
-      ProximityDetector.ProximityListener proximityListener) {
-    startProximityDetection(new ProximityDetector(threshold, proximityListener));
-  }
-
-  private void startProximityDetection(ProximityDetector detector) {
-    proximityDetector = detector;
-    startSensorDetection(detector, TYPE_PROXIMITY);
+      ProximityListener proximityListener) {
+    startLibrarySensorDetection(new ProximityDetector(threshold, proximityListener), proximityListener);
   }
 
   /**
    * Stop proximity detection.
    */
-  public void stopProximityDetection() {
-    stopSensorDetection(proximityDetector);
+  public void stopProximityDetection(ProximityListener proximityListener) {
+    stopLibrarySensorDetection(proximityListener);
+  }
+
+  private void startLibrarySensorDetection(SensorDetector detector, Object clientListener) {
+    if (!defaultSensorsMap.containsKey(clientListener)) {
+      defaultSensorsMap.put(clientListener, detector);
+      startSensorDetection(detector);
+    }
+  }
+
+  private void stopLibrarySensorDetection(Object clientListener) {
+    SensorDetector detector = defaultSensorsMap.remove(clientListener);
+    stopSensorDetection(detector);
   }
 
   /**
    * Start sensor detection.
    *
    * @param detector the detector
-   * @param sensorTypes the sensor types
    */
-  public void startSensorDetection(SensorDetector detector, int... sensorTypes) {
-    final Iterable<Sensor> sensors = convertTypesToSensors(sensorTypes);
+  public void startSensorDetection(SensorDetector detector) {
+    final Iterable<Sensor> sensors = convertTypesToSensors(detector.getSensorTypes());
     if (areAllSensorsValid(sensors)) {
       registerDetectorForAllSensors(detector, sensors);
     }

@@ -19,12 +19,14 @@ package com.github.nisrulz.sensey;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 
+import static android.hardware.Sensor.TYPE_ACCELEROMETER;
+
 /**
  * The type Flip detector.
  */
 public class FlipDetector extends SensorDetector {
 
-  private final FlipListener flipListener;
+  final FlipListener flipListener;
 
   /**
    * Instantiates a new Flip detector.
@@ -32,17 +34,16 @@ public class FlipDetector extends SensorDetector {
    * @param flipListener the flip listener
    */
   public FlipDetector(FlipListener flipListener) {
+    super(TYPE_ACCELEROMETER);
     this.flipListener = flipListener;
   }
 
-  @Override public void onSensorChanged(SensorEvent sensorEvent) {
-    if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-      float z = sensorEvent.values[2];
-      if (z > 9 && z < 10) {
-        flipListener.onFaceUp();
-      } else if (z > -10 && z < -9) {
-        flipListener.onFaceDown();
-      }
+  @Override protected void onSensorEvent(SensorEvent sensorEvent) {
+    float z = sensorEvent.values[2];
+    if (z > 9 && z < 10) {
+      flipListener.onFaceUp();
+    } else if (z > -10 && z < -9) {
+      flipListener.onFaceDown();
     }
   }
 

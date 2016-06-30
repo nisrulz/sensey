@@ -9,6 +9,8 @@ import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
 import com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
 import com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
 import java.lang.reflect.Field;
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +52,7 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_ACCELEROMETER);
     ShakeListener fakeListener = mock(ShakeListener.class);
     sensey.startShakeDetection(fakeListener);
-    ShakeDetector detector = getDetector(ShakeDetector.class);
+    ShakeDetector detector = getDetector(fakeListener, ShakeDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for shake",
           shadowSensorManager.hasListener(detector));
@@ -64,7 +66,7 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_ACCELEROMETER);
     ShakeListener fakeListener = mock(ShakeListener.class);
     sensey.startShakeDetection(4, fakeListener);
-    ShakeDetector detector = getDetector(ShakeDetector.class);
+    ShakeDetector detector = getDetector(fakeListener, ShakeDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for shake",
           shadowSensorManager.hasListener(detector));
@@ -78,11 +80,11 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_ACCELEROMETER);
     ShakeListener fakeListener = mock(ShakeListener.class);
     sensey.startShakeDetection(fakeListener);
-    ShakeDetector detector = getDetector(ShakeDetector.class);
+    ShakeDetector detector = getDetector(fakeListener, ShakeDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for shake",
           shadowSensorManager.hasListener(detector));
-      sensey.stopShakeDetection();
+      sensey.stopShakeDetection(fakeListener);
       assertFalse("There should be no more sensor event listener in sensor manager",
               shadowSensorManager.hasListener(detector));
     } else {
@@ -95,7 +97,7 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_LIGHT);
     LightListener fakeListener = mock(LightListener.class);
     sensey.startLightDetection(fakeListener);
-    LightDetector detector = getDetector(LightDetector.class);
+    LightDetector detector = getDetector(fakeListener, LightDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for light",
               shadowSensorManager.hasListener(detector));
@@ -109,7 +111,7 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_LIGHT);
     LightListener fakeListener = mock(LightListener.class);
     sensey.startLightDetection(4, fakeListener);
-    LightDetector detector = getDetector(LightDetector.class);
+    LightDetector detector = getDetector(fakeListener, LightDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for light",
           shadowSensorManager.hasListener(detector));
@@ -123,11 +125,11 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_LIGHT);
     LightListener fakeListener = mock(LightListener.class);
     sensey.startLightDetection(fakeListener);
-    LightDetector detector = getDetector(LightDetector.class);
+    LightDetector detector = getDetector(fakeListener, LightDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for light",
           shadowSensorManager.hasListener(detector));
-      sensey.stopLightDetection();
+      sensey.stopLightDetection(fakeListener);
       assertFalse("There should be no more sensor event listener in sensor manager",
               shadowSensorManager.hasListener(detector));
     } else {
@@ -140,7 +142,7 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_ACCELEROMETER);
     FlipListener fakeListener = mock(FlipListener.class);
     sensey.startFlipDetection(fakeListener);
-    FlipDetector detector = getDetector(FlipDetector.class);
+    FlipDetector detector = getDetector(fakeListener, FlipDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for flip",
               shadowSensorManager.hasListener(detector));
@@ -154,11 +156,11 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_ACCELEROMETER);
     FlipListener fakeListener = mock(FlipListener.class);
     sensey.startFlipDetection(fakeListener);
-    FlipDetector detector = getDetector(FlipDetector.class);
+    FlipDetector detector = getDetector(fakeListener, FlipDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for flip",
           shadowSensorManager.hasListener(detector));
-      sensey.stopFlipDetection();
+      sensey.stopFlipDetection(fakeListener);
       assertFalse("There should be no more sensor event listener in sensor manager",
               shadowSensorManager.hasListener(detector));
     } else {
@@ -172,7 +174,7 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_MAGNETIC_FIELD);
     OrientationListener fakeListener = mock(OrientationListener.class);
     sensey.startOrientationDetection(fakeListener);
-    OrientationDetector detector = getDetector(OrientationDetector.class);
+    OrientationDetector detector = getDetector(fakeListener, OrientationDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for orientation",
               shadowSensorManager.hasListener(detector));
@@ -187,7 +189,7 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_MAGNETIC_FIELD);
     OrientationListener fakeListener = mock(OrientationListener.class);
     sensey.startOrientationDetection(3, fakeListener);
-    OrientationDetector detector = getDetector(OrientationDetector.class);
+    OrientationDetector detector = getDetector(fakeListener, OrientationDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for orientation",
               shadowSensorManager.hasListener(detector));
@@ -202,11 +204,11 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_MAGNETIC_FIELD);
     OrientationListener fakeListener = mock(OrientationListener.class);
     sensey.startOrientationDetection(fakeListener);
-    OrientationDetector detector = getDetector(OrientationDetector.class);
+    OrientationDetector detector = getDetector(fakeListener, OrientationDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for orientation",
           shadowSensorManager.hasListener(detector));
-      sensey.stopOrientationDetection();
+      sensey.stopOrientationDetection(fakeListener);
       assertFalse("There should be no more sensor event listener in sensor manager",
               shadowSensorManager.hasListener(detector));
     } else {
@@ -219,7 +221,7 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_PROXIMITY);
     ProximityListener fakeListener = mock(ProximityListener.class);
     sensey.startProximityDetection(fakeListener);
-    ProximityDetector detector = getDetector(ProximityDetector.class);
+    ProximityDetector detector = getDetector(fakeListener, ProximityDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for proximity",
               shadowSensorManager.hasListener(detector));
@@ -233,7 +235,7 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_PROXIMITY);
     ProximityListener fakeListener = mock(ProximityListener.class);
     sensey.startProximityDetection(10f, fakeListener);
-    ProximityDetector detector = getDetector(ProximityDetector.class);
+    ProximityDetector detector = getDetector(fakeListener, ProximityDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for proximity",
               shadowSensorManager.hasListener(detector));
@@ -247,11 +249,11 @@ import static org.mockito.Mockito.mock;
     addSensor(TYPE_PROXIMITY);
     ProximityListener fakeListener = mock(ProximityListener.class);
     sensey.startProximityDetection(fakeListener);
-    ProximityDetector detector = getDetector(ProximityDetector.class);
+    ProximityDetector detector = getDetector(fakeListener, ProximityDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for proximity",
           shadowSensorManager.hasListener(detector));
-      sensey.stopProximityDetection();
+      sensey.stopProximityDetection(fakeListener);
       assertFalse("There should be no more sensor event listener in sensor manager",
           shadowSensorManager.hasListener(detector));
     } else {
@@ -260,27 +262,36 @@ import static org.mockito.Mockito.mock;
     }
   }
 
+  @Test public void detectNoListenerWithStoppingTwoSameDetections() {
+    addSensor(TYPE_PROXIMITY);
+    ProximityListener fakeListener1 = mock(ProximityListener.class);
+    ProximityListener fakeListener2 = mock(ProximityListener.class);
+    ProximityDetector detector1 = startProximityDetection(fakeListener1);
+    ProximityDetector detector2 = startProximityDetection(fakeListener2);
+    sensey.stopProximityDetection(fakeListener1);
+    sensey.stopProximityDetection(fakeListener2);
+    assertFalse("Sensor manager need to contain no detectors", shadowSensorManager.hasListener(detector2));
+    assertFalse("Sensor manager need to contain no detectors", shadowSensorManager.hasListener(detector1));
+  }
+
+  private ProximityDetector startProximityDetection(ProximityListener listener) {
+    sensey.startProximityDetection(listener);
+    return getDetector(listener, ProximityDetector.class);
+  }
+
   private void addSensor(int type) {
     shadowSensorManager.addSensor(type, mock(Sensor.class));
   }
 
   //Hardcode because of can not get appropriate detector from Sensey.class
-  private <T> T getDetector(Class<T> aClass) {
-    String fieldName = getFieldName(aClass);
-    if (fieldName != null) {
-      return getDetector(fieldName);
-    } else {
-      return null;
-    }
-  }
-
-  @SuppressWarnings("unchecked") private <T> T getDetector(String fieldName) {
+  private <T> T getDetector(Object listener, Class<T> aClass) {
     T result = null;
 
     try {
-      Field field = sensey.getClass().getDeclaredField(fieldName);
+      Field field = sensey.getClass().getDeclaredField("defaultSensorsMap");
       field.setAccessible(true);
-      result = (T) field.get(sensey);
+      Map<Object, SensorDetector> defaults = (Map<Object, SensorDetector>) field.get(sensey);
+      result = aClass.cast(defaults.get(listener));
     } catch (NoSuchFieldException e) {
       e.printStackTrace();
     } catch (IllegalAccessException e) {
