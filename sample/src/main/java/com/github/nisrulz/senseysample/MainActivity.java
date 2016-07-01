@@ -34,7 +34,9 @@ import com.github.nisrulz.sensey.Sensey;
 import com.github.nisrulz.sensey.ShakeDetector;
 
 public class MainActivity extends AppCompatActivity
-    implements CompoundButton.OnCheckedChangeListener {
+    implements CompoundButton.OnCheckedChangeListener, ShakeDetector.ShakeListener,
+    FlipDetector.FlipListener, LightDetector.LightListener, OrientationDetector.OrientationListener,
+    ProximityDetector.ProximityListener {
 
   private static final String LOGTAG = "MainActivity";
   private static final boolean DEBUG = true;
@@ -88,84 +90,39 @@ public class MainActivity extends AppCompatActivity
 
       case R.id.Switch1:
         if (isChecked) {
-          Sensey.getInstance().startShakeDetection(10, new ShakeDetector.ShakeListener() {
-            @Override public void onShakeDetected() {
-              setResultTextView("Shake Detected!");
-            }
-          });
+          Sensey.getInstance().startShakeDetection(10, this);
         } else {
-          Sensey.getInstance().stopShakeDetection();
+          Sensey.getInstance().stopShakeDetection(this);
         }
         break;
       case R.id.Switch2:
         if (isChecked) {
-          Sensey.getInstance().startFlipDetection(new FlipDetector.FlipListener() {
-            @Override public void onFaceUp() {
-              setResultTextView("Face UP");
-            }
-
-            @Override public void onFaceDown() {
-              setResultTextView("Face Down");
-            }
-          });
+          Sensey.getInstance().startFlipDetection(this);
         } else {
-          Sensey.getInstance().stopFlipDetection();
+          Sensey.getInstance().stopFlipDetection(this);
         }
 
         break;
       case R.id.Switch3:
         if (isChecked) {
-          Sensey.getInstance()
-              .startOrientationDetection(new OrientationDetector.OrientationListener() {
-                @Override public void onTopSideUp() {
-                  setResultTextView("Top Side Up");
-                }
-
-                @Override public void onBottomSideUp() {
-                  setResultTextView("Bottom Side Up!");
-                }
-
-                @Override public void onRightSideUp() {
-                  setResultTextView("Right Side Up");
-                }
-
-                @Override public void onLeftSideUp() {
-                  setResultTextView("Left Side Up");
-                }
-              });
+          Sensey.getInstance().startOrientationDetection(this);
         } else {
-          Sensey.getInstance().stopOrientationDetection();
+          Sensey.getInstance().stopOrientationDetection(this);
         }
 
         break;
       case R.id.Switch4:
         if (isChecked) {
-          Sensey.getInstance().startProximityDetection(new ProximityDetector.ProximityListener() {
-            @Override public void onNear() {
-              setResultTextView("Near");
-            }
-
-            @Override public void onFar() {
-              setResultTextView("Far");
-            }
-          });
+          Sensey.getInstance().startProximityDetection(this);
         } else {
-          Sensey.getInstance().stopProximityDetection();
+          Sensey.getInstance().stopProximityDetection(this);
         }
         break;
       case R.id.Switch5:
         if (isChecked) {
-          Sensey.getInstance().startLightDetection(10, new LightDetector.LightListener() {
-            @Override public void onDark() {
-              setResultTextView("Dark Detected!");
-            }
-
-            @Override public void onLight() {
-              setResultTextView("Light Detected!");
-            }
-          });
+          Sensey.getInstance().startLightDetection(10, this);
         } else {
-          Sensey.getInstance().stopLightDetection();
+          Sensey.getInstance().stopLightDetection(this);
         }
         break;
 
@@ -178,11 +135,11 @@ public class MainActivity extends AppCompatActivity
   @Override protected void onPause() {
     super.onPause();
     // Stop Gesture Detections
-    Sensey.getInstance().stopShakeDetection();
-    Sensey.getInstance().stopFlipDetection();
-    Sensey.getInstance().stopOrientationDetection();
-    Sensey.getInstance().stopProximityDetection();
-    Sensey.getInstance().stopLightDetection();
+    Sensey.getInstance().stopShakeDetection(this);
+    Sensey.getInstance().stopFlipDetection(this);
+    Sensey.getInstance().stopOrientationDetection(this);
+    Sensey.getInstance().stopProximityDetection(this);
+    Sensey.getInstance().stopLightDetection(this);
   }
 
   private void setResultTextView(String text) {
@@ -200,5 +157,49 @@ public class MainActivity extends AppCompatActivity
         txt.setText("..Results show here...");
       }
     }, 3000);
+  }
+
+  @Override public void onFaceUp() {
+    setResultTextView("Face UP");
+  }
+
+  @Override public void onFaceDown() {
+    setResultTextView("Face Down");
+  }
+
+  @Override public void onDark() {
+    setResultTextView("Dark");
+  }
+
+  @Override public void onLight() {
+    setResultTextView("Not Dark");
+  }
+
+  @Override public void onTopSideUp() {
+    setResultTextView("Topside UP");
+  }
+
+  @Override public void onBottomSideUp() {
+    setResultTextView("Bottomside UP");
+  }
+
+  @Override public void onRightSideUp() {
+    setResultTextView("Rightside UP");
+  }
+
+  @Override public void onLeftSideUp() {
+    setResultTextView("Leftside UP");
+  }
+
+  @Override public void onNear() {
+    setResultTextView("Near");
+  }
+
+  @Override public void onFar() {
+    setResultTextView("Far");
+  }
+
+  @Override public void onShakeDetected() {
+    setResultTextView("Shake Detected!");
   }
 }
