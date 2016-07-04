@@ -55,7 +55,7 @@ For more detailed usage, check the [Wiki](https://github.com/nisrulz/sensey/wiki
 # Including in your project
 - Sensey is available in the MavenCentral, so getting it as simple as adding it as a dependency
 ```gradle
-compile 'com.github.nisrulz:sensey:1.3.0'
+compile 'com.github.nisrulz:sensey:1.4.0'
 ```
 
 # Pull Requests
