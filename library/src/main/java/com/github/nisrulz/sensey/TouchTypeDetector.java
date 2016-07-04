@@ -63,6 +63,9 @@ public class TouchTypeDetector {
   //gesture detector
   private final GestureDetectorCompat gDetect;
   private final TouchTypListener touchTypListener;
+  /**
+   * The Gesture listener.
+   */
   final GestureListener gestureListener; // it's needed for TouchTypeDetectorTest, don't remove
 
   /**
@@ -84,6 +87,15 @@ public class TouchTypeDetector {
    * @return the boolean
    */
   boolean onTouchEvent(MotionEvent event) {
+
+    switch (event.getActionMasked()) {
+      case MotionEvent.ACTION_POINTER_DOWN:
+        if (event.getPointerCount() == 3) {
+          touchTypListener.onThreeFingerSingleTap();
+        } else if (event.getPointerCount() == 2) {
+          touchTypListener.onTwoFingerSingleTap();
+        }
+    }
     return gDetect.onTouchEvent(event);
   }
 
@@ -91,6 +103,17 @@ public class TouchTypeDetector {
    * The interface Touch typ listener.
    */
   public interface TouchTypListener {
+
+    /**
+     * On two finger single tap.
+     */
+    void onTwoFingerSingleTap();
+
+    /**
+     * On three finger single tap.
+     */
+    void onThreeFingerSingleTap();
+
     /**
      * On double tap.
      */

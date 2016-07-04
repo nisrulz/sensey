@@ -135,6 +135,14 @@ public class TouchActivity extends AppCompatActivity
 
   private void startTouchTypeDetection() {
     Sensey.getInstance().startTouchTypeDetection(new TouchTypeDetector.TouchTypListener() {
+      @Override public void onTwoFingerSingleTap() {
+        setResultTextView("Two Finger Tap");
+      }
+
+      @Override public void onThreeFingerSingleTap() {
+        setResultTextView("Three Finger Tap");
+      }
+
       @Override public void onDoubleTap() {
         setResultTextView("Double Tap");
       }
