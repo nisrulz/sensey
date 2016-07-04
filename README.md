@@ -22,12 +22,33 @@ Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/ni
 # Usage Docs/Wiki
 Available sensor based gesture detectors
  1. Flip
+    + onFaceUp
+    + onFaceDown
  1. Light
+    + onDark
+    + onLight
  1. Orientation
+    + onTopSideUp
+    + onBottomSideUp
+    + onLeftSideUp
+    + onRightSideUp
  1. PinchScale
+    + OnScale
+    + OnScaleStart
+    + OnScaleEnd
  1. Proximity
+    + onNear
+    + onFar
  1. Shake
  1. TouchType
+    + onDoubleTap
+    + onScroll(direction)
+    + onSingleTap
+    + onSwipeLeft
+    + onSwipeRight
+    + onLongPress
+    + onTwoFingerSingleTap
+    + onThreeFingerSingleTap
 
 For more detailed usage, check the [Wiki](https://github.com/nisrulz/sensey/wiki)
 
