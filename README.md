@@ -19,8 +19,8 @@ The library is built for simplicity and ease of use. It eliminates most boilerpl
 
 Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/nisrulz/sensey/releases).
 
-# Usage Docs/Wiki
-Available sensor based gesture detectors
+# Supported Gesture Detections
+
  1. Flip
     + onFaceUp
     + onFaceDown
@@ -50,13 +50,44 @@ Available sensor based gesture detectors
     + onTwoFingerSingleTap
     + onThreeFingerSingleTap
 
-For more detailed usage, check the [Wiki](https://github.com/nisrulz/sensey/wiki)
 
 # Including in your project
 - Sensey is available in the MavenCentral, so getting it as simple as adding it as a dependency
 ```gradle
 compile 'com.github.nisrulz:sensey:1.4.0'
 ```
+
+# Simple example
+
++ Initialize Sensey under your onCreate() in the activity/service
+```java
+Sensey.getInstance().init(context);
+```
+
++ Next to enable shake detection 
+  + Create an instance of ShakeListener
+  ```java
+  ShakeDetector.ShakeListener shakeListener=new ShakeDetector.ShakeListener() {
+      @Override public void onShakeDetected() {
+         // Shake detected, do something
+     }
+  };
+  ```
+  + Now to start listening for Shake gesture, pass the instance `shakeListener` to `startShakeDetection()` function
+  ```java
+  Sensey.getInstance().startShakeDetection(shakeListener);
+  ```
+  
+  If you want to modify the `threshold` , pass an `int` as value
+  ```java
+  Sensey.getInstance().startShakeDetection(threshold,shakeListener);
+  ```
+  + To stop listening for Shake gesture, pass the instance `shakeListener` to `stopShakeDetection()` function
+  ```java
+  Sensey.getInstance().stopShakeDetection(shakeListener);
+  ```
+
+### <center> :page_with_curl: For more info , check the **[Wiki Docs](https://github.com/nisrulz/sensey/wiki)** </center>
 
 # Pull Requests
 I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request. Here are some basic rules to follow to ensure timely addition of your request:
