@@ -19,28 +19,28 @@ The library is built for simplicity and ease of use. It eliminates most boilerpl
 
 Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/nisrulz/sensey/releases).
 
-# Supported Gesture Detections
+# Supported gestures
 
- 1. Flip
+ 1. [Flip](https://github.com/nisrulz/sensey/wiki/Usage#flip)
     + onFaceUp
     + onFaceDown
- 1. Light
+ 1. [Light](https://github.com/nisrulz/sensey/wiki/Usage#light)
     + onDark
     + onLight
- 1. Orientation
+ 1. [Orientation](https://github.com/nisrulz/sensey/wiki/Usage#orientation)
     + onTopSideUp
     + onBottomSideUp
     + onLeftSideUp
     + onRightSideUp
- 1. PinchScale
+ 1. [PinchScale](https://github.com/nisrulz/sensey/wiki/Usage#pinchscale)
     + OnScale
     + OnScaleStart
     + OnScaleEnd
- 1. Proximity
+ 1. [Proximity](https://github.com/nisrulz/sensey/wiki/Usage#proximity)
     + onNear
     + onFar
- 1. Shake
- 1. TouchType
+ 1. [Shake](https://github.com/nisrulz/sensey/wiki/Usage#shake)
+ 1. [TouchType](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)
     + onDoubleTap
     + onScroll(direction)
     + onSingleTap
@@ -87,7 +87,7 @@ Sensey.getInstance().init(context);
   Sensey.getInstance().stopShakeDetection(shakeListener);
   ```
 
-### <center> :page_with_curl: For more info , check the **[Wiki Docs](https://github.com/nisrulz/sensey/wiki)** </center>
+### <center> :page_with_curl: For more info , check the **[Wiki Docs](https://github.com/nisrulz/sensey/wiki/Usage)** </center>
 
 # Pull Requests
 I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request. Here are some basic rules to follow to ensure timely addition of your request:
