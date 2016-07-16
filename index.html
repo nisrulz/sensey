@@ -1,34 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <title>Sensey by nisrulz</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>Sensey by nisrulz</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
+    <div class="wrapper">
+      <header>
         <h1>Sensey</h1>
-        <h2>Android library to make detecting gestures easy</h2>
-        <a href="https://github.com/nisrulz/sensey" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
-
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>
+        <p>Android library to make detecting gestures easy</p>
+        <p class="view"><a href="https://github.com/nisrulz/sensey">View the Project on GitHub <small>nisrulz/sensey</small></a></p>
+        <ul>
+          <li><a href="https://github.com/nisrulz/sensey/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/nisrulz/sensey/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/nisrulz/sensey">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>
 <a id="specs" class="anchor" href="#specs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specs</h3>
 
 <p><a href="https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg" alt="Maven Central"></a> <a href="https://android-arsenal.com/api?level=9"><img src="https://img.shields.io/badge/API-9%2B-orange.svg?style=flat" alt="API"></a> <a href="http://www.methodscount.com/?lib=com.github.nisrulz%3Asensey%3A1.4.0"><img src="https://img.shields.io/badge/Size-15%20KB-e91e63.svg"></a> </p>
@@ -73,23 +72,16 @@
 <h1>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
 
-<p>The way listeners are passed,registered and unregistered has been changed since version <code>1.4.0</code>.</p>
-
-<ul>
-<li>Initialize Sensey under your onCreate() in the activity/service</li>
-</ul>
+<h2>
+<a id="initialize-sensey-under-your-oncreate-in-the-activityservice" class="anchor" href="#initialize-sensey-under-your-oncreate-in-the-activityservice" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Initialize Sensey under your onCreate() in the activity/service</h2>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>init(context);</pre></div>
 
-<h2></h2>
+<h2>
+<a id="next-to-enable-detection-for" class="anchor" href="#next-to-enable-detection-for" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Next to enable detection for</h2>
 
-<ul>
-<li>
-<p>Next to enable detection for</p>
-
-<ul>
-<li>
-<p>Shake</p>
+<h3>
+<a id="shake" class="anchor" href="#shake" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Shake</h3>
 
 <ul>
 <li>Create an instance of ShakeListener</li>
@@ -109,16 +101,16 @@
 
 <p>If you want to modify the <code>threshold</code> , pass an <code>int</code> as value</p>
 
-<div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>startShakeDetection(shakeListener);</pre></div>
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>startShakeDetection(threshold,shakeListener);</pre></div>
 
 <ul>
 <li>To stop listening for Shake gesture, pass the instance <code>shakeListener</code> to <code>stopShakeDetection()</code> function</li>
 </ul>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopShakeDetection(shakeListener);</pre></div>
-</li>
-<li>
-<p>Flip</p>
+
+<h3>
+<a id="flip" class="anchor" href="#flip" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Flip</h3>
 
 <ul>
 <li>Create an instance of FlipListener</li>
@@ -145,9 +137,9 @@
 </ul>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopFlipDetection(flipListener);</pre></div>
-</li>
-<li>
-<p>Orientation</p>
+
+<h3>
+<a id="orientation" class="anchor" href="#orientation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Orientation</h3>
 
 <ul>
 <li>Create an instance of OrientationListener</li>
@@ -182,9 +174,9 @@
 </ul>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopOrientationDetection(orientationListener);</pre></div>
-</li>
-<li>
-<p>Proximity</p>
+
+<h3>
+<a id="proximity" class="anchor" href="#proximity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Proximity</h3>
 
 <ul>
 <li>Create an instance of ProximityListener</li>
@@ -211,9 +203,9 @@
 </ul>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopProximityDetection(proximityListener);</pre></div>
-</li>
-<li>
-<p>Light</p>
+
+<h3>
+<a id="light" class="anchor" href="#light" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Light</h3>
 
 <ul>
 <li>Create an instance of LightListener</li>
@@ -240,26 +232,20 @@
 </ul>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopLightDetection(lightListener);</pre></div>
-</li>
-</ul>
-</li>
-</ul>
 
 <h3>
 <a id="for-touch-based-gestures" class="anchor" href="#for-touch-based-gestures" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>For Touch based gestures</h3>
 
-<p><strong>IMPORTANT</strong>* : Implement this to intercept touch actions in activity by overriding the <code>dispatchTouchEvent</code>.</p>
+<p><strong><em>IMPORTANT</em></strong> : Implement this to intercept touch actions in activity by overriding the <code>dispatchTouchEvent</code>.</p>
 
 <div class="highlight highlight-source-java"><pre> @<span class="pl-smi">Override</span> <span class="pl-k">public</span> <span class="pl-k">boolean</span> dispatchTouchEvent(<span class="pl-smi">MotionEvent</span> event) {
     <span class="pl-c">// Setup onTouchEvent for detecting type of touch gesture</span>
     <span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>setupDispatchTouchEvent(event);
     <span class="pl-k">return</span> <span class="pl-v">super</span><span class="pl-k">.</span>dispatchTouchEvent(event);
- }
-</pre></div>
+ }</pre></div>
 
-<ul>
-<li>
-<p>PinchScale</p>
+<h3>
+<a id="pinchscale" class="anchor" href="#pinchscale" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PinchScale</h3>
 
 <ul>
 <li>Create an instance of PinchScaleListener</li>
@@ -294,9 +280,13 @@
 </ul>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopPinchScaleDetection();</pre></div>
-</li>
-<li>
-<p>TouchType</p>
+
+<blockquote>
+<p>Don't forget to implement <code>dispatchTouchEvent()</code> as explained <a href="https://github.com/nisrulz/sensey/wiki/Usage#for-touch-based-gestures">here</a></p>
+</blockquote>
+
+<h3>
+<a id="touchtype" class="anchor" href="#touchtype" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TouchType</h3>
 
 <ul>
 <li>Create an instance of TouchTypListener</li>
@@ -375,8 +365,10 @@
 </ul>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>stopTouchTypeDetection();</pre></div>
-</li>
-</ul>
+
+<blockquote>
+<p>Don't forget to implement <code>dispatchTouchEvent()</code> as explained <a href="https://github.com/nisrulz/sensey/wiki/Usage#for-touch-based-gestures">here</a></p>
+</blockquote>
 
 <h1>
 <a id="pull-requests" class="anchor" href="#pull-requests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pull Requests</h1>
@@ -415,25 +407,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 </code></pre>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/nisrulz/sensey/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/nisrulz/sensey/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/nisrulz/sensey"></a> is maintained by <a href="https://github.com/nisrulz">nisrulz</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
     </div>
-
-  
+    <footer>
+      <p>Project maintained by <a href="https://github.com/nisrulz">nisrulz</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
   </body>
 </html>
