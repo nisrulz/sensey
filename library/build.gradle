@@ -19,7 +19,7 @@ apply plugin: 'com.android.library'
 
 android {
   compileSdkVersion 24
-  buildToolsVersion '24.0.0'
+  buildToolsVersion '24.0.1'
 
   defaultConfig {
     minSdkVersion 9
@@ -44,10 +44,10 @@ dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
 
   testCompile 'junit:junit:4.12'
-  testCompile 'org.mockito:mockito-core:2.0.69-beta'
-  testCompile "org.robolectric:robolectric:3.1"
+  testCompile 'org.mockito:mockito-core:2.0.94-beta'
+  testCompile "org.robolectric:robolectric:3.1.2"
 
-  provided 'com.android.support:support-v4:24.0.0'
+  provided 'com.android.support:support-v4:24.1.1'
 }
 
 // Place this in the 'build.gradle' of the library module
