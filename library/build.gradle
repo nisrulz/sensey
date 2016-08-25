@@ -47,7 +47,7 @@ dependencies {
   testCompile 'org.mockito:mockito-core:2.0.94-beta'
   testCompile "org.robolectric:robolectric:3.1.2"
 
-  provided 'com.android.support:support-v4:24.1.1'
+  provided 'com.android.support:support-compat:24.2.0'
 }
 
 // Place this in the 'build.gradle' of the library module
