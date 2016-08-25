@@ -16,7 +16,6 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.media.ExifInterface;
@@ -33,10 +32,8 @@ public class OrientationDetector extends SensorDetector {
   private static final int ORIENTATION_LANDSCAPE_REVERSE = ExifInterface.ORIENTATION_ROTATE_180;// 3
   private static final int ORIENTATION_LANDSCAPE = ExifInterface.ORIENTATION_NORMAL; // 1
   private static final int ORIENTATION_PORTRAIT_REVERSE = ExifInterface.ORIENTATION_ROTATE_270; // 8
-
-  private final int smoothness;
   final OrientationListener orientationListener;
-
+  private final int smoothness;
   private final float[] pitches;
   private final float[] rolls;
   /**
@@ -54,7 +51,8 @@ public class OrientationDetector extends SensorDetector {
   /**
    * Instantiates a new Orientation detector.
    *
-   * @param orientationListener the orientation listener
+   * @param orientationListener
+   *     the orientation listener
    */
   public OrientationDetector(OrientationListener orientationListener) {
     this(1, orientationListener);
@@ -63,8 +61,10 @@ public class OrientationDetector extends SensorDetector {
   /**
    * Instantiates a new Orientation detector.
    *
-   * @param smoothness the smoothness
-   * @param orientationListener the orientation listener
+   * @param smoothness
+   *     the smoothness
+   * @param orientationListener
+   *     the orientation listener
    */
   public OrientationDetector(int smoothness, OrientationListener orientationListener) {
     super(TYPE_ACCELEROMETER, TYPE_MAGNETIC_FIELD);
@@ -75,7 +75,8 @@ public class OrientationDetector extends SensorDetector {
     rolls = new float[smoothness];
   }
 
-  @Override protected void onSensorEvent(SensorEvent event) {
+  @Override
+  protected void onSensorEvent(SensorEvent event) {
     if (event.sensor.getType() == TYPE_ACCELEROMETER) {
       mGravity = event.values;
     }
@@ -132,21 +133,26 @@ public class OrientationDetector extends SensorDetector {
             && averageRoll < 30)) {
       if (averagePitch > 0) {
         return ORIENTATION_PORTRAIT_REVERSE;
-      } else {
+      }
+      else {
         return ORIENTATION_PORTRAIT;
       }
-    } else {
+    }
+    else {
       // divides between all orientations
       if (Math.abs(averagePitch) >= 30) {
         if (averagePitch > 0) {
           return ORIENTATION_PORTRAIT_REVERSE;
-        } else {
+        }
+        else {
           return ORIENTATION_PORTRAIT;
         }
-      } else {
+      }
+      else {
         if (averageRoll > 0) {
           return ORIENTATION_LANDSCAPE_REVERSE;
-        } else {
+        }
+        else {
           return ORIENTATION_LANDSCAPE;
         }
       }

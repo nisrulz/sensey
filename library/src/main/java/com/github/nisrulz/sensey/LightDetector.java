@@ -16,7 +16,6 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 
 import static android.hardware.Sensor.TYPE_LIGHT;
@@ -32,7 +31,8 @@ public class LightDetector extends SensorDetector {
   /**
    * Instantiates a new Light detector.
    *
-   * @param lightListener the light listener
+   * @param lightListener
+   *     the light listener
    */
   public LightDetector(LightListener lightListener) {
     this(3f, lightListener);
@@ -41,8 +41,10 @@ public class LightDetector extends SensorDetector {
   /**
    * Instantiates a new Light detector.
    *
-   * @param threshold the threshold
-   * @param lightListener the light listener
+   * @param threshold
+   *     the threshold
+   * @param lightListener
+   *     the light listener
    */
   public LightDetector(float threshold, LightListener lightListener) {
     super(TYPE_LIGHT);
@@ -50,12 +52,14 @@ public class LightDetector extends SensorDetector {
     this.lightListener = lightListener;
   }
 
-  @Override protected void onSensorEvent(SensorEvent sensorEvent) {
+  @Override
+  protected void onSensorEvent(SensorEvent sensorEvent) {
     float lux = sensorEvent.values[0];
     if (lux < threshold) {
       // Dark
       lightListener.onDark();
-    } else {
+    }
+    else {
       // Not Dark
       lightListener.onLight();
     }

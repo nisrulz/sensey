@@ -12,23 +12,23 @@ import static com.github.nisrulz.sensey.SensorUtils.testSensorEvent;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class) public class ProximityDetectorTest {
+@RunWith(MockitoJUnitRunner.class)
+public class ProximityDetectorTest {
 
   @Mock private ProximityListener mockListener;
 
-  @Test public void detectOnNearWithLuxLessThanDefaultThreshold() {
+  @Test
+  public void detectOnNearWithLuxLessThanDefaultThreshold() {
     testDetector().onSensorChanged(testProximityEvent(new float[] { 1 }));
     verify(mockListener, only()).onNear();
   }
 
-  @Test public void detectOnFarWithLuxMoreThanDefaultThreshold() {
-    testDetector().onSensorChanged(testProximityEvent(new float[] { 10 }));
-    verify(mockListener, only()).onFar();
+  private ProximityDetector testDetector() {
+    return new ProximityDetector(mockListener);
   }
 
-  @Test public void detectOnFarWithLuxEqualsToDefaultThreshold() {
-    testDetector().onSensorChanged(testProximityEvent(new float[] { 3 }));
-    verify(mockListener, only()).onFar();
+  private SensorEvent testProximityEvent(float[] values) {
+    return testSensorEvent(values, Sensor.TYPE_PROXIMITY);
   }
 
   //    @Test
@@ -49,25 +49,30 @@ import static org.mockito.Mockito.verify;
   //        verify(mockListener, only()).onFar();
   //    }
 
-  @Test public void detectOnFarWithExtraValues() {
-    testDetector().onSensorChanged(
-        testProximityEvent(new float[] { 10, 0, 43, 3, -423 }));
+  @Test
+  public void detectOnFarWithLuxMoreThanDefaultThreshold() {
+    testDetector().onSensorChanged(testProximityEvent(new float[] { 10 }));
     verify(mockListener, only()).onFar();
   }
 
-  @Test(expected = ArrayIndexOutOfBoundsException.class) public void exceptionWithEmptyValues() {
-    testDetector().onSensorChanged(testProximityEvent(new float[] {}));
+  @Test
+  public void detectOnFarWithLuxEqualsToDefaultThreshold() {
+    testDetector().onSensorChanged(testProximityEvent(new float[] { 3 }));
+    verify(mockListener, only()).onFar();
   }
 
-  private ProximityDetector testDetector() {
-    return new ProximityDetector(mockListener);
+  @Test
+  public void detectOnFarWithExtraValues() {
+    testDetector().onSensorChanged(testProximityEvent(new float[] { 10, 0, 43, 3, -423 }));
+    verify(mockListener, only()).onFar();
   }
 
   //    private ProximityDetector testDetector(float threshold) {
   //        return new ProximityDetector(threshold, mockListener);
   //    }
 
-  private SensorEvent testProximityEvent(float[] values) {
-    return testSensorEvent(values, Sensor.TYPE_PROXIMITY);
+  @Test(expected = ArrayIndexOutOfBoundsException.class)
+  public void exceptionWithEmptyValues() {
+    testDetector().onSensorChanged(testProximityEvent(new float[] {}));
   }
 }

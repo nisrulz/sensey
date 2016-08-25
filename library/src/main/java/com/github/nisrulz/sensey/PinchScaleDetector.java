@@ -15,8 +15,10 @@ public class PinchScaleDetector {
   /**
    * Instantiates a new Pinch scale detector.
    *
-   * @param context the context
-   * @param pinchScaleListener the pinch scale listener
+   * @param context
+   *     the context
+   * @param pinchScaleListener
+   *     the pinch scale listener
    */
   public PinchScaleDetector(Context context, PinchScaleListener pinchScaleListener) {
     scaleGestureDetector = new ScaleGestureDetector(context, new ScaleGestureListener());
@@ -26,7 +28,8 @@ public class PinchScaleDetector {
   /**
    * On touch event boolean.
    *
-   * @param e the e
+   * @param e
+   *     the e
    * @return the boolean
    */
   boolean onTouchEvent(MotionEvent e) {
@@ -40,45 +43,53 @@ public class PinchScaleDetector {
     /**
      * On scale.
      *
-     * @param scaleGestureDetector the scale gesture detector
-     * @param isScalingOut the is scaling out
+     * @param scaleGestureDetector
+     *     the scale gesture detector
+     * @param isScalingOut
+     *     the is scaling out
      */
     void onScale(ScaleGestureDetector scaleGestureDetector, boolean isScalingOut);
 
     /**
      * On scale start.
      *
-     * @param scaleGestureDetector the scale gesture detector
+     * @param scaleGestureDetector
+     *     the scale gesture detector
      */
     void onScaleStart(ScaleGestureDetector scaleGestureDetector);
 
     /**
      * On scale end.
      *
-     * @param scaleGestureDetector the scale gesture detector
+     * @param scaleGestureDetector
+     *     the scale gesture detector
      */
     void onScaleEnd(ScaleGestureDetector scaleGestureDetector);
   }
 
   private class ScaleGestureListener implements ScaleGestureDetector.OnScaleGestureListener {
 
-    @Override public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+    @Override
+    public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
 
       float scaleFactor = scaleGestureDetector.getScaleFactor();
       if (scaleFactor > 1) {
         pinchScaleListener.onScale(scaleGestureDetector, true);
-      } else {
+      }
+      else {
         pinchScaleListener.onScale(scaleGestureDetector, false);
       }
       return true;
     }
 
-    @Override public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+    @Override
+    public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
       pinchScaleListener.onScaleStart(scaleGestureDetector);
       return true;
     }
 
-    @Override public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+    @Override
+    public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
       pinchScaleListener.onScaleEnd(scaleGestureDetector);
     }
   }

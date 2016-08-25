@@ -16,7 +16,6 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 
@@ -35,7 +34,8 @@ public class ShakeDetector extends SensorDetector {
   /**
    * Instantiates a new Shake detector.
    *
-   * @param shakeListener the shake listener
+   * @param shakeListener
+   *     the shake listener
    */
   public ShakeDetector(ShakeListener shakeListener) {
     this(3f, shakeListener);
@@ -44,8 +44,10 @@ public class ShakeDetector extends SensorDetector {
   /**
    * Instantiates a new Shake detector.
    *
-   * @param threshold the threshold
-   * @param shakeListener the shake listener
+   * @param threshold
+   *     the threshold
+   * @param shakeListener
+   *     the shake listener
    */
   public ShakeDetector(float threshold, ShakeListener shakeListener) {
     super(TYPE_ACCELEROMETER);
@@ -53,7 +55,8 @@ public class ShakeDetector extends SensorDetector {
     this.threshold = threshold;
   }
 
-  @Override protected void onSensorEvent(SensorEvent sensorEvent) {
+  @Override
+  protected void onSensorEvent(SensorEvent sensorEvent) {
     // Shake detection
     float x = sensorEvent.values[0];
     float y = sensorEvent.values[1];

@@ -16,12 +16,12 @@
   -->
 
 <resources>
-    <color name="primary">#35518C</color>
-    <color name="primary_dark">#2B4374</color>
-    <color name="primary_light">#D1C4E9</color>
-    <color name="accent">#FF9800</color>
-    <color name="primary_text">#292929</color>
-    <color name="secondary_text">#727272</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="divider">#B6B6B6</color>
+  <color name="primary">#35518C</color>
+  <color name="primary_dark">#2B4374</color>
+  <color name="primary_light">#D1C4E9</color>
+  <color name="accent">#FF9800</color>
+  <color name="primary_text">#292929</color>
+  <color name="secondary_text">#727272</color>
+  <color name="icons">#FFFFFF</color>
+  <color name="divider">#B6B6B6</color>
 </resources>

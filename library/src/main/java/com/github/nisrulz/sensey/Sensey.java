@@ -20,13 +20,11 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.view.MotionEvent;
-
 import com.github.nisrulz.sensey.FlipDetector.FlipListener;
 import com.github.nisrulz.sensey.LightDetector.LightListener;
 import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
 import com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
 import com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,8 +34,6 @@ import java.util.Map;
  * The type Sensey.
  */
 public class Sensey {
-
-  private SensorManager sensorManager;
 
   /**
    * Map from any of default listeners (
@@ -53,7 +49,7 @@ public class Sensey {
    * passes task to hold reference of {@link SensorDetector sensorDetector} to the client
    */
   private final Map<Object, SensorDetector> defaultSensorsMap = new HashMap<>();
-
+  private SensorManager sensorManager;
   private TouchTypeDetector touchTypeDetector;
   private PinchScaleDetector pinchScaleDetector;
   private Context context;
@@ -73,7 +69,8 @@ public class Sensey {
   /**
    * Init.
    *
-   * @param context the context
+   * @param context
+   *     the context
    */
   public void init(Context context) {
     sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
@@ -83,124 +80,11 @@ public class Sensey {
   /**
    * Start shake detection.
    *
-   * @param shakeListener the shake listener
+   * @param shakeListener
+   *     the shake listener
    */
   public void startShakeDetection(ShakeListener shakeListener) {
     startLibrarySensorDetection(new ShakeDetector(shakeListener), shakeListener);
-  }
-
-  /**
-   * Start shake detection.
-   *
-   * @param threshold the threshold
-   * @param shakeListener the shake listener
-   */
-  public void startShakeDetection(int threshold, ShakeListener shakeListener) {
-    startLibrarySensorDetection(new ShakeDetector(threshold, shakeListener), shakeListener);
-  }
-
-  /**
-   * Stop shake detection.
-   */
-  public void stopShakeDetection(ShakeListener shakeListener) {
-    stopLibrarySensorDetection(shakeListener);
-  }
-
-  /**
-   * Start light detection.
-   *
-   * @param lightListener the light listener
-   */
-  public void startLightDetection(LightListener lightListener) {
-    startLibrarySensorDetection(new LightDetector(lightListener), lightListener);
-  }
-
-  /**
-   * Start light detection.
-   *
-   * @param threshold the threshold
-   * @param lightListener the light listener
-   */
-  public void startLightDetection(int threshold, LightListener lightListener) {
-    startLibrarySensorDetection(new LightDetector(threshold, lightListener), lightListener);
-  }
-
-  /**
-   * Stop light detection.
-   */
-  public void stopLightDetection(LightListener lightListener) {
-    stopLibrarySensorDetection(lightListener);
-  }
-
-  /**
-   * Start flip detection.
-   *
-   * @param flipListener the flip listener
-   */
-  public void startFlipDetection(FlipListener flipListener) {
-    startLibrarySensorDetection(new FlipDetector(flipListener), flipListener);
-  }
-
-  /**
-   * Stop flip detection.
-   */
-  public void stopFlipDetection(FlipListener flipListener) {
-    stopLibrarySensorDetection(flipListener);
-  }
-
-  /**
-   * Start orientation detection.
-   *
-   * @param orientationListener the orientation listener
-   */
-  public void startOrientationDetection(
-      OrientationListener orientationListener) {
-    startLibrarySensorDetection(new OrientationDetector(orientationListener), orientationListener);
-  }
-
-  /**
-   * Start orientation detection.
-   *
-   * @param smoothness the smoothness
-   * @param orientationListener the orientation listener
-   */
-  public void startOrientationDetection(int smoothness,
-      OrientationListener orientationListener) {
-    startLibrarySensorDetection(new OrientationDetector(smoothness, orientationListener), orientationListener);
-  }
-
-  /**
-   * Stop orientation detection.
-   */
-  public void stopOrientationDetection(OrientationListener orientationListener) {
-    stopLibrarySensorDetection(orientationListener);
-  }
-
-  /**
-   * Start proximity detection.
-   *
-   * @param proximityListener the proximity listener
-   */
-  public void startProximityDetection(ProximityListener proximityListener) {
-    startLibrarySensorDetection(new ProximityDetector(proximityListener), proximityListener);
-  }
-
-  /**
-   * Start proximity detection.
-   *
-   * @param threshold the threshold
-   * @param proximityListener the proximity listener
-   */
-  public void startProximityDetection(float threshold,
-      ProximityListener proximityListener) {
-    startLibrarySensorDetection(new ProximityDetector(threshold, proximityListener), proximityListener);
-  }
-
-  /**
-   * Stop proximity detection.
-   */
-  public void stopProximityDetection(ProximityListener proximityListener) {
-    stopLibrarySensorDetection(proximityListener);
   }
 
   private void startLibrarySensorDetection(SensorDetector detector, Object clientListener) {
@@ -210,31 +94,16 @@ public class Sensey {
     }
   }
 
-  private void stopLibrarySensorDetection(Object clientListener) {
-    SensorDetector detector = defaultSensorsMap.remove(clientListener);
-    stopSensorDetection(detector);
-  }
-
   /**
    * Start sensor detection.
    *
-   * @param detector the detector
+   * @param detector
+   *     the detector
    */
   public void startSensorDetection(SensorDetector detector) {
     final Iterable<Sensor> sensors = convertTypesToSensors(detector.getSensorTypes());
     if (areAllSensorsValid(sensors)) {
       registerDetectorForAllSensors(detector, sensors);
-    }
-  }
-
-  /**
-   * Stop sensor detection.
-   *
-   * @param detector the detector
-   */
-  public void stopSensorDetection(SensorDetector detector) {
-    if (detector != null) {
-      sensorManager.unregisterListener(detector);
     }
   }
 
@@ -263,9 +132,152 @@ public class Sensey {
   }
 
   /**
+   * Start shake detection.
+   *
+   * @param threshold
+   *     the threshold
+   * @param shakeListener
+   *     the shake listener
+   */
+  public void startShakeDetection(int threshold, ShakeListener shakeListener) {
+    startLibrarySensorDetection(new ShakeDetector(threshold, shakeListener), shakeListener);
+  }
+
+  /**
+   * Stop shake detection.
+   */
+  public void stopShakeDetection(ShakeListener shakeListener) {
+    stopLibrarySensorDetection(shakeListener);
+  }
+
+  private void stopLibrarySensorDetection(Object clientListener) {
+    SensorDetector detector = defaultSensorsMap.remove(clientListener);
+    stopSensorDetection(detector);
+  }
+
+  /**
+   * Stop sensor detection.
+   *
+   * @param detector
+   *     the detector
+   */
+  public void stopSensorDetection(SensorDetector detector) {
+    if (detector != null) {
+      sensorManager.unregisterListener(detector);
+    }
+  }
+
+  /**
+   * Start light detection.
+   *
+   * @param lightListener
+   *     the light listener
+   */
+  public void startLightDetection(LightListener lightListener) {
+    startLibrarySensorDetection(new LightDetector(lightListener), lightListener);
+  }
+
+  /**
+   * Start light detection.
+   *
+   * @param threshold
+   *     the threshold
+   * @param lightListener
+   *     the light listener
+   */
+  public void startLightDetection(int threshold, LightListener lightListener) {
+    startLibrarySensorDetection(new LightDetector(threshold, lightListener), lightListener);
+  }
+
+  /**
+   * Stop light detection.
+   */
+  public void stopLightDetection(LightListener lightListener) {
+    stopLibrarySensorDetection(lightListener);
+  }
+
+  /**
+   * Start flip detection.
+   *
+   * @param flipListener
+   *     the flip listener
+   */
+  public void startFlipDetection(FlipListener flipListener) {
+    startLibrarySensorDetection(new FlipDetector(flipListener), flipListener);
+  }
+
+  /**
+   * Stop flip detection.
+   */
+  public void stopFlipDetection(FlipListener flipListener) {
+    stopLibrarySensorDetection(flipListener);
+  }
+
+  /**
+   * Start orientation detection.
+   *
+   * @param orientationListener
+   *     the orientation listener
+   */
+  public void startOrientationDetection(OrientationListener orientationListener) {
+    startLibrarySensorDetection(new OrientationDetector(orientationListener), orientationListener);
+  }
+
+  /**
+   * Start orientation detection.
+   *
+   * @param smoothness
+   *     the smoothness
+   * @param orientationListener
+   *     the orientation listener
+   */
+  public void startOrientationDetection(int smoothness, OrientationListener orientationListener) {
+    startLibrarySensorDetection(new OrientationDetector(smoothness, orientationListener),
+        orientationListener);
+  }
+
+  /**
+   * Stop orientation detection.
+   */
+  public void stopOrientationDetection(OrientationListener orientationListener) {
+    stopLibrarySensorDetection(orientationListener);
+  }
+
+  /**
+   * Start proximity detection.
+   *
+   * @param proximityListener
+   *     the proximity listener
+   */
+  public void startProximityDetection(ProximityListener proximityListener) {
+    startLibrarySensorDetection(new ProximityDetector(proximityListener), proximityListener);
+  }
+
+  /**
+   * Start proximity detection.
+   *
+   * @param threshold
+   *     the threshold
+   * @param proximityListener
+   *     the proximity listener
+   */
+  public void startProximityDetection(float threshold, ProximityListener proximityListener) {
+    startLibrarySensorDetection(new ProximityDetector(threshold, proximityListener),
+        proximityListener);
+  }
+
+  /**
+   * Stop proximity detection.
+   */
+  public void stopProximityDetection(ProximityListener proximityListener) {
+    stopLibrarySensorDetection(proximityListener);
+  }
+
+  /**
    * Start pinch scale detection.
    *
-   * @param pinchScaleListener the pinch scale listener
+   * @param pinchScaleListener
+   *     the pinch scale listener
    */
   public void startPinchScaleDetection(PinchScaleDetector.PinchScaleListener pinchScaleListener) {
     if (pinchScaleListener != null) {
@@ -283,7 +295,8 @@ public class Sensey {
   /**
    * Start touch type detection.
    *
-   * @param touchTypListener the touch typ listener
+   * @param touchTypListener
+   *     the touch typ listener
    */
   public void startTouchTypeDetection(TouchTypeDetector.TouchTypListener touchTypListener) {
     if (touchTypListener != null) {
@@ -301,7 +314,8 @@ public class Sensey {
   /**
    * Sets dispatch touch event.
    *
-   * @param event the event
+   * @param event
+   *     the event
    */
   public void setupDispatchTouchEvent(MotionEvent event) {
     if (touchTypeDetector != null) {

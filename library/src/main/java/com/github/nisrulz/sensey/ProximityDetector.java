@@ -16,7 +16,6 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 
 import static android.hardware.Sensor.TYPE_PROXIMITY;
@@ -26,13 +25,14 @@ import static android.hardware.Sensor.TYPE_PROXIMITY;
  */
 public class ProximityDetector extends SensorDetector {
 
-  private final float threshold;
   final ProximityListener proximityListener;
+  private final float threshold;
 
   /**
    * Instantiates a new Proximity detector.
    *
-   * @param proximityListener the proximity listener
+   * @param proximityListener
+   *     the proximity listener
    */
   public ProximityDetector(ProximityListener proximityListener) {
     this(3f, proximityListener);
@@ -41,8 +41,10 @@ public class ProximityDetector extends SensorDetector {
   /**
    * Instantiates a new Proximity detector.
    *
-   * @param threshold the threshold
-   * @param proximityListener the proximity listener
+   * @param threshold
+   *     the threshold
+   * @param proximityListener
+   *     the proximity listener
    */
   public ProximityDetector(float threshold, ProximityListener proximityListener) {
     super(TYPE_PROXIMITY);
@@ -50,11 +52,13 @@ public class ProximityDetector extends SensorDetector {
     this.threshold = threshold;
   }
 
-  @Override protected void onSensorEvent(SensorEvent sensorEvent) {
+  @Override
+  protected void onSensorEvent(SensorEvent sensorEvent) {
     float distance = sensorEvent.values[0];
     if (distance < threshold) {
       proximityListener.onNear();
-    } else {
+    }
+    else {
       proximityListener.onFar();
     }
   }

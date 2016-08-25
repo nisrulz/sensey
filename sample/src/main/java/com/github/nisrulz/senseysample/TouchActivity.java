@@ -39,7 +39,8 @@ public class TouchActivity extends AppCompatActivity
   private SwitchCompat swt7;
   private TextView txtResult;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_touch);
 
@@ -57,19 +58,22 @@ public class TouchActivity extends AppCompatActivity
     swt7.setChecked(false);
   }
 
-  @Override public void onCheckedChanged(final CompoundButton switchbtn, boolean isChecked) {
+  @Override
+  public void onCheckedChanged(final CompoundButton switchbtn, boolean isChecked) {
     switch (switchbtn.getId()) {
       case R.id.Switch6:
         if (isChecked) {
           startTouchTypeDetection();
-        } else {
+        }
+        else {
           Sensey.getInstance().stopTouchTypeDetection();
         }
         break;
       case R.id.Switch7:
         if (isChecked) {
           startPinchDetection();
-        } else {
+        }
+        else {
           Sensey.getInstance().stopPinchScaleDetection();
         }
         break;
@@ -80,13 +84,15 @@ public class TouchActivity extends AppCompatActivity
     }
   }
 
-  @Override public boolean dispatchTouchEvent(MotionEvent event) {
+  @Override
+  public boolean dispatchTouchEvent(MotionEvent event) {
     // Setup onTouchEvent for detecting type of touch gesture
     Sensey.getInstance().setupDispatchTouchEvent(event);
     return super.dispatchTouchEvent(event);
   }
 
-  @Override protected void onPause() {
+  @Override
+  protected void onPause() {
     super.onPause();
 
     Sensey.getInstance().stopTouchTypeDetection();
@@ -106,7 +112,8 @@ public class TouchActivity extends AppCompatActivity
   private void resetResultInView(final TextView txt) {
     Handler handler = new Handler();
     handler.postDelayed(new Runnable() {
-      @Override public void run() {
+      @Override
+      public void run() {
         txt.setText("..Results show here...");
       }
     }, 3000);
@@ -118,16 +125,19 @@ public class TouchActivity extends AppCompatActivity
       public void onScale(ScaleGestureDetector scaleGestureDetector, boolean isScalingOut) {
         if (isScalingOut) {
           setResultTextView("Scaling Out");
-        } else {
+        }
+        else {
           setResultTextView("Scaling In");
         }
       }
 
-      @Override public void onScaleStart(ScaleGestureDetector scaleGestureDetector) {
+      @Override
+      public void onScaleStart(ScaleGestureDetector scaleGestureDetector) {
         setResultTextView("Scaling : Started");
       }
 
-      @Override public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+      @Override
+      public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
         setResultTextView("Scaling : Stopped");
       }
     });
@@ -135,19 +145,23 @@ public class TouchActivity extends AppCompatActivity
 
   private void startTouchTypeDetection() {
     Sensey.getInstance().startTouchTypeDetection(new TouchTypeDetector.TouchTypListener() {
-      @Override public void onTwoFingerSingleTap() {
+      @Override
+      public void onTwoFingerSingleTap() {
         setResultTextView("Two Finger Tap");
       }
 
-      @Override public void onThreeFingerSingleTap() {
+      @Override
+      public void onThreeFingerSingleTap() {
         setResultTextView("Three Finger Tap");
       }
 
-      @Override public void onDoubleTap() {
+      @Override
+      public void onDoubleTap() {
         setResultTextView("Double Tap");
       }
 
-      @Override public void onScroll(int scrollDirection) {
+      @Override
+      public void onScroll(int scrollDirection) {
         switch (scrollDirection) {
           case TouchTypeDetector.SCROLL_DIR_UP:
             setResultTextView("Scrolling Up");
@@ -167,11 +181,13 @@ public class TouchActivity extends AppCompatActivity
         }
       }
 
-      @Override public void onSingleTap() {
+      @Override
+      public void onSingleTap() {
         setResultTextView("Single Tap");
       }
 
-      @Override public void onSwipe(int swipeDirection) {
+      @Override
+      public void onSwipe(int swipeDirection) {
         switch (swipeDirection) {
           case TouchTypeDetector.SWIPE_DIR_UP:
             setResultTextView("Swipe Up");
@@ -191,7 +207,8 @@ public class TouchActivity extends AppCompatActivity
         }
       }
 
-      @Override public void onLongPress() {
+      @Override
+      public void onLongPress() {
         setResultTextView("Long press");
       }
     });

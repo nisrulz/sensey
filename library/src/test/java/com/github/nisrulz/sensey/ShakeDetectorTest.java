@@ -12,72 +12,69 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@RunWith(MockitoJUnitRunner.class) public class ShakeDetectorTest {
+@RunWith(MockitoJUnitRunner.class)
+public class ShakeDetectorTest {
 
   @Mock private ShakeListener mockListener;
 
-  @Test public void detectNothingWithZeroGravity() {
-    testDetector().onSensorChanged(
-        testAccelerometerEvent(new float[] { 0, 0, 0 }));
+  @Test
+  public void detectNothingWithZeroGravity() {
+    testDetector().onSensorChanged(testAccelerometerEvent(new float[] { 0, 0, 0 }));
     verifyNoMoreInteractions(mockListener);
-  }
-
-  @Test public void detectShakeWithDoubleGravity() {
-    testDetector().onSensorChanged(
-        testAccelerometerEvent(new float[] { 0, 0, 2 * 9.81f }));
-    verify(mockListener, only()).onShakeDetected();
-  }
-
-  @Test public void detectShakeWithSeveralGravitySensors() {
-    ShakeDetector testDetector = testDetector();
-    testDetector.onSensorChanged(
-        testAccelerometerEvent(new float[] { 0, 0, 2 * 9.81f }));
-    testDetector.onSensorChanged(
-        testAccelerometerEvent(new float[] { 0, 0, 2 * -9.81f }));
-    verify(mockListener, times(2)).onShakeDetected();
-  }
-
-  @Test public void detectNothingWithZeroGravityForCustomThreshold() {
-    testDetector(10).onSensorChanged(
-        testAccelerometerEvent(new float[] { 0, 0, 0 }));
-    verifyNoMoreInteractions(mockListener);
-  }
-
-  @Test public void detectShakeWithDoubleGravityForCustomThreshold() {
-    testDetector(9).onSensorChanged(
-        testAccelerometerEvent(new float[] { 0, 0, 2 * 9.81f }));
-    verify(mockListener, only()).onShakeDetected();
-  }
-
-  @Test public void detectShakeWithSeveralGravitySensorsForCustomThreshold() {
-    ShakeDetector testDetector = testDetector(9);
-    testDetector.onSensorChanged(
-        testAccelerometerEvent(new float[] { 0, 0, 2 * 9.81f }));
-    testDetector.onSensorChanged(
-        testAccelerometerEvent(new float[] { 0, 0, 2 * -9.81f }));
-    verify(mockListener, times(1)).onShakeDetected();
-  }
-
-  @Test public void detectShakeWithSeveralStrongGravitySensorsForCustomThreshold() {
-    ShakeDetector testDetector = testDetector(9);
-    testDetector.onSensorChanged(
-        testAccelerometerEvent(new float[] { 0, 0, 2 * 9.81f }));
-    testDetector.onSensorChanged(
-        testAccelerometerEvent(new float[] { 0, 0, 3 * -9.81f }));
-    verify(mockListener, times(2)).onShakeDetected();
-  }
-
-  @Test(expected = ArrayIndexOutOfBoundsException.class)
-  public void exceptionWithLessThanThreeElements() {
-    testDetector().onSensorChanged(
-        testAccelerometerEvent(new float[] { 2, 3 }));
   }
 
   private ShakeDetector testDetector() {
     return new ShakeDetector(mockListener);
   }
 
+  @Test
+  public void detectShakeWithDoubleGravity() {
+    testDetector().onSensorChanged(testAccelerometerEvent(new float[] { 0, 0, 2 * 9.81f }));
+    verify(mockListener, only()).onShakeDetected();
+  }
+
+  @Test
+  public void detectShakeWithSeveralGravitySensors() {
+    ShakeDetector testDetector = testDetector();
+    testDetector.onSensorChanged(testAccelerometerEvent(new float[] { 0, 0, 2 * 9.81f }));
+    testDetector.onSensorChanged(testAccelerometerEvent(new float[] { 0, 0, 2 * -9.81f }));
+    verify(mockListener, times(2)).onShakeDetected();
+  }
+
+  @Test
+  public void detectNothingWithZeroGravityForCustomThreshold() {
+    testDetector(10).onSensorChanged(testAccelerometerEvent(new float[] { 0, 0, 0 }));
+    verifyNoMoreInteractions(mockListener);
+  }
+
   private ShakeDetector testDetector(int threshold) {
     return new ShakeDetector(threshold, mockListener);
+  }
+
+  @Test
+  public void detectShakeWithDoubleGravityForCustomThreshold() {
+    testDetector(9).onSensorChanged(testAccelerometerEvent(new float[] { 0, 0, 2 * 9.81f }));
+    verify(mockListener, only()).onShakeDetected();
+  }
+
+  @Test
+  public void detectShakeWithSeveralGravitySensorsForCustomThreshold() {
+    ShakeDetector testDetector = testDetector(9);
+    testDetector.onSensorChanged(testAccelerometerEvent(new float[] { 0, 0, 2 * 9.81f }));
+    testDetector.onSensorChanged(testAccelerometerEvent(new float[] { 0, 0, 2 * -9.81f }));
+    verify(mockListener, times(1)).onShakeDetected();
+  }
+
+  @Test
+  public void detectShakeWithSeveralStrongGravitySensorsForCustomThreshold() {
+    ShakeDetector testDetector = testDetector(9);
+    testDetector.onSensorChanged(testAccelerometerEvent(new float[] { 0, 0, 2 * 9.81f }));
+    testDetector.onSensorChanged(testAccelerometerEvent(new float[] { 0, 0, 3 * -9.81f }));
+    verify(mockListener, times(2)).onShakeDetected();
+  }
+
+  @Test(expected = ArrayIndexOutOfBoundsException.class)
+  public void exceptionWithLessThanThreeElements() {
+    testDetector().onSensorChanged(testAccelerometerEvent(new float[] { 2, 3 }));
   }
 }

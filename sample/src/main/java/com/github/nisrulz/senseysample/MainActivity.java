@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity
   private SwitchCompat swt5;
   private TextView txtResult;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
@@ -79,26 +80,30 @@ public class MainActivity extends AppCompatActivity
 
     Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
     btnTouchEvent.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
+      @Override
+      public void onClick(View view) {
         startActivity(new Intent(MainActivity.this, TouchActivity.class));
       }
     });
   }
 
-  @Override public void onCheckedChanged(CompoundButton switchbtn, boolean isChecked) {
+  @Override
+  public void onCheckedChanged(CompoundButton switchbtn, boolean isChecked) {
     switch (switchbtn.getId()) {
 
       case R.id.Switch1:
         if (isChecked) {
           Sensey.getInstance().startShakeDetection(10, this);
-        } else {
+        }
+        else {
           Sensey.getInstance().stopShakeDetection(this);
         }
         break;
       case R.id.Switch2:
         if (isChecked) {
           Sensey.getInstance().startFlipDetection(this);
-        } else {
+        }
+        else {
           Sensey.getInstance().stopFlipDetection(this);
         }
 
@@ -106,7 +111,8 @@ public class MainActivity extends AppCompatActivity
       case R.id.Switch3:
         if (isChecked) {
           Sensey.getInstance().startOrientationDetection(this);
-        } else {
+        }
+        else {
           Sensey.getInstance().stopOrientationDetection(this);
         }
 
@@ -114,14 +120,16 @@ public class MainActivity extends AppCompatActivity
       case R.id.Switch4:
         if (isChecked) {
           Sensey.getInstance().startProximityDetection(this);
-        } else {
+        }
+        else {
           Sensey.getInstance().stopProximityDetection(this);
         }
         break;
       case R.id.Switch5:
         if (isChecked) {
           Sensey.getInstance().startLightDetection(10, this);
-        } else {
+        }
+        else {
           Sensey.getInstance().stopLightDetection(this);
         }
         break;
@@ -132,7 +140,8 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  @Override protected void onPause() {
+  @Override
+  protected void onPause() {
     super.onPause();
     // Stop Gesture Detections
     Sensey.getInstance().stopShakeDetection(this);
@@ -142,64 +151,78 @@ public class MainActivity extends AppCompatActivity
     Sensey.getInstance().stopLightDetection(this);
   }
 
+  @Override
+  public void onFaceUp() {
+    setResultTextView("Face UP");
+  }
+
   private void setResultTextView(String text) {
     if (txtResult != null) {
       txtResult.setText(text);
       resetResultInView(txtResult);
-      if (DEBUG) Log.i(LOGTAG, text);
+      if (DEBUG) {
+        Log.i(LOGTAG, text);
+      }
     }
   }
 
   private void resetResultInView(final TextView txt) {
     Handler handler = new Handler();
     handler.postDelayed(new Runnable() {
-      @Override public void run() {
+      @Override
+      public void run() {
         txt.setText("..Results show here...");
       }
     }, 3000);
   }
 
-  @Override public void onFaceUp() {
-    setResultTextView("Face UP");
-  }
-
-  @Override public void onFaceDown() {
+  @Override
+  public void onFaceDown() {
     setResultTextView("Face Down");
   }
 
-  @Override public void onDark() {
+  @Override
+  public void onDark() {
     setResultTextView("Dark");
   }
 
-  @Override public void onLight() {
+  @Override
+  public void onLight() {
     setResultTextView("Not Dark");
   }
 
-  @Override public void onTopSideUp() {
+  @Override
+  public void onTopSideUp() {
     setResultTextView("Topside UP");
   }
 
-  @Override public void onBottomSideUp() {
+  @Override
+  public void onBottomSideUp() {
     setResultTextView("Bottomside UP");
   }
 
-  @Override public void onRightSideUp() {
+  @Override
+  public void onRightSideUp() {
     setResultTextView("Rightside UP");
   }
 
-  @Override public void onLeftSideUp() {
+  @Override
+  public void onLeftSideUp() {
     setResultTextView("Leftside UP");
   }
 
-  @Override public void onNear() {
+  @Override
+  public void onNear() {
     setResultTextView("Near");
   }
 
-  @Override public void onFar() {
+  @Override
+  public void onFar() {
     setResultTextView("Far");
   }
 
-  @Override public void onShakeDetected() {
+  @Override
+  public void onShakeDetected() {
     setResultTextView("Shake Detected!");
   }
 }

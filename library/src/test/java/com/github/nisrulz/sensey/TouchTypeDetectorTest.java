@@ -23,68 +23,79 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@RunWith(RobolectricTestRunner.class) public class TouchTypeDetectorTest {
+@RunWith(RobolectricTestRunner.class)
+public class TouchTypeDetectorTest {
 
   private TouchTypListener mockListener;
   private TouchTypeDetector testTouchTypeDetector;
 
-  @Before public void setUp() {
+  @Before
+  public void setUp() {
     Context context = RuntimeEnvironment.application.getApplicationContext();
     mockListener = mock(TouchTypListener.class);
     testTouchTypeDetector = new TouchTypeDetector(context, mockListener);
   }
 
-  @Test public void detectOnDoubleTap() {
+  @Test
+  public void detectOnDoubleTap() {
     testTouchTypeDetector.gestureListener.onDoubleTap(null);
     verify(mockListener, only()).onDoubleTap();
   }
 
-  @Test public void detectOnDown() {
+  @Test
+  public void detectOnDown() {
     testTouchTypeDetector.gestureListener.onDown(null);
     verifyNoMoreInteractions(mockListener);
   }
 
-  @Test public void detectOnLongPress() {
+  @Test
+  public void detectOnLongPress() {
     testTouchTypeDetector.gestureListener.onLongPress(null);
     verify(mockListener, only()).onLongPress();
   }
 
-  @Test public void detectOnSwipeRight() {
+  @Test
+  public void detectOnSwipeRight() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 100, 50, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 300, 50, 0);
     testTouchTypeDetector.gestureListener.onFling(ev1, ev2, 201, 201);
     verify(mockListener, only()).onSwipe(SWIPE_DIR_RIGHT);
   }
 
-  @Test public void detectOnSwipeLeft() {
+  @Test
+  public void detectOnSwipeLeft() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 300, 50, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 100, 60, 0);
     testTouchTypeDetector.gestureListener.onFling(ev1, ev2, 201, 201);
     verify(mockListener, only()).onSwipe(SWIPE_DIR_LEFT);
   }
 
-  @Test public void detectOnSwipeLeftWithPowerBottomSwipe() {
+  @Test
+  public void detectOnSwipeLeftWithPowerBottomSwipe() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 300, 160, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 100, 50, 0);
     testTouchTypeDetector.gestureListener.onFling(ev1, ev2, 201, 201);
     verify(mockListener, only()).onSwipe(SWIPE_DIR_LEFT);
   }
 
-  @Test public void ignoreOnSwipeTop() {
+  @Test
+  public void ignoreOnSwipeTop() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 50, 500, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 160, 50, 0);
     testTouchTypeDetector.gestureListener.onFling(ev1, ev2, 201, 201);
     verify(mockListener, only()).onSwipe(SWIPE_DIR_UP);
   }
 
-  @Test public void ignoreOnSwipeBottom() {
+  @Test
+  public void ignoreOnSwipeBottom() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 160, 50, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 50, 500, 0);
     testTouchTypeDetector.gestureListener.onFling(ev1, ev2, 201, 201);
     verify(mockListener, only()).onSwipe(SWIPE_DIR_DOWN);
   }
 
-  @Test public void detectSwipeLeftAndDownForTwoLeftAndDownSwipes() {
+  @Test
+  public void detectSwipeLeftAndDownForTwoLeftAndDownSwipes() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 300, 50, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 100, 160, 0);
     testTouchTypeDetector.gestureListener.onFling(ev1, ev2, 201, 201);
@@ -95,75 +106,86 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
     verify(mockListener, times(1)).onSwipe(SWIPE_DIR_DOWN);
   }
 
-  @Test public void detectOnScrollUp() {
+  @Test
+  public void detectOnScrollUp() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 0, 200, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 0, 50, 0);
     testTouchTypeDetector.gestureListener.onScroll(ev1, ev2, 0, 0);
     verify(mockListener, only()).onScroll(SCROLL_DIR_UP);
   }
 
-  @Test public void detectNothingForSlightlyScrollUp() {
+  @Test
+  public void detectNothingForSlightlyScrollUp() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 0, 2, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 0, 1, 0);
     testTouchTypeDetector.gestureListener.onScroll(ev1, ev2, 0, 0);
     verifyNoMoreInteractions(mockListener);
   }
 
-  @Test public void detectOnScrollRight() {
+  @Test
+  public void detectOnScrollRight() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 50, 0, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 200, 0, 0);
     testTouchTypeDetector.gestureListener.onScroll(ev1, ev2, 0, 0);
     verify(mockListener, only()).onScroll(SCROLL_DIR_RIGHT);
   }
 
-  @Test public void detectNothingForSlightlyScrollRight() {
+  @Test
+  public void detectNothingForSlightlyScrollRight() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 2, 0, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 1, 0, 0);
     testTouchTypeDetector.gestureListener.onScroll(ev1, ev2, 0, 0);
     verifyNoMoreInteractions(mockListener);
   }
 
-  @Test public void detectOnScrollDown() {
+  @Test
+  public void detectOnScrollDown() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 0, 50, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 0, 200, 0);
     testTouchTypeDetector.gestureListener.onScroll(ev1, ev2, 0, 0);
     verify(mockListener, only()).onScroll(SCROLL_DIR_DOWN);
   }
 
-  @Test public void detectNothingForSlightlyScrollDown() {
+  @Test
+  public void detectNothingForSlightlyScrollDown() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 0, 1, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 0, 2, 0);
     testTouchTypeDetector.gestureListener.onScroll(ev1, ev2, 0, 0);
     verifyNoMoreInteractions(mockListener);
   }
 
-  @Test public void detectOnScrollLeft() {
+  @Test
+  public void detectOnScrollLeft() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 200, 0, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 50, 0, 0);
     testTouchTypeDetector.gestureListener.onScroll(ev1, ev2, 0, 0);
     verify(mockListener, only()).onScroll(SCROLL_DIR_LEFT);
   }
 
-  @Test public void detectNothingForSlightlyScrollLeft() {
+  @Test
+  public void detectNothingForSlightlyScrollLeft() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 1, 0, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 2, 0, 0);
     testTouchTypeDetector.gestureListener.onScroll(ev1, ev2, 0, 0);
     verifyNoMoreInteractions(mockListener);
   }
 
-  @Test public void detectNoScrollWhenEventCoorsAreEqual() {
+  @Test
+  public void detectNoScrollWhenEventCoorsAreEqual() {
     MotionEvent ev1 = MotionEvent.obtain(10, 10, 0, 50, 2, 0);
     MotionEvent ev2 = MotionEvent.obtain(10, 10, 0, 50, 2, 0);
     testTouchTypeDetector.gestureListener.onScroll(ev1, ev2, 0, 0);
     verifyNoMoreInteractions(mockListener);
   }
 
-  @Test public void detectOnSingleTapConfirmed() {
+  @Test
+  public void detectOnSingleTapConfirmed() {
     testTouchTypeDetector.gestureListener.onSingleTapConfirmed(null);
     verify(mockListener, only()).onSingleTap();
   }
 
-  @Test public void detectOnSingleTapUp() {
+  @Test
+  public void detectOnSingleTapUp() {
     testTouchTypeDetector.gestureListener.onSingleTapUp(null);
     verifyNoMoreInteractions(mockListener);
   }

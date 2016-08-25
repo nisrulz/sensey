@@ -59,20 +59,21 @@ public class TouchTypeDetector {
    * The constant SWIPE_DIR_LEFT.
    */
   public static final int SWIPE_DIR_LEFT = 8;
-
-  //gesture detector
-  private final GestureDetectorCompat gDetect;
-  private final TouchTypListener touchTypListener;
   /**
    * The Gesture listener.
    */
   final GestureListener gestureListener; // it's needed for TouchTypeDetectorTest, don't remove
+  //gesture detector
+  private final GestureDetectorCompat gDetect;
+  private final TouchTypListener touchTypListener;
 
   /**
    * Instantiates a new Touch type detector.
    *
-   * @param context the context
-   * @param touchTypListener the touch typ listener
+   * @param context
+   *     the context
+   * @param touchTypListener
+   *     the touch typ listener
    */
   public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
     gestureListener = new GestureListener();
@@ -83,7 +84,8 @@ public class TouchTypeDetector {
   /**
    * On touch event boolean.
    *
-   * @param event the event
+   * @param event
+   *     the event
    * @return the boolean
    */
   boolean onTouchEvent(MotionEvent event) {
@@ -92,7 +94,8 @@ public class TouchTypeDetector {
       case MotionEvent.ACTION_POINTER_DOWN:
         if (event.getPointerCount() == 3) {
           touchTypListener.onThreeFingerSingleTap();
-        } else if (event.getPointerCount() == 2) {
+        }
+        else if (event.getPointerCount() == 2) {
           touchTypListener.onTwoFingerSingleTap();
         }
     }
@@ -122,7 +125,8 @@ public class TouchTypeDetector {
     /**
      * On scroll.
      *
-     * @param scrollDirection the scroll direction
+     * @param scrollDirection
+     *     the scroll direction
      */
     void onScroll(int scrollDirection);
 
@@ -134,7 +138,8 @@ public class TouchTypeDetector {
     /**
      * On swipe.
      *
-     * @param swipeDirection the swipe direction
+     * @param swipeDirection
+     *     the swipe direction
      */
     void onSwipe(int swipeDirection);
 
@@ -151,48 +156,15 @@ public class TouchTypeDetector {
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
-    @Override public boolean onDoubleTap(MotionEvent e) {
-      touchTypListener.onDoubleTap();
-      return super.onDoubleTap(e);
-    }
-
-    @Override public boolean onDown(MotionEvent e) {
-      return super.onDown(e);
-    }
-
-    @Override public void onLongPress(MotionEvent e) {
-      touchTypListener.onLongPress();
-      super.onLongPress(e);
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+      return super.onSingleTapUp(e);
     }
 
     @Override
-    public boolean onFling(MotionEvent startevent, MotionEvent finishevent, float velocityX,
-        float velocityY) {
-
-      final float deltaX = finishevent.getX() - startevent.getX();
-      final float deltaY = finishevent.getY() - startevent.getY();
-
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (Math.abs(deltaX) > SWIPE_MIN_DISTANCE
-            && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-          if (deltaX > 0) {
-            touchTypListener.onSwipe(SWIPE_DIR_RIGHT);
-          } else {
-            touchTypListener.onSwipe(SWIPE_DIR_LEFT);
-          }
-        }
-      } else {
-        if (Math.abs(deltaY) > SWIPE_MIN_DISTANCE
-            && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-          if (deltaY > 0) {
-            touchTypListener.onSwipe(SWIPE_DIR_DOWN);
-          } else {
-            touchTypListener.onSwipe(SWIPE_DIR_UP);
-          }
-        }
-      }
-
-      return false;
+    public void onLongPress(MotionEvent e) {
+      touchTypListener.onLongPress();
+      super.onLongPress(e);
     }
 
     @Override
@@ -207,16 +179,19 @@ public class TouchTypeDetector {
         if (Math.abs(deltaX) > SWIPE_MIN_DISTANCE) {
           if (deltaX > 0) {
             touchTypListener.onScroll(SCROLL_DIR_RIGHT);
-          } else {
+          }
+          else {
             touchTypListener.onScroll(SCROLL_DIR_LEFT);
           }
         }
-      } else {
+      }
+      else {
         //Scrolling Vertical
         if (Math.abs(deltaY) > SWIPE_MIN_DISTANCE) {
           if (deltaY > 0) {
             touchTypListener.onScroll(SCROLL_DIR_DOWN);
-          } else {
+          }
+          else {
             touchTypListener.onScroll(SCROLL_DIR_UP);
           }
         }
@@ -225,13 +200,54 @@ public class TouchTypeDetector {
       return super.onScroll(startevent, finishevent, distanceX, distanceY);
     }
 
-    @Override public boolean onSingleTapConfirmed(MotionEvent e) {
-      touchTypListener.onSingleTap();
-      return super.onSingleTapConfirmed(e);
+    @Override
+    public boolean onFling(MotionEvent startevent, MotionEvent finishevent, float velocityX,
+        float velocityY) {
+
+      final float deltaX = finishevent.getX() - startevent.getX();
+      final float deltaY = finishevent.getY() - startevent.getY();
+
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (Math.abs(deltaX) > SWIPE_MIN_DISTANCE
+            && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+          if (deltaX > 0) {
+            touchTypListener.onSwipe(SWIPE_DIR_RIGHT);
+          }
+          else {
+            touchTypListener.onSwipe(SWIPE_DIR_LEFT);
+          }
+        }
+      }
+      else {
+        if (Math.abs(deltaY) > SWIPE_MIN_DISTANCE
+            && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+          if (deltaY > 0) {
+            touchTypListener.onSwipe(SWIPE_DIR_DOWN);
+          }
+          else {
+            touchTypListener.onSwipe(SWIPE_DIR_UP);
+          }
+        }
+      }
+
+      return false;
     }
 
-    @Override public boolean onSingleTapUp(MotionEvent e) {
-      return super.onSingleTapUp(e);
+    @Override
+    public boolean onDown(MotionEvent e) {
+      return super.onDown(e);
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+      touchTypListener.onDoubleTap();
+      return super.onDoubleTap(e);
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
+      touchTypListener.onSingleTap();
+      return super.onSingleTapConfirmed(e);
     }
   }
 }

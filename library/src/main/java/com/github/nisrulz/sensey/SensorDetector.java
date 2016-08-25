@@ -31,21 +31,15 @@ public abstract class SensorDetector implements SensorEventListener {
     this.sensorTypes = sensorTypes;
   }
 
-  @Override public void onSensorChanged(SensorEvent sensorEvent) {
+  @Override
+  public void onSensorChanged(SensorEvent sensorEvent) {
     if (isSensorEventBelongsToPluggedTypes(sensorEvent)) {
       onSensorEvent(sensorEvent);
     }
   }
 
-  protected void onSensorEvent(SensorEvent sensorEvent) {
-
-  }
-
-  @Override public void onAccuracyChanged(Sensor sensor, int i) {
-  }
-
-  int[] getSensorTypes() {
-    return sensorTypes;
+  @Override
+  public void onAccuracyChanged(Sensor sensor, int i) {
   }
 
   private boolean isSensorEventBelongsToPluggedTypes(SensorEvent sensorEvent) {
@@ -56,5 +50,13 @@ public abstract class SensorDetector implements SensorEventListener {
     }
 
     return false;
+  }
+
+  protected void onSensorEvent(SensorEvent sensorEvent) {
+
+  }
+
+  int[] getSensorTypes() {
+    return sensorTypes;
   }
 }
