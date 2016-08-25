@@ -98,5 +98,8 @@ I welcome and encourage all pull requests. It usually will take me within 24-48 
   5. Check for existing [issues](https://github.com/nisrulz/sensey/issues) first, before filing an issue.  
   6. Have fun!
 
+## Apps using Sensey
+If you are using Sensey in your app and would like to be listed here, please let me know by opening a [new issue](https://github.com/nisrulz/sensey/issues/new)!
+
 ### Created & Maintained By
 [Nishant Srivastava](https://github.com/nisrulz) ([@nisrulz](https://www.twitter.com/nisrulz))
