@@ -15,7 +15,10 @@
  */
 
 apply plugin: 'com.android.library'
-//apply from: 'https://raw.github.com/nisrulz/gradle-mvn-push/master/gradle-mvn-push.gradle'
+// Method count gradle plugin
+apply plugin: 'com.getkeepsafe.dexcount'
+// Upload to Maven Central gradle plugin
+apply from: 'https://raw.github.com/nisrulz/gradle-mvn-push/master/gradle-mvn-push.gradle'
 
 android {
   compileSdkVersion 24

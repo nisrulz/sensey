@@ -16,6 +16,9 @@
 
 apply plugin: 'com.android.application'
 
+// Method count gradle plugin
+apply plugin: 'com.getkeepsafe.dexcount'
+
 android {
   compileSdkVersion 24
   buildToolsVersion "24.0.1"
