@@ -145,6 +145,9 @@ public class Sensey {
 
   /**
    * Stop shake detection.
+   *
+   * @param shakeListener
+   *     the shake listener
    */
   public void stopShakeDetection(ShakeListener shakeListener) {
     stopLibrarySensorDetection(shakeListener);
@@ -191,6 +194,9 @@ public class Sensey {
 
   /**
    * Stop light detection.
+   *
+   * @param lightListener
+   *     the light listener
    */
   public void stopLightDetection(LightListener lightListener) {
     stopLibrarySensorDetection(lightListener);
@@ -208,6 +214,9 @@ public class Sensey {
 
   /**
    * Stop flip detection.
+   *
+   * @param flipListener
+   *     the flip listener
    */
   public void stopFlipDetection(FlipListener flipListener) {
     stopLibrarySensorDetection(flipListener);
@@ -238,6 +247,9 @@ public class Sensey {
 
   /**
    * Stop orientation detection.
+   *
+   * @param orientationListener
+   *     the orientation listener
    */
   public void stopOrientationDetection(OrientationListener orientationListener) {
     stopLibrarySensorDetection(orientationListener);
@@ -268,6 +280,9 @@ public class Sensey {
 
   /**
    * Stop proximity detection.
+   *
+   * @param proximityListener
+   *     the proximity listener
    */
   public void stopProximityDetection(ProximityListener proximityListener) {
     stopLibrarySensorDetection(proximityListener);
