@@ -45,6 +45,10 @@ dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   testCompile 'junit:junit:4.12'
   compile 'com.android.support:appcompat-v7:24.2.0'
+
+  // Only dependency required by Sensey to facilitate GestureDetection
   compile 'com.android.support:support-compat:24.2.0'
+
+  // Module Dependency
   compile project(':library')
 }
