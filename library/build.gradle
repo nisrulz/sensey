@@ -17,12 +17,10 @@
 apply plugin: 'com.android.library'
 // Method count gradle plugin
 apply plugin: 'com.getkeepsafe.dexcount'
-// Upload to Maven Central gradle plugin
-apply from: 'https://raw.github.com/nisrulz/gradle-mvn-push/master/gradle-mvn-push.gradle'
 
 android {
   compileSdkVersion 24
-  buildToolsVersion '24.0.1'
+  buildToolsVersion '24.0.2'
 
   defaultConfig {
     minSdkVersion 9
@@ -53,11 +51,38 @@ dependencies {
   provided 'com.android.support:support-compat:24.2.0'
 }
 
-// Place this in the 'build.gradle' of the library module
-// Task : Generate a JAR
-// Usage : In the terminal, run './gradlew jar'
-// Output : Get the jar at 'build/libs'
 
-task jar(type: Jar, dependsOn: 'assembleRelease') {
-  from fileTree(dir: 'build/intermediates/classes/release')
+// Bintray info
+def LIB_MODULE_NAME = 'sensey'
+def LIB_MODULE_DESC = 'Android library which makes detecting gestures a breeze'
+
+ext {
+  bintrayRepo = 'maven'
+  bintrayName = LIB_MODULE_NAME // Has to be same as your library module name
+
+  publishedGroupId = GROUP
+  libraryName = LIB_MODULE_NAME
+  artifact = LIB_MODULE_NAME // Has to be same as your library module name
+
+  libraryDescription = LIB_MODULE_DESC
+
+  // Your github repo link
+  siteUrl = POM_URL
+  gitUrl = POM_GIT_URL
+  githubRepository = LIB_GITHUB_REPO
+
+  libraryVersion = VERSION_NAME
+
+  developerId = POM_DEVELOPER_ID
+  developerName = POM_DEVELOPER_NAME
+  developerEmail = POM_DEVELOPER_EMAILID
+
+  licenseName = POM_LICENCE_NAME
+  licenseUrl = POM_LICENCE_URL
+  allLicenses = [POM_ALL_LICENCES]
 }
+
+// Place it at the end of the file
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
+
