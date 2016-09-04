@@ -56,7 +56,7 @@ def LIB_MODULE_DESC = 'Android library which makes detecting gestures a breeze'
 
 ext {
   bintrayRepo = 'maven'
-  bintrayName = LIB_MODULE_NAME // Has to be same as your library module name
+  bintrayName = 'com.github.nisrulz:sensey'
 
   publishedGroupId = GROUP
   libraryName = LIB_MODULE_NAME

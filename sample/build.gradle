@@ -45,5 +45,5 @@ dependencies {
 
   compile 'com.github.nisrulz:sensey:1.4.1'
   // Module Dependency
-  // compile project(':sensey')
+//   compile project(':sensey')
 }
