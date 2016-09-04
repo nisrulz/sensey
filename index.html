@@ -30,7 +30,7 @@
         <h3>
 <a id="specs" class="anchor" href="#specs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specs</h3>
 
-<p><a href="https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.nisrulz/sensey/badge.svg" alt="Maven Central"></a> <a href="https://android-arsenal.com/api?level=9"><img src="https://img.shields.io/badge/API-9%2B-orange.svg?style=flat" alt="API"></a> <a href="http://www.methodscount.com/?lib=com.github.nisrulz%3Asensey%3A1.4.0"><img src="https://img.shields.io/badge/Size-15%20KB-e91e63.svg"></a> </p>
+<p><a href="https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion"> <img src="https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg" alt="Download"> </a> <a href="https://android-arsenal.com/api?level=9"><img src="https://img.shields.io/badge/API-9%2B-orange.svg?style=flat" alt="API"></a> <a href="http://www.methodscount.com/?lib=com.github.nisrulz%3Asensey%3A1.4.1"><img src="https://img.shields.io/badge/Size-15%20KB-e91e63.svg"></a></p>
 
 <h3>
 <a id="featured-in" class="anchor" href="#featured-in" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Featured in</h3>
@@ -56,18 +56,77 @@
 <p>Starting with <code>1.0.1</code>, Changes exist in the <a href="https://github.com/nisrulz/sensey/releases">releases tab</a>.</p>
 
 <h1>
-<a id="usage-docswiki" class="anchor" href="#usage-docswiki" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage Docs/Wiki</h1>
+<a id="supported-gestures" class="anchor" href="#supported-gestures" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported gestures</h1>
 
-<p>For more detailed usage, check the <a href="https://github.com/nisrulz/sensey/wiki">Wiki</a></p>
+<ol>
+<li>
+<a href="https://github.com/nisrulz/sensey/wiki/Usage#flip">Flip</a>
+
+<ul>
+<li>onFaceUp</li>
+<li>onFaceDown</li>
+</ul>
+</li>
+<li>
+<a href="https://github.com/nisrulz/sensey/wiki/Usage#light">Light</a>
+
+<ul>
+<li>onDark</li>
+<li>onLight</li>
+</ul>
+</li>
+<li>
+<a href="https://github.com/nisrulz/sensey/wiki/Usage#orientation">Orientation</a>
+
+<ul>
+<li>onTopSideUp</li>
+<li>onBottomSideUp</li>
+<li>onLeftSideUp</li>
+<li>onRightSideUp</li>
+</ul>
+</li>
+<li>
+<a href="https://github.com/nisrulz/sensey/wiki/Usage#pinchscale">PinchScale</a>
+
+<ul>
+<li>OnScale</li>
+<li>OnScaleStart</li>
+<li>OnScaleEnd</li>
+</ul>
+</li>
+<li>
+<a href="https://github.com/nisrulz/sensey/wiki/Usage#proximity">Proximity</a>
+
+<ul>
+<li>onNear</li>
+<li>onFar</li>
+</ul>
+</li>
+<li><a href="https://github.com/nisrulz/sensey/wiki/Usage#shake">Shake</a></li>
+<li>
+<a href="https://github.com/nisrulz/sensey/wiki/Usage#touchtype">TouchType</a>
+
+<ul>
+<li>onDoubleTap</li>
+<li>onScroll(direction)</li>
+<li>onSingleTap</li>
+<li>onSwipeLeft</li>
+<li>onSwipeRight</li>
+<li>onLongPress</li>
+<li>onTwoFingerSingleTap</li>
+<li>onThreeFingerSingleTap</li>
+</ul>
+</li>
+</ol>
 
 <h1>
 <a id="including-in-your-project" class="anchor" href="#including-in-your-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Including in your project</h1>
 
-<ul>
-<li>Sensey is available in the MavenCentral, so getting it as simple as adding it as a dependency</li>
-</ul>
+<p>Sensey is available in the Jcenter, so getting it as simple as adding it as a dependency</p>
 
-<div class="highlight highlight-source-groovy-gradle"><pre>compile <span class="pl-s"><span class="pl-pds">'</span>com.github.nisrulz:sensey:1.4.0<span class="pl-pds">'</span></span></pre></div>
+<div class="highlight highlight-source-groovy-gradle"><pre>compile <span class="pl-s"><span class="pl-pds">'</span>com.github.nisrulz:sensey:{latest version}<span class="pl-pds">'</span></span></pre></div>
+
+<p>where <code>{latest version}</code> corresponds to published version in <a href="https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion"> <img src="https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg" alt="Download"> </a></p>
 
 <h1>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
@@ -238,7 +297,7 @@
 
 <p><strong><em>IMPORTANT</em></strong> : Implement this to intercept touch actions in activity by overriding the <code>dispatchTouchEvent</code>.</p>
 
-<div class="highlight highlight-source-java"><pre> @<span class="pl-smi">Override</span> <span class="pl-k">public</span> <span class="pl-k">boolean</span> dispatchTouchEvent(<span class="pl-smi">MotionEvent</span> event) {
+<div class="highlight highlight-source-java"><pre> <span class="pl-k">@Override</span> <span class="pl-k">public</span> <span class="pl-k">boolean</span> dispatchTouchEvent(<span class="pl-smi">MotionEvent</span> event) {
     <span class="pl-c">// Setup onTouchEvent for detecting type of touch gesture</span>
     <span class="pl-smi">Sensey</span><span class="pl-k">.</span>getInstance()<span class="pl-k">.</span>setupDispatchTouchEvent(event);
     <span class="pl-k">return</span> <span class="pl-v">super</span><span class="pl-k">.</span>dispatchTouchEvent(event);
