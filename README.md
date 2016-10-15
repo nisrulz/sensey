@@ -15,6 +15,8 @@ Android library which makes detecting gestures a breeze.
 
 The library is built for simplicity and ease of use. It eliminates most boilerplate code for dealing with setting up gesture detection on Android.
 
+![sc1](https://github.com/nisrulz/sensey/blob/master/img/sc1.png) ![sc2](https://github.com/nisrulz/sensey/blob/master/img/sc2.png)
+
 # Changelog
 
 Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/nisrulz/sensey/releases).
