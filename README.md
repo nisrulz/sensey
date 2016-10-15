@@ -40,6 +40,7 @@ Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/ni
     + onNear
     + onFar
  1. [Shake](https://github.com/nisrulz/sensey/wiki/Usage#shake)
+ 1. [Wave](https://github.com/nisrulz/sensey/wiki/Usage#wave)
  1. [TouchType](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)
     + onDoubleTap
     + onScroll(direction)
