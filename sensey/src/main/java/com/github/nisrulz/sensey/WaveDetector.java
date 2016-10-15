@@ -25,17 +25,46 @@ import static android.hardware.Sensor.TYPE_PROXIMITY;
  */
 public class WaveDetector extends SensorDetector {
 
+  /**
+   * The Wave listener.
+   */
   final WaveListener waveListener;
   private final float threshold;
+  /**
+   * The Last proximity event time.
+   */
   long lastProximityEventTime = 0;
+  /**
+   * The Proximity far.
+   */
   int proximityFar = 0;
+  /**
+   * The Proximity near.
+   */
   int proximityNear = 1;
+  /**
+   * The Last proximity state.
+   */
   int lastProximityState;
 
+  /**
+   * Instantiates a new Wave detector.
+   *
+   * @param waveListener
+   *     the wave listener
+   */
   public WaveDetector(WaveListener waveListener) {
     this(1000, waveListener);
   }
 
+  /**
+   * Instantiates a new Wave detector.
+   *
+   * @param threshold
+   *     the threshold
+   * @param waveListener
+   *     the wave listener
+   */
   public WaveDetector(float threshold, WaveListener waveListener) {
     super(TYPE_PROXIMITY);
     this.waveListener = waveListener;
@@ -70,6 +99,9 @@ public class WaveDetector extends SensorDetector {
    * The interface Wave listener.
    */
   public interface WaveListener {
+    /**
+     * On wave.
+     */
     void onWave();
   }
 }
