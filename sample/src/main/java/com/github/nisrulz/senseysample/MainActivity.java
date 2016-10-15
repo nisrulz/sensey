@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity
     Sensey.getInstance().stopOrientationDetection(this);
     Sensey.getInstance().stopProximityDetection(this);
     Sensey.getInstance().stopLightDetection(this);
+    Sensey.getInstance().stopWaveDetection(this);
   }
 
   @Override
