@@ -32,11 +32,12 @@ import com.github.nisrulz.sensey.OrientationDetector;
 import com.github.nisrulz.sensey.ProximityDetector;
 import com.github.nisrulz.sensey.Sensey;
 import com.github.nisrulz.sensey.ShakeDetector;
+import com.github.nisrulz.sensey.WaveDetector;
 
 public class MainActivity extends AppCompatActivity
     implements CompoundButton.OnCheckedChangeListener, ShakeDetector.ShakeListener,
     FlipDetector.FlipListener, LightDetector.LightListener, OrientationDetector.OrientationListener,
-    ProximityDetector.ProximityListener {
+    ProximityDetector.ProximityListener, WaveDetector.WaveListener {
 
   private static final String LOGTAG = "MainActivity";
   private static final boolean DEBUG = true;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity
   private SwitchCompat swt3;
   private SwitchCompat swt4;
   private SwitchCompat swt5;
+  private SwitchCompat swt6;
   private TextView txtResult;
 
   @Override
@@ -77,6 +79,10 @@ public class MainActivity extends AppCompatActivity
     swt5 = (SwitchCompat) findViewById(R.id.Switch5);
     swt5.setOnCheckedChangeListener(this);
     swt5.setChecked(false);
+
+    swt6 = (SwitchCompat) findViewById(R.id.Switch6);
+    swt6.setOnCheckedChangeListener(this);
+    swt6.setChecked(false);
 
     Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
     btnTouchEvent.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +137,15 @@ public class MainActivity extends AppCompatActivity
         }
         else {
           Sensey.getInstance().stopLightDetection(this);
+        }
+        break;
+
+      case R.id.Switch6:
+        if (isChecked) {
+          Sensey.getInstance().startWaveDetection(this);
+        }
+        else {
+          Sensey.getInstance().stopWaveDetection(this);
         }
         break;
 
@@ -224,5 +239,10 @@ public class MainActivity extends AppCompatActivity
   @Override
   public void onShakeDetected() {
     setResultTextView("Shake Detected!");
+  }
+
+  @Override
+  public void onWave() {
+    setResultTextView("Wave Detected!");
   }
 }

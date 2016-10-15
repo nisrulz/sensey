@@ -25,6 +25,7 @@ import com.github.nisrulz.sensey.LightDetector.LightListener;
 import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
 import com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
 import com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
+import com.github.nisrulz.sensey.WaveDetector.WaveListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -57,6 +58,10 @@ public class Sensey {
   private Sensey() {
   }
 
+  private static class LazyHolder {
+    private static final Sensey INSTANCE = new Sensey();
+  }
+
   /**
    * Gets instance.
    *
@@ -75,16 +80,6 @@ public class Sensey {
   public void init(Context context) {
     sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     this.context = context;
-  }
-
-  /**
-   * Start shake detection.
-   *
-   * @param shakeListener
-   *     the shake listener
-   */
-  public void startShakeDetection(ShakeListener shakeListener) {
-    startLibrarySensorDetection(new ShakeDetector(shakeListener), shakeListener);
   }
 
   private void startLibrarySensorDetection(SensorDetector detector, Object clientListener) {
@@ -132,6 +127,28 @@ public class Sensey {
   }
 
   /**
+   * Stop sensor detection.
+   *
+   * @param detector
+   *     the detector
+   */
+  public void stopSensorDetection(SensorDetector detector) {
+    if (detector != null) {
+      sensorManager.unregisterListener(detector);
+    }
+  }
+
+  /**
+   * Start shake detection.
+   *
+   * @param shakeListener
+   *     the shake listener
+   */
+  public void startShakeDetection(ShakeListener shakeListener) {
+    startLibrarySensorDetection(new ShakeDetector(shakeListener), shakeListener);
+  }
+
+  /**
    * Start shake detection.
    *
    * @param threshold
@@ -156,18 +173,6 @@ public class Sensey {
   private void stopLibrarySensorDetection(Object clientListener) {
     SensorDetector detector = defaultSensorsMap.remove(clientListener);
     stopSensorDetection(detector);
-  }
-
-  /**
-   * Stop sensor detection.
-   *
-   * @param detector
-   *     the detector
-   */
-  public void stopSensorDetection(SensorDetector detector) {
-    if (detector != null) {
-      sensorManager.unregisterListener(detector);
-    }
   }
 
   /**
@@ -289,6 +294,38 @@ public class Sensey {
   }
 
   /**
+   * Start proximity detection.
+   *
+   * @param waveListener
+   *     the wave listener
+   */
+  public void startWaveDetection(WaveListener waveListener) {
+    startLibrarySensorDetection(new WaveDetector(waveListener), waveListener);
+  }
+
+  /**
+   * Start proximity detection.
+   *
+   * @param threshold
+   *     the threshold
+   * @param waveListener
+   *     the wave listener
+   */
+  public void startWaveDetection(float threshold, WaveListener waveListener) {
+    startLibrarySensorDetection(new WaveDetector(threshold, waveListener), waveListener);
+  }
+
+  /**
+   * Stop proximity detection.
+   *
+   * @param waveListener
+   *     the wave listener
+   */
+  public void stopWaveDetection(WaveListener waveListener) {
+    stopLibrarySensorDetection(waveListener);
+  }
+
+  /**
    * Start pinch scale detection.
    *
    * @param pinchScaleListener
@@ -340,9 +377,5 @@ public class Sensey {
     if (pinchScaleDetector != null) {
       pinchScaleDetector.onTouchEvent(event);
     }
-  }
-
-  private static class LazyHolder {
-    private static final Sensey INSTANCE = new Sensey();
   }
 }
