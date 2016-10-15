@@ -28,24 +28,24 @@ public class WaveDetector extends SensorDetector {
   /**
    * The Wave listener.
    */
-  final WaveListener waveListener;
+  private final WaveListener waveListener;
   private final float threshold;
   /**
    * The Last proximity event time.
    */
-  long lastProximityEventTime = 0;
+  private long lastProximityEventTime = 0;
   /**
    * The Proximity far.
    */
-  int proximityFar = 0;
+  private final int proximityFar = 0;
   /**
    * The Proximity near.
    */
-  int proximityNear = 1;
+  private final int proximityNear = 1;
   /**
    * The Last proximity state.
    */
-  int lastProximityState;
+  private int lastProximityState;
 
   /**
    * Instantiates a new Wave detector.

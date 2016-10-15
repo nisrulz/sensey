@@ -25,7 +25,7 @@ import static android.hardware.Sensor.TYPE_LIGHT;
  */
 public class LightDetector extends SensorDetector {
 
-  final LightListener lightListener;
+  private final LightListener lightListener;
   private final float threshold;
 
   /**

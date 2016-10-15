@@ -350,6 +350,9 @@ public class SenseyTest {
     else if (aClass == FlipDetector.class) {
       return "flipDetector";
     }
+    else if (aClass == WaveDetector.class) {
+      return "waveDetector";
+    }
     else {
       return null;
     }

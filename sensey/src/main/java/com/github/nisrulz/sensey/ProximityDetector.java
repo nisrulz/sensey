@@ -25,7 +25,7 @@ import static android.hardware.Sensor.TYPE_PROXIMITY;
  */
 public class ProximityDetector extends SensorDetector {
 
-  final ProximityListener proximityListener;
+  private final ProximityListener proximityListener;
   private final float threshold;
 
   /**

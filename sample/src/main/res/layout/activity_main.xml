@@ -106,8 +106,8 @@
         android:padding="20dp"
         android:text="@string/wave_gesture"
         android:textColor="@color/icons"
-        android:textOff="Inactive"
-        android:textOn="Active"
+        android:textOff=""
+        android:textOn=""
         />
 
   </LinearLayout>

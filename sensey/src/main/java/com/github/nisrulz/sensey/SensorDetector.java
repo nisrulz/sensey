@@ -23,11 +23,11 @@ import android.hardware.SensorEventListener;
 /**
  * The type Sensor detector.
  */
-public abstract class SensorDetector implements SensorEventListener {
+abstract class SensorDetector implements SensorEventListener {
 
   private final int[] sensorTypes;
 
-  public SensorDetector(int... sensorTypes) {
+  SensorDetector(int... sensorTypes) {
     this.sensorTypes = sensorTypes;
   }
 
@@ -52,7 +52,7 @@ public abstract class SensorDetector implements SensorEventListener {
     return false;
   }
 
-  protected void onSensorEvent(SensorEvent sensorEvent) {
+  void onSensorEvent(SensorEvent sensorEvent) {
 
   }
 

@@ -42,12 +42,6 @@ public class MainActivity extends AppCompatActivity
   private static final String LOGTAG = "MainActivity";
   private static final boolean DEBUG = true;
 
-  private SwitchCompat swt1;
-  private SwitchCompat swt2;
-  private SwitchCompat swt3;
-  private SwitchCompat swt4;
-  private SwitchCompat swt5;
-  private SwitchCompat swt6;
   private TextView txtResult;
 
   @Override
@@ -60,27 +54,27 @@ public class MainActivity extends AppCompatActivity
 
     txtResult = (TextView) findViewById(R.id.textView_result);
 
-    swt1 = (SwitchCompat) findViewById(R.id.Switch1);
+    SwitchCompat swt1 = (SwitchCompat) findViewById(R.id.Switch1);
     swt1.setOnCheckedChangeListener(this);
     swt1.setChecked(false);
 
-    swt2 = (SwitchCompat) findViewById(R.id.Switch2);
+    SwitchCompat swt2 = (SwitchCompat) findViewById(R.id.Switch2);
     swt2.setOnCheckedChangeListener(this);
     swt2.setChecked(false);
 
-    swt3 = (SwitchCompat) findViewById(R.id.Switch3);
+    SwitchCompat swt3 = (SwitchCompat) findViewById(R.id.Switch3);
     swt3.setOnCheckedChangeListener(this);
     swt3.setChecked(false);
 
-    swt4 = (SwitchCompat) findViewById(R.id.Switch4);
+    SwitchCompat swt4 = (SwitchCompat) findViewById(R.id.Switch4);
     swt4.setOnCheckedChangeListener(this);
     swt4.setChecked(false);
 
-    swt5 = (SwitchCompat) findViewById(R.id.Switch5);
+    SwitchCompat swt5 = (SwitchCompat) findViewById(R.id.Switch5);
     swt5.setOnCheckedChangeListener(this);
     swt5.setChecked(false);
 
-    swt6 = (SwitchCompat) findViewById(R.id.Switch6);
+    SwitchCompat swt6 = (SwitchCompat) findViewById(R.id.Switch6);
     swt6.setOnCheckedChangeListener(this);
     swt6.setChecked(false);
 

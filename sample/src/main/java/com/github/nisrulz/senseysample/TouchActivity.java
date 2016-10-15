@@ -35,8 +35,6 @@ public class TouchActivity extends AppCompatActivity
   private static final String LOGTAG = "TouchActivity";
   private static final boolean DEBUG = true;
 
-  private SwitchCompat swt6;
-  private SwitchCompat swt7;
   private TextView txtResult;
 
   @Override
@@ -49,11 +47,11 @@ public class TouchActivity extends AppCompatActivity
 
     txtResult = (TextView) findViewById(R.id.textView_result);
 
-    swt6 = (SwitchCompat) findViewById(R.id.Switch6);
+    SwitchCompat swt6 = (SwitchCompat) findViewById(R.id.Switch6);
     swt6.setOnCheckedChangeListener(this);
     swt6.setChecked(false);
 
-    swt7 = (SwitchCompat) findViewById(R.id.Switch7);
+    SwitchCompat swt7 = (SwitchCompat) findViewById(R.id.Switch7);
     swt7.setOnCheckedChangeListener(this);
     swt7.setChecked(false);
   }

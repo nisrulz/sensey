@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SensorUtils {
+class SensorUtils {
 
   public static SensorEvent testAccelerometerEvent(float[] values) {
     return testSensorEvent(values, Sensor.TYPE_ACCELEROMETER);

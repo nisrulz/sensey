@@ -25,7 +25,7 @@ import static android.hardware.Sensor.TYPE_ACCELEROMETER;
  */
 public class FlipDetector extends SensorDetector {
 
-  final FlipListener flipListener;
+  private final FlipListener flipListener;
 
   /**
    * Instantiates a new Flip detector.

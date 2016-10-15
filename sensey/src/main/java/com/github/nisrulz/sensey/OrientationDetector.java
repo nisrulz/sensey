@@ -32,18 +32,18 @@ public class OrientationDetector extends SensorDetector {
   private static final int ORIENTATION_LANDSCAPE_REVERSE = ExifInterface.ORIENTATION_ROTATE_180;// 3
   private static final int ORIENTATION_LANDSCAPE = ExifInterface.ORIENTATION_NORMAL; // 1
   private static final int ORIENTATION_PORTRAIT_REVERSE = ExifInterface.ORIENTATION_ROTATE_270; // 8
-  final OrientationListener orientationListener;
+  private final OrientationListener orientationListener;
   private final int smoothness;
   private final float[] pitches;
   private final float[] rolls;
   /**
    * The M gravity.
    */
-  float[] mGravity;
+  private float[] mGravity;
   /**
    * The M geomagnetic.
    */
-  float[] mGeomagnetic;
+  private float[] mGeomagnetic;
   private float averagePitch = 0;
   private float averageRoll = 0;
   private int orientation = ORIENTATION_PORTRAIT;
