@@ -17,14 +17,14 @@
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 24
+  compileSdkVersion 25
   buildToolsVersion '24.0.3'
 
   defaultConfig {
     minSdkVersion 9
-    targetSdkVersion 24
-    versionCode 9
-    versionName '1.5.0'
+    targetSdkVersion 25
+    versionCode 10
+    versionName VERSION_NAME
   }
   buildTypes {
     debug {
@@ -46,13 +46,14 @@ dependencies {
   testCompile 'org.mockito:mockito-core:2.1.0'
   testCompile "org.robolectric:robolectric:3.1.2"
 
-  compile 'com.android.support:support-compat:24.2.1'
+  compile 'com.android.support:support-compat:25.0.0'
 }
-
 
 // Bintray info
 def LIB_MODULE_NAME = 'sensey'
 def LIB_MODULE_DESC = 'Android library which makes detecting gestures a breeze'
+def GITHUB_LINK = "https://github.com/nisrulz/sensey"
+def GITHUB_REPO = "nisrulz/sensey"
 
 ext {
   bintrayRepo = 'maven'
@@ -65,9 +66,9 @@ ext {
   libraryDescription = LIB_MODULE_DESC
 
   // Your github repo link
-  siteUrl = POM_URL
-  gitUrl = POM_GIT_URL
-  githubRepository = LIB_GITHUB_REPO
+  siteUrl = GITHUB_LINK
+  gitUrl = GITHUB_LINK + ".git"
+  githubRepository = GITHUB_REPO
 
   libraryVersion = VERSION_NAME
 
@@ -83,4 +84,3 @@ ext {
 // Place it at the end of the file
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
-
