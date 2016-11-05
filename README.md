@@ -11,6 +11,9 @@
 + [Best Android Libraries for Developers](https://cloudrail.com/best-android-libraries-for-developers/)
 + [COBE’s Top 5 Android Libraries — September 2016](https://medium.cobeisfresh.com/cobes-top-5-android-libraries-september-2016-883757e61bf0#.oe2lzaxyn)
 + [DZone Post](https://dzone.com/articles/this-week-in-mobile-may-15)
++ Awesome Android Newsletter
+	+ [Issue 5](https://android.libhunt.com/newsletter/5)
+	+ [Issue 21](https://android.libhunt.com/newsletter/21)
 
 ### Show some :heart:
 [![GitHub stars](https://img.shields.io/github/stars/nisrulz/sensey.svg?style=social&label=Star)](https://github.com/nisrulz/sensey) [![GitHub forks](https://img.shields.io/github/forks/nisrulz/sensey.svg?style=social&label=Fork)](https://github.com/nisrulz/sensey/fork) [![GitHub watchers](https://img.shields.io/github/watchers/nisrulz/sensey.svg?style=social&label=Watch)](https://github.com/nisrulz/sensey) [![GitHub followers](https://img.shields.io/github/followers/nisrulz.svg?style=social&label=Follow)](https://github.com/nisrulz/sensey)  
