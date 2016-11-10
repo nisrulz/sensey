@@ -11,6 +11,7 @@
 + [Best Android Libraries for Developers](https://cloudrail.com/best-android-libraries-for-developers/)
 + [COBE’s Top 5 Android Libraries — September 2016](https://medium.cobeisfresh.com/cobes-top-5-android-libraries-september-2016-883757e61bf0#.oe2lzaxyn)
 + [DZone Post](https://dzone.com/articles/this-week-in-mobile-may-15)
++ [Codepath's Must Have Libraries](https://github.com/codepath/android_guides/wiki/Must-Have-libraries#convenience)
 + Awesome Android Newsletter
 	+ [Issue 5](https://android.libhunt.com/newsletter/5)
 	+ [Issue 21](https://android.libhunt.com/newsletter/21)
