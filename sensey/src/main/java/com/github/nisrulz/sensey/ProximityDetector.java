@@ -26,7 +26,6 @@ import static android.hardware.Sensor.TYPE_PROXIMITY;
 public class ProximityDetector extends SensorDetector {
 
   private final ProximityListener proximityListener;
-  private final float threshold;
 
   /**
    * Instantiates a new Proximity detector.
@@ -34,8 +33,10 @@ public class ProximityDetector extends SensorDetector {
    * @param proximityListener
    *     the proximity listener
    */
+
   public ProximityDetector(ProximityListener proximityListener) {
-    this(3f, proximityListener);
+    super(TYPE_PROXIMITY);
+    this.proximityListener = proximityListener;
   }
 
   /**
@@ -46,16 +47,18 @@ public class ProximityDetector extends SensorDetector {
    * @param proximityListener
    *     the proximity listener
    */
+  @Deprecated
   public ProximityDetector(float threshold, ProximityListener proximityListener) {
     super(TYPE_PROXIMITY);
     this.proximityListener = proximityListener;
-    this.threshold = threshold;
   }
 
   @Override
   protected void onSensorEvent(SensorEvent sensorEvent) {
     float distance = sensorEvent.values[0];
-    if (distance < threshold) {
+    float maxRange = sensorEvent.sensor.getMaximumRange();
+
+    if (distance < maxRange) {
       proximityListener.onNear();
     }
     else {
