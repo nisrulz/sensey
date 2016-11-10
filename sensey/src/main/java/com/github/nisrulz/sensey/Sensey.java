@@ -42,6 +42,7 @@ public class Sensey {
    * {@link LightListener lightListener},
    * {@link OrientationListener orientationListener}
    * {@link ProximityListener proximityListener}
+   * {@link WaveListener waveListner}
    * and {@link ShakeListener shakeListener})
    * to SensorDetectors created by those listeners.
    *
