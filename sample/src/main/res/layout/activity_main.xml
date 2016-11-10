@@ -137,6 +137,7 @@
       android:layout_marginRight="@dimen/activity_vertical_margin"
       android:background="@drawable/result_bg_cornerflat"
       android:gravity="center"
+      android:textSize="25sp"
       android:padding="20dp"
       android:text="..Results show here..."
       />

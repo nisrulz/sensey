@@ -18,13 +18,13 @@ apply plugin: 'com.android.library'
 
 android {
   compileSdkVersion 25
-  buildToolsVersion '24.0.3'
+  buildToolsVersion '25.0.0'
 
   defaultConfig {
     minSdkVersion 9
     targetSdkVersion 25
-    versionCode 10
-    versionName VERSION_NAME
+    versionCode rootProject.ext.libVersionCode
+    versionName rootProject.ext.libVersionName
   }
   buildTypes {
     debug {
@@ -46,41 +46,7 @@ dependencies {
   testCompile 'org.mockito:mockito-core:2.1.0'
   testCompile "org.robolectric:robolectric:3.1.2"
 
-  compile 'com.android.support:support-compat:25.0.0'
+  compile "com.android.support:support-compat:$rootProject.ext.supportLibVersion"
 }
 
-// Bintray info
-def LIB_MODULE_NAME = 'sensey'
-def LIB_MODULE_DESC = 'Android library which makes detecting gestures a breeze'
-def GITHUB_LINK = "https://github.com/nisrulz/sensey"
-def GITHUB_REPO = "nisrulz/sensey"
-
-ext {
-  bintrayRepo = 'maven'
-  bintrayName = 'com.github.nisrulz:sensey'
-
-  publishedGroupId = GROUP
-  libraryName = LIB_MODULE_NAME
-  artifact = LIB_MODULE_NAME // Has to be same as your library module name
-
-  libraryDescription = LIB_MODULE_DESC
-
-  // Your github repo link
-  siteUrl = GITHUB_LINK
-  gitUrl = GITHUB_LINK + ".git"
-  githubRepository = GITHUB_REPO
-
-  libraryVersion = VERSION_NAME
-
-  developerId = POM_DEVELOPER_ID
-  developerName = POM_DEVELOPER_NAME
-  developerEmail = POM_DEVELOPER_EMAILID
-
-  licenseName = POM_LICENCE_NAME
-  licenseUrl = POM_LICENCE_URL
-  allLicenses = [POM_ALL_LICENCES]
-}
-
-// Place it at the end of the file
-apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/nishant-config.gradle'

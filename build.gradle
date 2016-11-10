@@ -41,3 +41,19 @@ allprojects {
 task clean(type: Delete) {
   delete rootProject.buildDir
 }
+
+ext {
+  //Other
+  supportLibVersion = '25.0.0'
+
+  // Library Info
+  libVersionCode = 10
+  libVersionName = '1.5.1'
+  libPomUrl = 'https://github.com/nisrulz/sensey'
+  libGithubRepo = 'nisrulz/sensey'
+
+
+  libModuleName = 'sensey'
+  libModuleDesc = 'Android library which makes detecting gestures a breeze'
+  libBintrayName = 'com.github.nisrulz:sensey'
+}
