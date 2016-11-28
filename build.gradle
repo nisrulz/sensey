@@ -47,8 +47,8 @@ ext {
   supportLibVersion = '25.0.0'
 
   // Library Info
-  libVersionCode = 10
-  libVersionName = '1.5.1'
+  libVersionCode = 11
+  libVersionName = '1.5.2'
   libPomUrl = 'https://github.com/nisrulz/sensey'
   libGithubRepo = 'nisrulz/sensey'
 
