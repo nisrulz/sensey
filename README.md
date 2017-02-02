@@ -1,6 +1,5 @@
 ![Image](/img/github_banner.png)
 
-
 ### Specs
 [ ![Download](https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg) ](https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion) [![API](https://img.shields.io/badge/API-9%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=9) <a href="http://www.methodscount.com/?lib=com.github.nisrulz%3Asensey%3A1.5.1"><img src="https://img.shields.io/badge/Methods and size-core: 146 | deps: 5141 | 16 KB-e91e63.svg"/></a>
 
@@ -117,9 +116,7 @@ If you are using Sensey in your app and would like to be listed here, please let
 ### Created & Maintained By
 [Nishant Srivastava](https://github.com/nisrulz) ([@nisrulz](https://www.twitter.com/nisrulz))
 
-> If you found this library helpful or you learned something from the source code and want to thank me, consider buying me a cup of :coffee:
->
-> <a href='https://ko-fi.com/A443EQ6' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=f' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+> If you found this library helpful or you learned something from the source code and want to thank me, consider [buying me a cup of](https://www.paypal.me/nisrulz) :coffee:
 
 License
 =======
