@@ -4,7 +4,7 @@ import com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static com.github.nisrulz.sensey.SensorUtils.testAccelerometerEvent;
 import static org.mockito.Mockito.only;

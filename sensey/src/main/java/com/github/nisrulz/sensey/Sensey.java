@@ -271,19 +271,6 @@ public class Sensey {
     startLibrarySensorDetection(new ProximityDetector(proximityListener), proximityListener);
   }
 
-  /**
-   * Start proximity detection.
-   *
-   * @param threshold
-   *     the threshold
-   * @param proximityListener
-   *     the proximity listener
-   */
-  @Deprecated
-  public void startProximityDetection(float threshold, ProximityListener proximityListener) {
-    startLibrarySensorDetection(new ProximityDetector(threshold, proximityListener),
-        proximityListener);
-  }
 
   /**
    * Stop proximity detection.

@@ -279,21 +279,6 @@ public class SenseyTest {
     }
   }
 
-  @Test
-  public void detectListenerWithStartProximityDetectionWithCustomThreshold() {
-    addSensor(TYPE_PROXIMITY);
-    ProximityListener fakeListener = mock(ProximityListener.class);
-    sensey.startProximityDetection(10f, fakeListener);
-    ProximityDetector detector = getDetector(fakeListener, ProximityDetector.class);
-    if (detector != null) {
-      assertTrue("Sensor Manager must contain sensor event listener for proximity",
-          shadowSensorManager.hasListener(detector));
-    }
-    else {
-      fail(
-          "There should be proximity detector in sensey. If not, please, check last version of class and update reflection accessing to it field");
-    }
-  }
 
   @Test
   public void detectNoListenerWithStopProximityDetection() {

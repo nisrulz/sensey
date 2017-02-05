@@ -39,20 +39,6 @@ public class ProximityDetector extends SensorDetector {
     this.proximityListener = proximityListener;
   }
 
-  /**
-   * Instantiates a new Proximity detector.
-   *
-   * @param threshold
-   *     the threshold
-   * @param proximityListener
-   *     the proximity listener
-   */
-  @Deprecated
-  public ProximityDetector(float threshold, ProximityListener proximityListener) {
-    super(TYPE_PROXIMITY);
-    this.proximityListener = proximityListener;
-  }
-
   @Override
   protected void onSensorEvent(SensorEvent sensorEvent) {
     float distance = sensorEvent.values[0];
