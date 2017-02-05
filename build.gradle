@@ -27,7 +27,7 @@ buildscript {
     // in the individual module build.gradle files
 
     // Required plugins added to classpath to facilitate pushing to Jcenter/Bintray
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
   }
 }
@@ -44,7 +44,10 @@ task clean(type: Delete) {
 
 ext {
   //Other
-  supportLibVersion = '25.0.0'
+  supportLibVersion = '25.1.1'
+  mockitoVersion = '2.7.2'
+  robolectricVersion = '3.2.2'
+  jUnitVersion = '4.12'
 
   // Library Info
   libVersionCode = 11
