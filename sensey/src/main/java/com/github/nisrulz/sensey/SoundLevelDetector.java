@@ -1,10 +1,12 @@
 package com.github.nisrulz.sensey;
 
+import android.content.Context;
+
 public class SoundLevelDetector {
 
   private final SoundLevelListener soundLevelListener;
 
-  public SoundLevelDetector(SoundLevelListener soundLevelListener) {
+  public SoundLevelDetector(Context context, SoundLevelListener soundLevelListener) {
     this.soundLevelListener = soundLevelListener;
   }
 
@@ -12,4 +14,3 @@ public class SoundLevelDetector {
     void onSoundDetected(float level);
   }
 }
-

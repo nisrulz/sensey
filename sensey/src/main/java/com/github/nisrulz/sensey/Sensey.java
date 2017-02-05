@@ -23,8 +23,11 @@ import android.view.MotionEvent;
 import com.github.nisrulz.sensey.FlipDetector.FlipListener;
 import com.github.nisrulz.sensey.LightDetector.LightListener;
 import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
+import com.github.nisrulz.sensey.PinchScaleDetector.PinchScaleListener;
 import com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
 import com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
+import com.github.nisrulz.sensey.SoundLevelDetector.SoundLevelListener;
+import com.github.nisrulz.sensey.TouchTypeDetector.TouchTypListener;
 import com.github.nisrulz.sensey.WaveDetector.WaveListener;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,6 +57,7 @@ public class Sensey {
   private SensorManager sensorManager;
   private TouchTypeDetector touchTypeDetector;
   private PinchScaleDetector pinchScaleDetector;
+  private SoundLevelDetector soundLevelDetector;
   private Context context;
 
   private Sensey() {
@@ -271,7 +275,6 @@ public class Sensey {
     startLibrarySensorDetection(new ProximityDetector(proximityListener), proximityListener);
   }
 
-
   /**
    * Stop proximity detection.
    *
@@ -314,13 +317,23 @@ public class Sensey {
     stopLibrarySensorDetection(waveListener);
   }
 
+  public void startSoundLevelDetection(SoundLevelListener soundLevelListener) {
+    if (soundLevelListener != null) {
+      soundLevelDetector = new SoundLevelDetector(context, soundLevelListener);
+    }
+  }
+
+  public void stopSoundLevelDetection(SoundLevelListener soundLevelListener) {
+    soundLevelDetector = null;
+  }
+
   /**
    * Start pinch scale detection.
    *
    * @param pinchScaleListener
    *     the pinch scale listener
    */
-  public void startPinchScaleDetection(PinchScaleDetector.PinchScaleListener pinchScaleListener) {
+  public void startPinchScaleDetection(PinchScaleListener pinchScaleListener) {
     if (pinchScaleListener != null) {
       pinchScaleDetector = new PinchScaleDetector(context, pinchScaleListener);
     }
@@ -339,7 +352,7 @@ public class Sensey {
    * @param touchTypListener
    *     the touch typ listener
    */
-  public void startTouchTypeDetection(TouchTypeDetector.TouchTypListener touchTypListener) {
+  public void startTouchTypeDetection(TouchTypListener touchTypListener) {
     if (touchTypListener != null) {
       touchTypeDetector = new TouchTypeDetector(context, touchTypListener);
     }

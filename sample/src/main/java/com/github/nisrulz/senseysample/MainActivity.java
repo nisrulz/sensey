@@ -25,19 +25,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
-import com.github.nisrulz.sensey.FlipDetector;
-import com.github.nisrulz.sensey.LightDetector;
-import com.github.nisrulz.sensey.OrientationDetector;
-import com.github.nisrulz.sensey.ProximityDetector;
 import com.github.nisrulz.sensey.Sensey;
-import com.github.nisrulz.sensey.ShakeDetector;
-import com.github.nisrulz.sensey.WaveDetector;
+
+import static com.github.nisrulz.sensey.FlipDetector.FlipListener;
+import static com.github.nisrulz.sensey.LightDetector.LightListener;
+import static com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
+import static com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
+import static com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
+import static com.github.nisrulz.sensey.SoundLevelDetector.SoundLevelListener;
+import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
 
 public class MainActivity extends AppCompatActivity
-    implements CompoundButton.OnCheckedChangeListener, ShakeDetector.ShakeListener,
-    FlipDetector.FlipListener, LightDetector.LightListener, OrientationDetector.OrientationListener,
-    ProximityDetector.ProximityListener, WaveDetector.WaveListener {
+    implements OnCheckedChangeListener, ShakeListener, FlipListener, LightListener,
+    OrientationListener, ProximityListener, WaveListener, SoundLevelListener {
 
   private static final String LOGTAG = "MainActivity";
   private static final boolean DEBUG = true;
@@ -77,6 +79,10 @@ public class MainActivity extends AppCompatActivity
     SwitchCompat swt6 = (SwitchCompat) findViewById(R.id.Switch6);
     swt6.setOnCheckedChangeListener(this);
     swt6.setChecked(false);
+
+    SwitchCompat swt7 = (SwitchCompat) findViewById(R.id.Switch7);
+    swt7.setOnCheckedChangeListener(this);
+    swt7.setChecked(false);
 
     Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
     btnTouchEvent.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +146,15 @@ public class MainActivity extends AppCompatActivity
         }
         else {
           Sensey.getInstance().stopWaveDetection(this);
+        }
+        break;
+
+      case R.id.Switch7:
+        if (isChecked) {
+          Sensey.getInstance().startSoundLevelDetection(this);
+        }
+        else {
+          Sensey.getInstance().stopSoundLevelDetection(this);
         }
         break;
 
@@ -239,5 +254,10 @@ public class MainActivity extends AppCompatActivity
   @Override
   public void onWave() {
     setResultTextView("Wave Detected!");
+  }
+
+  @Override
+  public void onSoundDetected(float level) {
+    setResultTextView(level + "dB");
   }
 }
