@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     setContentView(R.layout.activity_main);
 
     // Init Sensey
-    Sensey.getInstance().init(MainActivity.this, Sensey.SENSOR_DELAY_FASTEST);
+    Sensey.getInstance().init(MainActivity.this, Sensey.SAMPLING_PERIOD_FASTEST);
 
     // Init UI controls,views and handler
     handler = new Handler();

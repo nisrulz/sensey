@@ -60,12 +60,12 @@ public class Sensey {
   private SoundLevelDetector soundLevelDetector;
   private Context context;
 
-  public static final int SENSOR_DELAY_FASTEST = SensorManager.SENSOR_DELAY_FASTEST;
-  public static final int SENSOR_DELAY_GAME = SensorManager.SENSOR_DELAY_GAME;
-  public static final int SENSOR_DELAY_NORMAL = SensorManager.SENSOR_DELAY_NORMAL;
-  public static final int SENSOR_DELAY_UI = SensorManager.SENSOR_DELAY_UI;
+  public static final int SAMPLING_PERIOD_FASTEST = SensorManager.SENSOR_DELAY_FASTEST;
+  public static final int SAMPLING_PERIOD_GAME = SensorManager.SENSOR_DELAY_GAME;
+  public static final int SAMPLING_PERIOD_NORMAL = SensorManager.SENSOR_DELAY_NORMAL;
+  public static final int SAMPLING_PERIOD_UI = SensorManager.SENSOR_DELAY_UI;
 
-  private int samplingPeriod = SENSOR_DELAY_NORMAL;
+  private int samplingPeriod = SAMPLING_PERIOD_NORMAL;
 
   private Sensey() {
   }
