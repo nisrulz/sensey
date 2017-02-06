@@ -60,6 +60,13 @@ public class Sensey {
   private SoundLevelDetector soundLevelDetector;
   private Context context;
 
+  public static final int SENSOR_DELAY_FASTEST = SensorManager.SENSOR_DELAY_FASTEST;
+  public static final int SENSOR_DELAY_GAME = SensorManager.SENSOR_DELAY_GAME;
+  public static final int SENSOR_DELAY_NORMAL = SensorManager.SENSOR_DELAY_NORMAL;
+  public static final int SENSOR_DELAY_UI = SensorManager.SENSOR_DELAY_UI;
+
+  private int samplingPeriod = SENSOR_DELAY_NORMAL;
+
   private Sensey() {
   }
 
@@ -85,6 +92,19 @@ public class Sensey {
   public void init(Context context) {
     sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     this.context = context;
+  }
+
+  /**
+   * Init.
+   *
+   * @param context
+   *     the context
+   * @param samplingPeriod
+   *     the sampling period
+   */
+  public void init(Context context, int samplingPeriod) {
+    init(context);
+    this.samplingPeriod = samplingPeriod;
   }
 
   private void startLibrarySensorDetection(SensorDetector detector, Object clientListener) {
@@ -127,7 +147,7 @@ public class Sensey {
 
   private void registerDetectorForAllSensors(SensorDetector detector, Iterable<Sensor> sensors) {
     for (Sensor sensor : sensors) {
-      sensorManager.registerListener(detector, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+      sensorManager.registerListener(detector, sensor, samplingPeriod);
     }
   }
 
@@ -317,6 +337,12 @@ public class Sensey {
     stopLibrarySensorDetection(waveListener);
   }
 
+  /**
+   * Start sound level detection.
+   *
+   * @param soundLevelListener
+   *     the sound level listener
+   */
   public void startSoundLevelDetection(SoundLevelListener soundLevelListener) {
     if (soundLevelListener != null) {
       soundLevelDetector = new SoundLevelDetector(soundLevelListener);
@@ -324,6 +350,9 @@ public class Sensey {
     }
   }
 
+  /**
+   * Stop sound level detection.
+   */
   public void stopSoundLevelDetection() {
     if (soundLevelDetector != null) {
       soundLevelDetector.stop();
