@@ -43,12 +43,6 @@ public class TouchTypeDetectorTest {
   }
 
   @Test
-  public void detectOnDown() {
-    testTouchTypeDetector.gestureListener.onDown(null);
-    verifyNoMoreInteractions(mockListener);
-  }
-
-  @Test
   public void detectOnLongPress() {
     testTouchTypeDetector.gestureListener.onLongPress(null);
     verify(mockListener, only()).onLongPress();
@@ -184,9 +178,4 @@ public class TouchTypeDetectorTest {
     verify(mockListener, only()).onSingleTap();
   }
 
-  @Test
-  public void detectOnSingleTapUp() {
-    testTouchTypeDetector.gestureListener.onSingleTapUp(null);
-    verifyNoMoreInteractions(mockListener);
-  }
 }

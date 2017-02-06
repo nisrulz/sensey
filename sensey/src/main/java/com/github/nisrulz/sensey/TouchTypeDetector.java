@@ -157,11 +157,6 @@ public class TouchTypeDetector {
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
     @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-      return super.onSingleTapUp(e);
-    }
-
-    @Override
     public void onLongPress(MotionEvent e) {
       touchTypListener.onLongPress();
       super.onLongPress(e);
@@ -231,11 +226,6 @@ public class TouchTypeDetector {
       }
 
       return false;
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-      return super.onDown(e);
     }
 
     @Override
