@@ -16,7 +16,9 @@
 
 package com.github.nisrulz.senseysample;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +42,9 @@ import static com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
 import static com.github.nisrulz.sensey.SoundLevelDetector.SoundLevelListener;
 import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends AppCompatActivity
     implements OnCheckedChangeListener, ShakeListener, FlipListener, LightListener,
     OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener {
@@ -57,7 +62,8 @@ public class MainActivity extends AppCompatActivity
     setContentView(R.layout.activity_main);
 
     // Init Sensey
-    Sensey.getInstance().init(MainActivity.this, Sensey.SAMPLING_PERIOD_FASTEST);
+    SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+    Sensey.getInstance().init(sensorManager, Sensey.SAMPLING_PERIOD_FASTEST);
 
     // Init UI controls,views and handler
     handler = new Handler();

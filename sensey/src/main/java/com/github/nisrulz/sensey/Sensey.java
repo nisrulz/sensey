@@ -61,7 +61,6 @@ public class Sensey {
   private TouchTypeDetector touchTypeDetector;
   private PinchScaleDetector pinchScaleDetector;
   private SoundLevelDetector soundLevelDetector;
-  private Context context;
 
   /**
    * The constant SAMPLING_PERIOD_FASTEST.
@@ -101,24 +100,23 @@ public class Sensey {
   /**
    * Init the lib
    *
-   * @param context
-   *     the context
+   * @param sensorManager
+   *     the sensor manager
    */
-  public void init(Context context) {
-    sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-    this.context = context;
+  public void init(SensorManager sensorManager) {
+    this.sensorManager = sensorManager;
   }
 
   /**
    * Init the lib
    *
-   * @param context
-   *     the context
+   * @param sensorManager
+   *     the sensor manager
    * @param samplingPeriod
    *     the sampling period
    */
-  public void init(Context context, int samplingPeriod) {
-    init(context);
+  public void init(SensorManager sensorManager, int samplingPeriod) {
+    init(sensorManager);
     this.samplingPeriod = samplingPeriod;
   }
 
@@ -403,10 +401,12 @@ public class Sensey {
   /**
    * Start pinch scale detection.
    *
+   * @param context
+   *     the context
    * @param pinchScaleListener
    *     the pinch scale listener
    */
-  public void startPinchScaleDetection(PinchScaleListener pinchScaleListener) {
+  public void startPinchScaleDetection(Context context, PinchScaleListener pinchScaleListener) {
     if (pinchScaleListener != null) {
       pinchScaleDetector = new PinchScaleDetector(context, pinchScaleListener);
     }
@@ -422,10 +422,12 @@ public class Sensey {
   /**
    * Start touch type detection.
    *
+   * @param context
+   *     the context
    * @param touchTypListener
    *     the touch typ listener
    */
-  public void startTouchTypeDetection(TouchTypListener touchTypListener) {
+  public void startTouchTypeDetection(Context context, TouchTypListener touchTypListener) {
     if (touchTypListener != null) {
       touchTypeDetector = new TouchTypeDetector(context, touchTypListener);
     }
