@@ -21,6 +21,9 @@ import android.hardware.SensorManager;
 
 import static android.hardware.Sensor.TYPE_ACCELEROMETER;
 
+/**
+ * The type Movement detector.
+ */
 public class MovementDetector extends SensorDetector {
 
   private final MovementListener movementListener;
@@ -30,10 +33,26 @@ public class MovementDetector extends SensorDetector {
   private long lastTimeMovementDetected = System.currentTimeMillis();
   private boolean isMoving = false;
 
+  /**
+   * Instantiates a new Movement detector.
+   *
+   * @param movementListener
+   *     the movement listener
+   */
   public MovementDetector(MovementListener movementListener) {
     this(0.3f, 5000, movementListener);
   }
 
+  /**
+   * Instantiates a new Movement detector.
+   *
+   * @param threshold
+   *     the threshold
+   * @param timeBeforeDeclaringStationary
+   *     the time before declaring stationary
+   * @param movementListener
+   *     the movement listener
+   */
   public MovementDetector(float threshold, long timeBeforeDeclaringStationary,
       MovementListener movementListener) {
     super(TYPE_ACCELEROMETER);
@@ -74,9 +93,18 @@ public class MovementDetector extends SensorDetector {
     }
   }
 
+  /**
+   * The interface Movement listener.
+   */
   public interface MovementListener {
+    /**
+     * On movement.
+     */
     void onMovement();
 
+    /**
+     * On stationary.
+     */
     void onStationary();
   }
 }

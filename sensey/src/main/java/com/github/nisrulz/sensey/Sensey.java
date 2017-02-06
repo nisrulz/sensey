@@ -218,6 +218,8 @@ public class Sensey {
    *
    * @param threshold
    *     the threshold
+   * @param timeBeforeDeclaringStationary
+   *     the time before declaring stationary
    * @param movementListener
    *     the movement listener
    */
