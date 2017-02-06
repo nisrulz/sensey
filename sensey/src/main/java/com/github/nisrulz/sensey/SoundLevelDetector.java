@@ -8,27 +8,21 @@ import android.util.Log;
 public class SoundLevelDetector {
   private static final String LOGTAG = "SoundLevelDetector";
 
-  private final SoundLevelListener soundLevelListener;
-  private final int SAMPLE_RATE = 44100;
-  private AudioRecord audioRecord;
+  private SoundLevelListener soundLevelListener;
+  private Thread audioRecordingThread = null;
+
+  private final int SAMPLE_RATE;
   private int bufferSize;
   private boolean shouldContinueProcessingAudio;
-  private Thread audioRecordingThread = null;
+  private final int audioChannel = AudioFormat.CHANNEL_IN_MONO;
+  private final int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
+  private final int audioSource = MediaRecorder.AudioSource.VOICE_RECOGNITION;
 
   public SoundLevelDetector(SoundLevelListener soundLevelListener) {
     this.soundLevelListener = soundLevelListener;
-
-    initAudioRecord();
-  }
-
-  void initAudioRecord() {
-    int audioChannel = AudioFormat.CHANNEL_IN_MONO;
-    int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
-    int audioSource = MediaRecorder.AudioSource.VOICE_RECOGNITION;
-
-    bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, audioChannel, audioEncoding);
-    audioRecord =
-        new AudioRecord(audioSource, SAMPLE_RATE, audioChannel, audioEncoding, bufferSize);
+    // Get valid sample rate and bufferSize
+    SAMPLE_RATE = getValidSampleRates(audioChannel, audioEncoding);
+    bufferSize = getValidBufferSize(audioSource, SAMPLE_RATE, audioChannel, audioEncoding);
   }
 
   void start() {
@@ -37,21 +31,28 @@ public class SoundLevelDetector {
       audioRecordingThread.start();
     }
     else if (audioRecordingThread.isAlive()) {
-      stop();
+      stopThreadAndProcessing();
       audioRecordingThread = new Thread(audioRecordRunnable);
       audioRecordingThread.start();
     }
   }
 
-  void stop() {
+  private void stopThreadAndProcessing() {
+    // Stop audio processing
     shouldContinueProcessingAudio = false;
+    // interrupt the thread
     if (audioRecordingThread != null) {
       audioRecordingThread.interrupt();
       audioRecordingThread = null;
     }
   }
 
-  private Runnable audioRecordRunnable = new Runnable() {
+  void stop() {
+    stopThreadAndProcessing();
+    soundLevelListener = null;
+  }
+
+  private final Runnable audioRecordRunnable = new Runnable() {
     @Override
     public void run() {
       // Setup thread priority
@@ -63,12 +64,15 @@ public class SoundLevelDetector {
 
       short[] audioBuffer = new short[bufferSize / 2];
 
+      AudioRecord audioRecord =
+          new AudioRecord(audioSource, SAMPLE_RATE, audioChannel, audioEncoding, bufferSize);
+
       if (audioRecord.getState() != AudioRecord.STATE_INITIALIZED) {
         Log.e(LOGTAG, "Audio Record can't initialize!");
         return;
       }
 
-      //
+      // start recording
       audioRecord.startRecording();
       shouldContinueProcessingAudio = true;
 
@@ -80,12 +84,17 @@ public class SoundLevelDetector {
 
         double sumLevel = 0;
         for (int i = 0; i < numberOfShort; i++) {
-          sumLevel += audioBuffer[i];
+          sumLevel += audioBuffer[i] / 32768.0;
         }
         // calculate the sound level
-        float soundLevel = (float) Math.abs((sumLevel / numberOfShort));
-        // pass it to the listener
-        soundLevelListener.onSoundDetected(soundLevel);
+        double rms = Math.sqrt(Math.abs(sumLevel / numberOfShort));
+        float soundLevel = (float) (20.0 * Math.log10(rms));
+
+        // Check that the value is neither NaN nor infinite
+        if (!Float.isNaN(soundLevel) && !Float.isInfinite(soundLevel)) {
+          // only then pass it to the listener
+          soundLevelListener.onSoundDetected(soundLevel);
+        }
       }
 
       // stop recording and release the microphone
@@ -103,6 +112,32 @@ public class SoundLevelDetector {
       }
     }
   };
+
+  private int getValidSampleRates(int channelConfiguration, int audioEncoding) {
+    for (int rate : new int[] {
+        8000, 11025, 16000, 22050, 44100, 48000
+    }) {  // add the rates you wish to check against
+      int bufferSize = AudioRecord.getMinBufferSize(rate, channelConfiguration, audioEncoding);
+      if (bufferSize > 0) {
+        return rate;
+      }
+    }
+    return 0;
+  }
+
+  private int getValidBufferSize(int audioSource, int fs, int channelConfiguration,
+      int audioEncoding) {
+    for (int bufferSize : new int[] {
+        256, 512, 1024, 2048, 4096
+    }) {  // add the rates you wish to check against
+      AudioRecord audioRecordTemp =
+          new AudioRecord(audioSource, fs, channelConfiguration, audioEncoding, bufferSize);
+      if (audioRecordTemp != null && audioRecordTemp.getState() == AudioRecord.STATE_INITIALIZED) {
+        return bufferSize;
+      }
+    }
+    return 0;
+  }
 
   public interface SoundLevelListener {
     void onSoundDetected(float level);

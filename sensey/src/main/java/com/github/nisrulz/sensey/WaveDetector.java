@@ -35,14 +35,6 @@ public class WaveDetector extends SensorDetector {
    */
   private long lastProximityEventTime = 0;
   /**
-   * The Proximity far.
-   */
-  private final int proximityFar = 0;
-  /**
-   * The Proximity near.
-   */
-  private final int proximityNear = 1;
-  /**
    * The Last proximity state.
    */
   private int lastProximityState;
@@ -75,6 +67,14 @@ public class WaveDetector extends SensorDetector {
   protected void onSensorEvent(SensorEvent sensorEvent) {
     float distance = sensorEvent.values[0];
     int proximityState;
+    /*
+    The Proximity far.
+   */
+    int proximityFar = 0;
+    /*
+    The Proximity near.
+   */
+    int proximityNear = 1;
     if (distance == 0) {
       proximityState = proximityNear;
     }

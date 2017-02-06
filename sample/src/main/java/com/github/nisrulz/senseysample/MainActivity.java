@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity
           Sensey.getInstance().startSoundLevelDetection(this);
         }
         else {
-          Sensey.getInstance().stopSoundLevelDetection(this);
+          Sensey.getInstance().stopSoundLevelDetection();
         }
         break;
 
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity
     Sensey.getInstance().stopProximityDetection(this);
     Sensey.getInstance().stopLightDetection(this);
     Sensey.getInstance().stopWaveDetection(this);
-    Sensey.getInstance().stopSoundLevelDetection(this);
+    Sensey.getInstance().stopSoundLevelDetection();
 
     // Set the all switches to off position
     swt1.setChecked(false);

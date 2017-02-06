@@ -100,7 +100,7 @@ public class Sensey {
    * @param detector
    *     the detector
    */
-  public void startSensorDetection(SensorDetector detector) {
+  private void startSensorDetection(SensorDetector detector) {
     final Iterable<Sensor> sensors = convertTypesToSensors(detector.getSensorTypes());
     if (areAllSensorsValid(sensors)) {
       registerDetectorForAllSensors(detector, sensors);
@@ -137,7 +137,7 @@ public class Sensey {
    * @param detector
    *     the detector
    */
-  public void stopSensorDetection(SensorDetector detector) {
+  private void stopSensorDetection(SensorDetector detector) {
     if (detector != null) {
       sensorManager.unregisterListener(detector);
     }
@@ -324,12 +324,11 @@ public class Sensey {
     }
   }
 
-  public void stopSoundLevelDetection(SoundLevelListener soundLevelListener) {
+  public void stopSoundLevelDetection() {
     if (soundLevelDetector != null) {
       soundLevelDetector.stop();
-      soundLevelDetector = null;
-      soundLevelListener = null;
     }
+    soundLevelDetector = null;
   }
 
   /**
