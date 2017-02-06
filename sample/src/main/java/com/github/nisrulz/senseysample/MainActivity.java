@@ -27,7 +27,9 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.github.nisrulz.sensey.Sensey;
+import java.text.DecimalFormat;
 
 import static com.github.nisrulz.sensey.FlipDetector.FlipListener;
 import static com.github.nisrulz.sensey.LightDetector.LightListener;
@@ -43,8 +45,10 @@ public class MainActivity extends AppCompatActivity
 
   private static final String LOGTAG = "MainActivity";
   private static final boolean DEBUG = true;
+  private Handler handler;
 
-  private TextView txtResult;
+  private TextView txtViewResult;
+  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -54,33 +58,35 @@ public class MainActivity extends AppCompatActivity
     // Init Sensey
     Sensey.getInstance().init(MainActivity.this);
 
-    txtResult = (TextView) findViewById(R.id.textView_result);
+    // Init UI controls,views and handler
+    handler = new Handler();
+    txtViewResult = (TextView) findViewById(R.id.textView_result);
 
-    SwitchCompat swt1 = (SwitchCompat) findViewById(R.id.Switch1);
+    swt1 = (SwitchCompat) findViewById(R.id.Switch1);
     swt1.setOnCheckedChangeListener(this);
     swt1.setChecked(false);
 
-    SwitchCompat swt2 = (SwitchCompat) findViewById(R.id.Switch2);
+    swt2 = (SwitchCompat) findViewById(R.id.Switch2);
     swt2.setOnCheckedChangeListener(this);
     swt2.setChecked(false);
 
-    SwitchCompat swt3 = (SwitchCompat) findViewById(R.id.Switch3);
+    swt3 = (SwitchCompat) findViewById(R.id.Switch3);
     swt3.setOnCheckedChangeListener(this);
     swt3.setChecked(false);
 
-    SwitchCompat swt4 = (SwitchCompat) findViewById(R.id.Switch4);
+    swt4 = (SwitchCompat) findViewById(R.id.Switch4);
     swt4.setOnCheckedChangeListener(this);
     swt4.setChecked(false);
 
-    SwitchCompat swt5 = (SwitchCompat) findViewById(R.id.Switch5);
+    swt5 = (SwitchCompat) findViewById(R.id.Switch5);
     swt5.setOnCheckedChangeListener(this);
     swt5.setChecked(false);
 
-    SwitchCompat swt6 = (SwitchCompat) findViewById(R.id.Switch6);
+    swt6 = (SwitchCompat) findViewById(R.id.Switch6);
     swt6.setOnCheckedChangeListener(this);
     swt6.setChecked(false);
 
-    SwitchCompat swt7 = (SwitchCompat) findViewById(R.id.Switch7);
+    swt7 = (SwitchCompat) findViewById(R.id.Switch7);
     swt7.setOnCheckedChangeListener(this);
     swt7.setChecked(false);
 
@@ -167,24 +173,108 @@ public class MainActivity extends AppCompatActivity
   @Override
   protected void onPause() {
     super.onPause();
-    // Stop Gesture Detections
+    // Stop Detections
     Sensey.getInstance().stopShakeDetection(this);
     Sensey.getInstance().stopFlipDetection(this);
     Sensey.getInstance().stopOrientationDetection(this);
     Sensey.getInstance().stopProximityDetection(this);
     Sensey.getInstance().stopLightDetection(this);
     Sensey.getInstance().stopWaveDetection(this);
+    Sensey.getInstance().stopSoundLevelDetection(this);
+
+    // Set the all switches to off position
+    swt1.setChecked(false);
+    swt2.setChecked(false);
+    swt3.setChecked(false);
+    swt4.setChecked(false);
+    swt5.setChecked(false);
+    swt6.setChecked(false);
+    swt7.setChecked(false);
+
+    // Reset the result view
+    resetResultInView(txtViewResult);
+
+    Toast.makeText(this, "Stopping all detectors!", Toast.LENGTH_SHORT).show();
   }
 
   @Override
   public void onFaceUp() {
-    setResultTextView("Face UP");
+    setResultTextView("Face UP", false);
   }
 
-  private void setResultTextView(String text) {
-    if (txtResult != null) {
-      txtResult.setText(text);
-      resetResultInView(txtResult);
+  @Override
+  public void onFaceDown() {
+    setResultTextView("Face Down", false);
+  }
+
+  @Override
+  public void onDark() {
+    setResultTextView("Dark", false);
+  }
+
+  @Override
+  public void onLight() {
+    setResultTextView("Not Dark", false);
+  }
+
+  @Override
+  public void onTopSideUp() {
+    setResultTextView("Top Side UP", false);
+  }
+
+  @Override
+  public void onBottomSideUp() {
+    setResultTextView("Bottom Side UP", false);
+  }
+
+  @Override
+  public void onRightSideUp() {
+    setResultTextView("Right Side UP", false);
+  }
+
+  @Override
+  public void onLeftSideUp() {
+    setResultTextView("Left Side UP", false);
+  }
+
+  @Override
+  public void onNear() {
+    setResultTextView("Near", false);
+  }
+
+  @Override
+  public void onFar() {
+    setResultTextView("Far", false);
+  }
+
+  @Override
+  public void onShakeDetected() {
+    setResultTextView("Shake Detected!", false);
+  }
+
+  @Override
+  public void onWave() {
+    setResultTextView("Wave Detected!", false);
+  }
+
+  @Override
+  public void onSoundDetected(float level) {
+
+    setResultTextView(new DecimalFormat("##.##").format(level) + "dB", true);
+  }
+
+  private void setResultTextView(final String text, final boolean realtime) {
+    if (txtViewResult != null) {
+      runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          txtViewResult.setText(text);
+          if (!realtime) {
+            resetResultInView(txtViewResult);
+          }
+        }
+      });
+
       if (DEBUG) {
         Log.i(LOGTAG, text);
       }
@@ -192,72 +282,12 @@ public class MainActivity extends AppCompatActivity
   }
 
   private void resetResultInView(final TextView txt) {
-    Handler handler = new Handler();
+
     handler.postDelayed(new Runnable() {
       @Override
       public void run() {
         txt.setText("..Results show here...");
       }
     }, 3000);
-  }
-
-  @Override
-  public void onFaceDown() {
-    setResultTextView("Face Down");
-  }
-
-  @Override
-  public void onDark() {
-    setResultTextView("Dark");
-  }
-
-  @Override
-  public void onLight() {
-    setResultTextView("Not Dark");
-  }
-
-  @Override
-  public void onTopSideUp() {
-    setResultTextView("Topside UP");
-  }
-
-  @Override
-  public void onBottomSideUp() {
-    setResultTextView("Bottomside UP");
-  }
-
-  @Override
-  public void onRightSideUp() {
-    setResultTextView("Rightside UP");
-  }
-
-  @Override
-  public void onLeftSideUp() {
-    setResultTextView("Leftside UP");
-  }
-
-  @Override
-  public void onNear() {
-    setResultTextView("Near");
-  }
-
-  @Override
-  public void onFar() {
-    setResultTextView("Far");
-  }
-
-  @Override
-  public void onShakeDetected() {
-    setResultTextView("Shake Detected!");
-  }
-
-  @Override
-  public void onWave() {
-    setResultTextView("Wave Detected!");
-  }
-
-  @Override
-  public void onSoundDetected(float level) {
-    setResultTextView(level + "dB");
   }
 }

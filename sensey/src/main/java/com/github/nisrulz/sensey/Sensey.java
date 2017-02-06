@@ -319,12 +319,17 @@ public class Sensey {
 
   public void startSoundLevelDetection(SoundLevelListener soundLevelListener) {
     if (soundLevelListener != null) {
-      soundLevelDetector = new SoundLevelDetector(context, soundLevelListener);
+      soundLevelDetector = new SoundLevelDetector(soundLevelListener);
+      soundLevelDetector.start();
     }
   }
 
   public void stopSoundLevelDetection(SoundLevelListener soundLevelListener) {
-    soundLevelDetector = null;
+    if (soundLevelDetector != null) {
+      soundLevelDetector.stop();
+      soundLevelDetector = null;
+      soundLevelListener = null;
+    }
   }
 
   /**
