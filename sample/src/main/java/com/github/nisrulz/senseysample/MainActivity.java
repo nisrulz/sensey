@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
 
       case R.id.Switch1:
         if (isChecked) {
-          Sensey.getInstance().startShakeDetection(10, this);
+          Sensey.getInstance().startShakeDetection(10,2000,this);
         }
         else {
           Sensey.getInstance().stopShakeDetection(this);
@@ -271,6 +271,11 @@ public class MainActivity extends AppCompatActivity
   @Override
   public void onShakeDetected() {
     setResultTextView("Shake Detected!", false);
+  }
+
+  @Override
+  public void onShakeStopped() {
+    setResultTextView("Shake Stopped!", false);
   }
 
   @Override

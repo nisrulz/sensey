@@ -184,11 +184,16 @@ public class Sensey {
    *
    * @param threshold
    *     the threshold
+   * @param timeBeforeDeclaringShakeStopped
+   *     the time before declaring shake stopped
    * @param shakeListener
    *     the shake listener
    */
-  public void startShakeDetection(int threshold, ShakeListener shakeListener) {
-    startLibrarySensorDetection(new ShakeDetector(threshold, shakeListener), shakeListener);
+  public void startShakeDetection(int threshold, long timeBeforeDeclaringShakeStopped,
+      ShakeListener shakeListener) {
+    startLibrarySensorDetection(
+        new ShakeDetector(threshold, timeBeforeDeclaringShakeStopped, shakeListener),
+        shakeListener);
   }
 
   /**

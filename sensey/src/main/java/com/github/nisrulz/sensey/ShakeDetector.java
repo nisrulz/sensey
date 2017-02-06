@@ -31,6 +31,10 @@ public class ShakeDetector extends SensorDetector {
   private float mAccel;
   private float mAccelCurrent = SensorManager.GRAVITY_EARTH;
 
+  private final long timeBeforeDeclaringShakeStopped;
+  private long lastTimeShakeDetected = System.currentTimeMillis();
+  private boolean isShaking = false;
+
   /**
    * Instantiates a new Shake detector.
    *
@@ -38,7 +42,7 @@ public class ShakeDetector extends SensorDetector {
    *     the shake listener
    */
   public ShakeDetector(ShakeListener shakeListener) {
-    this(3f, shakeListener);
+    this(3f, 1000, shakeListener);
   }
 
   /**
@@ -49,10 +53,12 @@ public class ShakeDetector extends SensorDetector {
    * @param shakeListener
    *     the shake listener
    */
-  public ShakeDetector(float threshold, ShakeListener shakeListener) {
+  public ShakeDetector(float threshold, long timeBeforeDeclaringShakeStopped,
+      ShakeListener shakeListener) {
     super(TYPE_ACCELEROMETER);
     this.shakeListener = shakeListener;
     this.threshold = threshold;
+    this.timeBeforeDeclaringShakeStopped = timeBeforeDeclaringShakeStopped;
   }
 
   @Override
@@ -68,7 +74,16 @@ public class ShakeDetector extends SensorDetector {
     // Make this higher or lower according to how much
     // motion you want to detect
     if (mAccel > threshold) {
+      lastTimeShakeDetected = System.currentTimeMillis();
+      isShaking = true;
       shakeListener.onShakeDetected();
+    }
+    else {
+      long timeDelta = (System.currentTimeMillis() - lastTimeShakeDetected);
+      if (timeDelta > timeBeforeDeclaringShakeStopped && isShaking) {
+        isShaking = false;
+        shakeListener.onShakeStopped();
+      }
     }
   }
 
@@ -80,5 +95,7 @@ public class ShakeDetector extends SensorDetector {
      * On shake detected.
      */
     void onShakeDetected();
+
+    void onShakeStopped();
   }
 }
