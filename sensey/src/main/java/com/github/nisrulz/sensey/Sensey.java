@@ -53,6 +53,7 @@ public class Sensey {
    * through {@link Sensey#startSensorDetection(SensorDetector)}, because the last one
    * passes task to hold reference of {@link SensorDetector sensorDetector} to the client
    */
+
   private final Map<Object, SensorDetector> defaultSensorsMap = new HashMap<>();
   private SensorManager sensorManager;
   private TouchTypeDetector touchTypeDetector;
@@ -60,9 +61,21 @@ public class Sensey {
   private SoundLevelDetector soundLevelDetector;
   private Context context;
 
+  /**
+   * The constant SAMPLING_PERIOD_FASTEST.
+   */
   public static final int SAMPLING_PERIOD_FASTEST = SensorManager.SENSOR_DELAY_FASTEST;
+  /**
+   * The constant SAMPLING_PERIOD_GAME.
+   */
   public static final int SAMPLING_PERIOD_GAME = SensorManager.SENSOR_DELAY_GAME;
+  /**
+   * The constant SAMPLING_PERIOD_NORMAL.
+   */
   public static final int SAMPLING_PERIOD_NORMAL = SensorManager.SENSOR_DELAY_NORMAL;
+  /**
+   * The constant SAMPLING_PERIOD_UI.
+   */
   public static final int SAMPLING_PERIOD_UI = SensorManager.SENSOR_DELAY_UI;
 
   private int samplingPeriod = SAMPLING_PERIOD_NORMAL;
@@ -84,7 +97,7 @@ public class Sensey {
   }
 
   /**
-   * Init.
+   * Init the lib
    *
    * @param context
    *     the context
@@ -95,7 +108,7 @@ public class Sensey {
   }
 
   /**
-   * Init.
+   * Init the lib
    *
    * @param context
    *     the context
@@ -114,16 +127,22 @@ public class Sensey {
     }
   }
 
-  /**
-   * Start sensor detection.
-   *
-   * @param detector
-   *     the detector
-   */
   private void startSensorDetection(SensorDetector detector) {
     final Iterable<Sensor> sensors = convertTypesToSensors(detector.getSensorTypes());
     if (areAllSensorsValid(sensors)) {
       registerDetectorForAllSensors(detector, sensors);
+    }
+  }
+
+  private void stopLibrarySensorDetection(Object clientListener) {
+    SensorDetector detector = defaultSensorsMap.remove(clientListener);
+    stopSensorDetection(detector);
+  }
+
+
+  private void stopSensorDetection(SensorDetector detector) {
+    if (detector != null) {
+      sensorManager.unregisterListener(detector);
     }
   }
 
@@ -150,19 +169,6 @@ public class Sensey {
       sensorManager.registerListener(detector, sensor, samplingPeriod);
     }
   }
-
-  /**
-   * Stop sensor detection.
-   *
-   * @param detector
-   *     the detector
-   */
-  private void stopSensorDetection(SensorDetector detector) {
-    if (detector != null) {
-      sensorManager.unregisterListener(detector);
-    }
-  }
-
   /**
    * Start shake detection.
    *
@@ -193,11 +199,6 @@ public class Sensey {
    */
   public void stopShakeDetection(ShakeListener shakeListener) {
     stopLibrarySensorDetection(shakeListener);
-  }
-
-  private void stopLibrarySensorDetection(Object clientListener) {
-    SensorDetector detector = defaultSensorsMap.remove(clientListener);
-    stopSensorDetection(detector);
   }
 
   /**
@@ -306,7 +307,7 @@ public class Sensey {
   }
 
   /**
-   * Start proximity detection.
+   * Start wave detection.
    *
    * @param waveListener
    *     the wave listener
@@ -316,7 +317,7 @@ public class Sensey {
   }
 
   /**
-   * Start proximity detection.
+   * Start wave detection.
    *
    * @param threshold
    *     the threshold
@@ -328,7 +329,7 @@ public class Sensey {
   }
 
   /**
-   * Stop proximity detection.
+   * Stop wave detection.
    *
    * @param waveListener
    *     the wave listener
