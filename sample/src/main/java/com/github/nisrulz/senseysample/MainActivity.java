@@ -33,6 +33,7 @@ import java.text.DecimalFormat;
 
 import static com.github.nisrulz.sensey.FlipDetector.FlipListener;
 import static com.github.nisrulz.sensey.LightDetector.LightListener;
+import static com.github.nisrulz.sensey.MovementDetector.MovementListener;
 import static com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
 import static com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
 import static com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
@@ -41,14 +42,14 @@ import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
 
 public class MainActivity extends AppCompatActivity
     implements OnCheckedChangeListener, ShakeListener, FlipListener, LightListener,
-    OrientationListener, ProximityListener, WaveListener, SoundLevelListener {
+    OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener {
 
   private static final String LOGTAG = "MainActivity";
   private static final boolean DEBUG = true;
   private Handler handler;
 
   private TextView txtViewResult;
-  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7;
+  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,10 @@ public class MainActivity extends AppCompatActivity
     swt7 = (SwitchCompat) findViewById(R.id.Switch7);
     swt7.setOnCheckedChangeListener(this);
     swt7.setChecked(false);
+
+    swt8 = (SwitchCompat) findViewById(R.id.Switch8);
+    swt8.setOnCheckedChangeListener(this);
+    swt8.setChecked(false);
 
     Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
     btnTouchEvent.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +168,14 @@ public class MainActivity extends AppCompatActivity
           Sensey.getInstance().stopSoundLevelDetection();
         }
         break;
+      case R.id.Switch8:
+        if (isChecked) {
+          Sensey.getInstance().startMovementDetection(this);
+        }
+        else {
+          Sensey.getInstance().stopMovementDetection(this);
+        }
+        break;
 
       default:
         // Do nothing
@@ -181,6 +194,7 @@ public class MainActivity extends AppCompatActivity
     Sensey.getInstance().stopLightDetection(this);
     Sensey.getInstance().stopWaveDetection(this);
     Sensey.getInstance().stopSoundLevelDetection();
+    Sensey.getInstance().stopMovementDetection(this);
 
     // Set the all switches to off position
     swt1.setChecked(false);
@@ -190,6 +204,7 @@ public class MainActivity extends AppCompatActivity
     swt5.setChecked(false);
     swt6.setChecked(false);
     swt7.setChecked(false);
+    swt8.setChecked(false);
 
     // Reset the result view
     resetResultInView(txtViewResult);
@@ -261,6 +276,16 @@ public class MainActivity extends AppCompatActivity
   public void onSoundDetected(float level) {
 
     setResultTextView(new DecimalFormat("##.##").format(level) + "dB", true);
+  }
+
+  @Override
+  public void onMovement() {
+    setResultTextView("Movement Detected!", false);
+  }
+
+  @Override
+  public void onStationary() {
+    setResultTextView("Device Stationary!", false);
   }
 
   private void setResultTextView(final String text, final boolean realtime) {

@@ -34,6 +34,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.nisrulz.sensey.MovementDetector.MovementListener;
+
 /**
  * The type Sensey.
  */
@@ -139,7 +141,6 @@ public class Sensey {
     stopSensorDetection(detector);
   }
 
-
   private void stopSensorDetection(SensorDetector detector) {
     if (detector != null) {
       sensorManager.unregisterListener(detector);
@@ -169,6 +170,7 @@ public class Sensey {
       sensorManager.registerListener(detector, sensor, samplingPeriod);
     }
   }
+
   /**
    * Start shake detection.
    *
@@ -199,6 +201,41 @@ public class Sensey {
    */
   public void stopShakeDetection(ShakeListener shakeListener) {
     stopLibrarySensorDetection(shakeListener);
+  }
+
+  /**
+   * Start movement detection.
+   *
+   * @param movementListener
+   *     the movement listener
+   */
+  public void startMovementDetection(MovementListener movementListener) {
+    startLibrarySensorDetection(new MovementDetector(movementListener), movementListener);
+  }
+
+  /**
+   * Start movement detection.
+   *
+   * @param threshold
+   *     the threshold
+   * @param movementListener
+   *     the movement listener
+   */
+  public void startMovementDetection(int threshold, long timeBeforeDeclaringStationary,
+      MovementListener movementListener) {
+    startLibrarySensorDetection(
+        new MovementDetector(threshold, timeBeforeDeclaringStationary, movementListener),
+        movementListener);
+  }
+
+  /**
+   * Stop movement detection.
+   *
+   * @param movementListener
+   *     the movement listener
+   */
+  public void stopMovementDetection(MovementListener movementListener) {
+    stopLibrarySensorDetection(movementListener);
   }
 
   /**
