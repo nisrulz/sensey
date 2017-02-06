@@ -5,6 +5,9 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+/**
+ * The type Sound level detector.
+ */
 public class SoundLevelDetector {
   private static final String LOGTAG = "SoundLevelDetector";
 
@@ -18,6 +21,12 @@ public class SoundLevelDetector {
   private final int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
   private final int audioSource = MediaRecorder.AudioSource.VOICE_RECOGNITION;
 
+  /**
+   * Instantiates a new Sound level detector.
+   *
+   * @param soundLevelListener
+   *     the sound level listener
+   */
   public SoundLevelDetector(SoundLevelListener soundLevelListener) {
     this.soundLevelListener = soundLevelListener;
     // Get valid sample rate and bufferSize
@@ -25,6 +34,9 @@ public class SoundLevelDetector {
     bufferSize = getValidBufferSize(audioSource, SAMPLE_RATE, audioChannel, audioEncoding);
   }
 
+  /**
+   * Start Recording
+   */
   void start() {
     if (audioRecordingThread == null) {
       audioRecordingThread = new Thread(audioRecordRunnable);
@@ -47,6 +59,9 @@ public class SoundLevelDetector {
     }
   }
 
+  /**
+   * Stop Recording
+   */
   void stop() {
     stopThreadAndProcessing();
     soundLevelListener = null;
@@ -139,7 +154,16 @@ public class SoundLevelDetector {
     return 0;
   }
 
+  /**
+   * The interface Sound level listener.
+   */
   public interface SoundLevelListener {
+    /**
+     * On sound detected.
+     *
+     * @param level
+     *     the level
+     */
     void onSoundDetected(float level);
   }
 }
