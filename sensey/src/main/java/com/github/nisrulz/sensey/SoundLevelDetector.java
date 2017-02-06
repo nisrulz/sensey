@@ -72,6 +72,13 @@ public class SoundLevelDetector {
     public void run() {
       // Setup thread priority
       android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO);
+
+      if (SAMPLE_RATE == 0 || bufferSize == 0) {
+        Log.e(LOGTAG, "Invalid SampleRate/BufferSize! AudioRecord cannot be initialized. Exiting!");
+        return;
+      }
+
+
       // If there was an error
       if (bufferSize == AudioRecord.ERROR || bufferSize == AudioRecord.ERROR_BAD_VALUE) {
         bufferSize = SAMPLE_RATE * 2;
@@ -83,7 +90,7 @@ public class SoundLevelDetector {
           new AudioRecord(audioSource, SAMPLE_RATE, audioChannel, audioEncoding, bufferSize);
 
       if (audioRecord.getState() != AudioRecord.STATE_INITIALIZED) {
-        Log.e(LOGTAG, "Audio Record can't initialize!");
+        Log.e(LOGTAG, "AudioRecord could not be initialized. Exiting!");
         return;
       }
 
@@ -106,7 +113,7 @@ public class SoundLevelDetector {
         float soundLevel = (float) (20.0 * Math.log10(rms));
 
         // Check that the value is neither NaN nor infinite
-        if (!Float.isNaN(soundLevel) && !Float.isInfinite(soundLevel)) {
+        if (!Float.isNaN(soundLevel) && !Float.isInfinite(soundLevel) && shouldContinueProcessingAudio) {
           // only then pass it to the listener
           soundLevelListener.onSoundDetected(soundLevel);
         }
