@@ -100,23 +100,23 @@ public class Sensey {
   /**
    * Init the lib
    *
-   * @param sensorManager
-   *     the sensor manager
+   * @param context
+   *     the context
    */
-  public void init(SensorManager sensorManager) {
-    this.sensorManager = sensorManager;
+  public void init(Context context) {
+    this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
   }
 
   /**
    * Init the lib
    *
-   * @param sensorManager
-   *     the sensor manager
+   * @param context
+   *     the context
    * @param samplingPeriod
    *     the sampling period
    */
-  public void init(SensorManager sensorManager, int samplingPeriod) {
-    init(sensorManager);
+  public void init(Context context, int samplingPeriod) {
+    init(context);
     this.samplingPeriod = samplingPeriod;
   }
 
