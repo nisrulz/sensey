@@ -191,7 +191,7 @@ public class Sensey {
    * @param shakeListener
    *     the shake listener
    */
-  public void startShakeDetection(int threshold, long timeBeforeDeclaringShakeStopped,
+  public void startShakeDetection(float threshold, long timeBeforeDeclaringShakeStopped,
       ShakeListener shakeListener) {
     startLibrarySensorDetection(
         new ShakeDetector(threshold, timeBeforeDeclaringShakeStopped, shakeListener),
@@ -228,7 +228,7 @@ public class Sensey {
    * @param movementListener
    *     the movement listener
    */
-  public void startMovementDetection(int threshold, long timeBeforeDeclaringStationary,
+  public void startMovementDetection(float threshold, long timeBeforeDeclaringStationary,
       MovementListener movementListener) {
     startLibrarySensorDetection(
         new MovementDetector(threshold, timeBeforeDeclaringStationary, movementListener),
@@ -265,7 +265,7 @@ public class Sensey {
    * @param chopListener
    *     the chop listener
    */
-  public void startChopDetection(int threshold, long timeForChopGesture,
+  public void startChopDetection(float threshold, long timeForChopGesture,
       ChopListener chopListener) {
     startLibrarySensorDetection(new ChopDetector(threshold, timeForChopGesture, chopListener),
         chopListener);
@@ -301,7 +301,7 @@ public class Sensey {
    * @param wristTwistListener
    *     the wrist twist listener
    */
-  public void startWristTwistDetection(int threshold, long timeForWristTwistGesture,
+  public void startWristTwistDetection(float threshold, long timeForWristTwistGesture,
       WristTwistListener wristTwistListener) {
     startLibrarySensorDetection(
         new WristTwistDetector(threshold, timeForWristTwistGesture, wristTwistListener),
@@ -336,7 +336,7 @@ public class Sensey {
    * @param lightListener
    *     the light listener
    */
-  public void startLightDetection(int threshold, LightListener lightListener) {
+  public void startLightDetection(float threshold, LightListener lightListener) {
     startLibrarySensorDetection(new LightDetector(threshold, lightListener), lightListener);
   }
 

@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity
         break;
       case R.id.Switch9:
         if (isChecked) {
-          Sensey.getInstance().startChopDetection(this);
+          Sensey.getInstance().startChopDetection(30f, 500,this);
         }
         else {
           Sensey.getInstance().stopChopDetection(this);

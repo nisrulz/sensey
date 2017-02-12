@@ -43,6 +43,10 @@ dependencies {
   testCompile "junit:junit:$rootProject.ext.jUnitVersion"
   compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
 
+  debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+  testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+
   // Module Dependency
   compile project(':sensey')
 }
