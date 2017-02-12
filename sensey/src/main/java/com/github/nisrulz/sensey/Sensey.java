@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.nisrulz.sensey.MovementDetector.MovementListener;
+import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
 
 /**
  * The type Sensey.
@@ -278,6 +279,43 @@ public class Sensey {
    */
   public void stopChopDetection(ChopListener chopListener) {
     stopLibrarySensorDetection(chopListener);
+  }
+
+  /**
+   * Start wrist twist detection.
+   *
+   * @param wristTwistListener
+   *     the wrist twist listener
+   */
+  public void startWristTwistDetection(WristTwistListener wristTwistListener) {
+    startLibrarySensorDetection(new WristTwistDetector(wristTwistListener), wristTwistListener);
+  }
+
+  /**
+   * Start wrist twist detection.
+   *
+   * @param threshold
+   *     the threshold
+   * @param timeForWristTwistGesture
+   *     the time for wrist twist gesture
+   * @param wristTwistListener
+   *     the wrist twist listener
+   */
+  public void startWristTwistDetection(int threshold, long timeForWristTwistGesture,
+      WristTwistListener wristTwistListener) {
+    startLibrarySensorDetection(
+        new WristTwistDetector(threshold, timeForWristTwistGesture, wristTwistListener),
+        wristTwistListener);
+  }
+
+  /**
+   * Stop wrist twist detection.
+   *
+   * @param wristTwistListener
+   *     the wrist twist listener
+   */
+  public void stopWristTwistDetection(WristTwistListener wristTwistListener) {
+    stopLibrarySensorDetection(wristTwistListener);
   }
 
   /**

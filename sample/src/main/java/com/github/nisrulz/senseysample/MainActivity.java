@@ -40,6 +40,7 @@ import static com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
 import static com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
 import static com.github.nisrulz.sensey.SoundLevelDetector.SoundLevelListener;
 import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
+import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
 
 /**
  * The type Main activity.
@@ -47,14 +48,14 @@ import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
 public class MainActivity extends AppCompatActivity
     implements OnCheckedChangeListener, ShakeListener, FlipListener, LightListener,
     OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener,
-    ChopListener {
+    ChopListener, WristTwistListener {
 
   private static final String LOGTAG = "MainActivity";
   private static final boolean DEBUG = true;
   private Handler handler;
 
   private TextView txtViewResult;
-  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8, swt9;
+  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8, swt9, swt10;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +104,10 @@ public class MainActivity extends AppCompatActivity
     swt9 = (SwitchCompat) findViewById(R.id.Switch9);
     swt9.setOnCheckedChangeListener(this);
     swt9.setChecked(false);
+
+    swt10 = (SwitchCompat) findViewById(R.id.Switch10);
+    swt10.setOnCheckedChangeListener(this);
+    swt10.setChecked(false);
 
     Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
     btnTouchEvent.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +198,14 @@ public class MainActivity extends AppCompatActivity
           Sensey.getInstance().stopChopDetection(this);
         }
         break;
+      case R.id.Switch10:
+        if (isChecked) {
+          Sensey.getInstance().startWristTwistDetection(this);
+        }
+        else {
+          Sensey.getInstance().stopWristTwistDetection(this);
+        }
+        break;
 
       default:
         // Do nothing
@@ -213,6 +226,7 @@ public class MainActivity extends AppCompatActivity
     Sensey.getInstance().stopSoundLevelDetection();
     Sensey.getInstance().stopMovementDetection(this);
     Sensey.getInstance().stopChopDetection(this);
+    Sensey.getInstance().stopWristTwistDetection(this);
 
     // Set the all switches to off position
     swt1.setChecked(false);
@@ -224,6 +238,7 @@ public class MainActivity extends AppCompatActivity
     swt7.setChecked(false);
     swt8.setChecked(false);
     swt9.setChecked(false);
+    swt10.setChecked(false);
 
     // Reset the result view
     resetResultInView(txtViewResult);
@@ -315,6 +330,11 @@ public class MainActivity extends AppCompatActivity
   @Override
   public void onChop() {
     setResultTextView("Chop Detected!", false);
+  }
+
+  @Override
+  public void onWristTwist() {
+    setResultTextView("Wrist Twist Detected!", false);
   }
 
   private void setResultTextView(final String text, final boolean realtime) {

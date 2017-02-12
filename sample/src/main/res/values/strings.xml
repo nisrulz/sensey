@@ -29,4 +29,5 @@
   <string name="sound_level_detection">Sound Level Detection</string>
   <string name="movement_detection">Movement Detection</string>
   <string name="chop_detector">Chop Detector</string>
+  <string name="wrist_twist_detection">Wrist Twist Detection</string>
 </resources>

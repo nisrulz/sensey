@@ -21,41 +21,43 @@ import android.hardware.SensorEvent;
 import static android.hardware.Sensor.TYPE_ACCELEROMETER;
 
 /**
- * The type Chop detector.
+ * The type Wrist twist detector.
  */
-public class ChopDetector extends SensorDetector {
+public class WristTwistDetector extends SensorDetector {
 
-  private final ChopListener chopListener;
+  private final WristTwistListener wristTwistListener;
   private final float threshold;
-  private final long timeForChopGesture;
-  private long lastTimeChopDetected = System.currentTimeMillis();
+  private final long timeForWristTwistGesture;
+  private long lastTimeWristTwistDetected = System.currentTimeMillis();
   private boolean isGestureInProgress = false;
+  private boolean halfGestureDone = false;
 
   /**
-   * Instantiates a new Chop detector.
+   * Instantiates a new Wrist twist detector.
    *
-   * @param chopListener
-   *     the chop listener
+   * @param wristTwistListener
+   *     the wrist twist listener
    */
-  public ChopDetector(ChopListener chopListener) {
-    this(30f, 600, chopListener);
+  public WristTwistDetector(WristTwistListener wristTwistListener) {
+    this(13f, 700, wristTwistListener);
   }
 
   /**
-   * Instantiates a new Chop detector.
+   * Instantiates a new Wrist twist detector.
    *
    * @param threshold
    *     the threshold
-   * @param timeForChopGesture
-   *     the time for chop gesture
-   * @param chopListener
-   *     the chop listener
+   * @param timeForWristTwistGesture
+   *     the time for wrist twist gesture
+   * @param wristTwistListener
+   *     the wrist twist listener
    */
-  public ChopDetector(float threshold, long timeForChopGesture, ChopListener chopListener) {
+  public WristTwistDetector(float threshold, long timeForWristTwistGesture,
+      WristTwistListener wristTwistListener) {
     super(TYPE_ACCELEROMETER);
-    this.chopListener = chopListener;
+    this.wristTwistListener = wristTwistListener;
     this.threshold = threshold;
-    this.timeForChopGesture = timeForChopGesture;
+    this.timeForWristTwistGesture = timeForWristTwistGesture;
   }
 
   @Override
@@ -66,26 +68,26 @@ public class ChopDetector extends SensorDetector {
 
     // Make this higher or lower according to how much
     // motion you want to detect
-    if (x > threshold && y < (-threshold) && z > threshold) {
-      lastTimeChopDetected = System.currentTimeMillis();
+    if ( x < -9.8f && z < (-threshold)) {
+      lastTimeWristTwistDetected = System.currentTimeMillis();
       isGestureInProgress = true;
     }
     else {
-      long timeDelta = (System.currentTimeMillis() - lastTimeChopDetected);
-      if (timeDelta > timeForChopGesture && isGestureInProgress) {
+      long timeDelta = (System.currentTimeMillis() - lastTimeWristTwistDetected);
+      if (timeDelta > timeForWristTwistGesture && isGestureInProgress) {
         isGestureInProgress = false;
-        chopListener.onChop();
+        wristTwistListener.onWristTwist();
       }
     }
   }
 
   /**
-   * The interface Chop listener.
+   * The interface Wrist twist listener.
    */
-  public interface ChopListener {
+  public interface WristTwistListener {
     /**
-     * On chop.
+     * On wrist twist.
      */
-    void onChop();
+    void onWristTwist();
   }
 }
