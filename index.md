@@ -6,11 +6,17 @@
 
 **Also included in**
 + [Best Android Libraries for Developers](https://cloudrail.com/best-android-libraries-for-developers/)
+
 + [COBE’s Top 5 Android Libraries — September 2016](https://medium.cobeisfresh.com/cobes-top-5-android-libraries-september-2016-883757e61bf0#.oe2lzaxyn)
+
 + [DZone Post](https://dzone.com/articles/this-week-in-mobile-may-15)
+
 + [Codepath's Must Have Libraries](https://github.com/codepath/android_guides/wiki/Must-Have-libraries#convenience)
+
 + Awesome Android Newsletter
+
 	+ [Issue 5](https://android.libhunt.com/newsletter/5)
+	
 	+ [Issue 21](https://android.libhunt.com/newsletter/21)
 
 ### Show some :heart:
@@ -49,6 +55,10 @@ Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/ni
     + onFar
  1. [Shake](https://github.com/nisrulz/sensey/wiki/Usage#shake)
  1. [Wave](https://github.com/nisrulz/sensey/wiki/Usage#wave)
+ 1. [Chop](https://github.com/nisrulz/sensey/wiki/Usage#chop)
+ 1. [WristTwist](https://github.com/nisrulz/sensey/wiki/Usage#wristtwist)
+ 1. [Movement](https://github.com/nisrulz/sensey/wiki/Usage#movement)
+ 1. [SoundLevel](https://github.com/nisrulz/sensey/wiki/Usage#soundlevel)
  1. [TouchType](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)
     + onDoubleTap
     + onScroll(direction)
@@ -59,15 +69,17 @@ Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/ni
     + onTwoFingerSingleTap
     + onThreeFingerSingleTap
 
-
 # Including in your project
 Sensey is available in the Jcenter, so getting it as simple as adding it as a dependency
+
 ```gradle
 compile 'com.github.nisrulz:sensey:{latest version}'
 ```
+
 where `{latest version}` corresponds to published version in [ ![Download](https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg) ](https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion)
 
 ## Initialize Sensey under your onCreate() in the activity/service
+
 ```java
 Sensey.getInstance().init(context);
 ```
@@ -76,6 +88,7 @@ Sensey.getInstance().init(context);
 
 ### Shake
 + Create an instance of ShakeListener
+
 ```java
 ShakeDetector.ShakeListener shakeListener=new ShakeDetector.ShakeListener() {
    @Override public void onShakeDetected() {
@@ -88,21 +101,29 @@ ShakeDetector.ShakeListener shakeListener=new ShakeDetector.ShakeListener() {
 
 };
 ```
+
 + Now to start listening for Shake gesture, pass the instance `shakeListener` to `startShakeDetection()` function
+
 ```java
 Sensey.getInstance().startShakeDetection(shakeListener);
 ```
+
 If you want to modify the `threshold` and `time` before declaring that shake gesture is stopped, use
+
 ```java
 Sensey.getInstance().startShakeDetection(threshold,timeBeforeDeclaringShakeStopped,shakeListener);
 ```
+
 + To stop listening for Shake gesture, pass the instance `shakeListener` to `stopShakeDetection()` function
+
 ```java
 Sensey.getInstance().stopShakeDetection(shakeListener);
 ```
 
 ### Movement
+
 + Create an instance of MovementListener
+
 ```java
 MovementDetector.MovementListener movementListener=new MovementDetector.MovementListener() {
    @Override public void onMovement() {
@@ -115,21 +136,29 @@ MovementDetector.MovementListener movementListener=new MovementDetector.Movement
 
 };
 ```
+
 + Now to start listening for Movement gesture, pass the instance `movementListener` to `startMovementDetection()` function
+
 ```java
 Sensey.getInstance().startMovementDetection(movementListener);
 ```
+
 If you want to modify the `threshold` and `time` before declaring that movement gesture is stopped, use
+
 ```java
 Sensey.getInstance().startMovementDetection(threshold,timeBeforeDeclaringStationary,movementListener);
 ```
+
 + To stop listening for Movement gesture, pass the instance `movementListener` to `stopMovementDetection()` function
+
 ```java
 Sensey.getInstance().stopMovementDetection(movementListener);
 ```
 
 ### Chop
+
 + Create an instance of ChopListener
+
 ```java
 ChopDetector.ChopListener chopListener=new ChopDetector.ChopListener() {
    @Override public void onChop() {
@@ -137,21 +166,29 @@ ChopDetector.ChopListener chopListener=new ChopDetector.ChopListener() {
    }
 };
 ```
+
 + Now to start listening for Chop gesture, pass the instance `chopListener` to `startChopDetection()` function
+
 ```java
 Sensey.getInstance().startChopDetection(chopListener);
 ```
+
 If you want to modify the `threshold` and `time` for chop gesture, use
+
 ```java
 Sensey.getInstance().startChopDetection(threshold,timeForChopGesture,chopListener);
 ```
+
 + To stop listening for Chop gesture, pass the instance `chopListener` to `stopChopDetection()` function
+
 ```java
 Sensey.getInstance().stopChopDetection(chopListener);
 ```
 
 ### WristTwist
+
 + Create an instance of WristTwistListener
+
 ```java
 WristTwistDetector.WristTwistListener wristTwistListener=new WristTwistDetector.WristTwistListener() {
    @Override public void onWristTwist() {
@@ -159,21 +196,29 @@ WristTwistDetector.WristTwistListener wristTwistListener=new WristTwistDetector.
    }
 };
 ```
+
 + Now to start listening for Wrist Twist gesture, pass the instance `wristTwistListener` to `startWristTwistDetection()` function
+
 ```java
 Sensey.getInstance().startWristTwistDetection(wristTwistListener);
 ```
+
 If you want to modify the `threshold` and `time` for wrist twist gesture, use
+
 ```java
 Sensey.getInstance().startWristTwistDetection(threshold,timeForWristTwistGesture,wristTwistListener);
 ```
+
 + To stop listening for Wrist Twist gesture, pass the instance `wristTwistListener` to `stopWristTwistDetection()` function
+
 ```java
 Sensey.getInstance().stopWristTwistDetection(wristTwistListener);
 ```
 
 ### SoundLevel
+
 + Create an instance of SoundLevelListener
+
 ```java
 SoundLevelDetector.SoundLevelListener soundLevelListener=new SoundLevelDetector.SoundLevelListener() {
    @Override public void onSoundDetected(float level) {
@@ -181,17 +226,23 @@ SoundLevelDetector.SoundLevelListener soundLevelListener=new SoundLevelDetector.
    }
 };
 ```
+
 + Now to start listening for Sound Level, pass the instance `soundLevelListener` to `startSoundLevelDetection()` function
+
 ```java
 Sensey.getInstance().startSoundLevelDetection(soundLevelListener);
 ```
+
 + To stop listening for Wrist Twist gesture, pass the instance `soundLevelListener` to `stopSoundLevelDetection()` function
+
 ```java
 Sensey.getInstance().stopSoundLevelDetection(soundLevelListener);
 ```
 
 ### Flip
+
 + Create an instance of FlipListener
+
 ```java
 FlipDetector.FlipListener flipListener=new FlipDetector.FlipListener() {
     @Override public void onFaceUp() {
@@ -203,18 +254,23 @@ FlipDetector.FlipListener flipListener=new FlipDetector.FlipListener() {
     }
 };
 ```
+
 + Now to start listening for Flip gesture, pass the instance `flipListener` to `startFlipDetection()` function
+
 ```java
 Sensey.getInstance().startFlipDetection(flipListener);
 ```
 
 + To stop listening for Flip gesture, pass the instance `flipListener` to `stopFlipDetection()` function
+
 ```java
 Sensey.getInstance().stopFlipDetection(flipListener);
 ```
 
 ### Orientation
+
 + Create an instance of OrientationListener
+
 ```java
 OrientationDetector.OrientationListener orientationListener=new OrientationDetector.OrientationListener() {
   @Override public void onTopSideUp() {
@@ -234,18 +290,23 @@ OrientationDetector.OrientationListener orientationListener=new OrientationDetec
   }
 };
 ```
+
 + Now to start listening for Orientation gesture, pass the instance `orientationListener` to `startOrientationDetection()` function
+
 ```java
 Sensey.getInstance().startOrientationDetection(orientationListener);
 ```
 
 + To stop listening for Orientation gesture, pass the instance `orientationListener` to `stopOrientationDetection()` function
+
 ```java
 Sensey.getInstance().stopOrientationDetection(orientationListener);
 ```
 
 ### Proximity
+
 + Create an instance of ProximityListener
+
 ```java
 ProximityDetector.ProximityListener proximityListener=new ProximityDetector.ProximityListener() {
    @Override public void onNear() {
@@ -257,18 +318,23 @@ ProximityDetector.ProximityListener proximityListener=new ProximityDetector.Prox
    }
 };
 ```
+
 + Now to start listening for Orientation gesture, pass the instance `proximityListener` to `startProximityDetection()` function
+
 ```java
 Sensey.getInstance().startProximityDetection(proximityListener);
 ```
 
 + To stop listening for Orientation gesture, pass the instance `proximityListener` to `stopProximityDetection()` function
+
 ```java
 Sensey.getInstance().stopProximityDetection(proximityListener);
 ```
 
 ### Wave
+
 + Create an instance of WaveListener
+
 ```java
 WaveDetector.WaveListener waveListener=new WaveDetector.WaveListener() {
    @Override public void onWave() {
@@ -276,18 +342,23 @@ WaveDetector.WaveListener waveListener=new WaveDetector.WaveListener() {
    }
 };
 ```
+
 + Now to start listening for Wave gesture, pass the instance `waveListener` to `startWaveDetection()` function
+
 ```java
 Sensey.getInstance().startWaveDetection(waveListener);
 ```
 
 + To stop listening for Wave gesture, pass the instance `waveListener` to `stopWaveDetection()` function
+
 ```java
 Sensey.getInstance().stopWaveDetection(waveListener);
 ```
 
 ### Light
+
 + Create an instance of LightListener
+
 ```java
 LightDetector.LightListener lightListener=new LightDetector.LightListener() {
    @Override public void onDark() {
@@ -299,12 +370,15 @@ LightDetector.LightListener lightListener=new LightDetector.LightListener() {
    }
 };
 ```
+
 + Now to start listening for Orientation gesture, pass the instance `lightListener` to `startLightDetection()` function
+
 ```java
 Sensey.getInstance().startLightDetection(lightListener);
 ```
 
 + To stop listening for Orientation gesture, pass the instance `lightListener` to `stopLightDetection()` function
+
 ```java
 Sensey.getInstance().stopLightDetection(lightListener);
 ```
@@ -313,6 +387,7 @@ Sensey.getInstance().stopLightDetection(lightListener);
 ### For Touch based gestures
 
 ***IMPORTANT*** : Implement this to intercept touch actions in activity by overriding the `dispatchTouchEvent`.
+
 ```java
  @Override public boolean dispatchTouchEvent(MotionEvent event) {
     // Setup onTouchEvent for detecting type of touch gesture
@@ -322,7 +397,9 @@ Sensey.getInstance().stopLightDetection(lightListener);
 ```
 
 ### PinchScale
+
 + Create an instance of PinchScaleListener
+
 ```java
 PinchScaleDetector.PinchScaleListener pinchScaleListener=new PinchScaleDetector.PinchScaleListener() {
    @Override public void onScale(ScaleGestureDetector scaleGestureDetector, boolean isScalingOut) {
@@ -342,12 +419,15 @@ PinchScaleDetector.PinchScaleListener pinchScaleListener=new PinchScaleDetector.
    }
 };
 ```
+
 + Now to start listening for PinchScale gesture, pass the instance `pinchScaleListener` to `startPinchScaleDetection()` function
+
 ```java
 Sensey.getInstance().startPinchScaleDetection(pinchScaleListener);
 ```
 
 + To stop listening for PinchScale gesture, simply call  `stopPinchScaleDetection()` function
+
 ```java
 Sensey.getInstance().stopPinchScaleDetection();
 ```
@@ -356,7 +436,9 @@ Sensey.getInstance().stopPinchScaleDetection();
 
 
 ### TouchType
+
 + Create an instance of TouchTypListener
+
 ```java
 TouchTypeDetector.TouchTypListener touchTypListener=new TouchTypeDetector.TouchTypListener() {
    @Override public void onTwoFingerSingleTap() {
@@ -420,12 +502,15 @@ TouchTypeDetector.TouchTypListener touchTypListener=new TouchTypeDetector.TouchT
    }
 };
 ```
+
 + Now to start listening for TouchType gesture, pass the instance `touchTypListener` to `startTouchTypeDetection()` function
+
 ```java
 Sensey.getInstance().startTouchTypeDetection(touchTypListener);
 ```
 
 + To stop listening for TouchType gesture, simply call  `stopTouchTypeDetection()` function
+
 ```java
 Sensey.getInstance().stopTouchTypeDetection();
 ```
@@ -434,11 +519,17 @@ Sensey.getInstance().stopTouchTypeDetection();
 
 # Pull Requests
 I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request. Here are some basic rules to follow to ensure timely addition of your request:
+
   1. Match coding style (braces, spacing, etc.) This is best achieved using CMD+Option+L (Reformat code) on Mac (not sure for Windows) with Android Studio defaults.
+  
   2. If its a feature, bugfix, or anything please only change code to what you specify.
+  
   3. Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge :)
+  
   4. Pull requests _must_ be made against `develop` branch. Any other branch (unless specified by the maintainers) will get rejected.
-  5. Check for existing [issues](https://github.com/nisrulz/sensey/issues) first, before filing an issue.  
+  
+  5. Check for existing [issues](https://github.com/nisrulz/sensey/issues) first, before filing an issue.
+  
   6. Have fun!
 
 ### Created & Maintained By
