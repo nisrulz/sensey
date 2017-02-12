@@ -1,0 +1,8 @@
+title: Sensey
+description: Android library to make detecting gestures easy
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-modernist
+
+gems:
+  - jekyll-mentions
