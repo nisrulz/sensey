@@ -92,7 +92,7 @@ public class SenseyTest {
   public void detectListenerWithStartShakeDetectionWithCustomThreshold() {
     addSensor(TYPE_ACCELEROMETER);
     ShakeListener fakeListener = mock(ShakeListener.class);
-    sensey.startShakeDetection(4, fakeListener);
+    sensey.startShakeDetection(4f,1000, fakeListener);
     ShakeDetector detector = getDetector(fakeListener, ShakeDetector.class);
     if (detector != null) {
       assertTrue("Sensor Manager must contain sensor event listener for shake",
