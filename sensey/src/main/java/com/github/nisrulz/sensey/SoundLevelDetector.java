@@ -78,7 +78,6 @@ public class SoundLevelDetector {
         return;
       }
 
-
       // If there was an error
       if (bufferSize == AudioRecord.ERROR || bufferSize == AudioRecord.ERROR_BAD_VALUE) {
         bufferSize = SAMPLE_RATE * 2;
@@ -113,7 +112,14 @@ public class SoundLevelDetector {
         float soundLevel = (float) (20.0 * Math.log10(rms));
 
         // Check that the value is neither NaN nor infinite
-        if (!Float.isNaN(soundLevel) && !Float.isInfinite(soundLevel) && shouldContinueProcessingAudio) {
+        if (!Float.isNaN(soundLevel)
+            && !Float.isInfinite(soundLevel)
+            && shouldContinueProcessingAudio) {
+          // since 0db is the max loudness and negative values are used to represent the loudness
+          // if we add 100 to teh actual soundlevel, it will result in values on a scale of 0 to 100
+          // The more negative the value will be +100 would yield a lower value on the scale of 0-100
+          // and would mean that sound is of lesser loudness and vice versa
+          soundLevel = soundLevel + 100f;
           // only then pass it to the listener
           soundLevelListener.onSoundDetected(soundLevel);
         }
