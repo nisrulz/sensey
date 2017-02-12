@@ -51,6 +51,10 @@ Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/ni
     + onFar
  1. [Shake](https://github.com/nisrulz/sensey/wiki/Usage#shake)
  1. [Wave](https://github.com/nisrulz/sensey/wiki/Usage#wave)
+ 1. [Chop](https://github.com/nisrulz/sensey/wiki/Usage#chop)
+ 1. [WristTwist](https://github.com/nisrulz/sensey/wiki/Usage#wristtwist)
+ 1. [Movement](https://github.com/nisrulz/sensey/wiki/Usage#movement)
+ 1. [SoundLevel](https://github.com/nisrulz/sensey/wiki/Usage#soundlevel)
  1. [TouchType](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)
     + onDoubleTap
     + onScroll(direction)
