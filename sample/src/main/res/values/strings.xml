@@ -28,4 +28,5 @@
   <string name="pinch_scale_gesture">Pinch Scale Detection</string>
   <string name="sound_level_detection">Sound Level Detection</string>
   <string name="movement_detection">Movement Detection</string>
+  <string name="chop_detector">Chop Detector</string>
 </resources>

@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.github.nisrulz.sensey.Sensey;
 import java.text.DecimalFormat;
 
+import static com.github.nisrulz.sensey.ChopDetector.ChopListener;
 import static com.github.nisrulz.sensey.FlipDetector.FlipListener;
 import static com.github.nisrulz.sensey.LightDetector.LightListener;
 import static com.github.nisrulz.sensey.MovementDetector.MovementListener;
@@ -45,14 +46,15 @@ import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
  */
 public class MainActivity extends AppCompatActivity
     implements OnCheckedChangeListener, ShakeListener, FlipListener, LightListener,
-    OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener {
+    OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener,
+    ChopListener {
 
   private static final String LOGTAG = "MainActivity";
   private static final boolean DEBUG = true;
   private Handler handler;
 
   private TextView txtViewResult;
-  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8;
+  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8, swt9;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,6 @@ public class MainActivity extends AppCompatActivity
     setContentView(R.layout.activity_main);
 
     // Init Sensey
-
     Sensey.getInstance().init(this, Sensey.SAMPLING_PERIOD_FASTEST);
 
     // Init UI controls,views and handler
@@ -99,6 +100,10 @@ public class MainActivity extends AppCompatActivity
     swt8.setOnCheckedChangeListener(this);
     swt8.setChecked(false);
 
+    swt9 = (SwitchCompat) findViewById(R.id.Switch9);
+    swt9.setOnCheckedChangeListener(this);
+    swt9.setChecked(false);
+
     Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
     btnTouchEvent.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity
 
       case R.id.Switch1:
         if (isChecked) {
-          Sensey.getInstance().startShakeDetection(10,2000,this);
+          Sensey.getInstance().startShakeDetection(10, 2000, this);
         }
         else {
           Sensey.getInstance().stopShakeDetection(this);
@@ -180,6 +185,14 @@ public class MainActivity extends AppCompatActivity
           Sensey.getInstance().stopMovementDetection(this);
         }
         break;
+      case R.id.Switch9:
+        if (isChecked) {
+          Sensey.getInstance().startChopDetection(this);
+        }
+        else {
+          Sensey.getInstance().stopChopDetection(this);
+        }
+        break;
 
       default:
         // Do nothing
@@ -199,6 +212,7 @@ public class MainActivity extends AppCompatActivity
     Sensey.getInstance().stopWaveDetection(this);
     Sensey.getInstance().stopSoundLevelDetection();
     Sensey.getInstance().stopMovementDetection(this);
+    Sensey.getInstance().stopChopDetection(this);
 
     // Set the all switches to off position
     swt1.setChecked(false);
@@ -209,6 +223,7 @@ public class MainActivity extends AppCompatActivity
     swt6.setChecked(false);
     swt7.setChecked(false);
     swt8.setChecked(false);
+    swt9.setChecked(false);
 
     // Reset the result view
     resetResultInView(txtViewResult);
@@ -295,6 +310,11 @@ public class MainActivity extends AppCompatActivity
   @Override
   public void onStationary() {
     setResultTextView("Device Stationary!", false);
+  }
+
+  @Override
+  public void onChop() {
+    setResultTextView("Chop Detected!", false);
   }
 
   private void setResultTextView(final String text, final boolean realtime) {

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.view.MotionEvent;
+import com.github.nisrulz.sensey.ChopDetector.ChopListener;
 import com.github.nisrulz.sensey.FlipDetector.FlipListener;
 import com.github.nisrulz.sensey.LightDetector.LightListener;
 import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
@@ -241,6 +242,42 @@ public class Sensey {
    */
   public void stopMovementDetection(MovementListener movementListener) {
     stopLibrarySensorDetection(movementListener);
+  }
+
+  /**
+   * Start chop detection.
+   *
+   * @param chopListener
+   *     the chop listener
+   */
+  public void startChopDetection(ChopListener chopListener) {
+    startLibrarySensorDetection(new ChopDetector(chopListener), chopListener);
+  }
+
+  /**
+   * Start chop detection.
+   *
+   * @param threshold
+   *     the threshold
+   * @param timeForChopGesture
+   *     the time for chop gesture
+   * @param chopListener
+   *     the chop listener
+   */
+  public void startChopDetection(int threshold, long timeForChopGesture,
+      ChopListener chopListener) {
+    startLibrarySensorDetection(new ChopDetector(threshold, timeForChopGesture, chopListener),
+        chopListener);
+  }
+
+  /**
+   * Stop chop detection.
+   *
+   * @param chopListener
+   *     the chop listener
+   */
+  public void stopChopDetection(ChopListener chopListener) {
+    stopLibrarySensorDetection(chopListener);
   }
 
   /**
