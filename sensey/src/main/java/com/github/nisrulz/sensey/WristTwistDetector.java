@@ -68,7 +68,7 @@ public class WristTwistDetector extends SensorDetector {
 
     // Make this higher or lower according to how much
     // motion you want to detect
-    if ( x < -9.8f && z < (-threshold)) {
+    if (x < -9.8f && y > -3f && z < (-threshold)) {
       lastTimeWristTwistDetected = System.currentTimeMillis();
       isGestureInProgress = true;
     }
