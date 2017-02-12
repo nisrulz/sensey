@@ -67,7 +67,6 @@ compile 'com.github.nisrulz:sensey:{latest version}'
 ```
 where `{latest version}` corresponds to published version in [ ![Download](https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg) ](https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion)
 
-#Usage
 ## Initialize Sensey under your onCreate() in the activity/service
 ```java
 Sensey.getInstance().init(context);
@@ -79,22 +78,116 @@ Sensey.getInstance().init(context);
 + Create an instance of ShakeListener
 ```java
 ShakeDetector.ShakeListener shakeListener=new ShakeDetector.ShakeListener() {
-    @Override public void onShakeDetected() {
+   @Override public void onShakeDetected() {
        // Shake detected, do something
    }
+   
+   @Override public void onShakeStopped() {
+       // Shake stopped, do something
+   }
+
 };
 ```
 + Now to start listening for Shake gesture, pass the instance `shakeListener` to `startShakeDetection()` function
 ```java
 Sensey.getInstance().startShakeDetection(shakeListener);
 ```
-If you want to modify the `threshold` , pass an `int` as value
+If you want to modify the `threshold` and `time` before declaring that shake gesture is stopped, use
 ```java
-Sensey.getInstance().startShakeDetection(threshold,shakeListener);
+Sensey.getInstance().startShakeDetection(threshold,timeBeforeDeclaringShakeStopped,shakeListener);
 ```
 + To stop listening for Shake gesture, pass the instance `shakeListener` to `stopShakeDetection()` function
 ```java
 Sensey.getInstance().stopShakeDetection(shakeListener);
+```
+
+### Movement
++ Create an instance of MovementListener
+```java
+MovementDetector.MovementListener movementListener=new MovementDetector.MovementListener() {
+   @Override public void onMovement() {
+       // Movement detected, do something
+   }
+   
+   @Override public void onStationary() {
+       // Movement stopped, do something
+   }
+
+};
+```
++ Now to start listening for Movement gesture, pass the instance `movementListener` to `startMovementDetection()` function
+```java
+Sensey.getInstance().startMovementDetection(movementListener);
+```
+If you want to modify the `threshold` and `time` before declaring that movement gesture is stopped, use
+```java
+Sensey.getInstance().startMovementDetection(threshold,timeBeforeDeclaringStationary,movementListener);
+```
++ To stop listening for Movement gesture, pass the instance `movementListener` to `stopMovementDetection()` function
+```java
+Sensey.getInstance().stopMovementDetection(movementListener);
+```
+
+### Chop
++ Create an instance of ChopListener
+```java
+ChopDetector.ChopListener chopListener=new ChopDetector.ChopListener() {
+   @Override public void onChop() {
+       // Chop gesture detected, do something
+   }
+};
+```
++ Now to start listening for Chop gesture, pass the instance `chopListener` to `startChopDetection()` function
+```java
+Sensey.getInstance().startChopDetection(chopListener);
+```
+If you want to modify the `threshold` and `time` for chop gesture, use
+```java
+Sensey.getInstance().startChopDetection(threshold,timeForChopGesture,chopListener);
+```
++ To stop listening for Chop gesture, pass the instance `chopListener` to `stopChopDetection()` function
+```java
+Sensey.getInstance().stopChopDetection(chopListener);
+```
+
+### WristTwist
++ Create an instance of WristTwistListener
+```java
+WristTwistDetector.WristTwistListener wristTwistListener=new WristTwistDetector.WristTwistListener() {
+   @Override public void onWristTwist() {
+       // Wrist Twist gesture detected, do something
+   }
+};
+```
++ Now to start listening for Wrist Twist gesture, pass the instance `wristTwistListener` to `startWristTwistDetection()` function
+```java
+Sensey.getInstance().startWristTwistDetection(wristTwistListener);
+```
+If you want to modify the `threshold` and `time` for wrist twist gesture, use
+```java
+Sensey.getInstance().startWristTwistDetection(threshold,timeForWristTwistGesture,wristTwistListener);
+```
++ To stop listening for Wrist Twist gesture, pass the instance `wristTwistListener` to `stopWristTwistDetection()` function
+```java
+Sensey.getInstance().stopWristTwistDetection(wristTwistListener);
+```
+
+### SoundLevel
++ Create an instance of SoundLevelListener
+```java
+SoundLevelDetector.SoundLevelListener soundLevelListener=new SoundLevelDetector.SoundLevelListener() {
+   @Override public void onSoundDetected(float level) {
+       //Sound Level in dB is detected, do something
+   }
+};
+```
++ Now to start listening for Sound Level, pass the instance `soundLevelListener` to `startSoundLevelDetection()` function
+```java
+Sensey.getInstance().startSoundLevelDetection(soundLevelListener);
+```
++ To stop listening for Wrist Twist gesture, pass the instance `soundLevelListener` to `stopSoundLevelDetection()` function
+```java
+Sensey.getInstance().stopSoundLevelDetection(soundLevelListener);
 ```
 
 ### Flip
@@ -350,6 +443,8 @@ I welcome and encourage all pull requests. It usually will take me within 24-48 
 
 ### Created & Maintained By
 [Nishant Srivastava](https://github.com/nisrulz) ([@nisrulz](https://www.twitter.com/nisrulz))
+
+> If you found this library helpful or you learned something from the source code and want to thank me, consider [buying me a cup of](https://www.paypal.me/nisrulz) :coffee:
 
 License
 =======
