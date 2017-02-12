@@ -87,6 +87,10 @@ Sensey.getInstance().init(context);
       @Override public void onShakeDetected() {
          // Shake detected, do something
      }
+
+     @Override public void onShakeStopped() {
+         // Shake stopped, do something
+     }
   };
   ```
   + Now to start listening for Shake gesture, pass the instance `shakeListener` to `startShakeDetection()` function
@@ -94,9 +98,9 @@ Sensey.getInstance().init(context);
   Sensey.getInstance().startShakeDetection(shakeListener);
   ```
   
-  If you want to modify the `threshold` , pass an `int` as value
+  If you want to modify the `threshold` and `time` before declaring that shake gesture is stopped, use
   ```java
-  Sensey.getInstance().startShakeDetection(threshold,shakeListener);
+  Sensey.getInstance().startShakeDetection(threshold,timeBeforeDeclaringShakeStopped,shakeListener);
   ```
   + To stop listening for Shake gesture, pass the instance `shakeListener` to `stopShakeDetection()` function
   ```java
