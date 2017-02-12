@@ -30,7 +30,6 @@ public class WristTwistDetector extends SensorDetector {
   private final long timeForWristTwistGesture;
   private long lastTimeWristTwistDetected = System.currentTimeMillis();
   private boolean isGestureInProgress = false;
-  private boolean halfGestureDone = false;
 
   /**
    * Instantiates a new Wrist twist detector.
@@ -39,7 +38,7 @@ public class WristTwistDetector extends SensorDetector {
    *     the wrist twist listener
    */
   public WristTwistDetector(WristTwistListener wristTwistListener) {
-    this(13f, 700, wristTwistListener);
+    this(15f, 1000, wristTwistListener);
   }
 
   /**

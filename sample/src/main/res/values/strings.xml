@@ -30,4 +30,7 @@
   <string name="movement_detection">Movement Detection</string>
   <string name="chop_detector">Chop Detector</string>
   <string name="wrist_twist_detection">Wrist Twist Detection</string>
+  <string name="hit_area">[ Hit Area ]</string>
+  <string name="touch_detector">Touch Detector</string>
+  <string name="results_show_here">Results show here</string>
 </resources>

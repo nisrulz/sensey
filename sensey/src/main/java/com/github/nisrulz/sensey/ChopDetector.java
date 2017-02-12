@@ -38,7 +38,7 @@ public class ChopDetector extends SensorDetector {
    *     the chop listener
    */
   public ChopDetector(ChopListener chopListener) {
-    this(30f, 600, chopListener);
+    this(35f, 700, chopListener);
   }
 
   /**

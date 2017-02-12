@@ -360,7 +360,7 @@ public class MainActivity extends AppCompatActivity
     handler.postDelayed(new Runnable() {
       @Override
       public void run() {
-        txt.setText("..Results show here...");
+        txt.setText(getString(R.string.results_show_here));
       }
     }, 3000);
   }

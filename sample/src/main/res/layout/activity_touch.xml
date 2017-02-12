@@ -71,7 +71,7 @@
       android:background="@drawable/result_bg"
       android:gravity="center"
       android:textSize="25sp"
-      android:text="[ Hit Area ]"
+      android:text="@string/hit_area"
       android:textColor="@color/divider"
       />
 </RelativeLayout>

@@ -177,7 +177,7 @@
       android:layout_marginLeft="@dimen/activity_vertical_margin"
       android:layout_marginRight="@dimen/activity_vertical_margin"
       android:background="@color/accent"
-      android:text="Touch Detector"
+      android:text="@string/touch_detector"
       android:textColor="@android:color/white"
 
       />
@@ -194,7 +194,7 @@
       android:background="@drawable/result_bg_cornerflat"
       android:gravity="center"
       android:padding="20dp"
-      android:text="..Results show here..."
+      android:text="@string/results_show_here"
       android:textSize="25sp"
       />
 </RelativeLayout>
