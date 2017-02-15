@@ -233,7 +233,7 @@ SoundLevelDetector.SoundLevelListener soundLevelListener=new SoundLevelDetector.
 Sensey.getInstance().startSoundLevelDetection(soundLevelListener);
 ```
 
-+ To stop listening for Wrist Twist gesture, pass the instance `soundLevelListener` to `stopSoundLevelDetection()` function
++ To stop listening for Sound Level, pass the instance `soundLevelListener` to `stopSoundLevelDetection()` function
 
 ```java
 Sensey.getInstance().stopSoundLevelDetection(soundLevelListener);
