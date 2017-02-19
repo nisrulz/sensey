@@ -26,6 +26,7 @@ import static android.hardware.Sensor.TYPE_ACCELEROMETER;
 public class FlipDetector extends SensorDetector {
 
   private final FlipListener flipListener;
+  private boolean switchingFlag;
 
   /**
    * Instantiates a new Flip detector.
@@ -36,15 +37,18 @@ public class FlipDetector extends SensorDetector {
   public FlipDetector(FlipListener flipListener) {
     super(TYPE_ACCELEROMETER);
     this.flipListener = flipListener;
+    this.switchingFlag = false;
   }
 
   @Override
   protected void onSensorEvent(SensorEvent sensorEvent) {
     float z = sensorEvent.values[2];
-    if (z > 9 && z < 10) {
+    if (z > 9 && z < 10 && !switchingFlag) {
+      switchingFlag = true;
       flipListener.onFaceUp();
     }
-    else if (z > -10 && z < -9) {
+    else if (z > -10 && z < -9 && switchingFlag) {
+      switchingFlag = false;
       flipListener.onFaceDown();
     }
   }
