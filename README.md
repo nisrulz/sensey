@@ -15,6 +15,7 @@
 + Awesome Android Newsletter
 	+ [Issue 5](https://android.libhunt.com/newsletter/5)
 	+ [Issue 21](https://android.libhunt.com/newsletter/21)
++ [Changelog Weekly Issue #115](http://email.changelog.com/t/t-310383437622D164)
 
 ### Show some :heart:
 [![GitHub stars](https://img.shields.io/github/stars/nisrulz/sensey.svg?style=social&label=Star)](https://github.com/nisrulz/sensey) [![GitHub forks](https://img.shields.io/github/forks/nisrulz/sensey.svg?style=social&label=Fork)](https://github.com/nisrulz/sensey/fork) [![GitHub watchers](https://img.shields.io/github/watchers/nisrulz/sensey.svg?style=social&label=Watch)](https://github.com/nisrulz/sensey) [![GitHub followers](https://img.shields.io/github/followers/nisrulz.svg?style=social&label=Follow)](https://github.com/nisrulz/sensey)  
