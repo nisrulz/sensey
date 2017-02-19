@@ -124,10 +124,6 @@ public class Sensey {
     this.samplingPeriod = samplingPeriod;
   }
 
-  public SensorManager getSensorManager(Context context) {
-    return (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-  }
-
   private void startLibrarySensorDetection(SensorDetector detector, Object clientListener) {
     if (!defaultSensorsMap.containsKey(clientListener)) {
       defaultSensorsMap.put(clientListener, detector);

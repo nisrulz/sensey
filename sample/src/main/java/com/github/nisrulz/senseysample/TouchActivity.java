@@ -16,6 +16,8 @@
 
 package com.github.nisrulz.senseysample;
 
+import android.content.Context;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -46,7 +48,8 @@ public class TouchActivity extends AppCompatActivity
     setContentView(R.layout.activity_touch);
 
     // Init Sensey
-    Sensey.getInstance().init(Sensey.getInstance().getSensorManager(this));
+    SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+    Sensey.getInstance().init(sensorManager);
 
     txtResult = (TextView) findViewById(R.id.textView_result);
 
