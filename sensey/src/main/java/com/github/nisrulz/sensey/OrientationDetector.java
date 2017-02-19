@@ -36,6 +36,8 @@ public class OrientationDetector extends SensorDetector {
   private final int smoothness;
   private final float[] pitches;
   private final float[] rolls;
+
+  private int eventOccurred = 0;
   /**
    * The M gravity.
    */
@@ -94,17 +96,29 @@ public class OrientationDetector extends SensorDetector {
         averageRoll = addValue(orientationData[2], rolls);
         orientation = calculateOrientation();
         switch (orientation) {
-          case ORIENTATION_LANDSCAPE:
-            orientationListener.onRightSideUp();
-            break;
-          case ORIENTATION_LANDSCAPE_REVERSE:
-            orientationListener.onLeftSideUp();
-            break;
           case ORIENTATION_PORTRAIT:
-            orientationListener.onTopSideUp();
+            if (eventOccurred != 1) {
+              eventOccurred = 1;
+              orientationListener.onTopSideUp();
+            }
+            break;
+          case ORIENTATION_LANDSCAPE:
+            if (eventOccurred != 2) {
+              eventOccurred = 2;
+              orientationListener.onRightSideUp();
+            }
             break;
           case ORIENTATION_PORTRAIT_REVERSE:
-            orientationListener.onBottomSideUp();
+            if (eventOccurred != 3) {
+              eventOccurred = 3;
+              orientationListener.onBottomSideUp();
+            }
+            break;
+          case ORIENTATION_LANDSCAPE_REVERSE:
+            if (eventOccurred != 4) {
+              eventOccurred = 4;
+              orientationListener.onLeftSideUp();
+            }
             break;
           default:
             // do nothing
