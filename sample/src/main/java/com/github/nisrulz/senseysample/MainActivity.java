@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     setContentView(R.layout.activity_main);
 
     // Init Sensey
-    Sensey.getInstance().init(this, Sensey.SAMPLING_PERIOD_FASTEST);
+    Sensey.getInstance().init(Sensey.getInstance().getSensorManager(this));
 
     // Init UI controls,views and handler
     handler = new Handler();
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity
         break;
       case R.id.Switch9:
         if (isChecked) {
-          Sensey.getInstance().startChopDetection(30f, 500,this);
+          Sensey.getInstance().startChopDetection(30f, 500, this);
         }
         else {
           Sensey.getInstance().stopChopDetection(this);

@@ -46,7 +46,7 @@ public class TouchActivity extends AppCompatActivity
     setContentView(R.layout.activity_touch);
 
     // Init Sensey
-    Sensey.getInstance().init(this);
+    Sensey.getInstance().init(Sensey.getInstance().getSensorManager(this));
 
     txtResult = (TextView) findViewById(R.id.textView_result);
 
