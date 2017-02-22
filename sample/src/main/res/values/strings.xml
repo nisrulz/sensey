@@ -33,4 +33,5 @@
   <string name="hit_area">[ Hit Area ]</string>
   <string name="touch_detector">Touch Detector</string>
   <string name="results_show_here">Results show here</string>
+  <string name="scroll_to_access_more_detectors">Scroll to access more detectors</string>
 </resources>

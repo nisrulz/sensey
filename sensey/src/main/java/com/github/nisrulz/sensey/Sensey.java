@@ -44,6 +44,22 @@ import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
 public class Sensey {
 
   /**
+   * The constant SAMPLING_PERIOD_FASTEST.
+   */
+  public static final int SAMPLING_PERIOD_FASTEST = SensorManager.SENSOR_DELAY_FASTEST;
+  /**
+   * The constant SAMPLING_PERIOD_GAME.
+   */
+  public static final int SAMPLING_PERIOD_GAME = SensorManager.SENSOR_DELAY_GAME;
+  /**
+   * The constant SAMPLING_PERIOD_NORMAL.
+   */
+  public static final int SAMPLING_PERIOD_NORMAL = SensorManager.SENSOR_DELAY_NORMAL;
+  /**
+   * The constant SAMPLING_PERIOD_UI.
+   */
+  public static final int SAMPLING_PERIOD_UI = SensorManager.SENSOR_DELAY_UI;
+  /**
    * Map from any of default listeners (
    * {@link FlipListener flipListener},
    * {@link LightListener lightListener},
@@ -65,31 +81,9 @@ public class Sensey {
   private TouchTypeDetector touchTypeDetector;
   private PinchScaleDetector pinchScaleDetector;
   private SoundLevelDetector soundLevelDetector;
-
-  /**
-   * The constant SAMPLING_PERIOD_FASTEST.
-   */
-  public static final int SAMPLING_PERIOD_FASTEST = SensorManager.SENSOR_DELAY_FASTEST;
-  /**
-   * The constant SAMPLING_PERIOD_GAME.
-   */
-  public static final int SAMPLING_PERIOD_GAME = SensorManager.SENSOR_DELAY_GAME;
-  /**
-   * The constant SAMPLING_PERIOD_NORMAL.
-   */
-  public static final int SAMPLING_PERIOD_NORMAL = SensorManager.SENSOR_DELAY_NORMAL;
-  /**
-   * The constant SAMPLING_PERIOD_UI.
-   */
-  public static final int SAMPLING_PERIOD_UI = SensorManager.SENSOR_DELAY_UI;
-
   private int samplingPeriod = SAMPLING_PERIOD_NORMAL;
 
   private Sensey() {
-  }
-
-  private static class LazyHolder {
-    private static final Sensey INSTANCE = new Sensey();
   }
 
   /**
@@ -104,24 +98,38 @@ public class Sensey {
   /**
    * Init the lib
    *
-   * @param sensorManager
-   *     the sensor manager
+   * @param context
+   *     the context
+   * @param samplingPeriod
+   *     the sampling period
    */
-  public void init(SensorManager sensorManager) {
-    this.sensorManager = sensorManager;
+  public void init(Context context, int samplingPeriod) {
+    init(context);
+    this.samplingPeriod = samplingPeriod;
   }
 
   /**
    * Init the lib
    *
-   * @param sensorManager
-   *     the sensor manager
-   * @param samplingPeriod
-   *     the sampling period
+   * @param context
+   *     the context
    */
-  public void init(SensorManager sensorManager, int samplingPeriod) {
-    init(sensorManager);
-    this.samplingPeriod = samplingPeriod;
+  public void init(Context context) {
+    this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+  }
+
+  public void stop() {
+    this.sensorManager = null;
+  }
+
+  /**
+   * Start shake detection.
+   *
+   * @param shakeListener
+   *     the shake listener
+   */
+  public void startShakeDetection(ShakeListener shakeListener) {
+    startLibrarySensorDetection(new ShakeDetector(shakeListener), shakeListener);
   }
 
   private void startLibrarySensorDetection(SensorDetector detector, Object clientListener) {
@@ -138,21 +146,12 @@ public class Sensey {
     }
   }
 
-  private void stopLibrarySensorDetection(Object clientListener) {
-    SensorDetector detector = defaultSensorsMap.remove(clientListener);
-    stopSensorDetection(detector);
-  }
-
-  private void stopSensorDetection(SensorDetector detector) {
-    if (detector != null) {
-      sensorManager.unregisterListener(detector);
-    }
-  }
-
   private Iterable<Sensor> convertTypesToSensors(int... sensorTypes) {
     Collection<Sensor> sensors = new ArrayList<>();
-    for (int sensorType : sensorTypes) {
-      sensors.add(sensorManager.getDefaultSensor(sensorType));
+    if (sensorManager != null) {
+      for (int sensorType : sensorTypes) {
+        sensors.add(sensorManager.getDefaultSensor(sensorType));
+      }
     }
     return sensors;
   }
@@ -171,16 +170,6 @@ public class Sensey {
     for (Sensor sensor : sensors) {
       sensorManager.registerListener(detector, sensor, samplingPeriod);
     }
-  }
-
-  /**
-   * Start shake detection.
-   *
-   * @param shakeListener
-   *     the shake listener
-   */
-  public void startShakeDetection(ShakeListener shakeListener) {
-    startLibrarySensorDetection(new ShakeDetector(shakeListener), shakeListener);
   }
 
   /**
@@ -208,6 +197,17 @@ public class Sensey {
    */
   public void stopShakeDetection(ShakeListener shakeListener) {
     stopLibrarySensorDetection(shakeListener);
+  }
+
+  private void stopLibrarySensorDetection(Object clientListener) {
+    SensorDetector detector = defaultSensorsMap.remove(clientListener);
+    stopSensorDetection(detector);
+  }
+
+  private void stopSensorDetection(SensorDetector detector) {
+    if (detector != null && sensorManager != null) {
+      sensorManager.unregisterListener(detector);
+    }
   }
 
   /**
@@ -536,5 +536,9 @@ public class Sensey {
     if (pinchScaleDetector != null) {
       pinchScaleDetector.onTouchEvent(event);
     }
+  }
+
+  private static class LazyHolder {
+    private static final Sensey INSTANCE = new Sensey();
   }
 }

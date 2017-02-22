@@ -123,6 +123,8 @@ I welcome and encourage all pull requests. It usually will take me within 24-48 
 ## Apps using Sensey
 If you are using Sensey in your app and would like to be listed here, please let me know by opening a [new issue](https://github.com/nisrulz/sensey/issues/new)!
 
++ [Push-Ups](https://play.google.com/store/apps/details?id=com.mk.push)
+
 ### Created & Maintained By
 [Nishant Srivastava](https://github.com/nisrulz) ([@nisrulz](https://www.twitter.com/nisrulz))
 

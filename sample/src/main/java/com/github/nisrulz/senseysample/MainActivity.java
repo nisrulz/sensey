@@ -16,9 +16,7 @@
 
 package com.github.nisrulz.senseysample;
 
-import android.content.Context;
 import android.content.Intent;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -65,8 +63,7 @@ public class MainActivity extends AppCompatActivity
     setContentView(R.layout.activity_main);
 
     // Init Sensey
-    SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-    Sensey.getInstance().init(sensorManager);
+    Sensey.getInstance().init(this);
 
     // Init UI controls,views and handler
     handler = new Handler();
@@ -247,6 +244,15 @@ public class MainActivity extends AppCompatActivity
     resetResultInView(txtViewResult);
 
     Toast.makeText(this, "Stopping all detectors!", Toast.LENGTH_SHORT).show();
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+
+    // *** IMPORTANT ***
+    // Stop Sensey and release the context held by it
+    Sensey.getInstance().stop();
   }
 
   @Override

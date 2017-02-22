@@ -44,9 +44,9 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:padding="20dp"
+          android:text="@string/scroll_to_access_more_detectors"
+          android:textColor="@color/highlight"
           android:textSize="20sp"
-          android:text="Scroll to access more detectors"
-          android:textColor="@color/primary_dark"
 
           />
       <android.support.v7.widget.SwitchCompat
