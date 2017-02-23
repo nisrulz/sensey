@@ -44,7 +44,7 @@ task clean(type: Delete) {
 
 ext {
   //Other
-  supportLibVersion = '25.1.1'
+  supportLibVersion = '25.2.0'
   mockitoVersion = '2.7.2'
   robolectricVersion = '3.2.2'
   jUnitVersion = '4.12'
