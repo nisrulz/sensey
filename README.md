@@ -77,9 +77,16 @@ where `{latest version}` corresponds to published version in [ ![Download](https
 
 # Simple example
 
-+ Initialize Sensey under your onCreate() in the activity/service
++ To initialize Sensey under your `onCreate()`` in the activity/service, call
 ```java
 Sensey.getInstance().init(context);
+```
+
++ To stop Sensey, under your `onDestroy()` in the activity/service, call
+```java
+ // *** IMPORTANT ***
+ // Stop Sensey and release the context held by it
+ Sensey.getInstance().stop();
 ```
 
 + Next to enable shake detection 
