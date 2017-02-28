@@ -78,10 +78,21 @@ compile 'com.github.nisrulz:sensey:{latest version}'
 
 where `{latest version}` corresponds to published version in [ ![Download](https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg) ](https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion)
 
-## Initialize Sensey under your onCreate() in the activity/service
+
+## Setup
+
+### Initialize Sensey,under your `onCreate()` in the activity/service, call
 
 ```java
 Sensey.getInstance().init(context);
+```
+
+### To stop Sensey, under your `onDestroy()` in the activity/service, call
+
+```java
+ // *** IMPORTANT ***
+ // Stop Sensey and release the context held by it
+ Sensey.getInstance().stop();
 ```
 
 ## Next to enable detection for
