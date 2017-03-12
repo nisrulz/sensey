@@ -57,6 +57,8 @@ Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/ni
  1. [WristTwist](https://github.com/nisrulz/sensey/wiki/Usage#wristtwist)
  1. [Movement](https://github.com/nisrulz/sensey/wiki/Usage#movement)
  1. [SoundLevel](https://github.com/nisrulz/sensey/wiki/Usage#soundlevel)
+ 1. [RotationAngle](https://github.com/nisrulz/sensey/wiki/Usage#rotationangle)
+ 1. [TiltDirection](https://github.com/nisrulz/sensey/wiki/Usage#tiltdirection)
  1. [TouchType](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)
     + onDoubleTap
     + onScroll(direction)
