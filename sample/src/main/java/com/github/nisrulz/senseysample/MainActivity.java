@@ -37,8 +37,10 @@ import static com.github.nisrulz.sensey.LightDetector.LightListener;
 import static com.github.nisrulz.sensey.MovementDetector.MovementListener;
 import static com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
 import static com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
+import static com.github.nisrulz.sensey.RotationAngleDetector.RotationAngleListener;
 import static com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
 import static com.github.nisrulz.sensey.SoundLevelDetector.SoundLevelListener;
+import static com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListener;
 import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
 import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
 
@@ -48,14 +50,14 @@ import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
 public class MainActivity extends AppCompatActivity
     implements OnCheckedChangeListener, ShakeListener, FlipListener, LightListener,
     OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener,
-    ChopListener, WristTwistListener {
+    ChopListener, WristTwistListener, RotationAngleListener, TiltDirectionListener {
 
   private static final String LOGTAG = "MainActivity";
   private static final boolean DEBUG = true;
   private Handler handler;
 
   private TextView txtViewResult;
-  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8, swt9, swt10;
+  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8, swt9, swt10, swt11, swt12;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,14 @@ public class MainActivity extends AppCompatActivity
     swt10 = (SwitchCompat) findViewById(R.id.Switch10);
     swt10.setOnCheckedChangeListener(this);
     swt10.setChecked(false);
+
+    swt11 = (SwitchCompat) findViewById(R.id.Switch11);
+    swt11.setOnCheckedChangeListener(this);
+    swt11.setChecked(false);
+
+    swt12 = (SwitchCompat) findViewById(R.id.Switch12);
+    swt12.setOnCheckedChangeListener(this);
+    swt12.setChecked(false);
 
     Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
     btnTouchEvent.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +217,24 @@ public class MainActivity extends AppCompatActivity
         }
         break;
 
+      case R.id.Switch11:
+        if (isChecked) {
+          Sensey.getInstance().startRotationAngleDetection(this);
+        }
+        else {
+          Sensey.getInstance().stopRotationAngleDetection(this);
+        }
+        break;
+
+      case R.id.Switch12:
+        if (isChecked) {
+          Sensey.getInstance().startTiltDirectionDetection(this);
+        }
+        else {
+          Sensey.getInstance().stopTiltDirectionDetection(this);
+        }
+        break;
+
       default:
         // Do nothing
         break;
@@ -227,6 +255,8 @@ public class MainActivity extends AppCompatActivity
     Sensey.getInstance().stopMovementDetection(this);
     Sensey.getInstance().stopChopDetection(this);
     Sensey.getInstance().stopWristTwistDetection(this);
+    Sensey.getInstance().stopRotationAngleDetection(this);
+    Sensey.getInstance().stopTiltDirectionDetection(this);
 
     // Set the all switches to off position
     swt1.setChecked(false);
@@ -239,6 +269,8 @@ public class MainActivity extends AppCompatActivity
     swt8.setChecked(false);
     swt9.setChecked(false);
     swt10.setChecked(false);
+    swt11.setChecked(false);
+    swt12.setChecked(false);
 
     // Reset the result view
     resetResultInView(txtViewResult);
@@ -372,5 +404,36 @@ public class MainActivity extends AppCompatActivity
         txt.setText(getString(R.string.results_show_here));
       }
     }, 3000);
+  }
+
+  @Override
+  public void onRotationInAxisX(float angle) {
+
+    setResultTextView("Rotation in X Axis Detected: " + angle + " deg", false);
+  }
+
+  @Override
+  public void onRotationInAxisY(float angle) {
+    setResultTextView("Rotation in Y Axis Detected: " + angle + " deg", false);
+  }
+
+  @Override
+  public void onRotationInAxisZ(float angle) {
+    setResultTextView("Rotation in Z Axis Detected: " + angle + " deg", false);
+  }
+
+  @Override
+  public void onTiltInAxisX(int direction) {
+    setResultTextView("Tilt in X Axis Detected: " + direction, false);
+  }
+
+  @Override
+  public void onTiltInAxisY(int direction) {
+    setResultTextView("Tilt in Y Axis Detected: " + direction, false);
+  }
+
+  @Override
+  public void onTiltInAxisZ(int direction) {
+    setResultTextView("Tilt in Z Axis Detected: " + direction, false);
   }
 }

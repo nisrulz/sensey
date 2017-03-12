@@ -34,4 +34,6 @@
   <string name="touch_detector">Touch Detector</string>
   <string name="results_show_here">Results show here</string>
   <string name="scroll_to_access_more_detectors">Scroll to access more detectors</string>
+  <string name="tilt_direction_detection">Tilt Direction Detection</string>
+  <string name="rotation_angle_detection">Rotation Angle Detection</string>
 </resources>
