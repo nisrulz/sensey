@@ -37,39 +37,6 @@ Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/ni
 
 # Supported gestures
 
- 1. [Flip](https://github.com/nisrulz/sensey/wiki/Usage#flip)
-    + onFaceUp
-    + onFaceDown
- 1. [Light](https://github.com/nisrulz/sensey/wiki/Usage#light)
-    + onDark
-    + onLight
- 1. [Orientation](https://github.com/nisrulz/sensey/wiki/Usage#orientation)
-    + onTopSideUp
-    + onBottomSideUp
-    + onLeftSideUp
-    + onRightSideUp
- 1. [PinchScale](https://github.com/nisrulz/sensey/wiki/Usage#pinchscale)
-    + OnScale
-    + OnScaleStart
-    + OnScaleEnd
- 1. [Proximity](https://github.com/nisrulz/sensey/wiki/Usage#proximity)
-    + onNear
-    + onFar
- 1. [Shake](https://github.com/nisrulz/sensey/wiki/Usage#shake)
- 1. [Wave](https://github.com/nisrulz/sensey/wiki/Usage#wave)
- 1. [Chop](https://github.com/nisrulz/sensey/wiki/Usage#chop)
- 1. [WristTwist](https://github.com/nisrulz/sensey/wiki/Usage#wristtwist)
- 1. [Movement](https://github.com/nisrulz/sensey/wiki/Usage#movement)
- 1. [SoundLevel](https://github.com/nisrulz/sensey/wiki/Usage#soundlevel)
- 1. [TouchType](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)
-    + onDoubleTap
-    + onScroll(direction)
-    + onSingleTap
-    + onSwipeLeft
-    + onSwipeRight
-    + onLongPress
-    + onTwoFingerSingleTap
-    + onThreeFingerSingleTap
 1. [Flip](https://github.com/nisrulz/sensey/wiki/Usage#flip)
     + onFaceUp
     + onFaceDown
