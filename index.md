@@ -70,7 +70,42 @@ Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/ni
     + onLongPress
     + onTwoFingerSingleTap
     + onThreeFingerSingleTap
-
+1. [Flip](https://github.com/nisrulz/sensey/wiki/Usage#flip)
+    + onFaceUp
+    + onFaceDown
+ 1. [Light](https://github.com/nisrulz/sensey/wiki/Usage#light)
+    + onDark
+    + onLight
+ 1. [Orientation](https://github.com/nisrulz/sensey/wiki/Usage#orientation)
+    + onTopSideUp
+    + onBottomSideUp
+    + onLeftSideUp
+    + onRightSideUp
+ 1. [PinchScale](https://github.com/nisrulz/sensey/wiki/Usage#pinchscale)
+    + OnScale
+    + OnScaleStart
+    + OnScaleEnd
+ 1. [Proximity](https://github.com/nisrulz/sensey/wiki/Usage#proximity)
+    + onNear
+    + onFar
+ 1. [Shake](https://github.com/nisrulz/sensey/wiki/Usage#shake)
+ 1. [Wave](https://github.com/nisrulz/sensey/wiki/Usage#wave)
+ 1. [Chop](https://github.com/nisrulz/sensey/wiki/Usage#chop)
+ 1. [WristTwist](https://github.com/nisrulz/sensey/wiki/Usage#wristtwist)
+ 1. [Movement](https://github.com/nisrulz/sensey/wiki/Usage#movement)
+ 1. [SoundLevel](https://github.com/nisrulz/sensey/wiki/Usage#soundlevel)
+ 1. [RotationAngle](https://github.com/nisrulz/sensey/wiki/Usage#rotationangle)
+ 1. [TiltDirection](https://github.com/nisrulz/sensey/wiki/Usage#tiltdirection)
+ 1. [TouchType](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)
+    + onDoubleTap
+    + onScroll(direction)
+    + onSingleTap
+    + onSwipeLeft
+    + onSwipeRight
+    + onLongPress
+    + onTwoFingerSingleTap
+    + onThreeFingerSingleTap
+    
 # Including in your project
 Sensey is available in the Jcenter, so getting it as simple as adding it as a dependency
 
@@ -88,6 +123,19 @@ where `{latest version}` corresponds to published version in [ ![Download](https
 ```java
 Sensey.getInstance().init(context);
 ```
+
+If you wish to alter the sampling period of data by Sensey, use the below `init` function 
+
+```java
+Sensey.getInstance().init(context,samplingPeriod)
+```
+
+where `samplingPeriod` can be anyone from the below options
+  + `Sensey.SAMPLING_PERIOD_FASTEST`
+  + `Sensey. SAMPLING_PERIOD_GAME`  
+  + `Sensey. SAMPLING_PERIOD_NORMAL` // Default
+  + `Sensey. SAMPLING_PERIOD_UI`
+
 
 ### To stop Sensey, under your `onDestroy()` in the activity/service, call
 
@@ -278,6 +326,69 @@ Sensey.getInstance().startFlipDetection(flipListener);
 
 ```java
 Sensey.getInstance().stopFlipDetection(flipListener);
+```
+
+
+### RotationAngle
+
++ Create an instance of RotationAngleListener
+
+```java
+RotationAngleDetector.RotationAngleListener rotationAngleListener =new RotationAngleDetector.RotationAngleListener() {
+    @Override
+    public void onRotation(float angleInAxisX, float angleInAxisY, float angleInAxisZ) {
+      // Do something with the angles, values are in degrees
+  }
+};
+```
+
++ Now to start listening for RotationAngle gesture, pass the instance `rotationAngleListener` to `startRotationAngleDetection()` function
+
+```java
+Sensey.getInstance().startRotationAngleDetection(rotationAngleListener);
+```
+
++ To stop listening for RotationAngle gesture, pass the instance `rotationAngleListener` to `stopRotationAngleDetection()` function
+
+```java
+Sensey.getInstance().stopRotationAngleDetection(rotationAngleListener);
+```
+
+### TiltDirection
+
++ Create an instance of TiltDirectionListener
+
+```java
+TiltDirectionDetector.TiltDirectionListener tiltDirectionListener=new TiltDirectionDetector.TiltDirectionListener() {
+  @Override
+  public void onTiltInAxisX(int direction) {
+    // Do something with tilt direction on x-axis
+  }
+
+  @Override
+  public void onTiltInAxisY(int direction) {
+    // Do something with tilt direction on y-axis
+  }
+
+  @Override
+  public void onTiltInAxisZ(int direction) {
+    // Do something with tilt direction on z-axis
+  }
+};
+```
+
+where `direction` can have either of the value:`TiltDirectionDetector.DIRECTION_CLOCKWISE` or `TiltDirectionDetector.DIRECTION_ANTICLOCKWISE`
+
++ Now to start listening for TiltDirection gesture, pass the instance `TiltDirectionListener` to `startTiltDirectionDetection()` function
+
+```java
+Sensey.getInstance().startTiltDirectionDetection(TiltDirectionListener);
+```
+
++ To stop listening for TiltDirection gesture, pass the instance `TiltDirectionListener` to `stopTiltDirectionDetection()` function
+
+```java
+Sensey.getInstance().stopTiltDirectionDetection(TiltDirectionListener);
 ```
 
 ### Orientation
