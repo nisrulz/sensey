@@ -423,7 +423,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   private void displayResultForTiltDirectionDetector(int direction, String axis) {
-    String dir = "NA";
+    String dir;
     if (direction == TiltDirectionDetector.DIRECTION_CLOCKWISE) {
       dir = "ClockWise";
     }
