@@ -120,6 +120,9 @@ public class Sensey {
     this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
   }
 
+  /**
+   * Stop.
+   */
   public void stop() {
     this.sensorManager = null;
   }
@@ -374,20 +377,44 @@ public class Sensey {
     stopLibrarySensorDetection(flipListener);
   }
 
+  /**
+   * Start rotation angle detection.
+   *
+   * @param rotationAngleListener
+   *     the rotation angle listener
+   */
   public void startRotationAngleDetection(RotationAngleListener rotationAngleListener) {
     startLibrarySensorDetection(new RotationAngleDetector(rotationAngleListener),
         rotationAngleListener);
   }
 
+  /**
+   * Stop rotation angle detection.
+   *
+   * @param rotationAngleListener
+   *     the rotation angle listener
+   */
   public void stopRotationAngleDetection(RotationAngleListener rotationAngleListener) {
     stopLibrarySensorDetection(rotationAngleListener);
   }
 
+  /**
+   * Start tilt direction detection.
+   *
+   * @param tiltDirectionListener
+   *     the tilt direction listener
+   */
   public void startTiltDirectionDetection(TiltDirectionListener tiltDirectionListener) {
     startLibrarySensorDetection(new TiltDirectionDetector(tiltDirectionListener),
         tiltDirectionListener);
   }
 
+  /**
+   * Stop tilt direction detection.
+   *
+   * @param tiltDirectionListener
+   *     the tilt direction listener
+   */
   public void stopTiltDirectionDetection(TiltDirectionListener tiltDirectionListener) {
     stopLibrarySensorDetection(tiltDirectionListener);
   }
