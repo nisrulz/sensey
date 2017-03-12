@@ -23,8 +23,8 @@ import static android.hardware.Sensor.TYPE_GYROSCOPE;
 public class TiltDirectionDetector extends SensorDetector {
 
   private final TiltDirectionListener tiltDirectionListener;
-  private static final int DIRECTION_CLOCKWISE = 0;
-  private static final int DIRECTION_ANTICLOCKWISE = 1;
+  public final int DIRECTION_CLOCKWISE = 0;
+  public final int DIRECTION_ANTICLOCKWISE = 1;
 
   public TiltDirectionDetector(TiltDirectionListener tiltDirectionListener) {
     super(TYPE_GYROSCOPE);
@@ -40,37 +40,37 @@ public class TiltDirectionDetector extends SensorDetector {
 
     if (x > 0.5f) {
       // anticlockwise
-      tiltDirectionListener.onAxisX(DIRECTION_ANTICLOCKWISE);
+      tiltDirectionListener.onTiltInAxisX(DIRECTION_ANTICLOCKWISE);
     }
     else if (x < -0.5f) {
       //clockwise
-      tiltDirectionListener.onAxisX(DIRECTION_CLOCKWISE);
+      tiltDirectionListener.onTiltInAxisX(DIRECTION_CLOCKWISE);
     }
 
     if (y > 0.5f) {
       // anticlockwise
-      tiltDirectionListener.onAxisY(DIRECTION_ANTICLOCKWISE);
+      tiltDirectionListener.onTiltInAxisY(DIRECTION_ANTICLOCKWISE);
     }
     else if (y < -0.5f) {
       //clockwise
-      tiltDirectionListener.onAxisY(DIRECTION_CLOCKWISE);
+      tiltDirectionListener.onTiltInAxisY(DIRECTION_CLOCKWISE);
     }
 
     if (z > 0.5f) {
       // anticlockwise
-      tiltDirectionListener.onAxisZ(DIRECTION_ANTICLOCKWISE);
+      tiltDirectionListener.onTiltInAxisZ(DIRECTION_ANTICLOCKWISE);
     }
     else if (z < -0.5f) {
       //clockwise
-      tiltDirectionListener.onAxisZ(DIRECTION_CLOCKWISE);
+      tiltDirectionListener.onTiltInAxisZ(DIRECTION_CLOCKWISE);
     }
   }
 
   public interface TiltDirectionListener {
-    void onAxisX(int direction);
+    void onTiltInAxisX(int direction);
 
-    void onAxisY(int direction);
+    void onTiltInAxisY(int direction);
 
-    void onAxisZ(int direction);
+    void onTiltInAxisZ(int direction);
   }
 }

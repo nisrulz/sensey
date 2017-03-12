@@ -50,16 +50,16 @@ public class RotationAngleDetector extends SensorDetector {
       orientations[i] = (float) (Math.toDegrees(orientations[i]));
     }
 
-    rotationAngleListener.onTiltInAxisX(orientations[0]);
-    rotationAngleListener.onTiltInAxisY(orientations[1]);
-    rotationAngleListener.onTiltInAxisZ(orientations[2]);
+    rotationAngleListener.onRotationInAxisX(orientations[0]);
+    rotationAngleListener.onRotationInAxisY(orientations[1]);
+    rotationAngleListener.onRotationInAxisZ(orientations[2]);
   }
 
   public interface RotationAngleListener {
-    void onTiltInAxisX(float angle);
+    void onRotationInAxisX(float angle);
 
-    void onTiltInAxisY(float angle);
+    void onRotationInAxisY(float angle);
 
-    void onTiltInAxisZ(float angle);
+    void onRotationInAxisZ(float angle);
   }
 }

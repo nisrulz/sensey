@@ -36,6 +36,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.nisrulz.sensey.MovementDetector.MovementListener;
+import static com.github.nisrulz.sensey.RotationAngleDetector.RotationAngleListener;
+import static com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListener;
 import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
 
 /**
@@ -370,6 +372,24 @@ public class Sensey {
    */
   public void stopFlipDetection(FlipListener flipListener) {
     stopLibrarySensorDetection(flipListener);
+  }
+
+  public void startRotationAngleDetection(RotationAngleListener rotationAngleListener) {
+    startLibrarySensorDetection(new RotationAngleDetector(rotationAngleListener),
+        rotationAngleListener);
+  }
+
+  public void stopRotationAngleDetection(RotationAngleListener rotationAngleListener) {
+    stopLibrarySensorDetection(rotationAngleListener);
+  }
+
+  public void startTiltDirectionDetection(TiltDirectionListener tiltDirectionListener) {
+    startLibrarySensorDetection(new TiltDirectionDetector(tiltDirectionListener),
+        tiltDirectionListener);
+  }
+
+  public void stopTiltDirectionDetection(TiltDirectionListener tiltDirectionListener) {
+    stopLibrarySensorDetection(tiltDirectionListener);
   }
 
   /**
