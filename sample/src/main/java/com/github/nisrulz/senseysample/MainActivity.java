@@ -29,6 +29,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.github.nisrulz.sensey.Sensey;
+import com.github.nisrulz.sensey.TiltDirectionDetector;
 import java.text.DecimalFormat;
 
 import static com.github.nisrulz.sensey.ChopDetector.ChopListener;
@@ -407,33 +408,38 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onRotationInAxisX(float angle) {
-
-    setResultTextView("Rotation in X Axis Detected: " + angle + " deg", false);
-  }
-
-  @Override
-  public void onRotationInAxisY(float angle) {
-    setResultTextView("Rotation in Y Axis Detected: " + angle + " deg", false);
-  }
-
-  @Override
-  public void onRotationInAxisZ(float angle) {
-    setResultTextView("Rotation in Z Axis Detected: " + angle + " deg", false);
-  }
-
-  @Override
   public void onTiltInAxisX(int direction) {
-    setResultTextView("Tilt in X Axis Detected: " + direction, false);
+    displayResultForTiltDirectionDetector(direction, "X");
   }
 
   @Override
   public void onTiltInAxisY(int direction) {
-    setResultTextView("Tilt in Y Axis Detected: " + direction, false);
+    displayResultForTiltDirectionDetector(direction, "Y");
   }
 
   @Override
   public void onTiltInAxisZ(int direction) {
-    setResultTextView("Tilt in Z Axis Detected: " + direction, false);
+    displayResultForTiltDirectionDetector(direction, "Z");
+  }
+
+  private void displayResultForTiltDirectionDetector(int direction, String axis) {
+    String dir = "NA";
+    if (direction == TiltDirectionDetector.DIRECTION_CLOCKWISE) {
+      dir = "ClockWise";
+    }
+    else {
+      dir = "AntiClockWise";
+    }
+    setResultTextView("Tilt in " + axis + " Axis: " + dir, false);
+  }
+
+  @Override
+  public void onRotation(float angleInAxisX, float angleInAxisY, float angleInAxisZ) {
+    setResultTextView("Rotation in Axis Detected(deg):\nX="
+        + angleInAxisX
+        + ",\nY="
+        + angleInAxisY
+        + ",\nZ="
+        + angleInAxisZ, true);
   }
 }

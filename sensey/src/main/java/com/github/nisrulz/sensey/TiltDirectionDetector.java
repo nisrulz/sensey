@@ -23,8 +23,8 @@ import static android.hardware.Sensor.TYPE_GYROSCOPE;
 public class TiltDirectionDetector extends SensorDetector {
 
   private final TiltDirectionListener tiltDirectionListener;
-  public final int DIRECTION_CLOCKWISE = 0;
-  public final int DIRECTION_ANTICLOCKWISE = 1;
+  public static final int DIRECTION_CLOCKWISE = 0;
+  public static final int DIRECTION_ANTICLOCKWISE = 1;
 
   public TiltDirectionDetector(TiltDirectionListener tiltDirectionListener) {
     super(TYPE_GYROSCOPE);
