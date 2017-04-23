@@ -1,35 +1,28 @@
-Please fill out the blanks below describing your issue
+<!-- * Please fill out the blanks below describing your issue * -->
 
-What are the steps to reproduce this issue?
--------------------------------------------
-1. …
-2. …
-3. …
-…
+**Do you want to request a *feature* or report a *bug*?**
 
-What happens?
--------------
-…
+**What is the current behavior?**
 
-What were you expecting to happen?
-----------------------------------
-…
-
-Any logs, error output, bugreport etc?
-----------------------------
-(If it’s long, please paste to https://ghostbin.com/ and insert the link here.)
+**If the current behavior is a bug, please provide the steps to reproduce.**
+<!-- If you can, provide a link to a public repository which contains the files necessary to reproduce this. -->
 
 
-Any other comments?
--------------------
-…
+**Any logs, error output, bugreport etc?**
+<!-- * If it’s long, please paste to https://ghostbin.com/ and insert the link here.) * -->
 
-What versions of software are you using?
-----------------------------------------
-**Device Information:** …
+**What is the expected behavior?**
 
-**Android Version:** …
+**Any other comments?**
 
-**Configuration Information:** …
 
-[More related information if you have can provide]
+**What versions of software are you using?**
++ **Device Information:** 
+
++ **Android Version:** 
+
++ **Configuration Information:** 
+
++ **Misc:** 
+
+<!-- * More related information if you have can provide * -->
