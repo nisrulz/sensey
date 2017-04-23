@@ -1,33 +1,26 @@
-Please fill out the blanks below describing your PR
+<!-- * Please fill out the blanks below describing your pull request * -->
 
-What does this implement/fix? Explain your changes.
----------------------------------------------------
-…
+**What does this implement/fix? Explain your changes**
 
-Does this close any currently open issues?
-------------------------------------------
-…
+**Does this close any currently open issues?**
 
+**Any relevant logs, error output, bugreport etc?**
+<!-- * If it’s long, please paste to https://ghostbin.com/ and insert the link here.) * -->
 
-Any relevant logs, error output, bugreport etc?
--------------------------------------
-(If it’s long, please paste to https://ghostbin.com/ and insert the link here.)
+**Any other comments?**
 
-Any other comments?
--------------------
-…
++ **Where has this been tested?**
 
-Where has this been tested?
----------------------------
-**Device Information:** …
++ **Device Information:**
 
-**Android Version:** …
++ **Android Version:**
 
-**Target Platform:** …
++ **Target Platform:**
 
-**SDK Version:** …
++ **SDK Version:**
 
-**Configuration Information:** …
++ **Configuration Information:**
 
-[More related information if you have can provide]
++ **Misc:** 
 
+<!-- * More related information if you have can provide * -->
