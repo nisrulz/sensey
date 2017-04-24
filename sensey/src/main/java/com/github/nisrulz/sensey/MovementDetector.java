@@ -28,8 +28,8 @@ public class MovementDetector extends SensorDetector {
 
   private final MovementListener movementListener;
   private final float threshold;
-  private float mAccelCurrent = SensorManager.GRAVITY_EARTH;
   private final long timeBeforeDeclaringStationary;
+  private float mAccelCurrent = SensorManager.GRAVITY_EARTH;
   private long lastTimeMovementDetected = System.currentTimeMillis();
   private boolean isMoving = false;
 

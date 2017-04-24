@@ -43,11 +43,11 @@ public class FlipDetector extends SensorDetector {
   @Override
   protected void onSensorEvent(SensorEvent sensorEvent) {
     float z = sensorEvent.values[2];
-    if (z > 9 && z < 10 && eventOccurred!=1) {
+    if (z > 9 && z < 10 && eventOccurred != 1) {
       eventOccurred = 1;
       flipListener.onFaceUp();
     }
-    else if (z > -10 && z < -9 && eventOccurred!=2) {
+    else if (z > -10 && z < -9 && eventOccurred != 2) {
       eventOccurred = 2;
       flipListener.onFaceDown();
     }

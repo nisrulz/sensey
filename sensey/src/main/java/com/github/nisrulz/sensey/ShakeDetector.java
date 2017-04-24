@@ -28,10 +28,9 @@ public class ShakeDetector extends SensorDetector {
 
   private final ShakeListener shakeListener;
   private final float threshold;
+  private final long timeBeforeDeclaringShakeStopped;
   private float mAccel;
   private float mAccelCurrent = SensorManager.GRAVITY_EARTH;
-
-  private final long timeBeforeDeclaringShakeStopped;
   private long lastTimeShakeDetected = System.currentTimeMillis();
   private boolean isShaking = false;
 

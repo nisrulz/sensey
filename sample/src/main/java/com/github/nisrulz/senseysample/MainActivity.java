@@ -130,6 +130,15 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
+  protected void onDestroy() {
+    super.onDestroy();
+
+    // *** IMPORTANT ***
+    // Stop Sensey and release the context held by it
+    Sensey.getInstance().stop();
+  }
+
+  @Override
   public void onCheckedChanged(CompoundButton switchbtn, boolean isChecked) {
     switch (switchbtn.getId()) {
 
@@ -279,13 +288,14 @@ public class MainActivity extends AppCompatActivity
     Toast.makeText(this, "Stopping all detectors!", Toast.LENGTH_SHORT).show();
   }
 
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
+  private void resetResultInView(final TextView txt) {
 
-    // *** IMPORTANT ***
-    // Stop Sensey and release the context held by it
-    Sensey.getInstance().stop();
+    handler.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        txt.setText(getString(R.string.results_show_here));
+      }
+    }, 3000);
   }
 
   @Override
@@ -296,6 +306,24 @@ public class MainActivity extends AppCompatActivity
   @Override
   public void onFaceDown() {
     setResultTextView("Face Down", false);
+  }
+
+  private void setResultTextView(final String text, final boolean realtime) {
+    if (txtViewResult != null) {
+      runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          txtViewResult.setText(text);
+          if (!realtime) {
+            resetResultInView(txtViewResult);
+          }
+        }
+      });
+
+      if (DEBUG) {
+        Log.i(LOGTAG, text);
+      }
+    }
   }
 
   @Override
@@ -377,34 +405,6 @@ public class MainActivity extends AppCompatActivity
   @Override
   public void onWristTwist() {
     setResultTextView("Wrist Twist Detected!", false);
-  }
-
-  private void setResultTextView(final String text, final boolean realtime) {
-    if (txtViewResult != null) {
-      runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-          txtViewResult.setText(text);
-          if (!realtime) {
-            resetResultInView(txtViewResult);
-          }
-        }
-      });
-
-      if (DEBUG) {
-        Log.i(LOGTAG, text);
-      }
-    }
-  }
-
-  private void resetResultInView(final TextView txt) {
-
-    handler.postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        txt.setText(getString(R.string.results_show_here));
-      }
-    }, 3000);
   }
 
   @Override

@@ -70,8 +70,8 @@
       android:layout_marginRight="@dimen/activity_vertical_margin"
       android:background="@drawable/result_bg"
       android:gravity="center"
-      android:textSize="25sp"
       android:text="@string/hit_area"
       android:textColor="@color/divider"
+      android:textSize="25sp"
       />
 </RelativeLayout>

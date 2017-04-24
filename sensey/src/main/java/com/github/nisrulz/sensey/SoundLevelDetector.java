@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2016 Nishant Srivastava
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.github.nisrulz.sensey;
 
 import android.media.AudioFormat;
@@ -10,63 +26,14 @@ import android.util.Log;
  */
 public class SoundLevelDetector {
   private static final String LOGTAG = "SoundLevelDetector";
-
-  private SoundLevelListener soundLevelListener;
-  private Thread audioRecordingThread = null;
-
   private final int SAMPLE_RATE;
-  private int bufferSize;
-  private boolean shouldContinueProcessingAudio;
   private final int audioChannel = AudioFormat.CHANNEL_IN_MONO;
   private final int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
   private final int audioSource = MediaRecorder.AudioSource.VOICE_RECOGNITION;
-
-  /**
-   * Instantiates a new Sound level detector.
-   *
-   * @param soundLevelListener
-   *     the sound level listener
-   */
-  public SoundLevelDetector(SoundLevelListener soundLevelListener) {
-    this.soundLevelListener = soundLevelListener;
-    // Get valid sample rate and bufferSize
-    SAMPLE_RATE = getValidSampleRates(audioChannel, audioEncoding);
-    bufferSize = getValidBufferSize(audioSource, SAMPLE_RATE, audioChannel, audioEncoding);
-  }
-
-  /**
-   * Start Recording
-   */
-  void start() {
-    if (audioRecordingThread == null) {
-      audioRecordingThread = new Thread(audioRecordRunnable);
-      audioRecordingThread.start();
-    }
-    else if (audioRecordingThread.isAlive()) {
-      stopThreadAndProcessing();
-      audioRecordingThread = new Thread(audioRecordRunnable);
-      audioRecordingThread.start();
-    }
-  }
-
-  private void stopThreadAndProcessing() {
-    // Stop audio processing
-    shouldContinueProcessingAudio = false;
-    // interrupt the thread
-    if (audioRecordingThread != null) {
-      audioRecordingThread.interrupt();
-      audioRecordingThread = null;
-    }
-  }
-
-  /**
-   * Stop Recording
-   */
-  void stop() {
-    stopThreadAndProcessing();
-    soundLevelListener = null;
-  }
-
+  private SoundLevelListener soundLevelListener;
+  private Thread audioRecordingThread = null;
+  private int bufferSize;
+  private boolean shouldContinueProcessingAudio;
   private final Runnable audioRecordRunnable = new Runnable() {
     @Override
     public void run() {
@@ -141,6 +108,19 @@ public class SoundLevelDetector {
     }
   };
 
+  /**
+   * Instantiates a new Sound level detector.
+   *
+   * @param soundLevelListener
+   *     the sound level listener
+   */
+  public SoundLevelDetector(SoundLevelListener soundLevelListener) {
+    this.soundLevelListener = soundLevelListener;
+    // Get valid sample rate and bufferSize
+    SAMPLE_RATE = getValidSampleRates(audioChannel, audioEncoding);
+    bufferSize = getValidBufferSize(audioSource, SAMPLE_RATE, audioChannel, audioEncoding);
+  }
+
   private int getValidSampleRates(int channelConfiguration, int audioEncoding) {
     for (int rate : new int[] {
         8000, 11025, 16000, 22050, 44100, 48000
@@ -165,6 +145,39 @@ public class SoundLevelDetector {
       }
     }
     return 0;
+  }
+
+  /**
+   * Start Recording
+   */
+  void start() {
+    if (audioRecordingThread == null) {
+      audioRecordingThread = new Thread(audioRecordRunnable);
+      audioRecordingThread.start();
+    }
+    else if (audioRecordingThread.isAlive()) {
+      stopThreadAndProcessing();
+      audioRecordingThread = new Thread(audioRecordRunnable);
+      audioRecordingThread.start();
+    }
+  }
+
+  private void stopThreadAndProcessing() {
+    // Stop audio processing
+    shouldContinueProcessingAudio = false;
+    // interrupt the thread
+    if (audioRecordingThread != null) {
+      audioRecordingThread.interrupt();
+      audioRecordingThread = null;
+    }
+  }
+
+  /**
+   * Stop Recording
+   */
+  void stop() {
+    stopThreadAndProcessing();
+    soundLevelListener = null;
   }
 
   /**

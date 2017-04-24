@@ -60,6 +60,15 @@ public class TouchActivity extends AppCompatActivity
   }
 
   @Override
+  protected void onDestroy() {
+    super.onDestroy();
+
+    // *** IMPORTANT ***
+    // Stop Sensey and release the context held by it
+    Sensey.getInstance().stop();
+  }
+
+  @Override
   public void onCheckedChanged(final CompoundButton switchbtn, boolean isChecked) {
     switch (switchbtn.getId()) {
       case R.id.Switch6:
@@ -99,15 +108,6 @@ public class TouchActivity extends AppCompatActivity
     // Stop Detections
     Sensey.getInstance().stopTouchTypeDetection();
     Sensey.getInstance().stopPinchScaleDetection();
-  }
-
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
-
-    // *** IMPORTANT ***
-    // Stop Sensey and release the context held by it
-    Sensey.getInstance().stop();
   }
 
   private void setResultTextView(String text) {
