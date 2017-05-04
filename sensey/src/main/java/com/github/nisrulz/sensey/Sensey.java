@@ -16,9 +16,12 @@
 
 package com.github.nisrulz.sensey;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.support.annotation.RequiresPermission;
 import android.view.MotionEvent;
 import com.github.nisrulz.sensey.ChopDetector.ChopListener;
 import com.github.nisrulz.sensey.FlipDetector.FlipListener;
@@ -108,6 +111,32 @@ public class Sensey {
   public void init(Context context, int samplingPeriod) {
     init(context);
     this.samplingPeriod = samplingPeriod;
+  }
+
+  /**
+   * Check permission boolean.
+   *
+   * @param context
+   *     the context
+   * @param permission
+   *     the permission
+   * @return the boolean
+   */
+  boolean checkPermission(Context context, String permission) {
+    return context.checkCallingOrSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
+  }
+
+  /**
+   * Check hardware boolean.
+   *
+   * @param context
+   *     the context
+   * @param hardware
+   *     the hardware
+   * @return the boolean
+   */
+  boolean checkHardware(Context context, String hardware) {
+    return context.getPackageManager().hasSystemFeature(hardware);
   }
 
   /**
@@ -507,13 +536,19 @@ public class Sensey {
   /**
    * Start sound level detection.
    *
+   * @param context
+   *     the context
    * @param soundLevelListener
    *     the sound level listener
    */
-  public void startSoundLevelDetection(SoundLevelListener soundLevelListener) {
-    if (soundLevelListener != null) {
+  @RequiresPermission(Manifest.permission.RECORD_AUDIO)
+  public void startSoundLevelDetection(Context context, SoundLevelListener soundLevelListener) {
+    if (soundLevelListener != null && checkPermission(context, Manifest.permission.RECORD_AUDIO)) {
       soundLevelDetector = new SoundLevelDetector(soundLevelListener);
       soundLevelDetector.start();
+    }
+    else {
+      System.out.println("Permission Required: RECORD_AUDIO");
     }
   }
 
