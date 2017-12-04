@@ -16,76 +16,76 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.SensorEvent;
-
 import static android.hardware.Sensor.TYPE_ACCELEROMETER;
+
+import android.hardware.SensorEvent;
 
 /**
  * The type Chop detector.
  */
 public class ChopDetector extends SensorDetector {
 
-  private final ChopListener chopListener;
-  private final float threshold;
-  private final long timeForChopGesture;
-  private long lastTimeChopDetected = System.currentTimeMillis();
-  private boolean isGestureInProgress = false;
-
-  /**
-   * Instantiates a new Chop detector.
-   *
-   * @param chopListener
-   *     the chop listener
-   */
-  public ChopDetector(ChopListener chopListener) {
-    this(35f, 700, chopListener);
-  }
-
-  /**
-   * Instantiates a new Chop detector.
-   *
-   * @param threshold
-   *     the threshold
-   * @param timeForChopGesture
-   *     the time for chop gesture
-   * @param chopListener
-   *     the chop listener
-   */
-  public ChopDetector(float threshold, long timeForChopGesture, ChopListener chopListener) {
-    super(TYPE_ACCELEROMETER);
-    this.chopListener = chopListener;
-    this.threshold = threshold;
-    this.timeForChopGesture = timeForChopGesture;
-  }
-
-  @Override
-  protected void onSensorEvent(SensorEvent sensorEvent) {
-    float x = sensorEvent.values[0];
-    float y = sensorEvent.values[1];
-    float z = sensorEvent.values[2];
-
-    // Make this higher or lower according to how much
-    // motion you want to detect
-    if (x > threshold && y < (-threshold) && z > threshold) {
-      lastTimeChopDetected = System.currentTimeMillis();
-      isGestureInProgress = true;
-    }
-    else {
-      long timeDelta = (System.currentTimeMillis() - lastTimeChopDetected);
-      if (timeDelta > timeForChopGesture && isGestureInProgress) {
-        isGestureInProgress = false;
-        chopListener.onChop();
-      }
-    }
-  }
-
-  /**
-   * The interface Chop listener.
-   */
-  public interface ChopListener {
     /**
-     * On chop.
+     * The interface Chop listener.
      */
-    void onChop();
-  }
+    public interface ChopListener {
+
+        /**
+         * On chop.
+         */
+        void onChop();
+    }
+
+    private final ChopListener chopListener;
+
+    private boolean isGestureInProgress = false;
+
+    private long lastTimeChopDetected = System.currentTimeMillis();
+
+    private final float threshold;
+
+    private final long timeForChopGesture;
+
+    /**
+     * Instantiates a new Chop detector.
+     *
+     * @param chopListener the chop listener
+     */
+    public ChopDetector(ChopListener chopListener) {
+        this(35f, 700, chopListener);
+    }
+
+    /**
+     * Instantiates a new Chop detector.
+     *
+     * @param threshold          the threshold
+     * @param timeForChopGesture the time for chop gesture
+     * @param chopListener       the chop listener
+     */
+    public ChopDetector(float threshold, long timeForChopGesture, ChopListener chopListener) {
+        super(TYPE_ACCELEROMETER);
+        this.chopListener = chopListener;
+        this.threshold = threshold;
+        this.timeForChopGesture = timeForChopGesture;
+    }
+
+    @Override
+    protected void onSensorEvent(SensorEvent sensorEvent) {
+        float x = sensorEvent.values[0];
+        float y = sensorEvent.values[1];
+        float z = sensorEvent.values[2];
+
+        // Make this higher or lower according to how much
+        // motion you want to detect
+        if (x > threshold && y < (-threshold) && z > threshold) {
+            lastTimeChopDetected = System.currentTimeMillis();
+            isGestureInProgress = true;
+        } else {
+            long timeDelta = (System.currentTimeMillis() - lastTimeChopDetected);
+            if (timeDelta > timeForChopGesture && isGestureInProgress) {
+                isGestureInProgress = false;
+                chopListener.onChop();
+            }
+        }
+    }
 }

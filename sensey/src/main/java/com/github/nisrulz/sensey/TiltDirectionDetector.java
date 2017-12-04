@@ -16,97 +16,93 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.SensorEvent;
-
 import static android.hardware.Sensor.TYPE_GYROSCOPE;
+
+import android.hardware.SensorEvent;
 
 /**
  * The type Tilt direction detector.
  */
 public class TiltDirectionDetector extends SensorDetector {
 
-  /**
-   * The constant DIRECTION_CLOCKWISE.
-   */
-  public static final int DIRECTION_CLOCKWISE = 0;
-  /**
-   * The constant DIRECTION_ANTICLOCKWISE.
-   */
-  public static final int DIRECTION_ANTICLOCKWISE = 1;
-  private final TiltDirectionListener tiltDirectionListener;
-
-  /**
-   * Instantiates a new Tilt direction detector.
-   *
-   * @param tiltDirectionListener
-   *     the tilt direction listener
-   */
-  public TiltDirectionDetector(TiltDirectionListener tiltDirectionListener) {
-    super(TYPE_GYROSCOPE);
-    this.tiltDirectionListener = tiltDirectionListener;
-  }
-
-  @Override
-  protected void onSensorEvent(SensorEvent sensorEvent) {
-    // Unit = rad/sec, Clockwise = -ve, Anticlockwise = +ve
-    float x = sensorEvent.values[0];
-    float y = sensorEvent.values[1];
-    float z = sensorEvent.values[2];
-
-    if (x > 0.5f) {
-      // anticlockwise
-      tiltDirectionListener.onTiltInAxisX(DIRECTION_ANTICLOCKWISE);
-    }
-    else if (x < -0.5f) {
-      //clockwise
-      tiltDirectionListener.onTiltInAxisX(DIRECTION_CLOCKWISE);
-    }
-
-    if (y > 0.5f) {
-      // anticlockwise
-      tiltDirectionListener.onTiltInAxisY(DIRECTION_ANTICLOCKWISE);
-    }
-    else if (y < -0.5f) {
-      //clockwise
-      tiltDirectionListener.onTiltInAxisY(DIRECTION_CLOCKWISE);
-    }
-
-    if (z > 0.5f) {
-      // anticlockwise
-      tiltDirectionListener.onTiltInAxisZ(DIRECTION_ANTICLOCKWISE);
-    }
-    else if (z < -0.5f) {
-      //clockwise
-      tiltDirectionListener.onTiltInAxisZ(DIRECTION_CLOCKWISE);
-    }
-  }
-
-  /**
-   * The interface Tilt direction listener.
-   */
-  public interface TiltDirectionListener {
     /**
-     * On tilt in axis x.
-     *
-     * @param direction
-     *     the direction
+     * The interface Tilt direction listener.
      */
-    void onTiltInAxisX(int direction);
+    public interface TiltDirectionListener {
+
+        /**
+         * On tilt in axis x.
+         *
+         * @param direction the direction
+         */
+        void onTiltInAxisX(int direction);
+
+        /**
+         * On tilt in axis y.
+         *
+         * @param direction the direction
+         */
+        void onTiltInAxisY(int direction);
+
+        /**
+         * On tilt in axis z.
+         *
+         * @param direction the direction
+         */
+        void onTiltInAxisZ(int direction);
+    }
 
     /**
-     * On tilt in axis y.
-     *
-     * @param direction
-     *     the direction
+     * The constant DIRECTION_CLOCKWISE.
      */
-    void onTiltInAxisY(int direction);
+    public static final int DIRECTION_CLOCKWISE = 0;
 
     /**
-     * On tilt in axis z.
-     *
-     * @param direction
-     *     the direction
+     * The constant DIRECTION_ANTICLOCKWISE.
      */
-    void onTiltInAxisZ(int direction);
-  }
+    public static final int DIRECTION_ANTICLOCKWISE = 1;
+
+    private final TiltDirectionListener tiltDirectionListener;
+
+    /**
+     * Instantiates a new Tilt direction detector.
+     *
+     * @param tiltDirectionListener the tilt direction listener
+     */
+    public TiltDirectionDetector(TiltDirectionListener tiltDirectionListener) {
+        super(TYPE_GYROSCOPE);
+        this.tiltDirectionListener = tiltDirectionListener;
+    }
+
+    @Override
+    protected void onSensorEvent(SensorEvent sensorEvent) {
+        // Unit = rad/sec, Clockwise = -ve, Anticlockwise = +ve
+        float x = sensorEvent.values[0];
+        float y = sensorEvent.values[1];
+        float z = sensorEvent.values[2];
+
+        if (x > 0.5f) {
+            // anticlockwise
+            tiltDirectionListener.onTiltInAxisX(DIRECTION_ANTICLOCKWISE);
+        } else if (x < -0.5f) {
+            //clockwise
+            tiltDirectionListener.onTiltInAxisX(DIRECTION_CLOCKWISE);
+        }
+
+        if (y > 0.5f) {
+            // anticlockwise
+            tiltDirectionListener.onTiltInAxisY(DIRECTION_ANTICLOCKWISE);
+        } else if (y < -0.5f) {
+            //clockwise
+            tiltDirectionListener.onTiltInAxisY(DIRECTION_CLOCKWISE);
+        }
+
+        if (z > 0.5f) {
+            // anticlockwise
+            tiltDirectionListener.onTiltInAxisZ(DIRECTION_ANTICLOCKWISE);
+        } else if (z < -0.5f) {
+            //clockwise
+            tiltDirectionListener.onTiltInAxisZ(DIRECTION_CLOCKWISE);
+        }
+    }
 }

@@ -16,42 +16,41 @@
 
 package com.github.nisrulz.sensey;
 
+import static org.mockito.Mockito.*;
+
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import java.lang.reflect.Field;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 class SensorUtils {
 
-  public static SensorEvent testAccelerometerEvent(float[] values) {
-    return testSensorEvent(values, Sensor.TYPE_ACCELEROMETER);
-  }
-
-  public static SensorEvent testSensorEvent(float[] values, int type) {
-    SensorEvent sensorEvent = mock(SensorEvent.class);
-
-    try {
-      Field valuesField = SensorEvent.class.getField("values");
-      valuesField.setAccessible(true);
-      try {
-        valuesField.set(sensorEvent, values);
-      } catch (IllegalAccessException e) {
-        e.printStackTrace();
-      }
-    } catch (NoSuchFieldException e) {
-      e.printStackTrace();
+    public static SensorEvent testAccelerometerEvent(float[] values) {
+        return testSensorEvent(values, Sensor.TYPE_ACCELEROMETER);
     }
 
-    sensorEvent.sensor = testSensor(type);
+    public static SensorEvent testSensorEvent(float[] values, int type) {
+        SensorEvent sensorEvent = mock(SensorEvent.class);
 
-    return sensorEvent;
-  }
+        try {
+            Field valuesField = SensorEvent.class.getField("values");
+            valuesField.setAccessible(true);
+            try {
+                valuesField.set(sensorEvent, values);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
 
-  private static Sensor testSensor(int type) {
-    Sensor sensor = mock(Sensor.class);
-    when(sensor.getType()).thenReturn(type);
-    return sensor;
-  }
+        sensorEvent.sensor = testSensor(type);
+
+        return sensorEvent;
+    }
+
+    private static Sensor testSensor(int type) {
+        Sensor sensor = mock(Sensor.class);
+        when(sensor.getType()).thenReturn(type);
+        return sensor;
+    }
 }

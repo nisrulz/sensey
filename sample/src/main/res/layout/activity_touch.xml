@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2016 Nishant Srivastava
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,63 +14,59 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TouchActivity"
-    >
+    tools:context=".TouchActivity">
 
-  <LinearLayout
-      android:id="@+id/linearlayout_controls"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:paddingBottom="@dimen/activity_vertical_margin"
-      android:paddingLeft="@dimen/activity_horizontal_margin"
-      android:paddingRight="@dimen/activity_horizontal_margin"
-      android:paddingTop="@dimen/activity_vertical_margin"
-      >
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/Switch6"
+    <LinearLayout
+        android:id="@+id/linearlayout_controls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:button="@null"
-        android:padding="20dp"
-        android:text="@string/touch_detection"
-        android:textColor="@color/icons"
-        android:textOff=""
-        android:textOn=""
-        />
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/Switch7"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/Switch6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:padding="20dp"
+            android:text="@string/touch_detection"
+            android:textColor="@color/icons"
+            android:textOff=""
+            android:textOn="" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/Switch7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:padding="20dp"
+            android:text="@string/pinch_scale_gesture"
+            android:textColor="@color/icons"
+            android:textOff=""
+            android:textOn="" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView_result"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:button="@null"
-        android:padding="20dp"
-        android:text="@string/pinch_scale_gesture"
-        android:textColor="@color/icons"
-        android:textOff=""
-        android:textOn=""
-        />
-
-  </LinearLayout>
-
-  <TextView
-      android:id="@+id/textView_result"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_below="@+id/linearlayout_controls"
-      android:layout_marginBottom="@dimen/activity_vertical_margin"
-      android:layout_marginLeft="@dimen/activity_vertical_margin"
-      android:layout_marginRight="@dimen/activity_vertical_margin"
-      android:background="@drawable/result_bg"
-      android:gravity="center"
-      android:text="@string/hit_area"
-      android:textColor="@color/divider"
-      android:textSize="25sp"
-      />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearlayout_controls"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:background="@drawable/result_bg"
+        android:gravity="center"
+        android:text="@string/hit_area"
+        android:textColor="@color/divider"
+        android:textSize="25sp" />
 </RelativeLayout>

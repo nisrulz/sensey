@@ -16,6 +16,19 @@
 
 package com.github.nisrulz.senseysample;
 
+import static com.github.nisrulz.sensey.ChopDetector.ChopListener;
+import static com.github.nisrulz.sensey.FlipDetector.FlipListener;
+import static com.github.nisrulz.sensey.LightDetector.LightListener;
+import static com.github.nisrulz.sensey.MovementDetector.MovementListener;
+import static com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
+import static com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
+import static com.github.nisrulz.sensey.RotationAngleDetector.RotationAngleListener;
+import static com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
+import static com.github.nisrulz.sensey.SoundLevelDetector.SoundLevelListener;
+import static com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListener;
+import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
+import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,414 +45,391 @@ import com.github.nisrulz.sensey.Sensey;
 import com.github.nisrulz.sensey.TiltDirectionDetector;
 import java.text.DecimalFormat;
 
-import static com.github.nisrulz.sensey.ChopDetector.ChopListener;
-import static com.github.nisrulz.sensey.FlipDetector.FlipListener;
-import static com.github.nisrulz.sensey.LightDetector.LightListener;
-import static com.github.nisrulz.sensey.MovementDetector.MovementListener;
-import static com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
-import static com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
-import static com.github.nisrulz.sensey.RotationAngleDetector.RotationAngleListener;
-import static com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
-import static com.github.nisrulz.sensey.SoundLevelDetector.SoundLevelListener;
-import static com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListener;
-import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
-import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
-
 /**
  * The type Main activity.
  */
 public class MainActivity extends AppCompatActivity
-    implements OnCheckedChangeListener, ShakeListener, FlipListener, LightListener,
-    OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener,
-    ChopListener, WristTwistListener, RotationAngleListener, TiltDirectionListener {
+        implements OnCheckedChangeListener, ShakeListener, FlipListener, LightListener,
+        OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener,
+        ChopListener, WristTwistListener, RotationAngleListener, TiltDirectionListener {
 
-  private static final String LOGTAG = "MainActivity";
-  private static final boolean DEBUG = true;
-  private Handler handler;
+    private static final String LOGTAG = "MainActivity";
 
-  private TextView txtViewResult;
-  private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8, swt9, swt10, swt11, swt12;
+    private static final boolean DEBUG = true;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    private Handler handler;
 
-    // Init Sensey
-    Sensey.getInstance().init(this);
+    private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8, swt9, swt10, swt11, swt12;
 
-    // Init UI controls,views and handler
-    handler = new Handler();
-    txtViewResult = (TextView) findViewById(R.id.textView_result);
+    private TextView txtViewResult;
 
-    swt1 = (SwitchCompat) findViewById(R.id.Switch1);
-    swt1.setOnCheckedChangeListener(this);
-    swt1.setChecked(false);
-
-    swt2 = (SwitchCompat) findViewById(R.id.Switch2);
-    swt2.setOnCheckedChangeListener(this);
-    swt2.setChecked(false);
-
-    swt3 = (SwitchCompat) findViewById(R.id.Switch3);
-    swt3.setOnCheckedChangeListener(this);
-    swt3.setChecked(false);
-
-    swt4 = (SwitchCompat) findViewById(R.id.Switch4);
-    swt4.setOnCheckedChangeListener(this);
-    swt4.setChecked(false);
-
-    swt5 = (SwitchCompat) findViewById(R.id.Switch5);
-    swt5.setOnCheckedChangeListener(this);
-    swt5.setChecked(false);
-
-    swt6 = (SwitchCompat) findViewById(R.id.Switch6);
-    swt6.setOnCheckedChangeListener(this);
-    swt6.setChecked(false);
-
-    swt7 = (SwitchCompat) findViewById(R.id.Switch7);
-    swt7.setOnCheckedChangeListener(this);
-    swt7.setChecked(false);
-
-    swt8 = (SwitchCompat) findViewById(R.id.Switch8);
-    swt8.setOnCheckedChangeListener(this);
-    swt8.setChecked(false);
-
-    swt9 = (SwitchCompat) findViewById(R.id.Switch9);
-    swt9.setOnCheckedChangeListener(this);
-    swt9.setChecked(false);
-
-    swt10 = (SwitchCompat) findViewById(R.id.Switch10);
-    swt10.setOnCheckedChangeListener(this);
-    swt10.setChecked(false);
-
-    swt11 = (SwitchCompat) findViewById(R.id.Switch11);
-    swt11.setOnCheckedChangeListener(this);
-    swt11.setChecked(false);
-
-    swt12 = (SwitchCompat) findViewById(R.id.Switch12);
-    swt12.setOnCheckedChangeListener(this);
-    swt12.setChecked(false);
-
-    Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
-    btnTouchEvent.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        startActivity(new Intent(MainActivity.this, TouchActivity.class));
-      }
-    });
-  }
-
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
-
-    // *** IMPORTANT ***
-    // Stop Sensey and release the context held by it
-    Sensey.getInstance().stop();
-  }
-
-  @Override
-  public void onCheckedChanged(CompoundButton switchbtn, boolean isChecked) {
-    switch (switchbtn.getId()) {
-
-      case R.id.Switch1:
-        if (isChecked) {
-          Sensey.getInstance().startShakeDetection(10, 2000, this);
-        }
-        else {
-          Sensey.getInstance().stopShakeDetection(this);
-        }
-        break;
-      case R.id.Switch2:
-        if (isChecked) {
-          Sensey.getInstance().startFlipDetection(this);
-        }
-        else {
-          Sensey.getInstance().stopFlipDetection(this);
-        }
-
-        break;
-      case R.id.Switch3:
-        if (isChecked) {
-          Sensey.getInstance().startOrientationDetection(this);
-        }
-        else {
-          Sensey.getInstance().stopOrientationDetection(this);
-        }
-
-        break;
-      case R.id.Switch4:
-        if (isChecked) {
-          Sensey.getInstance().startProximityDetection(this);
-        }
-        else {
-          Sensey.getInstance().stopProximityDetection(this);
-        }
-        break;
-      case R.id.Switch5:
-        if (isChecked) {
-          Sensey.getInstance().startLightDetection(10, this);
-        }
-        else {
-          Sensey.getInstance().stopLightDetection(this);
-        }
-        break;
-
-      case R.id.Switch6:
-        if (isChecked) {
-          Sensey.getInstance().startWaveDetection(this);
-        }
-        else {
-          Sensey.getInstance().stopWaveDetection(this);
-        }
-        break;
-
-      case R.id.Switch7:
-        if (isChecked) {
-          Sensey.getInstance().startSoundLevelDetection(this);
-        }
-        else {
-          Sensey.getInstance().stopSoundLevelDetection();
-        }
-        break;
-      case R.id.Switch8:
-        if (isChecked) {
-          Sensey.getInstance().startMovementDetection(this);
-        }
-        else {
-          Sensey.getInstance().stopMovementDetection(this);
-        }
-        break;
-      case R.id.Switch9:
-        if (isChecked) {
-          Sensey.getInstance().startChopDetection(30f, 500, this);
-        }
-        else {
-          Sensey.getInstance().stopChopDetection(this);
-        }
-        break;
-      case R.id.Switch10:
-        if (isChecked) {
-          Sensey.getInstance().startWristTwistDetection(this);
-        }
-        else {
-          Sensey.getInstance().stopWristTwistDetection(this);
-        }
-        break;
-
-      case R.id.Switch11:
-        if (isChecked) {
-          Sensey.getInstance().startRotationAngleDetection(this);
-        }
-        else {
-          Sensey.getInstance().stopRotationAngleDetection(this);
-        }
-        break;
-
-      case R.id.Switch12:
-        if (isChecked) {
-          Sensey.getInstance().startTiltDirectionDetection(this);
-        }
-        else {
-          Sensey.getInstance().stopTiltDirectionDetection(this);
-        }
-        break;
-
-      default:
-        // Do nothing
-        break;
+    @Override
+    public void onBottomSideUp() {
+        setResultTextView("Bottom Side UP", false);
     }
-  }
 
-  @Override
-  protected void onPause() {
-    super.onPause();
-    // Stop Detections
-    Sensey.getInstance().stopShakeDetection(this);
-    Sensey.getInstance().stopFlipDetection(this);
-    Sensey.getInstance().stopOrientationDetection(this);
-    Sensey.getInstance().stopProximityDetection(this);
-    Sensey.getInstance().stopLightDetection(this);
-    Sensey.getInstance().stopWaveDetection(this);
-    Sensey.getInstance().stopSoundLevelDetection();
-    Sensey.getInstance().stopMovementDetection(this);
-    Sensey.getInstance().stopChopDetection(this);
-    Sensey.getInstance().stopWristTwistDetection(this);
-    Sensey.getInstance().stopRotationAngleDetection(this);
-    Sensey.getInstance().stopTiltDirectionDetection(this);
+    @Override
+    public void onCheckedChanged(CompoundButton switchbtn, boolean isChecked) {
+        switch (switchbtn.getId()) {
 
-    // Set the all switches to off position
-    swt1.setChecked(false);
-    swt2.setChecked(false);
-    swt3.setChecked(false);
-    swt4.setChecked(false);
-    swt5.setChecked(false);
-    swt6.setChecked(false);
-    swt7.setChecked(false);
-    swt8.setChecked(false);
-    swt9.setChecked(false);
-    swt10.setChecked(false);
-    swt11.setChecked(false);
-    swt12.setChecked(false);
+            case R.id.Switch1:
+                if (isChecked) {
+                    Sensey.getInstance().startShakeDetection(10, 2000, this);
+                } else {
+                    Sensey.getInstance().stopShakeDetection(this);
+                }
+                break;
+            case R.id.Switch2:
+                if (isChecked) {
+                    Sensey.getInstance().startFlipDetection(this);
+                } else {
+                    Sensey.getInstance().stopFlipDetection(this);
+                }
 
-    // Reset the result view
-    resetResultInView(txtViewResult);
+                break;
+            case R.id.Switch3:
+                if (isChecked) {
+                    Sensey.getInstance().startOrientationDetection(this);
+                } else {
+                    Sensey.getInstance().stopOrientationDetection(this);
+                }
 
-    Toast.makeText(this, "Stopping all detectors!", Toast.LENGTH_SHORT).show();
-  }
+                break;
+            case R.id.Switch4:
+                if (isChecked) {
+                    Sensey.getInstance().startProximityDetection(this);
+                } else {
+                    Sensey.getInstance().stopProximityDetection(this);
+                }
+                break;
+            case R.id.Switch5:
+                if (isChecked) {
+                    Sensey.getInstance().startLightDetection(10, this);
+                } else {
+                    Sensey.getInstance().stopLightDetection(this);
+                }
+                break;
 
-  private void resetResultInView(final TextView txt) {
+            case R.id.Switch6:
+                if (isChecked) {
+                    Sensey.getInstance().startWaveDetection(this);
+                } else {
+                    Sensey.getInstance().stopWaveDetection(this);
+                }
+                break;
 
-    handler.postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        txt.setText(getString(R.string.results_show_here));
-      }
-    }, 3000);
-  }
+            case R.id.Switch7:
+                if (isChecked) {
+                    Sensey.getInstance().startSoundLevelDetection(this);
+                } else {
+                    Sensey.getInstance().stopSoundLevelDetection();
+                }
+                break;
+            case R.id.Switch8:
+                if (isChecked) {
+                    Sensey.getInstance().startMovementDetection(this);
+                } else {
+                    Sensey.getInstance().stopMovementDetection(this);
+                }
+                break;
+            case R.id.Switch9:
+                if (isChecked) {
+                    Sensey.getInstance().startChopDetection(30f, 500, this);
+                } else {
+                    Sensey.getInstance().stopChopDetection(this);
+                }
+                break;
+            case R.id.Switch10:
+                if (isChecked) {
+                    Sensey.getInstance().startWristTwistDetection(this);
+                } else {
+                    Sensey.getInstance().stopWristTwistDetection(this);
+                }
+                break;
 
-  @Override
-  public void onFaceUp() {
-    setResultTextView("Face UP", false);
-  }
+            case R.id.Switch11:
+                if (isChecked) {
+                    Sensey.getInstance().startRotationAngleDetection(this);
+                } else {
+                    Sensey.getInstance().stopRotationAngleDetection(this);
+                }
+                break;
 
-  @Override
-  public void onFaceDown() {
-    setResultTextView("Face Down", false);
-  }
+            case R.id.Switch12:
+                if (isChecked) {
+                    Sensey.getInstance().startTiltDirectionDetection(this);
+                } else {
+                    Sensey.getInstance().stopTiltDirectionDetection(this);
+                }
+                break;
 
-  private void setResultTextView(final String text, final boolean realtime) {
-    if (txtViewResult != null) {
-      runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-          txtViewResult.setText(text);
-          if (!realtime) {
-            resetResultInView(txtViewResult);
-          }
+            default:
+                // Do nothing
+                break;
         }
-      });
-
-      if (DEBUG) {
-        Log.i(LOGTAG, text);
-      }
     }
-  }
 
-  @Override
-  public void onDark() {
-    setResultTextView("Dark", false);
-  }
-
-  @Override
-  public void onLight() {
-    setResultTextView("Not Dark", false);
-  }
-
-  @Override
-  public void onTopSideUp() {
-    setResultTextView("Top Side UP", false);
-  }
-
-  @Override
-  public void onBottomSideUp() {
-    setResultTextView("Bottom Side UP", false);
-  }
-
-  @Override
-  public void onRightSideUp() {
-    setResultTextView("Right Side UP", false);
-  }
-
-  @Override
-  public void onLeftSideUp() {
-    setResultTextView("Left Side UP", false);
-  }
-
-  @Override
-  public void onNear() {
-    setResultTextView("Near", false);
-  }
-
-  @Override
-  public void onFar() {
-    setResultTextView("Far", false);
-  }
-
-  @Override
-  public void onShakeDetected() {
-    setResultTextView("Shake Detected!", false);
-  }
-
-  @Override
-  public void onShakeStopped() {
-    setResultTextView("Shake Stopped!", false);
-  }
-
-  @Override
-  public void onWave() {
-    setResultTextView("Wave Detected!", false);
-  }
-
-  @Override
-  public void onSoundDetected(float level) {
-
-    setResultTextView(new DecimalFormat("##.##").format(level) + "dB", true);
-  }
-
-  @Override
-  public void onMovement() {
-    setResultTextView("Movement Detected!", false);
-  }
-
-  @Override
-  public void onStationary() {
-    setResultTextView("Device Stationary!", false);
-  }
-
-  @Override
-  public void onChop() {
-    setResultTextView("Chop Detected!", false);
-  }
-
-  @Override
-  public void onWristTwist() {
-    setResultTextView("Wrist Twist Detected!", false);
-  }
-
-  @Override
-  public void onTiltInAxisX(int direction) {
-    displayResultForTiltDirectionDetector(direction, "X");
-  }
-
-  @Override
-  public void onTiltInAxisY(int direction) {
-    displayResultForTiltDirectionDetector(direction, "Y");
-  }
-
-  @Override
-  public void onTiltInAxisZ(int direction) {
-    displayResultForTiltDirectionDetector(direction, "Z");
-  }
-
-  private void displayResultForTiltDirectionDetector(int direction, String axis) {
-    String dir;
-    if (direction == TiltDirectionDetector.DIRECTION_CLOCKWISE) {
-      dir = "ClockWise";
+    @Override
+    public void onChop() {
+        setResultTextView("Chop Detected!", false);
     }
-    else {
-      dir = "AntiClockWise";
-    }
-    setResultTextView("Tilt in " + axis + " Axis: " + dir, false);
-  }
 
-  @Override
-  public void onRotation(float angleInAxisX, float angleInAxisY, float angleInAxisZ) {
-    setResultTextView("Rotation in Axis Detected(deg):\nX="
-        + angleInAxisX
-        + ",\nY="
-        + angleInAxisY
-        + ",\nZ="
-        + angleInAxisZ, true);
-  }
+    @Override
+    public void onDark() {
+        setResultTextView("Dark", false);
+    }
+
+    @Override
+    public void onFaceDown() {
+        setResultTextView("Face Down", false);
+    }
+
+    @Override
+    public void onFaceUp() {
+        setResultTextView("Face UP", false);
+    }
+
+    @Override
+    public void onFar() {
+        setResultTextView("Far", false);
+    }
+
+    @Override
+    public void onLeftSideUp() {
+        setResultTextView("Left Side UP", false);
+    }
+
+    @Override
+    public void onLight() {
+        setResultTextView("Not Dark", false);
+    }
+
+    @Override
+    public void onMovement() {
+        setResultTextView("Movement Detected!", false);
+    }
+
+    @Override
+    public void onNear() {
+        setResultTextView("Near", false);
+    }
+
+    @Override
+    public void onRightSideUp() {
+        setResultTextView("Right Side UP", false);
+    }
+
+    @Override
+    public void onRotation(float angleInAxisX, float angleInAxisY, float angleInAxisZ) {
+        setResultTextView("Rotation in Axis Detected(deg):\nX="
+                + angleInAxisX
+                + ",\nY="
+                + angleInAxisY
+                + ",\nZ="
+                + angleInAxisZ, true);
+    }
+
+    @Override
+    public void onShakeDetected() {
+        setResultTextView("Shake Detected!", false);
+    }
+
+    @Override
+    public void onShakeStopped() {
+        setResultTextView("Shake Stopped!", false);
+    }
+
+    @Override
+    public void onSoundDetected(float level) {
+
+        setResultTextView(new DecimalFormat("##.##").format(level) + "dB", true);
+    }
+
+    @Override
+    public void onStationary() {
+        setResultTextView("Device Stationary!", false);
+    }
+
+    @Override
+    public void onTiltInAxisX(int direction) {
+        displayResultForTiltDirectionDetector(direction, "X");
+    }
+
+    @Override
+    public void onTiltInAxisY(int direction) {
+        displayResultForTiltDirectionDetector(direction, "Y");
+    }
+
+    @Override
+    public void onTiltInAxisZ(int direction) {
+        displayResultForTiltDirectionDetector(direction, "Z");
+    }
+
+    @Override
+    public void onTopSideUp() {
+        setResultTextView("Top Side UP", false);
+    }
+
+    @Override
+    public void onWave() {
+        setResultTextView("Wave Detected!", false);
+    }
+
+    @Override
+    public void onWristTwist() {
+        setResultTextView("Wrist Twist Detected!", false);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Init Sensey
+        Sensey.getInstance().init(this);
+
+        // Init UI controls,views and handler
+        handler = new Handler();
+        txtViewResult = (TextView) findViewById(R.id.textView_result);
+
+        swt1 = (SwitchCompat) findViewById(R.id.Switch1);
+        swt1.setOnCheckedChangeListener(this);
+        swt1.setChecked(false);
+
+        swt2 = (SwitchCompat) findViewById(R.id.Switch2);
+        swt2.setOnCheckedChangeListener(this);
+        swt2.setChecked(false);
+
+        swt3 = (SwitchCompat) findViewById(R.id.Switch3);
+        swt3.setOnCheckedChangeListener(this);
+        swt3.setChecked(false);
+
+        swt4 = (SwitchCompat) findViewById(R.id.Switch4);
+        swt4.setOnCheckedChangeListener(this);
+        swt4.setChecked(false);
+
+        swt5 = (SwitchCompat) findViewById(R.id.Switch5);
+        swt5.setOnCheckedChangeListener(this);
+        swt5.setChecked(false);
+
+        swt6 = (SwitchCompat) findViewById(R.id.Switch6);
+        swt6.setOnCheckedChangeListener(this);
+        swt6.setChecked(false);
+
+        swt7 = (SwitchCompat) findViewById(R.id.Switch7);
+        swt7.setOnCheckedChangeListener(this);
+        swt7.setChecked(false);
+
+        swt8 = (SwitchCompat) findViewById(R.id.Switch8);
+        swt8.setOnCheckedChangeListener(this);
+        swt8.setChecked(false);
+
+        swt9 = (SwitchCompat) findViewById(R.id.Switch9);
+        swt9.setOnCheckedChangeListener(this);
+        swt9.setChecked(false);
+
+        swt10 = (SwitchCompat) findViewById(R.id.Switch10);
+        swt10.setOnCheckedChangeListener(this);
+        swt10.setChecked(false);
+
+        swt11 = (SwitchCompat) findViewById(R.id.Switch11);
+        swt11.setOnCheckedChangeListener(this);
+        swt11.setChecked(false);
+
+        swt12 = (SwitchCompat) findViewById(R.id.Switch12);
+        swt12.setOnCheckedChangeListener(this);
+        swt12.setChecked(false);
+
+        Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
+        btnTouchEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, TouchActivity.class));
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // *** IMPORTANT ***
+        // Stop Sensey and release the context held by it
+        Sensey.getInstance().stop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Stop Detections
+        Sensey.getInstance().stopShakeDetection(this);
+        Sensey.getInstance().stopFlipDetection(this);
+        Sensey.getInstance().stopOrientationDetection(this);
+        Sensey.getInstance().stopProximityDetection(this);
+        Sensey.getInstance().stopLightDetection(this);
+        Sensey.getInstance().stopWaveDetection(this);
+        Sensey.getInstance().stopSoundLevelDetection();
+        Sensey.getInstance().stopMovementDetection(this);
+        Sensey.getInstance().stopChopDetection(this);
+        Sensey.getInstance().stopWristTwistDetection(this);
+        Sensey.getInstance().stopRotationAngleDetection(this);
+        Sensey.getInstance().stopTiltDirectionDetection(this);
+
+        // Set the all switches to off position
+        swt1.setChecked(false);
+        swt2.setChecked(false);
+        swt3.setChecked(false);
+        swt4.setChecked(false);
+        swt5.setChecked(false);
+        swt6.setChecked(false);
+        swt7.setChecked(false);
+        swt8.setChecked(false);
+        swt9.setChecked(false);
+        swt10.setChecked(false);
+        swt11.setChecked(false);
+        swt12.setChecked(false);
+
+        // Reset the result view
+        resetResultInView(txtViewResult);
+
+        Toast.makeText(this, "Stopping all detectors!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void displayResultForTiltDirectionDetector(int direction, String axis) {
+        String dir;
+        if (direction == TiltDirectionDetector.DIRECTION_CLOCKWISE) {
+            dir = "ClockWise";
+        } else {
+            dir = "AntiClockWise";
+        }
+        setResultTextView("Tilt in " + axis + " Axis: " + dir, false);
+    }
+
+    private void resetResultInView(final TextView txt) {
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                txt.setText(getString(R.string.results_show_here));
+            }
+        }, 3000);
+    }
+
+    private void setResultTextView(final String text, final boolean realtime) {
+        if (txtViewResult != null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    txtViewResult.setText(text);
+                    if (!realtime) {
+                        resetResultInView(txtViewResult);
+                    }
+                }
+            });
+
+            if (DEBUG) {
+                Log.i(LOGTAG, text);
+            }
+        }
+    }
 }

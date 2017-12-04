@@ -16,55 +16,55 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.SensorEvent;
-
 import static android.hardware.Sensor.TYPE_ACCELEROMETER;
+
+import android.hardware.SensorEvent;
 
 /**
  * The type Flip detector.
  */
 public class FlipDetector extends SensorDetector {
 
-  private final FlipListener flipListener;
-  private int eventOccurred;
-
-  /**
-   * Instantiates a new Flip detector.
-   *
-   * @param flipListener
-   *     the flip listener
-   */
-  public FlipDetector(FlipListener flipListener) {
-    super(TYPE_ACCELEROMETER);
-    this.flipListener = flipListener;
-    this.eventOccurred = 0;
-  }
-
-  @Override
-  protected void onSensorEvent(SensorEvent sensorEvent) {
-    float z = sensorEvent.values[2];
-    if (z > 9 && z < 10 && eventOccurred != 1) {
-      eventOccurred = 1;
-      flipListener.onFaceUp();
-    }
-    else if (z > -10 && z < -9 && eventOccurred != 2) {
-      eventOccurred = 2;
-      flipListener.onFaceDown();
-    }
-  }
-
-  /**
-   * The interface Flip listener.
-   */
-  public interface FlipListener {
     /**
-     * On face up.
+     * The interface Flip listener.
      */
-    void onFaceUp();
+    public interface FlipListener {
+
+        /**
+         * On face down.
+         */
+        void onFaceDown();
+
+        /**
+         * On face up.
+         */
+        void onFaceUp();
+    }
+
+    private int eventOccurred;
+
+    private final FlipListener flipListener;
 
     /**
-     * On face down.
+     * Instantiates a new Flip detector.
+     *
+     * @param flipListener the flip listener
      */
-    void onFaceDown();
-  }
+    public FlipDetector(FlipListener flipListener) {
+        super(TYPE_ACCELEROMETER);
+        this.flipListener = flipListener;
+        this.eventOccurred = 0;
+    }
+
+    @Override
+    protected void onSensorEvent(SensorEvent sensorEvent) {
+        float z = sensorEvent.values[2];
+        if (z > 9 && z < 10 && eventOccurred != 1) {
+            eventOccurred = 1;
+            flipListener.onFaceUp();
+        } else if (z > -10 && z < -9 && eventOccurred != 2) {
+            eventOccurred = 2;
+            flipListener.onFaceDown();
+        }
+    }
 }

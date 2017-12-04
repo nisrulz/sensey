@@ -16,67 +16,65 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.SensorEvent;
-
 import static android.hardware.Sensor.TYPE_LIGHT;
+
+import android.hardware.SensorEvent;
 
 /**
  * The type Light detector.
  */
 public class LightDetector extends SensorDetector {
 
-  private final LightListener lightListener;
-  private final float threshold;
-
-  /**
-   * Instantiates a new Light detector.
-   *
-   * @param lightListener
-   *     the light listener
-   */
-  public LightDetector(LightListener lightListener) {
-    this(3f, lightListener);
-  }
-
-  /**
-   * Instantiates a new Light detector.
-   *
-   * @param threshold
-   *     the threshold
-   * @param lightListener
-   *     the light listener
-   */
-  public LightDetector(float threshold, LightListener lightListener) {
-    super(TYPE_LIGHT);
-    this.threshold = threshold;
-    this.lightListener = lightListener;
-  }
-
-  @Override
-  protected void onSensorEvent(SensorEvent sensorEvent) {
-    float lux = sensorEvent.values[0];
-    if (lux < threshold) {
-      // Dark
-      lightListener.onDark();
-    }
-    else {
-      // Not Dark
-      lightListener.onLight();
-    }
-  }
-
-  /**
-   * The interface Light listener.
-   */
-  public interface LightListener {
     /**
-     * On dark.
+     * The interface Light listener.
      */
-    void onDark();
+    public interface LightListener {
+
+        /**
+         * On dark.
+         */
+        void onDark();
+
+        /**
+         * On light.
+         */
+        void onLight();
+    }
+
+    private final LightListener lightListener;
+
+    private final float threshold;
 
     /**
-     * On light.
+     * Instantiates a new Light detector.
+     *
+     * @param lightListener the light listener
      */
-    void onLight();
-  }
+    public LightDetector(LightListener lightListener) {
+        this(3f, lightListener);
+    }
+
+    /**
+     * Instantiates a new Light detector.
+     *
+     * @param threshold     the threshold
+     * @param lightListener the light listener
+     */
+    public LightDetector(float threshold, LightListener lightListener) {
+        super(TYPE_LIGHT);
+        this.threshold = threshold;
+        this.lightListener = lightListener;
+    }
+
+    @Override
+    protected void onSensorEvent(SensorEvent sensorEvent) {
+        float lux = sensorEvent.values[0];
+        if (lux < threshold) {
+            // Dark
+            lightListener.onDark();
+        } else {
+            // Not Dark
+            lightListener.onLight();
+        }
+    }
 }

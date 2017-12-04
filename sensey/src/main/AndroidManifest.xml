@@ -14,10 +14,8 @@
   ~ limitations under the License.
   -->
 
-<manifest
-    package="com.github.nisrulz.sensey">
+<manifest package="com.github.nisrulz.sensey">
 
-  <application>
-  </application>
+    <application></application>
 
 </manifest>

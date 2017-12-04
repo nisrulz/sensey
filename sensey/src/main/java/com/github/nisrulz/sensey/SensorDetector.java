@@ -25,38 +25,38 @@ import android.hardware.SensorEventListener;
  */
 abstract class SensorDetector implements SensorEventListener {
 
-  private final int[] sensorTypes;
+    private final int[] sensorTypes;
 
-  SensorDetector(int... sensorTypes) {
-    this.sensorTypes = sensorTypes;
-  }
-
-  @Override
-  public void onSensorChanged(SensorEvent sensorEvent) {
-    if (isSensorEventBelongsToPluggedTypes(sensorEvent)) {
-      onSensorEvent(sensorEvent);
-    }
-  }
-
-  @Override
-  public void onAccuracyChanged(Sensor sensor, int i) {
-  }
-
-  private boolean isSensorEventBelongsToPluggedTypes(SensorEvent sensorEvent) {
-    for (int sensorType : sensorTypes) {
-      if (sensorEvent.sensor.getType() == sensorType) {
-        return true;
-      }
+    SensorDetector(int... sensorTypes) {
+        this.sensorTypes = sensorTypes;
     }
 
-    return false;
-  }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+    }
 
-  void onSensorEvent(SensorEvent sensorEvent) {
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        if (isSensorEventBelongsToPluggedTypes(sensorEvent)) {
+            onSensorEvent(sensorEvent);
+        }
+    }
 
-  }
+    int[] getSensorTypes() {
+        return sensorTypes;
+    }
 
-  int[] getSensorTypes() {
-    return sensorTypes;
-  }
+    void onSensorEvent(SensorEvent sensorEvent) {
+
+    }
+
+    private boolean isSensorEventBelongsToPluggedTypes(SensorEvent sensorEvent) {
+        for (int sensorType : sensorTypes) {
+            if (sensorEvent.sensor.getType() == sensorType) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

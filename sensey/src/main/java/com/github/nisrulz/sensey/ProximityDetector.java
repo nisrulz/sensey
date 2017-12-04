@@ -16,54 +16,53 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.SensorEvent;
-
 import static android.hardware.Sensor.TYPE_PROXIMITY;
+
+import android.hardware.SensorEvent;
 
 /**
  * The type Proximity detector.
  */
 public class ProximityDetector extends SensorDetector {
 
-  private final ProximityListener proximityListener;
-
-  /**
-   * Instantiates a new Proximity detector.
-   *
-   * @param proximityListener
-   *     the proximity listener
-   */
-
-  public ProximityDetector(ProximityListener proximityListener) {
-    super(TYPE_PROXIMITY);
-    this.proximityListener = proximityListener;
-  }
-
-  @Override
-  protected void onSensorEvent(SensorEvent sensorEvent) {
-    float distance = sensorEvent.values[0];
-    float maxRange = sensorEvent.sensor.getMaximumRange();
-
-    if (distance < maxRange) {
-      proximityListener.onNear();
-    }
-    else {
-      proximityListener.onFar();
-    }
-  }
-
-  /**
-   * The interface Proximity listener.
-   */
-  public interface ProximityListener {
     /**
-     * On near.
+     * The interface Proximity listener.
      */
-    void onNear();
+    public interface ProximityListener {
+
+        /**
+         * On far.
+         */
+        void onFar();
+
+        /**
+         * On near.
+         */
+        void onNear();
+    }
+
+    private final ProximityListener proximityListener;
 
     /**
-     * On far.
+     * Instantiates a new Proximity detector.
+     *
+     * @param proximityListener the proximity listener
      */
-    void onFar();
-  }
+
+    public ProximityDetector(ProximityListener proximityListener) {
+        super(TYPE_PROXIMITY);
+        this.proximityListener = proximityListener;
+    }
+
+    @Override
+    protected void onSensorEvent(SensorEvent sensorEvent) {
+        float distance = sensorEvent.values[0];
+        float maxRange = sensorEvent.sensor.getMaximumRange();
+
+        if (distance < maxRange) {
+            proximityListener.onNear();
+        } else {
+            proximityListener.onFar();
+        }
+    }
 }

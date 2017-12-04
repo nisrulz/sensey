@@ -16,92 +16,92 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.SensorEvent;
-
 import static android.hardware.Sensor.TYPE_PROXIMITY;
+
+import android.hardware.SensorEvent;
 
 /**
  * The type Wave detector.
  */
 public class WaveDetector extends SensorDetector {
 
-  /**
-   * The Wave listener.
-   */
-  private final WaveListener waveListener;
-  private final float threshold;
-  /**
-   * The Last proximity event time.
-   */
-  private long lastProximityEventTime = 0;
-  /**
-   * The Last proximity state.
-   */
-  private int lastProximityState;
+    /**
+     * The interface Wave listener.
+     */
+    public interface WaveListener {
 
-  /**
-   * Instantiates a new Wave detector.
-   *
-   * @param waveListener
-   *     the wave listener
-   */
-  public WaveDetector(WaveListener waveListener) {
-    this(1000, waveListener);
-  }
+        /**
+         * On wave.
+         */
+        void onWave();
+    }
 
-  /**
-   * Instantiates a new Wave detector.
-   *
-   * @param threshold
-   *     the threshold
-   * @param waveListener
-   *     the wave listener
-   */
-  public WaveDetector(float threshold, WaveListener waveListener) {
-    super(TYPE_PROXIMITY);
-    this.waveListener = waveListener;
-    this.threshold = threshold;
-  }
+    /**
+     * The Last proximity event time.
+     */
+    private long lastProximityEventTime = 0;
 
-  @Override
-  protected void onSensorEvent(SensorEvent sensorEvent) {
-    float distance = sensorEvent.values[0];
-    int proximityState;
+    /**
+     * The Last proximity state.
+     */
+    private int lastProximityState;
+
+    private final float threshold;
+
+    /**
+     * The Wave listener.
+     */
+    private final WaveListener waveListener;
+
+    /**
+     * Instantiates a new Wave detector.
+     *
+     * @param waveListener the wave listener
+     */
+    public WaveDetector(WaveListener waveListener) {
+        this(1000, waveListener);
+    }
+
+    /**
+     * Instantiates a new Wave detector.
+     *
+     * @param threshold    the threshold
+     * @param waveListener the wave listener
+     */
+    public WaveDetector(float threshold, WaveListener waveListener) {
+        super(TYPE_PROXIMITY);
+        this.waveListener = waveListener;
+        this.threshold = threshold;
+    }
+
+    @Override
+    protected void onSensorEvent(SensorEvent sensorEvent) {
+        float distance = sensorEvent.values[0];
+        int proximityState;
     /*
     The Proximity far.
    */
-    int proximityFar = 0;
+        int proximityFar = 0;
     /*
     The Proximity near.
    */
-    int proximityNear = 1;
-    if (distance == 0) {
-      proximityState = proximityNear;
-    }
-    else {
-      proximityState = proximityFar;
-    }
+        int proximityNear = 1;
+        if (distance == 0) {
+            proximityState = proximityNear;
+        } else {
+            proximityState = proximityFar;
+        }
 
-    final long now = System.currentTimeMillis();
-    final long eventDeltaMillis = now - this.lastProximityEventTime;
-    if (eventDeltaMillis < threshold
-        && proximityNear == lastProximityState
-        && proximityFar == proximityState) {
+        final long now = System.currentTimeMillis();
+        final long eventDeltaMillis = now - this.lastProximityEventTime;
+        if (eventDeltaMillis < threshold
+                && proximityNear == lastProximityState
+                && proximityFar == proximityState) {
 
-      // Wave detected
-      waveListener.onWave();
+            // Wave detected
+            waveListener.onWave();
+        }
+        this.lastProximityEventTime = now;
+        this.lastProximityState = proximityState;
     }
-    this.lastProximityEventTime = now;
-    this.lastProximityState = proximityState;
-  }
-
-  /**
-   * The interface Wave listener.
-   */
-  public interface WaveListener {
-    /**
-     * On wave.
-     */
-    void onWave();
-  }
 }

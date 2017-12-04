@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2016 Nishant Srivastava
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,219 +14,214 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    >
+    tools:context=".MainActivity">
 
-  <ScrollView
-      android:id="@+id/scrollview"
-      android:layout_width="match_parent"
-      android:layout_height="420dp"
-      android:scrollbarAlwaysDrawVerticalTrack="true"
-      >
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="420dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true">
 
-    <LinearLayout
-        android:id="@+id/linearlayout_controls"
+        <LinearLayout
+            android:id="@+id/linearlayout_controls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="@string/scroll_to_access_more_detectors"
+                android:textColor="@color/highlight"
+                android:textSize="20sp"
+
+                />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/shake_gesture"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/flip_gesture"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/orientation_gesture"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/proximity_gesture"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/light_gesture"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/wave_gesture"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/sound_level_detection"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/movement_detection"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/chop_detector"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/wrist_twist_detection"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/rotation_angle_detection"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/tilt_direction_detection"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_touchevent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        >
-      <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="20dp"
-          android:text="@string/scroll_to_access_more_detectors"
-          android:textColor="@color/highlight"
-          android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:background="@color/accent"
+        android:text="@string/touch_detector"
+        android:textColor="@android:color/white"
 
-          />
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch1"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/shake_gesture"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch2"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/flip_gesture"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch3"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/orientation_gesture"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch4"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/proximity_gesture"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
+        />
 
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch5"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/light_gesture"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-
-
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch6"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/wave_gesture"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch7"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/sound_level_detection"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch8"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/movement_detection"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch9"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/chop_detector"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch10"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/wrist_twist_detection"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch11"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/rotation_angle_detection"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-      <android.support.v7.widget.SwitchCompat
-          android:id="@+id/Switch12"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:button="@null"
-          android:padding="20dp"
-          android:text="@string/tilt_direction_detection"
-          android:textColor="@color/icons"
-          android:textOff=""
-          android:textOn=""
-          />
-    </LinearLayout>
-
-
-  </ScrollView>
-  <Button
-      android:id="@+id/btn_touchevent"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
-      android:layout_marginBottom="@dimen/activity_vertical_margin"
-      android:layout_marginLeft="@dimen/activity_vertical_margin"
-      android:layout_marginRight="@dimen/activity_vertical_margin"
-      android:background="@color/accent"
-      android:text="@string/touch_detector"
-      android:textColor="@android:color/white"
-
-      />
-  <TextView
-      android:id="@+id/textView_result"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_above="@+id/btn_touchevent"
-      android:layout_alignParentLeft="true"
-      android:layout_alignParentStart="true"
-      android:layout_below="@+id/scrollview"
-      android:layout_marginLeft="@dimen/activity_vertical_margin"
-      android:layout_marginRight="@dimen/activity_vertical_margin"
-      android:background="@drawable/result_bg_cornerflat"
-      android:gravity="center"
-      android:padding="20dp"
-      android:text="@string/results_show_here"
-      android:textSize="25sp"
-      />
+    <TextView
+        android:id="@+id/textView_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_touchevent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/scrollview"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:background="@drawable/result_bg_cornerflat"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="@string/results_show_here"
+        android:textSize="25sp" />
 </RelativeLayout>

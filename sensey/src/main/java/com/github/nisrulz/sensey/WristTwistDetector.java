@@ -16,77 +16,77 @@
 
 package com.github.nisrulz.sensey;
 
-import android.hardware.SensorEvent;
-
 import static android.hardware.Sensor.TYPE_ACCELEROMETER;
+
+import android.hardware.SensorEvent;
 
 /**
  * The type Wrist twist detector.
  */
 public class WristTwistDetector extends SensorDetector {
 
-  private final WristTwistListener wristTwistListener;
-  private final float threshold;
-  private final long timeForWristTwistGesture;
-  private long lastTimeWristTwistDetected = System.currentTimeMillis();
-  private boolean isGestureInProgress = false;
-
-  /**
-   * Instantiates a new Wrist twist detector.
-   *
-   * @param wristTwistListener
-   *     the wrist twist listener
-   */
-  public WristTwistDetector(WristTwistListener wristTwistListener) {
-    this(15f, 1000, wristTwistListener);
-  }
-
-  /**
-   * Instantiates a new Wrist twist detector.
-   *
-   * @param threshold
-   *     the threshold
-   * @param timeForWristTwistGesture
-   *     the time for wrist twist gesture
-   * @param wristTwistListener
-   *     the wrist twist listener
-   */
-  public WristTwistDetector(float threshold, long timeForWristTwistGesture,
-      WristTwistListener wristTwistListener) {
-    super(TYPE_ACCELEROMETER);
-    this.wristTwistListener = wristTwistListener;
-    this.threshold = threshold;
-    this.timeForWristTwistGesture = timeForWristTwistGesture;
-  }
-
-  @Override
-  protected void onSensorEvent(SensorEvent sensorEvent) {
-    float x = sensorEvent.values[0];
-    float y = sensorEvent.values[1];
-    float z = sensorEvent.values[2];
-
-    // Make this higher or lower according to how much
-    // motion you want to detect
-    if (x < -9.8f && y > -3f && z < (-threshold)) {
-      lastTimeWristTwistDetected = System.currentTimeMillis();
-      isGestureInProgress = true;
-    }
-    else {
-      long timeDelta = (System.currentTimeMillis() - lastTimeWristTwistDetected);
-      if (timeDelta > timeForWristTwistGesture && isGestureInProgress) {
-        isGestureInProgress = false;
-        wristTwistListener.onWristTwist();
-      }
-    }
-  }
-
-  /**
-   * The interface Wrist twist listener.
-   */
-  public interface WristTwistListener {
     /**
-     * On wrist twist.
+     * The interface Wrist twist listener.
      */
-    void onWristTwist();
-  }
+    public interface WristTwistListener {
+
+        /**
+         * On wrist twist.
+         */
+        void onWristTwist();
+    }
+
+    private boolean isGestureInProgress = false;
+
+    private long lastTimeWristTwistDetected = System.currentTimeMillis();
+
+    private final float threshold;
+
+    private final long timeForWristTwistGesture;
+
+    private final WristTwistListener wristTwistListener;
+
+    /**
+     * Instantiates a new Wrist twist detector.
+     *
+     * @param wristTwistListener the wrist twist listener
+     */
+    public WristTwistDetector(WristTwistListener wristTwistListener) {
+        this(15f, 1000, wristTwistListener);
+    }
+
+    /**
+     * Instantiates a new Wrist twist detector.
+     *
+     * @param threshold                the threshold
+     * @param timeForWristTwistGesture the time for wrist twist gesture
+     * @param wristTwistListener       the wrist twist listener
+     */
+    public WristTwistDetector(float threshold, long timeForWristTwistGesture,
+            WristTwistListener wristTwistListener) {
+        super(TYPE_ACCELEROMETER);
+        this.wristTwistListener = wristTwistListener;
+        this.threshold = threshold;
+        this.timeForWristTwistGesture = timeForWristTwistGesture;
+    }
+
+    @Override
+    protected void onSensorEvent(SensorEvent sensorEvent) {
+        float x = sensorEvent.values[0];
+        float y = sensorEvent.values[1];
+        float z = sensorEvent.values[2];
+
+        // Make this higher or lower according to how much
+        // motion you want to detect
+        if (x < -9.8f && y > -3f && z < (-threshold)) {
+            lastTimeWristTwistDetected = System.currentTimeMillis();
+            isGestureInProgress = true;
+        } else {
+            long timeDelta = (System.currentTimeMillis() - lastTimeWristTwistDetected);
+            if (timeDelta > timeForWristTwistGesture && isGestureInProgress) {
+                isGestureInProgress = false;
+                wristTwistListener.onWristTwist();
+            }
+        }
+    }
 }

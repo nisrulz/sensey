@@ -15,25 +15,25 @@
   -->
 
 <resources>
-  <string name="app_name">Sensey</string>
+    <string name="app_name">Sensey</string>
 
-  <string name="action_settings">Settings</string>
-  <string name="shake_gesture">Shake Gesture</string>
-  <string name="flip_gesture">Flip Gesture</string>
-  <string name="orientation_gesture">Orientation Gesture</string>
-  <string name="proximity_gesture">Proximity Gesture</string>
-  <string name="light_gesture">Light Detection</string>
-  <string name="wave_gesture">Wave Detection</string>
-  <string name="touch_detection">Touch Detection</string>
-  <string name="pinch_scale_gesture">Pinch Scale Detection</string>
-  <string name="sound_level_detection">Sound Level Detection</string>
-  <string name="movement_detection">Movement Detection</string>
-  <string name="chop_detector">Chop Detector</string>
-  <string name="wrist_twist_detection">Wrist Twist Detection</string>
-  <string name="hit_area">[ Hit Area ]</string>
-  <string name="touch_detector">Touch Detector</string>
-  <string name="results_show_here">Results show here</string>
-  <string name="scroll_to_access_more_detectors">Scroll to access more detectors</string>
-  <string name="tilt_direction_detection">Tilt Direction Detection</string>
-  <string name="rotation_angle_detection">Rotation Angle Detection</string>
+    <string name="action_settings">Settings</string>
+    <string name="shake_gesture">Shake Gesture</string>
+    <string name="flip_gesture">Flip Gesture</string>
+    <string name="orientation_gesture">Orientation Gesture</string>
+    <string name="proximity_gesture">Proximity Gesture</string>
+    <string name="light_gesture">Light Detection</string>
+    <string name="wave_gesture">Wave Detection</string>
+    <string name="touch_detection">Touch Detection</string>
+    <string name="pinch_scale_gesture">Pinch Scale Detection</string>
+    <string name="sound_level_detection">Sound Level Detection</string>
+    <string name="movement_detection">Movement Detection</string>
+    <string name="chop_detector">Chop Detector</string>
+    <string name="wrist_twist_detection">Wrist Twist Detection</string>
+    <string name="hit_area">[ Hit Area ]</string>
+    <string name="touch_detector">Touch Detector</string>
+    <string name="results_show_here">Results show here</string>
+    <string name="scroll_to_access_more_detectors">Scroll to access more detectors</string>
+    <string name="tilt_direction_detection">Tilt Direction Detection</string>
+    <string name="rotation_angle_detection">Rotation Angle Detection</string>
 </resources>
