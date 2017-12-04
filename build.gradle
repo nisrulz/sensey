@@ -18,22 +18,24 @@
 
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:3.0.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
         // Required plugins added to classpath to facilitate pushing to Jcenter/Bintray
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
     }
 }
 
 allprojects {
     repositories {
+        google()
         jcenter()
     }
 }
@@ -43,21 +45,21 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 25
+    compileSdkVersion = 27
     targetSdkVersion = compileSdkVersion
-    buildToolsVersion = '25.0.2'
-    minSdkVersion = 9
+    buildToolsVersion = '27.0.1'
+    minSdkVersion = 14
 
     //Other
-    supportLibVersion = '25.3.1'
-    leakCanaryVersion = '1.5'
-    mockitoVersion = '2.7.22'
-    robolectricVersion = '3.3.2'
+    supportLibVersion = '27.0.2'
+    leakCanaryVersion = '1.5.4'
+    mockitoVersion = '2.12.0'
+    robolectricVersion = '3.5.1'
     jUnitVersion = '4.12'
 
     // Library Info
-    libVersionCode = 14
-    libVersionName = '1.7.0'
+    libVersionCode = 15
+    libVersionName = '1.8.0'
     libPomUrl = 'https://github.com/nisrulz/sensey'
     libGithubRepo = 'nisrulz/sensey'
 

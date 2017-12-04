@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.Switch7:
                 if (isChecked) {
-                    Sensey.getInstance().startSoundLevelDetection(this);
+                    Sensey.getInstance().startSoundLevelDetection(this, this);
                 } else {
                     Sensey.getInstance().stopSoundLevelDetection();
                 }
@@ -290,57 +290,57 @@ public class MainActivity extends AppCompatActivity
 
         // Init UI controls,views and handler
         handler = new Handler();
-        txtViewResult = (TextView) findViewById(R.id.textView_result);
+        txtViewResult = findViewById(R.id.textView_result);
 
-        swt1 = (SwitchCompat) findViewById(R.id.Switch1);
+        swt1 = findViewById(R.id.Switch1);
         swt1.setOnCheckedChangeListener(this);
         swt1.setChecked(false);
 
-        swt2 = (SwitchCompat) findViewById(R.id.Switch2);
+        swt2 = findViewById(R.id.Switch2);
         swt2.setOnCheckedChangeListener(this);
         swt2.setChecked(false);
 
-        swt3 = (SwitchCompat) findViewById(R.id.Switch3);
+        swt3 = findViewById(R.id.Switch3);
         swt3.setOnCheckedChangeListener(this);
         swt3.setChecked(false);
 
-        swt4 = (SwitchCompat) findViewById(R.id.Switch4);
+        swt4 = findViewById(R.id.Switch4);
         swt4.setOnCheckedChangeListener(this);
         swt4.setChecked(false);
 
-        swt5 = (SwitchCompat) findViewById(R.id.Switch5);
+        swt5 = findViewById(R.id.Switch5);
         swt5.setOnCheckedChangeListener(this);
         swt5.setChecked(false);
 
-        swt6 = (SwitchCompat) findViewById(R.id.Switch6);
+        swt6 = findViewById(R.id.Switch6);
         swt6.setOnCheckedChangeListener(this);
         swt6.setChecked(false);
 
-        swt7 = (SwitchCompat) findViewById(R.id.Switch7);
+        swt7 = findViewById(R.id.Switch7);
         swt7.setOnCheckedChangeListener(this);
         swt7.setChecked(false);
 
-        swt8 = (SwitchCompat) findViewById(R.id.Switch8);
+        swt8 = findViewById(R.id.Switch8);
         swt8.setOnCheckedChangeListener(this);
         swt8.setChecked(false);
 
-        swt9 = (SwitchCompat) findViewById(R.id.Switch9);
+        swt9 = findViewById(R.id.Switch9);
         swt9.setOnCheckedChangeListener(this);
         swt9.setChecked(false);
 
-        swt10 = (SwitchCompat) findViewById(R.id.Switch10);
+        swt10 = findViewById(R.id.Switch10);
         swt10.setOnCheckedChangeListener(this);
         swt10.setChecked(false);
 
-        swt11 = (SwitchCompat) findViewById(R.id.Switch11);
+        swt11 = findViewById(R.id.Switch11);
         swt11.setOnCheckedChangeListener(this);
         swt11.setChecked(false);
 
-        swt12 = (SwitchCompat) findViewById(R.id.Switch12);
+        swt12 = findViewById(R.id.Switch12);
         swt12.setOnCheckedChangeListener(this);
         swt12.setChecked(false);
 
-        Button btnTouchEvent = (Button) findViewById(R.id.btn_touchevent);
+        Button btnTouchEvent = findViewById(R.id.btn_touchevent);
         btnTouchEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

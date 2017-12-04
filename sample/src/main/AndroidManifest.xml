@@ -16,6 +16,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.nisrulz.senseysample">
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
