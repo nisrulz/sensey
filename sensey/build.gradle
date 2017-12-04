@@ -40,13 +40,13 @@ android {
 
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testCompile "junit:junit:$rootProject.ext.jUnitVersion"
-    testCompile "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
-    testCompile "org.robolectric:robolectric:$rootProject.ext.robolectricVersion"
+    testImplementation "junit:junit:$rootProject.ext.jUnitVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
+    testImplementation "org.robolectric:robolectric:$rootProject.ext.robolectricVersion"
 
-    compile "com.android.support:support-compat:$rootProject.ext.supportLibVersion"
+    implementation "com.android.support:support-compat:$rootProject.ext.supportLibVersion"
 }
 
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/nishant-config.gradle'
