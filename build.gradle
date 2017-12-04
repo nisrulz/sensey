@@ -65,6 +65,6 @@ ext {
 
 
     libModuleName = 'sensey'
-    libModuleDesc = 'Android library which makes detecting gestures a breeze'
+    libModuleDesc = 'Android library which makes playing with sensor events & detecting gestures a breeze.'
     libBintrayName = 'com.github.nisrulz:sensey'
 }
