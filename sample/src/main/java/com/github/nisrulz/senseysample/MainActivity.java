@@ -29,9 +29,11 @@ import static com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListe
 import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
 import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
 
+import android.Manifest.permission;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
@@ -40,7 +42,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.github.nisrulz.sensey.Sensey;
 import com.github.nisrulz.sensey.TiltDirectionDetector;
 import java.text.DecimalFormat;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final String LOGTAG = "MainActivity";
 
+    private static final String recordAudioPermission = permission.RECORD_AUDIO;
+
     private static final boolean DEBUG = true;
 
     private Handler handler;
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity
     private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8, swt9, swt10, swt11, swt12;
 
     private TextView txtViewResult;
+
+    boolean hasRecordAudioPermission = false;
 
     @Override
     public void onBottomSideUp() {
@@ -120,7 +125,12 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.Switch7:
                 if (isChecked) {
-                    Sensey.getInstance().startSoundLevelDetection(this, this);
+                    if (hasRecordAudioPermission) {
+                        Sensey.getInstance().startSoundLevelDetection(this, this);
+                    } else {
+                        RuntimePermissionUtil.requestPermission(MainActivity.this, recordAudioPermission, 100);
+                    }
+
                 } else {
                     Sensey.getInstance().stopSoundLevelDetection();
                 }
@@ -166,6 +176,27 @@ public class MainActivity extends AppCompatActivity
             default:
                 // Do nothing
                 break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull final String[] permissions,
+            @NonNull final int[] grantResults) {
+        if (requestCode == 100) {
+            RuntimePermissionUtil.onRequestPermissionsResult(grantResults, new RPResultListener() {
+                @Override
+                public void onPermissionGranted() {
+                    if (RuntimePermissionUtil.checkPermissonGranted(MainActivity.this, recordAudioPermission)) {
+                        hasRecordAudioPermission = true;
+                        swt7.setChecked(true);
+                    }
+                }
+
+                @Override
+                public void onPermissionDenied() {
+                    // do nothing
+                }
+            });
         }
     }
 
@@ -285,6 +316,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        hasRecordAudioPermission = RuntimePermissionUtil.checkPermissonGranted(this, recordAudioPermission);
+
         // Init Sensey
         Sensey.getInstance().init(this);
 
@@ -392,7 +425,6 @@ public class MainActivity extends AppCompatActivity
         // Reset the result view
         resetResultInView(txtViewResult);
 
-        Toast.makeText(this, "Stopping all detectors!", Toast.LENGTH_SHORT).show();
     }
 
     private void displayResultForTiltDirectionDetector(int direction, String axis) {
