@@ -36,4 +36,7 @@
     <string name="scroll_to_access_more_detectors">Scroll to access more detectors</string>
     <string name="tilt_direction_detection">Tilt Direction Detection</string>
     <string name="rotation_angle_detection">Rotation Angle Detection</string>
+    <string name="step_detector">Step Detector</string>
+    <string name="pickup_device_detector">Pickup Device Detector</string>
+    <string name="scoop_detector">Scoop Detector</string>
 </resources>

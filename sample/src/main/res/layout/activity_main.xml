@@ -190,6 +190,42 @@
                 android:textColor="@color/icons"
                 android:textOff=""
                 android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/step_detector"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/pickup_device_detector"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/Switch15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="@string/scoop_detector"
+                android:textColor="@color/icons"
+                android:textOff=""
+                android:textOn="" />
         </LinearLayout>
 
 

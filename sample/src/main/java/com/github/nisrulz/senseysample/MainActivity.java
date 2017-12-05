@@ -43,7 +43,11 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+import com.github.nisrulz.sensey.PickupDeviceDetector.PickupDeviceListener;
+import com.github.nisrulz.sensey.ScoopDetector.ScoopListener;
 import com.github.nisrulz.sensey.Sensey;
+import com.github.nisrulz.sensey.StepDetectorUtil;
+import com.github.nisrulz.sensey.StepListener;
 import com.github.nisrulz.sensey.TiltDirectionDetector;
 import java.text.DecimalFormat;
 
@@ -53,7 +57,8 @@ import java.text.DecimalFormat;
 public class MainActivity extends AppCompatActivity
         implements OnCheckedChangeListener, ShakeListener, FlipListener, LightListener,
         OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener,
-        ChopListener, WristTwistListener, RotationAngleListener, TiltDirectionListener {
+        ChopListener, WristTwistListener, RotationAngleListener, TiltDirectionListener, StepListener,
+        ScoopListener, PickupDeviceListener {
 
     private static final String LOGTAG = "MainActivity";
 
@@ -63,7 +68,8 @@ public class MainActivity extends AppCompatActivity
 
     private Handler handler;
 
-    private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8, swt9, swt10, swt11, swt12;
+    private SwitchCompat swt1, swt2, swt3, swt4, swt5, swt6, swt7, swt8, swt9, swt10, swt11, swt12,
+            swt13, swt14, swt15;
 
     private TextView txtViewResult;
 
@@ -174,6 +180,29 @@ public class MainActivity extends AppCompatActivity
                     Sensey.getInstance().stopTiltDirectionDetection(this);
                 }
                 break;
+            case R.id.Switch13:
+                if (isChecked) {
+                    Sensey.getInstance().startStepDetection(this, this, StepDetectorUtil.MALE);
+                } else {
+                    Sensey.getInstance().stopStepDetection(this);
+                }
+                break;
+
+            case R.id.Switch14:
+                if (isChecked) {
+                    Sensey.getInstance().startPickupDeviceDetection(this);
+                } else {
+                    Sensey.getInstance().stopPickupDeviceDetection(this);
+                }
+                break;
+
+            case R.id.Switch15:
+                if (isChecked) {
+                    Sensey.getInstance().startScoopDetection(this);
+                } else {
+                    Sensey.getInstance().stopScoopDetection(this);
+                }
+                break;
 
             default:
                 // Do nothing
@@ -260,6 +289,47 @@ public class MainActivity extends AppCompatActivity
                 + angleInAxisY
                 + ",\nZ="
                 + angleInAxisZ, true);
+    }
+
+    @Override
+    public void stepInformation(int noOfSteps, float distanceInMeter, int stepActivityType) {
+        String typeOfActivity;
+        switch (stepActivityType) {
+            case StepDetectorUtil.ACTIVITY_RUNNING:
+                typeOfActivity = "Running";
+                break;
+            case StepDetectorUtil.ACTIVITY_WALKING:
+                typeOfActivity = "Walking";
+                break;
+            default:
+                typeOfActivity = "Still";
+                break;
+        }
+        StringBuilder data = new StringBuilder("Steps: ").append(noOfSteps)
+                .append("\n")
+                .append("Distance: ")
+                .append(distanceInMeter)
+                .append("\n")
+                .append("Activity Type: ")
+                .append(typeOfActivity)
+                .append("\n");
+
+        setResultTextView(data.toString(), true);
+    }
+
+    @Override
+    public void onDevicePickedUp() {
+        setResultTextView("Device Picked up Detected!", false);
+    }
+
+    @Override
+    public void onDevicePutDown() {
+        setResultTextView("Device Put down Detected!", false);
+    }
+
+    @Override
+    public void onScooped() {
+        setResultTextView("Scoop Gesture Detected!", false);
     }
 
     @Override
@@ -375,6 +445,18 @@ public class MainActivity extends AppCompatActivity
         swt12.setOnCheckedChangeListener(this);
         swt12.setChecked(false);
 
+        swt13 = (SwitchCompat) findViewById(R.id.Switch13);
+        swt13.setOnCheckedChangeListener(this);
+        swt13.setChecked(false);
+
+        swt14 = (SwitchCompat) findViewById(R.id.Switch14);
+        swt14.setOnCheckedChangeListener(this);
+        swt14.setChecked(false);
+
+        swt15 = (SwitchCompat) findViewById(R.id.Switch15);
+        swt15.setOnCheckedChangeListener(this);
+        swt15.setChecked(false);
+
         Button btnTouchEvent = findViewById(R.id.btn_touchevent);
         btnTouchEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -409,6 +491,9 @@ public class MainActivity extends AppCompatActivity
         Sensey.getInstance().stopWristTwistDetection(this);
         Sensey.getInstance().stopRotationAngleDetection(this);
         Sensey.getInstance().stopTiltDirectionDetection(this);
+        Sensey.getInstance().stopStepDetection(this);
+        Sensey.getInstance().stopPickupDeviceDetection(this);
+        Sensey.getInstance().stopScoopDetection(this);
 
         // Set the all switches to off position
         swt1.setChecked(false);
@@ -423,11 +508,15 @@ public class MainActivity extends AppCompatActivity
         swt10.setChecked(false);
         swt11.setChecked(false);
         swt12.setChecked(false);
+        swt13.setChecked(false);
+        swt14.setChecked(false);
+        swt15.setChecked(false);
 
         // Reset the result view
         resetResultInView(txtViewResult);
 
     }
+
 
     private void displayResultForTiltDirectionDetector(int direction, String axis) {
         String dir;

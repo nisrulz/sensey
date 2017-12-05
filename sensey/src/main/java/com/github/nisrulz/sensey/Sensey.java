@@ -26,14 +26,17 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.support.annotation.RequiresPermission;
 import android.view.MotionEvent;
 import com.github.nisrulz.sensey.ChopDetector.ChopListener;
 import com.github.nisrulz.sensey.FlipDetector.FlipListener;
 import com.github.nisrulz.sensey.LightDetector.LightListener;
 import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
+import com.github.nisrulz.sensey.PickupDeviceDetector.PickupDeviceListener;
 import com.github.nisrulz.sensey.PinchScaleDetector.PinchScaleListener;
 import com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
+import com.github.nisrulz.sensey.ScoopDetector.ScoopListener;
 import com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
 import com.github.nisrulz.sensey.SoundLevelDetector.SoundLevelListener;
 import com.github.nisrulz.sensey.TouchTypeDetector.TouchTypListener;
@@ -505,6 +508,80 @@ public class Sensey {
     public void stopWristTwistDetection(WristTwistListener wristTwistListener) {
         stopLibrarySensorDetection(wristTwistListener);
     }
+
+
+    /**
+     * Start pickup device detection.
+     *
+     * @param pickupDeviceListener the pickup device listener
+     */
+    public void startPickupDeviceDetection(PickupDeviceListener pickupDeviceListener) {
+        startLibrarySensorDetection(new PickupDeviceDetector(pickupDeviceListener),
+                pickupDeviceListener);
+    }
+
+    /**
+     * Stop pickup device detection.
+     *
+     * @param pickupDeviceListener the pickup device listener
+     */
+    public void stopPickupDeviceDetection(PickupDeviceListener pickupDeviceListener) {
+        stopLibrarySensorDetection(pickupDeviceListener);
+    }
+
+    /**
+     * Start step detection.
+     *
+     * @param context      the context
+     * @param stepListener the step listener
+     * @param gender       the gender
+     */
+    public void startStepDetection(Context context, StepListener stepListener, int gender) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && checkHardware(context,
+                PackageManager.FEATURE_SENSOR_STEP_COUNTER)) {
+            startLibrarySensorDetection(new StepDetectorPostKitKat(gender, stepListener), stepListener);
+        } else {
+            startLibrarySensorDetection(new StepDetectorPreKitKat(gender, stepListener), stepListener);
+        }
+    }
+
+    /**
+     * Stop step detection.
+     *
+     * @param stepListener the step listener
+     */
+    public void stopStepDetection(StepListener stepListener) {
+        stopLibrarySensorDetection(stepListener);
+    }
+
+    /**
+     * Start scoop detection.
+     *
+     * @param scoopListener the scoop listener
+     */
+    public void startScoopDetection(ScoopListener scoopListener) {
+        startLibrarySensorDetection(new ScoopDetector(scoopListener), scoopListener);
+    }
+
+    /**
+     * Start scoop detection.
+     *
+     * @param threshold     the threshold
+     * @param scoopListener the scoop listener
+     */
+    public void startScoopDetection(float threshold, ScoopListener scoopListener) {
+        startLibrarySensorDetection(new ScoopDetector(threshold, scoopListener), scoopListener);
+    }
+
+    /**
+     * Stop scoop detection.
+     *
+     * @param scoopListener the scoop listener
+     */
+    public void stopScoopDetection(ScoopListener scoopListener) {
+        stopLibrarySensorDetection(scoopListener);
+    }
+
 
     /**
      * Check hardware boolean.
