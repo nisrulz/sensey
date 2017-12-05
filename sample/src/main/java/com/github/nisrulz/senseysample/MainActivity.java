@@ -30,6 +30,7 @@ import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
 import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
 
 import android.Manifest.permission;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity
         setResultTextView("Bottom Side UP", false);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onCheckedChanged(CompoundButton switchbtn, boolean isChecked) {
         switch (switchbtn.getId()) {
