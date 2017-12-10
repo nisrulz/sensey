@@ -106,7 +106,7 @@ public class SoundLevelDetector {
                         && !Float.isInfinite(soundLevel)
                         && shouldContinueProcessingAudio) {
                     // since 0db is the max loudness and negative values are used to represent the loudness
-                    // if we add 100 to teh actual soundlevel, it will result in values on a scale of 0 to 100
+                    // if we add 100 to the actual soundlevel, it will result in values on a scale of 0 to 100
                     // The more negative the value will be +100 would yield a lower value on the scale of 0-100
                     // and would mean that sound is of lesser loudness and vice versa
                     soundLevel = soundLevel + 100f;
