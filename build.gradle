@@ -58,8 +58,8 @@ ext {
     jUnitVersion = '4.12'
 
     // Library Info
-    libVersionCode = 15
-    libVersionName = '1.8.0'
+    libVersionCode = 16
+    libVersionName = '1.9.0'
     libPomUrl = 'https://github.com/nisrulz/sensey'
     libGithubRepo = 'nisrulz/sensey'
 
