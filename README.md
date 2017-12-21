@@ -125,7 +125,7 @@
 
 ![sc1](img/sc1.png) ![sc2](img/sc2.png)
 
-# Supported gestures
+# Supported gestures/events
 
  1. [Flip](https://github.com/nisrulz/sensey/wiki/Usage#flip)
     + onFaceUp
@@ -153,6 +153,9 @@
  1. [SoundLevel](https://github.com/nisrulz/sensey/wiki/Usage#soundlevel)
  1. [RotationAngle](https://github.com/nisrulz/sensey/wiki/Usage#rotationangle)
  1. [TiltDirection](https://github.com/nisrulz/sensey/wiki/Usage#tiltdirection)
+ 1. [Scoop](https://github.com/nisrulz/sensey/wiki/Usage#scoop)
+ 1. [PickupDevice](https://github.com/nisrulz/sensey/wiki/Usage#pickup)
+ 1. [Steps](https://github.com/nisrulz/sensey/wiki/Usage#steps)
  1. [TouchType](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)
     + onDoubleTap
     + onScroll(direction)
