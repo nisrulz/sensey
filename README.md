@@ -127,6 +127,8 @@ If you are using Sensey in your app and would like to be listed here, please let
 + FastAccess - [Github](https://github.com/k0shk0sh/FastAccess)
 + Catradiod - [Playstore](https://play.google.com/store/apps/details?id=com.yopachara.catradiod), [Github](https://github.com/yopachara/Catradiod)
 
+[Other apps using Sensey, via AppBrain Stats](https://www.appbrain.com/stats/libraries/details/sensey/sensey)
+
 # Pull Requests
 I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request. Here are some basic rules to follow to ensure timely addition of your request:
   1. Match coding style (braces, spacing, etc.) This is best achieved using CMD+Option+L (Reformat code) on Mac (not sure for Windows) with Android Studio defaults. The code style used in this project is from [Grandcentrix](https://github.com/grandcentrix/AndroidCodeStyle), so please use the same when editing this project.
