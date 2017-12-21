@@ -56,7 +56,6 @@ abstract class SensorDetector implements SensorEventListener {
                 return true;
             }
         }
-
         return false;
     }
 }
