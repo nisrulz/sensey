@@ -42,6 +42,43 @@ public class TouchActivity extends AppCompatActivity
     private TextView txtResult;
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_touch);
+
+        // Init Sensey
+        Sensey.getInstance().init(this);
+
+        txtResult = (TextView) findViewById(R.id.textView_result);
+
+        SwitchCompat swt6 = (SwitchCompat) findViewById(R.id.Switch6);
+        swt6.setOnCheckedChangeListener(this);
+        swt6.setChecked(false);
+
+        SwitchCompat swt7 = (SwitchCompat) findViewById(R.id.Switch7);
+        swt7.setOnCheckedChangeListener(this);
+        swt7.setChecked(false);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Stop Detections
+        Sensey.getInstance().stopTouchTypeDetection();
+        Sensey.getInstance().stopPinchScaleDetection();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // *** IMPORTANT ***
+        // Stop Sensey and release the context held by it
+        Sensey.getInstance().stop();
+    }
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         // Setup onTouchEvent for detecting type of touch gesture
         Sensey.getInstance().setupDispatchTouchEvent(event);
@@ -70,43 +107,6 @@ public class TouchActivity extends AppCompatActivity
                 // Do nothing
                 break;
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_touch);
-
-        // Init Sensey
-        Sensey.getInstance().init(this);
-
-        txtResult = (TextView) findViewById(R.id.textView_result);
-
-        SwitchCompat swt6 = (SwitchCompat) findViewById(R.id.Switch6);
-        swt6.setOnCheckedChangeListener(this);
-        swt6.setChecked(false);
-
-        SwitchCompat swt7 = (SwitchCompat) findViewById(R.id.Switch7);
-        swt7.setOnCheckedChangeListener(this);
-        swt7.setChecked(false);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        // *** IMPORTANT ***
-        // Stop Sensey and release the context held by it
-        Sensey.getInstance().stop();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        // Stop Detections
-        Sensey.getInstance().stopTouchTypeDetection();
-        Sensey.getInstance().stopPinchScaleDetection();
     }
 
     private void resetResultInView(final TextView txt) {

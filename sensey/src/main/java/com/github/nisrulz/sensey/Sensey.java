@@ -246,6 +246,16 @@ public class Sensey {
     }
 
     /**
+     * Start pickup device detection.
+     *
+     * @param pickupDeviceListener the pickup device listener
+     */
+    public void startPickupDeviceDetection(PickupDeviceListener pickupDeviceListener) {
+        startLibrarySensorDetection(new PickupDeviceDetector(pickupDeviceListener),
+                pickupDeviceListener);
+    }
+
+    /**
      * Start pinch scale detection.
      *
      * @param context            the context
@@ -274,6 +284,25 @@ public class Sensey {
     public void startRotationAngleDetection(RotationAngleListener rotationAngleListener) {
         startLibrarySensorDetection(new RotationAngleDetector(rotationAngleListener),
                 rotationAngleListener);
+    }
+
+    /**
+     * Start scoop detection.
+     *
+     * @param scoopListener the scoop listener
+     */
+    public void startScoopDetection(ScoopListener scoopListener) {
+        startLibrarySensorDetection(new ScoopDetector(scoopListener), scoopListener);
+    }
+
+    /**
+     * Start scoop detection.
+     *
+     * @param threshold     the threshold
+     * @param scoopListener the scoop listener
+     */
+    public void startScoopDetection(float threshold, ScoopListener scoopListener) {
+        startLibrarySensorDetection(new ScoopDetector(threshold, scoopListener), scoopListener);
     }
 
     /**
@@ -312,6 +341,22 @@ public class Sensey {
             soundLevelDetector.start();
         } else {
             System.out.println("Permission Required: RECORD_AUDIO");
+        }
+    }
+
+    /**
+     * Start step detection.
+     *
+     * @param context      the context
+     * @param stepListener the step listener
+     * @param gender       the gender
+     */
+    public void startStepDetection(Context context, StepListener stepListener, int gender) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && checkHardware(context,
+                PackageManager.FEATURE_SENSOR_STEP_COUNTER)) {
+            startLibrarySensorDetection(new StepDetectorPostKitKat(gender, stepListener), stepListener);
+        } else {
+            startLibrarySensorDetection(new StepDetectorPreKitKat(gender, stepListener), stepListener);
         }
     }
 
@@ -432,6 +477,15 @@ public class Sensey {
     }
 
     /**
+     * Stop pickup device detection.
+     *
+     * @param pickupDeviceListener the pickup device listener
+     */
+    public void stopPickupDeviceDetection(PickupDeviceListener pickupDeviceListener) {
+        stopLibrarySensorDetection(pickupDeviceListener);
+    }
+
+    /**
      * Stop pinch scale detection.
      */
     public void stopPinchScaleDetection() {
@@ -457,6 +511,15 @@ public class Sensey {
     }
 
     /**
+     * Stop scoop detection.
+     *
+     * @param scoopListener the scoop listener
+     */
+    public void stopScoopDetection(ScoopListener scoopListener) {
+        stopLibrarySensorDetection(scoopListener);
+    }
+
+    /**
      * Stop shake detection.
      *
      * @param shakeListener the shake listener
@@ -473,6 +536,15 @@ public class Sensey {
             soundLevelDetector.stop();
         }
         soundLevelDetector = null;
+    }
+
+    /**
+     * Stop step detection.
+     *
+     * @param stepListener the step listener
+     */
+    public void stopStepDetection(StepListener stepListener) {
+        stopLibrarySensorDetection(stepListener);
     }
 
     /**
@@ -508,80 +580,6 @@ public class Sensey {
     public void stopWristTwistDetection(WristTwistListener wristTwistListener) {
         stopLibrarySensorDetection(wristTwistListener);
     }
-
-
-    /**
-     * Start pickup device detection.
-     *
-     * @param pickupDeviceListener the pickup device listener
-     */
-    public void startPickupDeviceDetection(PickupDeviceListener pickupDeviceListener) {
-        startLibrarySensorDetection(new PickupDeviceDetector(pickupDeviceListener),
-                pickupDeviceListener);
-    }
-
-    /**
-     * Stop pickup device detection.
-     *
-     * @param pickupDeviceListener the pickup device listener
-     */
-    public void stopPickupDeviceDetection(PickupDeviceListener pickupDeviceListener) {
-        stopLibrarySensorDetection(pickupDeviceListener);
-    }
-
-    /**
-     * Start step detection.
-     *
-     * @param context      the context
-     * @param stepListener the step listener
-     * @param gender       the gender
-     */
-    public void startStepDetection(Context context, StepListener stepListener, int gender) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && checkHardware(context,
-                PackageManager.FEATURE_SENSOR_STEP_COUNTER)) {
-            startLibrarySensorDetection(new StepDetectorPostKitKat(gender, stepListener), stepListener);
-        } else {
-            startLibrarySensorDetection(new StepDetectorPreKitKat(gender, stepListener), stepListener);
-        }
-    }
-
-    /**
-     * Stop step detection.
-     *
-     * @param stepListener the step listener
-     */
-    public void stopStepDetection(StepListener stepListener) {
-        stopLibrarySensorDetection(stepListener);
-    }
-
-    /**
-     * Start scoop detection.
-     *
-     * @param scoopListener the scoop listener
-     */
-    public void startScoopDetection(ScoopListener scoopListener) {
-        startLibrarySensorDetection(new ScoopDetector(scoopListener), scoopListener);
-    }
-
-    /**
-     * Start scoop detection.
-     *
-     * @param threshold     the threshold
-     * @param scoopListener the scoop listener
-     */
-    public void startScoopDetection(float threshold, ScoopListener scoopListener) {
-        startLibrarySensorDetection(new ScoopDetector(threshold, scoopListener), scoopListener);
-    }
-
-    /**
-     * Stop scoop detection.
-     *
-     * @param scoopListener the scoop listener
-     */
-    public void stopScoopDetection(ScoopListener scoopListener) {
-        stopLibrarySensorDetection(scoopListener);
-    }
-
 
     /**
      * Check hardware boolean.

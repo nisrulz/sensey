@@ -18,7 +18,7 @@ package com.github.nisrulz.senseysample;
 
 interface RPResultListener {
 
-    void onPermissionGranted();
-
     void onPermissionDenied();
+
+    void onPermissionGranted();
 }
