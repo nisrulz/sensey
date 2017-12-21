@@ -1,35 +1,129 @@
-![Image](img/github_banner.png)
+<div align="center">
+  <img src="/img/logo_color.png" height="128" />
+</div>
 
-### Specs
-[ ![Download](https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg) ](https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion) [![API](https://img.shields.io/badge/API-14%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=14)
+<h1 align="center">Sensey <a href="https://twitter.com/intent/tweet?text=Sensey%3A%20Android%20library%20which%20makes%20playing%20with%20sensor%20events%20%26%20detecting%20gestures%20a%20breeze%F0%9F%98%8E&url=https://github.com/nisrulz/sensey&via=nisrulz&hashtags=AndroidDev">
+        <img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social"/>
+    </a></h1>
 
-### Badges/Featured In
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Sensey-green.svg?style=true)](https://android-arsenal.com/details/1/3550) [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23209-blue.svg)](http://androidweekly.net/issues/issue-209) [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23245-blue.svg)](http://androidweekly.net/issues/issue-245) [![AndroidSweets](https://img.shields.io/badge/AndroidSweets-%2320-ff69b4.svg)](https://androidsweets.ongoodbits.com/2016/05/26/issue-20) [![AndroidDev Digest](https://img.shields.io/badge/AndroidDev%20Digest-%23100-blue.svg)](https://www.androiddevdigest.com/digest-100/) [![AndroidDev Digest](https://img.shields.io/badge/AndroidDev%20Digest-%23131-blue.svg)](https://www.androiddevdigest.com/digest-131/) [![awesome-android](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://snowdream.github.io/awesome-android/Other.html#Gesture)
+<div align="center">
+  <strong>Android library which makes playing with sensor events & detecting gestures a breeze.</strong>
+  <p>The library is built for simplicity and ease of use. It eliminates most boilerplate code for dealing with setting up sensor based event and gesture detection on Android.</p>
+</div>
+<br/>
+<div align="center">
+    <!-- Bintray -->
+    <a href="https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion">
+        <img src="https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg"/>
+    </a>
+    <!-- API -->
+    <a href="https://android-arsenal.com/api?level=14">
+        <img src="https://img.shields.io/badge/API-14%2B-orange.svg?style=flat"/>
+    </a>
+    <!-- Android Arsenal -->
+    <a href="https://android-arsenal.com/details/1/3550">
+        <img src="https://img.shields.io/badge/Android%20Arsenal-Sensey-green.svg?style=true"/>
+    </a>
+    <!-- Android Sweets -->
+    <a href="https://androidsweets.ongoodbits.com/2016/05/26/issue-20">
+        <img src="https://img.shields.io/badge/AndroidSweets-%2320-ff69b4.svg"/>
+    </a>
+    <!-- Android Dev Digest -->
+    <a href="https://www.androiddevdigest.com/digest-100/">
+        <img src="https://img.shields.io/badge/AndroidDev%20Digest-%23100-blue.svg"/>
+    </a>
+    <!-- Android Dev Digest -->
+    <a href="https://www.androiddevdigest.com/digest-131/">
+        <img src="https://img.shields.io/badge/AndroidDev%20Digest-%23131-blue.svg"/>
+    </a>
+    <!-- Android Weekly -->
+    <a href="http://androidweekly.net/issues/issue-209">
+        <img src="https://img.shields.io/badge/Android%20Weekly-%23209-blue.svg"/>
+    </a>
+    <!-- Android Weekly -->
+    <a href="http://androidweekly.net/issues/issue-245">
+        <img src="https://img.shields.io/badge/Android%20Weekly-%23245-blue.svg"/>
+    </a>
+    <!-- Awesome Android -->
+    <a href="https://snowdream.github.io/awesome-android/Other.html#Gesture">
+        <img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"/>
+    </a>
+    <!-- GitHub stars -->
+    <a href="https://github.com/nisrulz/sensey">
+        <img src="https://img.shields.io/github/stars/nisrulz/sensey.svg?style=social&label=Star"/>
+    </a>
+    <!-- GitHub forks -->
+    <a href="https://github.com/nisrulz/sensey/fork">
+        <img src="hhttps://img.shields.io/github/forks/nisrulz/sensey.svg?style=social&label=Fork"/>
+    </a>
+    <!-- GitHub watchers -->
+    <a href="https://github.com/nisrulz/sensey">
+        <img src="https://img.shields.io/github/watchers/nisrulz/sensey.svg?style=social&label=Watch"/>
+    </a>
+    <!-- Say Thanks! -->
+    <a href="https://saythanks.io/to/nisrulz">
+        <img src="https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg"/>
+    </a>
+    <a href="https://www.paypal.me/nisrulz/5">
+        <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat">
+    </a>
+    <br/>
+     <!-- GitHub followers -->
+    <a href="https://github.com/nisrulz/sensey">
+        <img src="https://img.shields.io/github/followers/nisrulz.svg?style=social&label=Follow%20@nisrulz"/>
+    </a>
+    <!-- Twitter Follow -->
+    <a href="https://twitter.com/nisrulz">
+        <img src="https://img.shields.io/twitter/follow/nisrulz.svg?style=social"/>
+    </a>
+</div>
 
-**Also included in**
-+ [Blog Post: I could not find a simple Gesture Detection android library, so I built one](https://android.jlelse.eu/i-could-not-find-a-simple-gesture-detection-android-library-so-i-built-one-334c0a307c16#.1us4zgise)
-+ [Best Android Libraries for Developers](https://cloudrail.com/best-android-libraries-for-developers/)
-+ [COBE’s Top 5 Android Libraries — September 2016](https://medium.cobeisfresh.com/cobes-top-5-android-libraries-september-2016-883757e61bf0#.oe2lzaxyn)
-+ [DZone Post](https://dzone.com/articles/this-week-in-mobile-may-15)
-+ [Codepath's Must Have Libraries](https://github.com/codepath/android_guides/wiki/Must-Have-libraries#convenience)
-+ Awesome Android Newsletter
-	+ [Issue 5](https://android.libhunt.com/newsletter/5)
-	+ [Issue 21](https://android.libhunt.com/newsletter/21)
-+ [Changelog Weekly Issue #115](http://email.changelog.com/t/t-310383437622D164)
+<div align="center">
+    Also featured in [Awesome Android Newsletter
+    <a href="https://android.libhunt.com/newsletter/5">
+         #Issue 5
+    </a>, 
+    <a href="https://android.libhunt.com/newsletter/21">
+         #Issue 21
+    </a>],
+    <a href="https://github.com/codepath/android_guides/wiki/Must-Have-libraries#convenience">
+         Codepath's Must Have Libraries
+    </a>, 
+    <a href="https://medium.cobeisfresh.com/cobes-top-5-android-libraries-september-2016-883757e61bf0#.oe2lzaxyn">
+         COBE’s Top 5 Android Libraries — September 2016
+    </a>, 
+    <a href="https://cloudrail.com/best-android-libraries-for-developers/">
+         Best Android Libraries for Developers
+    </a>, 
+    <a href="https://dzone.com/articles/this-week-in-mobile-may-15">
+         DZone
+    </a>, 
+    <a href="http://email.changelog.com/t/t-310383437622D164">
+        Changelog Weekly Issue #115
+    </a>
+</div>
 
-### Show some :heart:
-[![GitHub stars](https://img.shields.io/github/stars/nisrulz/sensey.svg?style=social&label=Star)](https://github.com/nisrulz/sensey) [![GitHub forks](https://img.shields.io/github/forks/nisrulz/sensey.svg?style=social&label=Fork)](https://github.com/nisrulz/sensey/fork) [![GitHub watchers](https://img.shields.io/github/watchers/nisrulz/sensey.svg?style=social&label=Watch)](https://github.com/nisrulz/sensey) [![GitHub followers](https://img.shields.io/github/followers/nisrulz.svg?style=social&label=Follow)](https://github.com/nisrulz/sensey)  
-[![Twitter Follow](https://img.shields.io/twitter/follow/nisrulz.svg?style=social)](https://twitter.com/nisrulz) 
+<div align="center">
+    Blog Post: 
+    <a href="https://android.jlelse.eu/i-could-not-find-a-simple-gesture-detection-android-library-so-i-built-one-334c0a307c16#.1us4zgise">
+         I could not find a simple Gesture Detection android library, so I built one
+    </a>
+</div>
 
-Android library which makes playing with sensor events & detecting gestures a breeze.
 
-The library is built for simplicity and ease of use. It eliminates most boilerplate code for dealing with setting up sensor based event and gesture detection on Android.
+<div align="center">
+  <sub>Built with ❤︎ by
+  <a href="https://twitter.com/nisrulz">Nishant Srivastava</a> and
+  <a href="https://github.com/nisrulz/sensey/graphs/contributors">
+    contributors
+  </a>
+</div>
+<br/>
+<br/>
+
+### Screenshot of sample app
 
 ![sc1](img/sc1.png) ![sc2](img/sc2.png)
-
-# Changelog
-
-Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/nisrulz/sensey/releases).
 
 # Supported gestures
 
@@ -69,6 +163,10 @@ Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/ni
     + onTwoFingerSingleTap
     + onThreeFingerSingleTap
 
+
+# Changelog
+
+Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/nisrulz/sensey/releases).
 
 # Including in your project
 Sensey is available in the Jcenter, so getting it as simple as adding it as a dependency
@@ -118,7 +216,17 @@ Sensey.getInstance().init(context);
   Sensey.getInstance().stopShakeDetection(shakeListener);
   ```
 
-### <center> :page_with_curl: For more info , check the **[Wiki Docs](https://github.com/nisrulz/sensey/wiki/Usage)** </center>
+### :page_with_curl: For more info , check the **[Wiki Docs](https://github.com/nisrulz/sensey/wiki/Usage)**
+
+
+# Pull Requests
+I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request. Here are some basic rules to follow to ensure timely addition of your request:
+  1. Match coding style (braces, spacing, etc.) This is best achieved using CMD+Option+L (Reformat code) on Mac (not sure for Windows) with Android Studio defaults. This project uses a [modified version of Grandcentrix's code style](https://github.com/nisrulz/AndroidCodeStyle/tree/nishant-config), so please use the same when editing this project.
+  2. If its a feature, bugfix, or anything please only change code to what you specify.
+  3. Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge :)
+  4. Pull requests _must_ be made against `develop` branch. Any other branch (unless specified by the maintainers) will get rejected.
+  5. Check for existing [issues](https://github.com/nisrulz/sensey/issues) first, before filing an issue.  
+  6. Have fun!
 
 ## Apps using Sensey
 If you are using Sensey in your app and would like to be listed here, please let me know by opening a [new issue](https://github.com/nisrulz/sensey/issues/new)!
@@ -128,18 +236,6 @@ If you are using Sensey in your app and would like to be listed here, please let
 + Catradiod - [Playstore](https://play.google.com/store/apps/details?id=com.yopachara.catradiod), [Github](https://github.com/yopachara/Catradiod)
 
 [Other apps using Sensey, via AppBrain Stats](https://www.appbrain.com/stats/libraries/details/sensey/sensey)
-
-# Pull Requests
-I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request. Here are some basic rules to follow to ensure timely addition of your request:
-  1. Match coding style (braces, spacing, etc.) This is best achieved using CMD+Option+L (Reformat code) on Mac (not sure for Windows) with Android Studio defaults. The code style used in this project is from [Grandcentrix](https://github.com/grandcentrix/AndroidCodeStyle), so please use the same when editing this project.
-  2. If its a feature, bugfix, or anything please only change code to what you specify.
-  3. Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge :)
-  4. Pull requests _must_ be made against `develop` branch. Any other branch (unless specified by the maintainers) will get rejected.
-  5. Check for existing [issues](https://github.com/nisrulz/sensey/issues) first, before filing an issue.  
-  6. Have fun!
-
-## License
-Licensed under the Apache License, Version 2.0, [click here for the full license](/LICENSE.txt).
 
 ## Author & support
 This project was created by [Nishant Srivastava](https://github.com/nisrulz/nisrulz.github.io#nishant-srivastava) but hopefully developed and maintained by many others. See the [the list of contributors here](https://github.com/nisrulz/sensey/graphs/contributors).
@@ -151,4 +247,3 @@ This project was created by [Nishant Srivastava](https://github.com/nisrulz/nisr
 > I love using my work and I'm available for contract work. Freelancing helps to maintain and keep [my open source projects](https://github.com/nisrulz/) up to date!
 
 <img src="http://forthebadge.com/images/badges/built-for-android.svg" />
-
