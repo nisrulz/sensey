@@ -16,19 +16,6 @@
 
 package com.github.nisrulz.senseysample;
 
-import static com.github.nisrulz.sensey.ChopDetector.ChopListener;
-import static com.github.nisrulz.sensey.FlipDetector.FlipListener;
-import static com.github.nisrulz.sensey.LightDetector.LightListener;
-import static com.github.nisrulz.sensey.MovementDetector.MovementListener;
-import static com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
-import static com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
-import static com.github.nisrulz.sensey.RotationAngleDetector.RotationAngleListener;
-import static com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
-import static com.github.nisrulz.sensey.SoundLevelDetector.SoundLevelListener;
-import static com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListener;
-import static com.github.nisrulz.sensey.WaveDetector.WaveListener;
-import static com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
-
 import android.Manifest.permission;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -43,12 +30,24 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+import com.github.nisrulz.sensey.ChopDetector.ChopListener;
+import com.github.nisrulz.sensey.FlipDetector.FlipListener;
+import com.github.nisrulz.sensey.LightDetector.LightListener;
+import com.github.nisrulz.sensey.MovementDetector.MovementListener;
+import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
 import com.github.nisrulz.sensey.PickupDeviceDetector.PickupDeviceListener;
+import com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
+import com.github.nisrulz.sensey.RotationAngleDetector.RotationAngleListener;
 import com.github.nisrulz.sensey.ScoopDetector.ScoopListener;
 import com.github.nisrulz.sensey.Sensey;
+import com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
+import com.github.nisrulz.sensey.SoundLevelDetector.SoundLevelListener;
 import com.github.nisrulz.sensey.StepDetectorUtil;
 import com.github.nisrulz.sensey.StepListener;
 import com.github.nisrulz.sensey.TiltDirectionDetector;
+import com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListener;
+import com.github.nisrulz.sensey.WaveDetector.WaveListener;
+import com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener;
 import java.text.DecimalFormat;
 
 /**
