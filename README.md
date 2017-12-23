@@ -240,6 +240,9 @@ If you are using Sensey in your app and would like to be listed here, please let
 
 [Other apps using Sensey, via AppBrain Stats](https://www.appbrain.com/stats/libraries/details/sensey/sensey)
 
+## License
+Licensed under the Apache License, Version 2.0, [click here for the full license](/LICENSE.txt).
+
 ## Author & support
 This project was created by [Nishant Srivastava](https://github.com/nisrulz/nisrulz.github.io#nishant-srivastava) but hopefully developed and maintained by many others. See the [the list of contributors here](https://github.com/nisrulz/sensey/graphs/contributors).
 
