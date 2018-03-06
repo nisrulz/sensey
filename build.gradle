@@ -17,19 +17,60 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+
+    ext.versions = [
+            "min_sdk"                    : 14,
+            "target_sdk"                 : 27,
+            "compile_sdk"                : 27,
+            "android_gradle_plugin"      : "3.0.1",
+
+            // Publish Library
+            "gradle_bintray_plugin"      : "1.7.3",
+            "android_maven_gradle_plugin": "2.0",
+
+            // Support
+            "support_lib"                : "27.1.0",
+
+            // Testing
+            "junit"                      : "4.12",
+            "leak_canary"                : "1.5.4",
+            "mockito"                    : "2.12.0",
+            "robolectric"                : "3.5.1",
+    ]
+
+    ext.deps = [
+            // Android Studio
+            "android_gradle_plugin"      : "com.android.tools.build:gradle:${versions.android_gradle_plugin}",
+
+            // Publish library
+            "gradle_bintray_plugin"      : "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.gradle_bintray_plugin}",
+            "android_maven_gradle_plugin": "com.github.dcendents:android-maven-gradle-plugin:${versions.android_maven_gradle_plugin}",
+
+            //Support Library
+            "app_compat_v7"              : "com.android.support:appcompat-v7:${versions.support_lib}",
+            "support_compat"             : "com.android.support:support-compat:${versions.support_lib}",
+
+            // Testing
+            "junit"                      : "junit:junit:${versions.junit}",
+            "mockito"                    : "org.mockito:mockito-core:${versions.mockito}",
+            "robolectric"                : "org.robolectric:robolectric:${versions.robolectric}",
+            "leak_canary_android_no_op"  : "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leak_canary}",
+            "leak_canary_android"        : "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}",
+    ]
+
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath deps.android_gradle_plugin
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
         // Required plugins added to classpath to facilitate pushing to Jcenter/Bintray
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+        classpath deps.gradle_bintray_plugin
+        classpath deps.android_maven_gradle_plugin
     }
 }
 
@@ -45,18 +86,6 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 27
-    targetSdkVersion = compileSdkVersion
-    buildToolsVersion = '27.0.1'
-    minSdkVersion = 14
-
-    //Other
-    supportLibVersion = '27.0.2'
-    leakCanaryVersion = '1.5.4'
-    mockitoVersion = '2.12.0'
-    robolectricVersion = '3.5.1'
-    jUnitVersion = '4.12'
-
     // Library Info
     libVersionCode = 16
     libVersionName = '1.9.0'

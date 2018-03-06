@@ -17,13 +17,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion versions.compile_sdk
 
     defaultConfig {
         applicationId "com.github.nisrulz.senseysample"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        minSdkVersion versions.min_sdk
+        targetSdkVersion versions.target_sdk
+
         versionCode 1
         versionName "1.0"
     }
@@ -37,12 +38,15 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation "junit:junit:$rootProject.ext.jUnitVersion"
-    implementation "com.android.support:appcompat-v7:$supportLibVersion"
 
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
-    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    // Testing
+    testImplementation deps.junit
+    debugImplementation deps.leak_canary_android
+    testImplementation deps.leak_canary_android_no_op
+    releaseImplementation deps.leak_canary_android_no_op
+
+    // Support
+    implementation deps.app_compat_v7
 
     // Module Dependency
     implementation project(':sensey')

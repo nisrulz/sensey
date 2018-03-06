@@ -17,12 +17,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion versions.compile_sdk
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion versions.min_sdk
+        targetSdkVersion versions.target_sdk
+
         versionCode rootProject.ext.libVersionCode
         versionName rootProject.ext.libVersionName
     }
@@ -42,11 +42,13 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testImplementation "junit:junit:$rootProject.ext.jUnitVersion"
-    testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
-    testImplementation "org.robolectric:robolectric:$rootProject.ext.robolectricVersion"
+    // Testing
+    testImplementation deps.junit
+    testImplementation deps.mockito
+    testImplementation deps.robolectric
 
-    implementation "com.android.support:support-compat:$rootProject.ext.supportLibVersion"
+    // Support
+    implementation deps.support_compat
 }
 
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/nishant-config.gradle'
