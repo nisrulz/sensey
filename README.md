@@ -153,6 +153,9 @@
  1. [SoundLevel](https://github.com/nisrulz/sensey/wiki/Usage#soundlevel)
  1. [RotationAngle](https://github.com/nisrulz/sensey/wiki/Usage#rotationangle)
  1. [TiltDirection](https://github.com/nisrulz/sensey/wiki/Usage#tiltdirection)
+ 1. [Scoop](https://github.com/nisrulz/sensey/wiki/Usage#scoop)
+ 1. [PickupDevice](https://github.com/nisrulz/sensey/wiki/Usage#pickupdevice)
+ 1. [Steps](https://github.com/nisrulz/sensey/wiki/Usage#steps)
  1. [TouchType](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)
     + onDoubleTap
     + onScroll(direction)
