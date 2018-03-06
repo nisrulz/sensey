@@ -237,6 +237,7 @@ If you are using Sensey in your app and would like to be listed here, please let
 + Push-Ups - [Playstore](https://play.google.com/store/apps/details?id=com.mk.push)
 + FastAccess - [Github](https://github.com/k0shk0sh/FastAccess)
 + Catradiod - [Playstore](https://play.google.com/store/apps/details?id=com.yopachara.catradiod), [Github](https://github.com/yopachara/Catradiod)
++ Get Off Your Phone - [Play Store](https://play.google.com/store/apps/details?id=com.nephi.getoffyourphone)
 
 [Other apps using Sensey, via AppBrain Stats](https://www.appbrain.com/stats/libraries/details/sensey/sensey)
 
