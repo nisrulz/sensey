@@ -42,12 +42,9 @@
                 android:padding="20dp"
                 android:text="@string/scroll_to_access_more_detectors"
                 android:textColor="@color/highlight"
-                android:textSize="20sp"
-
-                />
+                android:textSize="20sp" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -59,7 +56,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -71,7 +67,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -83,7 +78,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -95,7 +89,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -108,7 +101,6 @@
 
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -120,7 +112,7 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch7"
+                android:id="@+id/switchMainActivitySound"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -132,7 +124,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -144,7 +135,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -156,7 +146,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -168,7 +157,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -180,7 +168,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -192,7 +179,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -204,7 +190,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -216,7 +201,6 @@
                 android:textOn="" />
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/Switch15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"

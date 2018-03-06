@@ -25,7 +25,7 @@
     <string name="light_gesture">Light Detection</string>
     <string name="wave_gesture">Wave Detection</string>
     <string name="touch_detection">Touch Detection</string>
-    <string name="pinch_scale_gesture">Pinch Scale Detection</string>
+    <string name="pinch_scale_detection">Pinch Scale Detection</string>
     <string name="sound_level_detection">Sound Level Detection</string>
     <string name="movement_detection">Movement Detection</string>
     <string name="chop_detector">Chop Detector</string>

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.github.nisrulz.senseysample;
+package com.github.nisrulz.senseysample
 
-interface RPResultListener {
+internal interface RPResultListener {
 
-    void onPermissionDenied();
+    fun onPermissionDenied()
 
-    void onPermissionGranted();
+    fun onPermissionGranted()
 }
