@@ -136,7 +136,7 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
             textView_result.text = text
             resetResultInView(textView_result)
             if (BuildConfig.DEBUG) {
-                Log.i(LOGTAG, text)
+                Log.d(LOGTAG, text)
             }
         }
     }

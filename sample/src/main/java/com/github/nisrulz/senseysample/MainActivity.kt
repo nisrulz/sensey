@@ -309,12 +309,8 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
     }
 
     override fun onRotation(angleInAxisX: Float, angleInAxisY: Float, angleInAxisZ: Float) {
-        setResultTextView("Rotation in Axis Detected(deg):\nX="
-                + angleInAxisX
-                + ",\nY="
-                + angleInAxisY
-                + ",\nZ="
-                + angleInAxisZ, true)
+        val data = "Rotation in Axis Detected(deg):\nX=$angleInAxisX,\nY=$angleInAxisY,\nZ=$angleInAxisZ"
+        setResultTextView(data, true)
     }
 
     override fun onScooped() {
@@ -330,8 +326,8 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
     }
 
     override fun onSoundDetected(level: Float) {
-
-        setResultTextView(DecimalFormat("##.##").format(level.toDouble()) + "dB", true)
+        val data = "${DecimalFormat("##.##").format(level.toDouble())} dB"
+        setResultTextView(data, true)
     }
 
     override fun onStationary() {
@@ -368,16 +364,8 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
             StepDetectorUtil.ACTIVITY_WALKING -> "Walking"
             else -> "Still"
         }
-        val data = StringBuilder("Steps: ").append(noOfSteps)
-                .append("\n")
-                .append("Distance: ")
-                .append(distanceInMeter)
-                .append("\n")
-                .append("Activity Type: ")
-                .append(typeOfActivity)
-                .append("\n")
-
-        setResultTextView(data.toString(), true)
+        val data = "Steps: $noOfSteps\nDistance: $distanceInMeter m\nActivity Type: $typeOfActivity"
+        setResultTextView(data, true)
     }
 
     private fun displayResultForTiltDirectionDetector(direction: Int, axis: String) {
@@ -404,7 +392,7 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
             }
 
             if (BuildConfig.DEBUG) {
-                Log.i(LOGTAG, text)
+                Log.d(LOGTAG, text)
             }
         }
     }
