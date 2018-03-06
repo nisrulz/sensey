@@ -15,6 +15,7 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion versions.compile_sdk
@@ -39,6 +40,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    // Kotlin
+    implementation deps.kotlin_stdlib
+
     // Testing
     testImplementation deps.junit
 
@@ -47,4 +51,8 @@ dependencies {
 
     // Module Dependency
     implementation project(':sensey')
+
+}
+repositories {
+    mavenCentral()
 }

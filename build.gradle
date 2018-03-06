@@ -17,12 +17,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-
     ext.versions = [
             "min_sdk"                    : 14,
             "target_sdk"                 : 27,
             "compile_sdk"                : 27,
             "android_gradle_plugin"      : "3.0.1",
+
+            // Kotlin
+            "kotlin" : "1.2.30",
 
             // Publish Library
             "gradle_bintray_plugin"      : "1.7.3",
@@ -40,6 +42,8 @@ buildscript {
     ext.deps = [
             // Android Studio
             "android_gradle_plugin"      : "com.android.tools.build:gradle:${versions.android_gradle_plugin}",
+            "kotlin_gradle_plugin"      : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+
 
             // Publish library
             "gradle_bintray_plugin"      : "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.gradle_bintray_plugin}",
@@ -48,6 +52,9 @@ buildscript {
             //Support Library
             "app_compat_v7"              : "com.android.support:appcompat-v7:${versions.support_lib}",
             "support_compat"             : "com.android.support:support-compat:${versions.support_lib}",
+
+            // Kotlin
+            "kotlin_stdlib"             : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
 
             // Testing
             "junit"                      : "junit:junit:${versions.junit}",
@@ -68,6 +75,7 @@ buildscript {
         // Required plugins added to classpath to facilitate pushing to Jcenter/Bintray
         classpath deps.gradle_bintray_plugin
         classpath deps.android_maven_gradle_plugin
+        classpath deps.kotlin_gradle_plugin
     }
 }
 
