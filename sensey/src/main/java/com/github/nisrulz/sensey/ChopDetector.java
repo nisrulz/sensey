@@ -20,19 +20,10 @@ import static android.hardware.Sensor.TYPE_ACCELEROMETER;
 
 import android.hardware.SensorEvent;
 
-/**
- * The type Chop detector.
- */
 public class ChopDetector extends SensorDetector {
 
-    /**
-     * The interface Chop listener.
-     */
     public interface ChopListener {
 
-        /**
-         * On chop.
-         */
         void onChop();
     }
 
@@ -46,22 +37,10 @@ public class ChopDetector extends SensorDetector {
 
     private final long timeForChopGesture;
 
-    /**
-     * Instantiates a new Chop detector.
-     *
-     * @param chopListener the chop listener
-     */
     public ChopDetector(ChopListener chopListener) {
         this(35f, 700, chopListener);
     }
 
-    /**
-     * Instantiates a new Chop detector.
-     *
-     * @param threshold          the threshold
-     * @param timeForChopGesture the time for chop gesture
-     * @param chopListener       the chop listener
-     */
     public ChopDetector(float threshold, long timeForChopGesture, ChopListener chopListener) {
         super(TYPE_ACCELEROMETER);
         this.chopListener = chopListener;

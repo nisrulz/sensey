@@ -20,19 +20,10 @@ import static android.hardware.Sensor.TYPE_ACCELEROMETER;
 
 import android.hardware.SensorEvent;
 
-/**
- * The type Wrist twist detector.
- */
 public class WristTwistDetector extends SensorDetector {
 
-    /**
-     * The interface Wrist twist listener.
-     */
     public interface WristTwistListener {
 
-        /**
-         * On wrist twist.
-         */
         void onWristTwist();
     }
 
@@ -46,22 +37,10 @@ public class WristTwistDetector extends SensorDetector {
 
     private final WristTwistListener wristTwistListener;
 
-    /**
-     * Instantiates a new Wrist twist detector.
-     *
-     * @param wristTwistListener the wrist twist listener
-     */
     public WristTwistDetector(WristTwistListener wristTwistListener) {
         this(15f, 1000, wristTwistListener);
     }
 
-    /**
-     * Instantiates a new Wrist twist detector.
-     *
-     * @param threshold                the threshold
-     * @param timeForWristTwistGesture the time for wrist twist gesture
-     * @param wristTwistListener       the wrist twist listener
-     */
     public WristTwistDetector(float threshold, long timeForWristTwistGesture,
             WristTwistListener wristTwistListener) {
         super(TYPE_ACCELEROMETER);

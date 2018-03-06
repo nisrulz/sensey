@@ -21,33 +21,15 @@ import static android.hardware.Sensor.TYPE_ROTATION_VECTOR;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 
-/**
- * The type Rotation angle detector.
- */
 public class RotationAngleDetector extends SensorDetector {
 
-    /**
-     * The interface Rotation angle listener.
-     */
     public interface RotationAngleListener {
 
-        /**
-         * On rotation.
-         *
-         * @param angleInAxisX the angle in axis x
-         * @param angleInAxisY the angle in axis y
-         * @param angleInAxisZ the angle in axis z
-         */
         void onRotation(float angleInAxisX, float angleInAxisY, float angleInAxisZ);
     }
 
     private final RotationAngleListener rotationAngleListener;
 
-    /**
-     * Instantiates a new Rotation angle detector.
-     *
-     * @param rotationAngleListener the rotation angle listener
-     */
     public RotationAngleDetector(RotationAngleListener rotationAngleListener) {
         super(TYPE_ROTATION_VECTOR);
         this.rotationAngleListener = rotationAngleListener;

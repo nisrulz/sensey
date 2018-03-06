@@ -21,19 +21,10 @@ import static android.hardware.Sensor.TYPE_ACCELEROMETER;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 
-/**
- * The type Shake detector.
- */
 public class ShakeDetector extends SensorDetector {
 
-    /**
-     * The interface Shake listener.
-     */
     public interface ShakeListener {
 
-        /**
-         * On shake detected.
-         */
         void onShakeDetected();
 
         void onShakeStopped();
@@ -53,21 +44,10 @@ public class ShakeDetector extends SensorDetector {
 
     private final long timeBeforeDeclaringShakeStopped;
 
-    /**
-     * Instantiates a new Shake detector.
-     *
-     * @param shakeListener the shake listener
-     */
     public ShakeDetector(ShakeListener shakeListener) {
         this(3f, 1000, shakeListener);
     }
 
-    /**
-     * Instantiates a new Shake detector.
-     *
-     * @param threshold     the threshold
-     * @param shakeListener the shake listener
-     */
     public ShakeDetector(float threshold, long timeBeforeDeclaringShakeStopped,
             ShakeListener shakeListener) {
         super(TYPE_ACCELEROMETER);

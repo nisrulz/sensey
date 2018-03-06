@@ -20,9 +20,6 @@ import static android.hardware.Sensor.TYPE_STEP_COUNTER;
 
 import android.hardware.SensorEvent;
 
-/**
- * The type Step detector post kit kat.
- */
 class StepDetectorPostKitKat extends SensorDetector {
 
     private int baseStepCount = 0;
@@ -35,12 +32,6 @@ class StepDetectorPostKitKat extends SensorDetector {
 
     private long timeDelta = 0, startTime;
 
-    /**
-     * Instantiates a new Step detector post kit kat.
-     *
-     * @param gender       the gender
-     * @param stepListener the step listener
-     */
     public StepDetectorPostKitKat(int gender, StepListener stepListener) {
         super(TYPE_STEP_COUNTER);
         this.stepListener = stepListener;

@@ -20,24 +20,12 @@ import static android.hardware.Sensor.TYPE_LIGHT;
 
 import android.hardware.SensorEvent;
 
-/**
- * The type Light detector.
- */
 public class LightDetector extends SensorDetector {
 
-    /**
-     * The interface Light listener.
-     */
     public interface LightListener {
 
-        /**
-         * On dark.
-         */
         void onDark();
 
-        /**
-         * On light.
-         */
         void onLight();
     }
 
@@ -45,21 +33,10 @@ public class LightDetector extends SensorDetector {
 
     private final float threshold;
 
-    /**
-     * Instantiates a new Light detector.
-     *
-     * @param lightListener the light listener
-     */
     public LightDetector(LightListener lightListener) {
         this(3f, lightListener);
     }
 
-    /**
-     * Instantiates a new Light detector.
-     *
-     * @param threshold     the threshold
-     * @param lightListener the light listener
-     */
     public LightDetector(float threshold, LightListener lightListener) {
         super(TYPE_LIGHT);
         this.threshold = threshold;

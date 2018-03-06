@@ -46,9 +46,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * The type Sensey.
- */
 public class Sensey {
 
     private static class LazyHolder {
@@ -56,42 +53,13 @@ public class Sensey {
         private static final Sensey INSTANCE = new Sensey();
     }
 
-    /**
-     * The constant SAMPLING_PERIOD_FASTEST.
-     */
     public static final int SAMPLING_PERIOD_FASTEST = SensorManager.SENSOR_DELAY_FASTEST;
 
-    /**
-     * The constant SAMPLING_PERIOD_GAME.
-     */
     public static final int SAMPLING_PERIOD_GAME = SensorManager.SENSOR_DELAY_GAME;
 
-    /**
-     * The constant SAMPLING_PERIOD_NORMAL.
-     */
     public static final int SAMPLING_PERIOD_NORMAL = SensorManager.SENSOR_DELAY_NORMAL;
 
-    /**
-     * The constant SAMPLING_PERIOD_UI.
-     */
     public static final int SAMPLING_PERIOD_UI = SensorManager.SENSOR_DELAY_UI;
-
-    /**
-     * Map from any of default listeners (
-     * {@link FlipListener flipListener},
-     * {@link LightListener lightListener},
-     * {@link OrientationListener orientationListener}
-     * {@link ProximityListener proximityListener}
-     * {@link ChopListener chopListener}
-     * {@link MovementListener movementListner}
-     * {@link WristTwistListener wristTwistListner}
-     * and {@link ShakeListener shakeListener})
-     * to SensorDetectors created by those listeners.
-     *
-     * This map is needed to hold reference to all started detections <strong>NOT</strong>
-     * through {@link Sensey#startSensorDetection(SensorDetector)}, because the last one
-     * passes task to hold reference of {@link SensorDetector sensorDetector} to the client
-     */
 
     private final Map<Object, SensorDetector> defaultSensorsMap = new HashMap<>();
 
@@ -105,11 +73,6 @@ public class Sensey {
 
     private TouchTypeDetector touchTypeDetector;
 
-    /**
-     * Gets instance.
-     *
-     * @return the instance
-     */
     public static Sensey getInstance() {
         return LazyHolder.INSTANCE;
     }
@@ -117,31 +80,15 @@ public class Sensey {
     private Sensey() {
     }
 
-    /**
-     * Init the lib
-     *
-     * @param context        the context
-     * @param samplingPeriod the sampling period
-     */
     public void init(Context context, int samplingPeriod) {
         init(context);
         this.samplingPeriod = samplingPeriod;
     }
 
-    /**
-     * Init the lib
-     *
-     * @param context the context
-     */
     public void init(Context context) {
         this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     }
 
-    /**
-     * Sets dispatch touch event.
-     *
-     * @param event the event
-     */
     public void setupDispatchTouchEvent(MotionEvent event) {
         if (touchTypeDetector != null) {
             touchTypeDetector.onTouchEvent(event);
@@ -152,72 +99,32 @@ public class Sensey {
         }
     }
 
-    /**
-     * Start chop detection.
-     *
-     * @param chopListener the chop listener
-     */
     public void startChopDetection(ChopListener chopListener) {
         startLibrarySensorDetection(new ChopDetector(chopListener), chopListener);
     }
 
-    /**
-     * Start chop detection.
-     *
-     * @param threshold          the threshold
-     * @param timeForChopGesture the time for chop gesture
-     * @param chopListener       the chop listener
-     */
     public void startChopDetection(float threshold, long timeForChopGesture,
             ChopListener chopListener) {
         startLibrarySensorDetection(new ChopDetector(threshold, timeForChopGesture, chopListener),
                 chopListener);
     }
 
-    /**
-     * Start flip detection.
-     *
-     * @param flipListener the flip listener
-     */
     public void startFlipDetection(FlipListener flipListener) {
         startLibrarySensorDetection(new FlipDetector(flipListener), flipListener);
     }
 
-    /**
-     * Start light detection.
-     *
-     * @param lightListener the light listener
-     */
     public void startLightDetection(LightListener lightListener) {
         startLibrarySensorDetection(new LightDetector(lightListener), lightListener);
     }
 
-    /**
-     * Start light detection.
-     *
-     * @param threshold     the threshold
-     * @param lightListener the light listener
-     */
     public void startLightDetection(float threshold, LightListener lightListener) {
         startLibrarySensorDetection(new LightDetector(threshold, lightListener), lightListener);
     }
 
-    /**
-     * Start movement detection.
-     *
-     * @param movementListener the movement listener
-     */
     public void startMovementDetection(MovementListener movementListener) {
         startLibrarySensorDetection(new MovementDetector(movementListener), movementListener);
     }
 
-    /**
-     * Start movement detection.
-     *
-     * @param threshold                     the threshold
-     * @param timeBeforeDeclaringStationary the time before declaring stationary
-     * @param movementListener              the movement listener
-     */
     public void startMovementDetection(float threshold, long timeBeforeDeclaringStationary,
             MovementListener movementListener) {
         startLibrarySensorDetection(
@@ -225,102 +132,47 @@ public class Sensey {
                 movementListener);
     }
 
-    /**
-     * Start orientation detection.
-     *
-     * @param orientationListener the orientation listener
-     */
     public void startOrientationDetection(OrientationListener orientationListener) {
         startLibrarySensorDetection(new OrientationDetector(orientationListener), orientationListener);
     }
 
-    /**
-     * Start orientation detection.
-     *
-     * @param smoothness          the smoothness
-     * @param orientationListener the orientation listener
-     */
     public void startOrientationDetection(int smoothness, OrientationListener orientationListener) {
         startLibrarySensorDetection(new OrientationDetector(smoothness, orientationListener),
                 orientationListener);
     }
 
-    /**
-     * Start pickup device detection.
-     *
-     * @param pickupDeviceListener the pickup device listener
-     */
     public void startPickupDeviceDetection(PickupDeviceListener pickupDeviceListener) {
         startLibrarySensorDetection(new PickupDeviceDetector(pickupDeviceListener),
                 pickupDeviceListener);
     }
 
-    /**
-     * Start pinch scale detection.
-     *
-     * @param context            the context
-     * @param pinchScaleListener the pinch scale listener
-     */
     public void startPinchScaleDetection(Context context, PinchScaleListener pinchScaleListener) {
         if (pinchScaleListener != null) {
             pinchScaleDetector = new PinchScaleDetector(context, pinchScaleListener);
         }
     }
 
-    /**
-     * Start proximity detection.
-     *
-     * @param proximityListener the proximity listener
-     */
     public void startProximityDetection(ProximityListener proximityListener) {
         startLibrarySensorDetection(new ProximityDetector(proximityListener), proximityListener);
     }
 
-    /**
-     * Start rotation angle detection.
-     *
-     * @param rotationAngleListener the rotation angle listener
-     */
     public void startRotationAngleDetection(RotationAngleListener rotationAngleListener) {
         startLibrarySensorDetection(new RotationAngleDetector(rotationAngleListener),
                 rotationAngleListener);
     }
 
-    /**
-     * Start scoop detection.
-     *
-     * @param scoopListener the scoop listener
-     */
     public void startScoopDetection(ScoopListener scoopListener) {
         startLibrarySensorDetection(new ScoopDetector(scoopListener), scoopListener);
     }
 
-    /**
-     * Start scoop detection.
-     *
-     * @param threshold     the threshold
-     * @param scoopListener the scoop listener
-     */
     public void startScoopDetection(float threshold, ScoopListener scoopListener) {
         startLibrarySensorDetection(new ScoopDetector(threshold, scoopListener), scoopListener);
     }
 
-    /**
-     * Start shake detection.
-     *
-     * @param shakeListener the shake listener
-     */
     public void startShakeDetection(ShakeListener shakeListener) {
         startLibrarySensorDetection(new ShakeDetector(shakeListener), shakeListener);
     }
 
-    /**
-     * Start shake detection.
-     *
-     * @param threshold                       the threshold
-     * @param timeBeforeDeclaringShakeStopped the time before declaring shake stopped
-     * @param shakeListener                   the shake listener
-     */
     public void startShakeDetection(float threshold, long timeBeforeDeclaringShakeStopped,
             ShakeListener shakeListener) {
         startLibrarySensorDetection(
@@ -328,12 +180,6 @@ public class Sensey {
                 shakeListener);
     }
 
-    /**
-     * Start sound level detection.
-     *
-     * @param context            the context
-     * @param soundLevelListener the sound level listener
-     */
     @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     public void startSoundLevelDetection(Context context, SoundLevelListener soundLevelListener) {
         if (soundLevelListener != null && checkPermission(context, Manifest.permission.RECORD_AUDIO)) {
@@ -344,13 +190,6 @@ public class Sensey {
         }
     }
 
-    /**
-     * Start step detection.
-     *
-     * @param context      the context
-     * @param stepListener the step listener
-     * @param gender       the gender
-     */
     public void startStepDetection(Context context, StepListener stepListener, int gender) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && checkHardware(context,
                 PackageManager.FEATURE_SENSOR_STEP_COUNTER)) {
@@ -360,63 +199,29 @@ public class Sensey {
         }
     }
 
-    /**
-     * Start tilt direction detection.
-     *
-     * @param tiltDirectionListener the tilt direction listener
-     */
     public void startTiltDirectionDetection(TiltDirectionListener tiltDirectionListener) {
         startLibrarySensorDetection(new TiltDirectionDetector(tiltDirectionListener),
                 tiltDirectionListener);
     }
 
-    /**
-     * Start touch type detection.
-     *
-     * @param context          the context
-     * @param touchTypListener the touch typ listener
-     */
     public void startTouchTypeDetection(Context context, TouchTypListener touchTypListener) {
         if (touchTypListener != null) {
             touchTypeDetector = new TouchTypeDetector(context, touchTypListener);
         }
     }
 
-    /**
-     * Start wave detection.
-     *
-     * @param waveListener the wave listener
-     */
     public void startWaveDetection(WaveListener waveListener) {
         startLibrarySensorDetection(new WaveDetector(waveListener), waveListener);
     }
 
-    /**
-     * Start wave detection.
-     *
-     * @param threshold    the threshold
-     * @param waveListener the wave listener
-     */
     public void startWaveDetection(float threshold, WaveListener waveListener) {
         startLibrarySensorDetection(new WaveDetector(threshold, waveListener), waveListener);
     }
 
-    /**
-     * Start wrist twist detection.
-     *
-     * @param wristTwistListener the wrist twist listener
-     */
     public void startWristTwistDetection(WristTwistListener wristTwistListener) {
         startLibrarySensorDetection(new WristTwistDetector(wristTwistListener), wristTwistListener);
     }
 
-    /**
-     * Start wrist twist detection.
-     *
-     * @param threshold                the threshold
-     * @param timeForWristTwistGesture the time for wrist twist gesture
-     * @param wristTwistListener       the wrist twist listener
-     */
     public void startWristTwistDetection(float threshold, long timeForWristTwistGesture,
             WristTwistListener wristTwistListener) {
         startLibrarySensorDetection(
@@ -424,113 +229,54 @@ public class Sensey {
                 wristTwistListener);
     }
 
-    /**
-     * Stop.
-     */
     public void stop() {
         this.sensorManager = null;
     }
 
-    /**
-     * Stop chop detection.
-     *
-     * @param chopListener the chop listener
-     */
     public void stopChopDetection(ChopListener chopListener) {
         stopLibrarySensorDetection(chopListener);
     }
 
-    /**
-     * Stop flip detection.
-     *
-     * @param flipListener the flip listener
-     */
     public void stopFlipDetection(FlipListener flipListener) {
         stopLibrarySensorDetection(flipListener);
     }
 
-    /**
-     * Stop light detection.
-     *
-     * @param lightListener the light listener
-     */
     public void stopLightDetection(LightListener lightListener) {
         stopLibrarySensorDetection(lightListener);
     }
 
-    /**
-     * Stop movement detection.
-     *
-     * @param movementListener the movement listener
-     */
     public void stopMovementDetection(MovementListener movementListener) {
         stopLibrarySensorDetection(movementListener);
     }
 
-    /**
-     * Stop orientation detection.
-     *
-     * @param orientationListener the orientation listener
-     */
     public void stopOrientationDetection(OrientationListener orientationListener) {
         stopLibrarySensorDetection(orientationListener);
     }
 
-    /**
-     * Stop pickup device detection.
-     *
-     * @param pickupDeviceListener the pickup device listener
-     */
     public void stopPickupDeviceDetection(PickupDeviceListener pickupDeviceListener) {
         stopLibrarySensorDetection(pickupDeviceListener);
     }
 
-    /**
-     * Stop pinch scale detection.
-     */
     public void stopPinchScaleDetection() {
         pinchScaleDetector = null;
     }
 
-    /**
-     * Stop proximity detection.
-     *
-     * @param proximityListener the proximity listener
-     */
     public void stopProximityDetection(ProximityListener proximityListener) {
         stopLibrarySensorDetection(proximityListener);
     }
 
-    /**
-     * Stop rotation angle detection.
-     *
-     * @param rotationAngleListener the rotation angle listener
-     */
     public void stopRotationAngleDetection(RotationAngleListener rotationAngleListener) {
         stopLibrarySensorDetection(rotationAngleListener);
     }
 
-    /**
-     * Stop scoop detection.
-     *
-     * @param scoopListener the scoop listener
-     */
     public void stopScoopDetection(ScoopListener scoopListener) {
         stopLibrarySensorDetection(scoopListener);
     }
 
-    /**
-     * Stop shake detection.
-     *
-     * @param shakeListener the shake listener
-     */
     public void stopShakeDetection(ShakeListener shakeListener) {
         stopLibrarySensorDetection(shakeListener);
     }
 
-    /**
-     * Stop sound level detection.
-     */
     public void stopSoundLevelDetection() {
         if (soundLevelDetector != null) {
             soundLevelDetector.stop();
@@ -538,67 +284,30 @@ public class Sensey {
         soundLevelDetector = null;
     }
 
-    /**
-     * Stop step detection.
-     *
-     * @param stepListener the step listener
-     */
     public void stopStepDetection(StepListener stepListener) {
         stopLibrarySensorDetection(stepListener);
     }
 
-    /**
-     * Stop tilt direction detection.
-     *
-     * @param tiltDirectionListener the tilt direction listener
-     */
     public void stopTiltDirectionDetection(TiltDirectionListener tiltDirectionListener) {
         stopLibrarySensorDetection(tiltDirectionListener);
     }
 
-    /**
-     * Stop touch type detection.
-     */
     public void stopTouchTypeDetection() {
         touchTypeDetector = null;
     }
 
-    /**
-     * Stop wave detection.
-     *
-     * @param waveListener the wave listener
-     */
     public void stopWaveDetection(WaveListener waveListener) {
         stopLibrarySensorDetection(waveListener);
     }
 
-    /**
-     * Stop wrist twist detection.
-     *
-     * @param wristTwistListener the wrist twist listener
-     */
     public void stopWristTwistDetection(WristTwistListener wristTwistListener) {
         stopLibrarySensorDetection(wristTwistListener);
     }
 
-    /**
-     * Check hardware boolean.
-     *
-     * @param context  the context
-     * @param hardware the hardware
-     * @return the boolean
-     */
     boolean checkHardware(Context context, String hardware) {
         return context.getPackageManager().hasSystemFeature(hardware);
     }
 
-    /**
-     * Check permission boolean.
-     *
-     * @param context    the context
-     * @param permission the permission
-     * @return the boolean
-     */
     boolean checkPermission(Context context, String permission) {
         return context.checkCallingOrSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
     }

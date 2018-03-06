@@ -16,43 +16,18 @@
 
 package com.github.nisrulz.sensey;
 
-/**
- * The type Step detector util.
- */
 public class StepDetectorUtil {
 
-    /**
-     * The constant ACTIVITY_STILL.
-     */
     public static final int ACTIVITY_STILL = 0;
 
-    /**
-     * The constant ACTIVITY_WALKING.
-     */
     public static final int ACTIVITY_WALKING = 1;
 
-    /**
-     * The constant ACTIVITY_RUNNING.
-     */
     public static final int ACTIVITY_RUNNING = 2;
 
-    /**
-     * The constant MALE.
-     */
     public static final int MALE = 0;
 
-    /**
-     * The constant FEMALE.
-     */
     public static final int FEMALE = 1;
 
-    /**
-     * Gets distance covered.
-     *
-     * @param steps  the steps
-     * @param gender the gender
-     * @return the distance covered
-     */
     static float getDistanceCovered(long steps, int gender) {
     /*
       Using average distance covered in one step:  78cm for men and 70cm for women.
@@ -68,13 +43,6 @@ public class StepDetectorUtil {
         return distanceCovered;
     }
 
-    /**
-     * Gets step activity type.
-     *
-     * @param distance  the distance
-     * @param timeDelta the time delta
-     * @return the step activity type
-     */
     static int getStepActivityType(float distance, long timeDelta) {
         float speed = distance / timeDelta;
         int result = ACTIVITY_STILL;

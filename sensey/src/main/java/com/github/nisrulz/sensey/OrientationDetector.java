@@ -23,34 +23,16 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.media.ExifInterface;
 
-/**
- * The type Orientation detector.
- */
 public class OrientationDetector extends SensorDetector {
 
-    /**
-     * The interface Orientation listener.
-     */
     public interface OrientationListener {
 
-        /**
-         * On bottom side up.
-         */
         void onBottomSideUp();
 
-        /**
-         * On left side up.
-         */
         void onLeftSideUp();
 
-        /**
-         * On right side up.
-         */
         void onRightSideUp();
 
-        /**
-         * On top side up.
-         */
         void onTopSideUp();
     }
 
@@ -68,14 +50,8 @@ public class OrientationDetector extends SensorDetector {
 
     private int eventOccurred = 0;
 
-    /**
-     * The M geomagnetic.
-     */
     private float[] mGeomagnetic;
 
-    /**
-     * The M gravity.
-     */
     private float[] mGravity;
 
     private int orientation = ORIENTATION_PORTRAIT;
@@ -88,21 +64,10 @@ public class OrientationDetector extends SensorDetector {
 
     private final int smoothness;
 
-    /**
-     * Instantiates a new Orientation detector.
-     *
-     * @param orientationListener the orientation listener
-     */
     public OrientationDetector(OrientationListener orientationListener) {
         this(1, orientationListener);
     }
 
-    /**
-     * Instantiates a new Orientation detector.
-     *
-     * @param smoothness          the smoothness
-     * @param orientationListener the orientation listener
-     */
     public OrientationDetector(int smoothness, OrientationListener orientationListener) {
         super(TYPE_ACCELEROMETER, TYPE_MAGNETIC_FIELD);
         this.smoothness = smoothness;

@@ -20,9 +20,6 @@ import static android.hardware.Sensor.TYPE_ACCELEROMETER;
 
 import android.hardware.SensorEvent;
 
-/**
- * The type Step detector pre kit kat.
- */
 class StepDetectorPreKitKat extends SensorDetector {
 
     private float currentY = 0;
@@ -39,12 +36,6 @@ class StepDetectorPreKitKat extends SensorDetector {
 
     private long timeDelta = 0, startTime;
 
-    /**
-     * Instantiates a new Step detector pre kit kat.
-     *
-     * @param gender       the gender
-     * @param stepListener the step listener
-     */
     public StepDetectorPreKitKat(int gender, StepListener stepListener) {
         super(TYPE_ACCELEROMETER);
         this.stepListener = stepListener;

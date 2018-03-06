@@ -20,34 +20,16 @@ import static android.hardware.Sensor.TYPE_PROXIMITY;
 
 import android.hardware.SensorEvent;
 
-/**
- * The type Proximity detector.
- */
 public class ProximityDetector extends SensorDetector {
 
-    /**
-     * The interface Proximity listener.
-     */
     public interface ProximityListener {
 
-        /**
-         * On far.
-         */
         void onFar();
 
-        /**
-         * On near.
-         */
         void onNear();
     }
 
     private final ProximityListener proximityListener;
-
-    /**
-     * Instantiates a new Proximity detector.
-     *
-     * @param proximityListener the proximity listener
-     */
 
     public ProximityDetector(ProximityListener proximityListener) {
         super(TYPE_PROXIMITY);

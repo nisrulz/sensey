@@ -16,15 +16,7 @@
 
 package com.github.nisrulz.sensey;
 
-/**
- * The interface Step listener.
- */
 public interface StepListener {
 
-    /**
-     * Step information.
-     *
-     * @param noOfSteps the no of steps
-     */
     void stepInformation(int noOfSteps, float distanceInMeter, int stepActivityType);
 }

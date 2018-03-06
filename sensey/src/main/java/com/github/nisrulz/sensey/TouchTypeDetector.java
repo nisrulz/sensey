@@ -21,14 +21,8 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-/**
- * The type Touch type detector.
- */
 public class TouchTypeDetector {
 
-    /**
-     * The type Gesture listener.
-     */
     class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         private static final int SWIPE_MIN_DISTANCE = 120;
@@ -114,94 +108,39 @@ public class TouchTypeDetector {
         }
     }
 
-    /**
-     * The interface Touch typ listener.
-     */
     public interface TouchTypListener {
 
-        /**
-         * On double tap.
-         */
         void onDoubleTap();
 
-        /**
-         * On long press.
-         */
         void onLongPress();
 
-        /**
-         * On scroll.
-         *
-         * @param scrollDirection the scroll direction
-         */
         void onScroll(int scrollDirection);
 
-        /**
-         * On single tap.
-         */
         void onSingleTap();
 
-        /**
-         * On swipe.
-         *
-         * @param swipeDirection the swipe direction
-         */
         void onSwipe(int swipeDirection);
 
-        /**
-         * On three finger single tap.
-         */
         void onThreeFingerSingleTap();
 
-        /**
-         * On two finger single tap.
-         */
         void onTwoFingerSingleTap();
     }
 
-    /**
-     * The constant SCROLL_DIR_UP.
-     */
     public static final int SCROLL_DIR_UP = 1;
 
-    /**
-     * The constant SCROLL_DIR_RIGHT.
-     */
     public static final int SCROLL_DIR_RIGHT = 2;
 
-    /**
-     * The constant SCROLL_DIR_DOWN.
-     */
     public static final int SCROLL_DIR_DOWN = 3;
 
-    /**
-     * The constant SCROLL_DIR_LEFT.
-     */
     public static final int SCROLL_DIR_LEFT = 4;
 
-    /**
-     * The constant SWIPE_DIR_UP.
-     */
     public static final int SWIPE_DIR_UP = 5;
 
-    /**
-     * The constant SWIPE_DIR_RIGHT.
-     */
     public static final int SWIPE_DIR_RIGHT = 6;
 
-    /**
-     * The constant SWIPE_DIR_DOWN.
-     */
     public static final int SWIPE_DIR_DOWN = 7;
 
-    /**
-     * The constant SWIPE_DIR_LEFT.
-     */
     public static final int SWIPE_DIR_LEFT = 8;
 
-    /**
-     * The Gesture listener.
-     */
     final GestureListener gestureListener; // it's needed for TouchTypeDetectorTest, don't remove
 
     //gesture detector
@@ -209,24 +148,12 @@ public class TouchTypeDetector {
 
     private final TouchTypListener touchTypListener;
 
-    /**
-     * Instantiates a new Touch type detector.
-     *
-     * @param context          the context
-     * @param touchTypListener the touch typ listener
-     */
     public TouchTypeDetector(Context context, TouchTypListener touchTypListener) {
         gestureListener = new GestureListener();
         gDetect = new GestureDetectorCompat(context, gestureListener);
         this.touchTypListener = touchTypListener;
     }
 
-    /**
-     * On touch event boolean.
-     *
-     * @param event the event
-     * @return the boolean
-     */
     boolean onTouchEvent(MotionEvent event) {
 
         switch (event.getActionMasked()) {

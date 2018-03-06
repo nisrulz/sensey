@@ -16,6 +16,6 @@
 
 <manifest package="com.github.nisrulz.sensey">
 
-    <application></application>
+    <application />
 
 </manifest>

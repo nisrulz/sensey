@@ -20,19 +20,10 @@ import static android.hardware.Sensor.TYPE_ACCELEROMETER;
 
 import android.hardware.SensorEvent;
 
-/**
- * The type Scoop detector.
- */
 public class ScoopDetector extends SensorDetector {
 
-    /**
-     * The interface Scoop listener.
-     */
     public interface ScoopListener {
 
-        /**
-         * On scooped.
-         */
         void onScooped();
     }
 
@@ -40,21 +31,10 @@ public class ScoopDetector extends SensorDetector {
 
     private final float threshold;
 
-    /**
-     * Instantiates a new Scoop detector.
-     *
-     * @param scoopListener the scoop listener
-     */
     public ScoopDetector(ScoopListener scoopListener) {
         this(15f, scoopListener);
     }
 
-    /**
-     * Instantiates a new Scoop detector.
-     *
-     * @param threshold     the threshold
-     * @param scoopListener the scoop listener
-     */
     public ScoopDetector(float threshold, ScoopListener scoopListener) {
         super(TYPE_ACCELEROMETER);
         this.scoopListener = scoopListener;

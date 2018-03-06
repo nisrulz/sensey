@@ -20,24 +20,12 @@ import static android.hardware.Sensor.TYPE_ACCELEROMETER;
 
 import android.hardware.SensorEvent;
 
-/**
- * The type Flip detector.
- */
 public class FlipDetector extends SensorDetector {
 
-    /**
-     * The interface Flip listener.
-     */
     public interface FlipListener {
 
-        /**
-         * On face down.
-         */
         void onFaceDown();
 
-        /**
-         * On face up.
-         */
         void onFaceUp();
     }
 
@@ -45,11 +33,6 @@ public class FlipDetector extends SensorDetector {
 
     private final FlipListener flipListener;
 
-    /**
-     * Instantiates a new Flip detector.
-     *
-     * @param flipListener the flip listener
-     */
     public FlipDetector(FlipListener flipListener) {
         super(TYPE_ACCELEROMETER);
         this.flipListener = flipListener;
