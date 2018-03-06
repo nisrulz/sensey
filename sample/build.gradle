@@ -41,9 +41,6 @@ dependencies {
 
     // Testing
     testImplementation deps.junit
-    debugImplementation deps.leak_canary_android
-    testImplementation deps.leak_canary_android_no_op
-    releaseImplementation deps.leak_canary_android_no_op
 
     // Support
     implementation deps.app_compat_v7

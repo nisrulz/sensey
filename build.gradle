@@ -33,7 +33,6 @@ buildscript {
 
             // Testing
             "junit"                      : "4.12",
-            "leak_canary"                : "1.5.4",
             "mockito"                    : "2.12.0",
             "robolectric"                : "3.5.1",
     ]
@@ -54,8 +53,6 @@ buildscript {
             "junit"                      : "junit:junit:${versions.junit}",
             "mockito"                    : "org.mockito:mockito-core:${versions.mockito}",
             "robolectric"                : "org.robolectric:robolectric:${versions.robolectric}",
-            "leak_canary_android_no_op"  : "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leak_canary}",
-            "leak_canary_android"        : "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}",
     ]
 
     repositories {
