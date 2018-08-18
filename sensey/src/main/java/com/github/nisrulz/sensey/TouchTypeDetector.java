@@ -31,13 +31,17 @@ public class TouchTypeDetector {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            touchTypListener.onDoubleTap();
-            return super.onDoubleTap(e);
+            if (e != null) {
+                touchTypListener.onDoubleTap();
+                return super.onDoubleTap(e);
+            } else {
+                return false;
+            }
         }
 
         @Override
         public boolean onFling(MotionEvent startevent, MotionEvent finishevent, float velocityX,
-                float velocityY) {
+                               float velocityY) {
 
             final float deltaX = finishevent.getX() - startevent.getX();
             final float deltaY = finishevent.getY() - startevent.getY();
@@ -67,13 +71,15 @@ public class TouchTypeDetector {
 
         @Override
         public void onLongPress(MotionEvent e) {
-            touchTypListener.onLongPress();
-            super.onLongPress(e);
+            if (e != null) {
+                touchTypListener.onLongPress();
+                super.onLongPress(e);
+            }
         }
 
         @Override
         public boolean onScroll(MotionEvent startevent, MotionEvent finishevent, float distanceX,
-                float distanceY) {
+                                float distanceY) {
 
             float deltaX = finishevent.getX() - startevent.getX();
             float deltaY = finishevent.getY() - startevent.getY();
@@ -103,8 +109,12 @@ public class TouchTypeDetector {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            touchTypListener.onSingleTap();
-            return super.onSingleTapConfirmed(e);
+            if (e != null) {
+                touchTypListener.onSingleTap();
+                return super.onSingleTapConfirmed(e);
+            } else {
+                return false;
+            }
         }
     }
 
@@ -155,15 +165,18 @@ public class TouchTypeDetector {
     }
 
     boolean onTouchEvent(MotionEvent event) {
-
-        switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_POINTER_DOWN:
-                if (event.getPointerCount() == 3) {
-                    touchTypListener.onThreeFingerSingleTap();
-                } else if (event.getPointerCount() == 2) {
-                    touchTypListener.onTwoFingerSingleTap();
-                }
+        if (event != null) {
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    if (event.getPointerCount() == 3) {
+                        touchTypListener.onThreeFingerSingleTap();
+                    } else if (event.getPointerCount() == 2) {
+                        touchTypListener.onTwoFingerSingleTap();
+                    }
+            }
+            return gDetect.onTouchEvent(event);
+        } else {
+            return false;
         }
-        return gDetect.onTouchEvent(event);
     }
 }
