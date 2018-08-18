@@ -19,19 +19,19 @@
 buildscript {
     ext.versions = [
             "min_sdk"                    : 14,
-            "target_sdk"                 : 27,
-            "compile_sdk"                : 27,
-            "android_gradle_plugin"      : "3.0.1",
+            "target_sdk"                 : 28,
+            "compile_sdk"                : 28,
+            "android_gradle_plugin"      : "3.1.4",
 
             // Kotlin
-            "kotlin" : "1.2.30",
+            "kotlin"                     : "1.2.60",
 
             // Publish Library
-            "gradle_bintray_plugin"      : "1.7.3",
-            "android_maven_gradle_plugin": "2.0",
+            "gradle_bintray_plugin"      : "1.8.0",
+            "android_maven_gradle_plugin": "2.1",
 
             // Support
-            "support_lib"                : "27.1.0",
+            "support_lib"                : "27.1.1",
 
             // Testing
             "junit"                      : "4.12",
@@ -42,8 +42,7 @@ buildscript {
     ext.deps = [
             // Android Studio
             "android_gradle_plugin"      : "com.android.tools.build:gradle:${versions.android_gradle_plugin}",
-            "kotlin_gradle_plugin"      : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
-
+            "kotlin_gradle_plugin"       : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
 
             // Publish library
             "gradle_bintray_plugin"      : "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.gradle_bintray_plugin}",
@@ -54,7 +53,7 @@ buildscript {
             "support_compat"             : "com.android.support:support-compat:${versions.support_lib}",
 
             // Kotlin
-            "kotlin_stdlib"             : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+            "kotlin_stdlib"              : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
 
             // Testing
             "junit"                      : "junit:junit:${versions.junit}",
@@ -75,6 +74,8 @@ buildscript {
         // Required plugins added to classpath to facilitate pushing to Jcenter/Bintray
         classpath deps.gradle_bintray_plugin
         classpath deps.android_maven_gradle_plugin
+
+        // Kotlin Plugin
         classpath deps.kotlin_gradle_plugin
     }
 }
@@ -86,17 +87,12 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
 ext {
     // Library Info
     libVersionCode = 16
     libVersionName = '1.9.0'
     libPomUrl = 'https://github.com/nisrulz/sensey'
     libGithubRepo = 'nisrulz/sensey'
-
 
     libModuleName = 'sensey'
     libModuleDesc = 'Android library which makes playing with sensor events & detecting gestures a breeze.'

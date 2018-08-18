@@ -54,6 +54,3 @@ dependencies {
     implementation project(':sensey')
 
 }
-repositories {
-    mavenCentral()
-}
