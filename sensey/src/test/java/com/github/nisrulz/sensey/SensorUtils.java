@@ -16,11 +16,13 @@
 
 package com.github.nisrulz.sensey;
 
-import static org.mockito.Mockito.*;
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+
 import java.lang.reflect.Field;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class SensorUtils {
 

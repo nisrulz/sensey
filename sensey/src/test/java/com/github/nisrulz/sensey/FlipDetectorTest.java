@@ -16,14 +16,18 @@
 
 package com.github.nisrulz.sensey;
 
-import static com.github.nisrulz.sensey.SensorUtils.testAccelerometerEvent;
-import static org.mockito.Mockito.*;
-
 import com.github.nisrulz.sensey.FlipDetector.FlipListener;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.mockito.junit.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import static com.github.nisrulz.sensey.SensorUtils.testAccelerometerEvent;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FlipDetectorTest {

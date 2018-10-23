@@ -16,16 +16,19 @@
 
 package com.github.nisrulz.sensey;
 
-import static com.github.nisrulz.sensey.SensorUtils.testSensorEvent;
-import static org.mockito.Mockito.*;
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+
 import com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.mockito.junit.*;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import static com.github.nisrulz.sensey.SensorUtils.testSensorEvent;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProximityDetectorTest {

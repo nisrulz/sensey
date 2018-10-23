@@ -16,30 +16,37 @@
 
 package com.github.nisrulz.sensey;
 
-import static android.content.Context.SENSOR_SERVICE;
-import static android.hardware.Sensor.TYPE_ACCELEROMETER;
-import static android.hardware.Sensor.TYPE_LIGHT;
-import static android.hardware.Sensor.TYPE_MAGNETIC_FIELD;
-import static android.hardware.Sensor.TYPE_PROXIMITY;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+
 import com.github.nisrulz.sensey.FlipDetector.FlipListener;
 import com.github.nisrulz.sensey.LightDetector.LightListener;
 import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
 import com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
 import com.github.nisrulz.sensey.ShakeDetector.ShakeListener;
-import java.lang.reflect.Field;
-import java.util.Map;
-import org.junit.*;
-import org.junit.runner.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowSensorManager;
+
+import java.lang.reflect.Field;
+import java.util.Map;
+
+import static android.content.Context.SENSOR_SERVICE;
+import static android.hardware.Sensor.TYPE_ACCELEROMETER;
+import static android.hardware.Sensor.TYPE_LIGHT;
+import static android.hardware.Sensor.TYPE_MAGNETIC_FIELD;
+import static android.hardware.Sensor.TYPE_PROXIMITY;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 public class SenseyTest {

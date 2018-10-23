@@ -16,16 +16,22 @@
 
 package com.github.nisrulz.sensey;
 
-import static com.github.nisrulz.sensey.SensorUtils.testAccelerometerEvent;
-import static com.github.nisrulz.sensey.SensorUtils.testSensorEvent;
-import static org.mockito.Mockito.*;
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+
 import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
-import org.junit.*;
-import org.junit.runner.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+
+import static com.github.nisrulz.sensey.SensorUtils.testAccelerometerEvent;
+import static com.github.nisrulz.sensey.SensorUtils.testSensorEvent;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 //TODO add tests for smoothness > 1
 @RunWith(RobolectricTestRunner.class)
