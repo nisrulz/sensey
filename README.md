@@ -110,7 +110,6 @@
     </a>
 </div>
 
-
 <div align="center">
   <sub>Built with ❤︎ by
   <a href="https://twitter.com/nisrulz">Nishant Srivastava</a> and
@@ -127,73 +126,60 @@
 
 # Supported gestures/events
 
- 1. [Flip](https://github.com/nisrulz/sensey/wiki/Usage#flip)
-    + onFaceUp
-    + onFaceDown
- 1. [Light](https://github.com/nisrulz/sensey/wiki/Usage#light)
-    + onDark
-    + onLight
- 1. [Orientation](https://github.com/nisrulz/sensey/wiki/Usage#orientation)
-    + onTopSideUp
-    + onBottomSideUp
-    + onLeftSideUp
-    + onRightSideUp
- 1. [PinchScale](https://github.com/nisrulz/sensey/wiki/Usage#pinchscale)
-    + OnScale
-    + OnScaleStart
-    + OnScaleEnd
- 1. [Proximity](https://github.com/nisrulz/sensey/wiki/Usage#proximity)
-    + onNear
-    + onFar
- 1. [Shake](https://github.com/nisrulz/sensey/wiki/Usage#shake)
- 1. [Wave](https://github.com/nisrulz/sensey/wiki/Usage#wave)
- 1. [Chop](https://github.com/nisrulz/sensey/wiki/Usage#chop)
- 1. [WristTwist](https://github.com/nisrulz/sensey/wiki/Usage#wristtwist)
- 1. [Movement](https://github.com/nisrulz/sensey/wiki/Usage#movement)
- 1. [SoundLevel](https://github.com/nisrulz/sensey/wiki/Usage#soundlevel)
- 1. [RotationAngle](https://github.com/nisrulz/sensey/wiki/Usage#rotationangle)
- 1. [TiltDirection](https://github.com/nisrulz/sensey/wiki/Usage#tiltdirection)
- 1. [Scoop](https://github.com/nisrulz/sensey/wiki/Usage#scoop)
- 1. [PickupDevice](https://github.com/nisrulz/sensey/wiki/Usage#pickupdevice)
- 1. [Steps](https://github.com/nisrulz/sensey/wiki/Usage#steps)
- 1. [TouchType](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)
-    + onDoubleTap
-    + onScroll(direction)
-    + onSingleTap
-    + onSwipeLeft
-    + onSwipeRight
-    + onLongPress
-    + onTwoFingerSingleTap
-    + onThreeFingerSingleTap
-
+| Gesture       | Methods                                                                                                                                                        | Usage                                                              |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Flip          | onFaceUp<br/>onFaceDown                                                                                                                                        | [Link](https://github.com/nisrulz/sensey/wiki/Usage#flip)          |
+| Light         | onDark<br/>onLight                                                                                                                                             | [Link](https://github.com/nisrulz/sensey/wiki/Usage#light)         |
+| Orientation   | onTopSideUp<br/>onBottomSideUp<br/>onLeftSideUp<br/>onRightSideUp                                                                                              | [Link](https://github.com/nisrulz/sensey/wiki/Usage#orientation)   |
+| PinchScale    | OnScale<br/>OnScaleStart<br/>OnScaleEnd                                                                                                                        | [Link](https://github.com/nisrulz/sensey/wiki/Usage#pinchscale)    |
+| Proximity     | onNear<br/>onFar                                                                                                                                               | [Link](https://github.com/nisrulz/sensey/wiki/Usage#proximity)     |
+| Shake         | onShakeDetected<br/>onShakeStopped                                                                                                                             | [Link](https://github.com/nisrulz/sensey/wiki/Usage#shake)         |
+| Wave          | onWave                                                                                                                                                         | [Link](https://github.com/nisrulz/sensey/wiki/Usage#wave)          |
+| Chop          | onChop                                                                                                                                                         | [Link](https://github.com/nisrulz/sensey/wiki/Usage#chop)          |
+| WristTwist    | onWristTwist                                                                                                                                                   | [Link](https://github.com/nisrulz/sensey/wiki/Usage#wristtwist)    |
+| Movement      | onMovement<br/>onStationary                                                                                                                                    | [Link](https://github.com/nisrulz/sensey/wiki/Usage#movement)      |
+| SoundLevel    | onSoundDetected                                                                                                                                                | [Link](https://github.com/nisrulz/sensey/wiki/Usage#soundlevel)    |
+| RotationAngle | onRotation                                                                                                                                                     | [Link](https://github.com/nisrulz/sensey/wiki/Usage#rotationangle) |
+| TiltDirection | onTiltInAxisX<br/>onTiltInAxisY<br/>onTiltInAxisZ                                                                                                              | [Link](https://github.com/nisrulz/sensey/wiki/Usage#tiltdirection) |
+| Scoop         | onScooped                                                                                                                                                      | [Link](https://github.com/nisrulz/sensey/wiki/Usage#scoop)         |
+| PickupDevice  | onDevicePickedUp<br/>onDevicePutDown                                                                                                                           | [Link](https://github.com/nisrulz/sensey/wiki/Usage#pickupdevice)  |
+| Steps         | stepInformation                                                                                                                                                | [Link](https://github.com/nisrulz/sensey/wiki/Usage#steps)         |
+| TouchType     | onDoubleTap<br/>onScroll(direction)<br/>oonSingleTap<br/>oonSwipeLeft<br/>oonSwipeRight<br/>oonLongPress<br/>oonTwoFingerSingleTap<br/>oonThreeFingerSingleTap | [Link](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)     |
 
 # Changelog
 
 Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/nisrulz/sensey/releases).
 
 # Including in your project
+
 Sensey is available in the Jcenter, so getting it as simple as adding it as a dependency
+
 ```gradle
 implementation 'com.github.nisrulz:sensey:{latest version}'
 ```
+
 where `{latest version}` corresponds to published version in [ ![Download](https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg) ](https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion)
 
 # Simple example
 
-+ To initialize Sensey under your `onCreate()`` in the activity/service, call
+- To initialize Sensey under your `onCreate()`` in the activity/service, call
+
 ```java
 Sensey.getInstance().init(context);
 ```
 
-+ To stop Sensey, under your `onDestroy()` in the activity/service, call
+- To stop Sensey, under your `onDestroy()` in the activity/service, call
+
 ```java
  // *** IMPORTANT ***
  // Stop Sensey and release the context held by it
  Sensey.getInstance().stop();
 ```
 
-+ Next to enable shake detection 
-  + Create an instance of ShakeListener
+- Next to enable shake detection
+
+  - Create an instance of ShakeListener
+
   ```java
   ShakeDetector.ShakeListener shakeListener=new ShakeDetector.ShakeListener() {
       @Override public void onShakeDetected() {
@@ -205,51 +191,61 @@ Sensey.getInstance().init(context);
      }
   };
   ```
-  + Now to start listening for Shake gesture, pass the instance `shakeListener` to `startShakeDetection()` function
+
+  - Now to start listening for Shake gesture, pass the instance `shakeListener` to `startShakeDetection()` function
+
   ```java
   Sensey.getInstance().startShakeDetection(shakeListener);
   ```
-  
+
   If you want to modify the `threshold` and `time` before declaring that shake gesture is stopped, use
+
   ```java
   Sensey.getInstance().startShakeDetection(threshold,timeBeforeDeclaringShakeStopped,shakeListener);
   ```
-  + To stop listening for Shake gesture, pass the instance `shakeListener` to `stopShakeDetection()` function
+
+  - To stop listening for Shake gesture, pass the instance `shakeListener` to `stopShakeDetection()` function
+
   ```java
   Sensey.getInstance().stopShakeDetection(shakeListener);
   ```
 
 ### :page_with_curl: For more info , check the **[Wiki Docs](https://github.com/nisrulz/sensey/wiki/Usage)**
 
-
 # Pull Requests
+
 I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request. Here are some basic rules to follow to ensure timely addition of your request:
-  1. Match coding style (braces, spacing, etc.) This is best achieved using CMD+Option+L (Reformat code) on Mac (not sure for Windows) with Android Studio defaults. This project uses a [modified version of Grandcentrix's code style](https://github.com/nisrulz/AndroidCodeStyle/tree/nishant-config), so please use the same when editing this project.
-  2. If its a feature, bugfix, or anything please only change code to what you specify.
-  3. Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge :)
-  4. Pull requests _must_ be made against `develop` branch. Any other branch (unless specified by the maintainers) will get rejected.
-  5. Check for existing [issues](https://github.com/nisrulz/sensey/issues) first, before filing an issue.  
-  6. Have fun!
+
+1. Match coding style (braces, spacing, etc.) This is best achieved using CMD+Option+L (Reformat code) on Mac (not sure for Windows) with Android Studio defaults. This project uses a [modified version of Grandcentrix's code style](https://github.com/nisrulz/AndroidCodeStyle/tree/nishant-config), so please use the same when editing this project.
+2. If its a feature, bugfix, or anything please only change code to what you specify.
+3. Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge :)
+4. Pull requests _must_ be made against `develop` branch. Any other branch (unless specified by the maintainers) will get rejected.
+5. Check for existing [issues](https://github.com/nisrulz/sensey/issues) first, before filing an issue.
+6. Have fun!
 
 ## Apps using Sensey
+
 If you are using Sensey in your app and would like to be listed here, please let me know by opening a [new issue](https://github.com/nisrulz/sensey/issues/new)!
 
-+ Push-Ups - [Playstore](https://play.google.com/store/apps/details?id=com.mk.push)
-+ FastAccess - [Github](https://github.com/k0shk0sh/FastAccess)
-+ Catradiod - [Playstore](https://play.google.com/store/apps/details?id=com.yopachara.catradiod), [Github](https://github.com/yopachara/Catradiod)
-+ Get Off Your Phone - [Play Store](https://play.google.com/store/apps/details?id=com.nephi.getoffyourphone)
+- Push-Ups - [Playstore](https://play.google.com/store/apps/details?id=com.mk.push)
+- FastAccess - [Github](https://github.com/k0shk0sh/FastAccess)
+- Catradiod - [Playstore](https://play.google.com/store/apps/details?id=com.yopachara.catradiod), [Github](https://github.com/yopachara/Catradiod)
+- Get Off Your Phone - [Play Store](https://play.google.com/store/apps/details?id=com.nephi.getoffyourphone)
 
 [Other apps using Sensey, via AppBrain Stats](https://www.appbrain.com/stats/libraries/details/sensey/sensey)
 
 ## License
+
 Licensed under the Apache License, Version 2.0, [click here for the full license](/LICENSE.txt).
 
 ## Author & support
+
 This project was created by [Nishant Srivastava](https://github.com/nisrulz/nisrulz.github.io#nishant-srivastava) but hopefully developed and maintained by many others. See the [the list of contributors here](https://github.com/nisrulz/sensey/graphs/contributors).
 
 > If you appreciate my work, consider buying me a cup of :coffee: to keep me recharged :metal:
->  + [PayPal](https://www.paypal.me/nisrulz/5usd)
->  + Bitcoin Address: 13PjuJcfVW2Ad81fawqwLtku4bZLv1AxCL
+>
+> - [PayPal](https://www.paypal.me/nisrulz/5usd)
+> - Bitcoin Address: 13PjuJcfVW2Ad81fawqwLtku4bZLv1AxCL
 >
 > I love using my work and I'm available for contract work. Freelancing helps to maintain and keep [my open source projects](https://github.com/nisrulz/) up to date!
 
