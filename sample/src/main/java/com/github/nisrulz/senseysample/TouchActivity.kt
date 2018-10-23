@@ -99,8 +99,10 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
 
 
     private fun stopAllDetectors() {
-        Sensey.getInstance().stopTouchTypeDetection()
-        Sensey.getInstance().stopPinchScaleDetection()
+        Sensey.getInstance()?.apply {
+            stopTouchTypeDetection()
+            stopPinchScaleDetection()
+        }
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -123,8 +125,9 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
             }
 
             else -> {
+                // Do nothing
             }
-        }// Do nothing
+        }
     }
 
     private fun resetResultInView(txt: TextView) {

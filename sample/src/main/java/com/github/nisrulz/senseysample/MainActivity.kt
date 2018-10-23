@@ -373,11 +373,10 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
     }
 
     private fun displayResultForTiltDirectionDetector(direction: Int, axis: String) {
-        val dir: String
-        if (direction == TiltDirectionDetector.DIRECTION_CLOCKWISE) {
-            dir = "ClockWise"
+        val dir: String = if (direction == TiltDirectionDetector.DIRECTION_CLOCKWISE) {
+            "ClockWise"
         } else {
-            dir = "AntiClockWise"
+            "AntiClockWise"
         }
         setResultTextView("Tilt in $axis Axis: $dir", false)
     }
