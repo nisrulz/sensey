@@ -131,7 +131,7 @@
 | Flip          | onFaceUp<br/>onFaceDown                                                                                                                                        | [Link](https://github.com/nisrulz/sensey/wiki/Usage#flip)          |
 | Light         | onDark<br/>onLight                                                                                                                                             | [Link](https://github.com/nisrulz/sensey/wiki/Usage#light)         |
 | Orientation   | onTopSideUp<br/>onBottomSideUp<br/>onLeftSideUp<br/>onRightSideUp                                                                                              | [Link](https://github.com/nisrulz/sensey/wiki/Usage#orientation)   |
-| PinchScale    | OnScale<br/>OnScaleStart<br/>OnScaleEnd                                                                                                                        | [Link](https://github.com/nisrulz/sensey/wiki/Usage#pinchscale)    |
+| PinchScale    | onScale<br/>onScaleStart<br/>onScaleEnd                                                                                                                        | [Link](https://github.com/nisrulz/sensey/wiki/Usage#pinchscale)    |
 | Proximity     | onNear<br/>onFar                                                                                                                                               | [Link](https://github.com/nisrulz/sensey/wiki/Usage#proximity)     |
 | Shake         | onShakeDetected<br/>onShakeStopped                                                                                                                             | [Link](https://github.com/nisrulz/sensey/wiki/Usage#shake)         |
 | Wave          | onWave                                                                                                                                                         | [Link](https://github.com/nisrulz/sensey/wiki/Usage#wave)          |
@@ -144,7 +144,7 @@
 | Scoop         | onScooped                                                                                                                                                      | [Link](https://github.com/nisrulz/sensey/wiki/Usage#scoop)         |
 | PickupDevice  | onDevicePickedUp<br/>onDevicePutDown                                                                                                                           | [Link](https://github.com/nisrulz/sensey/wiki/Usage#pickupdevice)  |
 | Steps         | stepInformation                                                                                                                                                | [Link](https://github.com/nisrulz/sensey/wiki/Usage#steps)         |
-| TouchType     | onDoubleTap<br/>onScroll(direction)<br/>oonSingleTap<br/>oonSwipeLeft<br/>oonSwipeRight<br/>oonLongPress<br/>oonTwoFingerSingleTap<br/>oonThreeFingerSingleTap | [Link](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)     |
+| TouchType     | onDoubleTap<br/>onScroll(direction)<br/>onSingleTap<br/>onSwipeLeft<br/>onSwipeRight<br/>onLongPress<br/>onTwoFingerSingleTap<br/>onThreeFingerSingleTap | [Link](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)     |
 
 # Changelog
 
