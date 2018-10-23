@@ -46,10 +46,7 @@ import com.github.nisrulz.sensey.TiltDirectionDetector
 import com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListener
 import com.github.nisrulz.sensey.WaveDetector.WaveListener
 import com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener
-import kotlinx.android.synthetic.main.activity_main.btn_touchevent
-import kotlinx.android.synthetic.main.activity_main.linearlayout_controls
-import kotlinx.android.synthetic.main.activity_main.switchMainActivitySound
-import kotlinx.android.synthetic.main.activity_main.textView_result
+import kotlinx.android.synthetic.main.activity_main.*
 import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener, FlipListener, LightListener, OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener, ChopListener, WristTwistListener, RotationAngleListener, TiltDirectionListener, StepListener, ScoopListener, PickupDeviceListener {
@@ -73,7 +70,9 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
         setAllSwitchesToFalseState()
         setOnCheckedChangeListenerForAllSwitches()
 
-        btn_touchevent.setOnClickListener { startActivity(Intent(this@MainActivity, TouchActivity::class.java)) }
+        btn_touchevent.setOnClickListener {
+            startActivity(Intent(this@MainActivity, TouchActivity::class.java))
+        }
     }
 
     override fun onPause() {
@@ -125,21 +124,23 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
 
 
     private fun stopAllDetectors() {
-        Sensey.getInstance().stopShakeDetection(this)
-        Sensey.getInstance().stopFlipDetection(this)
-        Sensey.getInstance().stopOrientationDetection(this)
-        Sensey.getInstance().stopProximityDetection(this)
-        Sensey.getInstance().stopLightDetection(this)
-        Sensey.getInstance().stopWaveDetection(this)
-        Sensey.getInstance().stopSoundLevelDetection()
-        Sensey.getInstance().stopMovementDetection(this)
-        Sensey.getInstance().stopChopDetection(this)
-        Sensey.getInstance().stopWristTwistDetection(this)
-        Sensey.getInstance().stopRotationAngleDetection(this)
-        Sensey.getInstance().stopTiltDirectionDetection(this)
-        Sensey.getInstance().stopStepDetection(this)
-        Sensey.getInstance().stopPickupDeviceDetection(this)
-        Sensey.getInstance().stopScoopDetection(this)
+        Sensey.getInstance()?.let {
+            it.stopShakeDetection(this)
+            it.stopFlipDetection(this)
+            it.stopOrientationDetection(this)
+            it.stopProximityDetection(this)
+            it.stopLightDetection(this)
+            it.stopWaveDetection(this)
+            it.stopSoundLevelDetection()
+            it.stopMovementDetection(this)
+            it.stopChopDetection(this)
+            it.stopWristTwistDetection(this)
+            it.stopRotationAngleDetection(this)
+            it.stopTiltDirectionDetection(this)
+            it.stopStepDetection(this)
+            it.stopPickupDeviceDetection(this)
+            it.stopScoopDetection(this)
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
@@ -166,98 +167,101 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
 
     @SuppressLint("MissingPermission")
     override fun onCheckedChanged(switchbtn: CompoundButton, isChecked: Boolean) {
-        when (switchbtn.text) {
 
-            resources.getString(R.string.shake_gesture) -> if (isChecked) {
-                Sensey.getInstance().startShakeDetection(10f, 2000, this)
-            } else {
-                Sensey.getInstance().stopShakeDetection(this)
-            }
-            resources.getString(R.string.flip_gesture) -> if (isChecked) {
-                Sensey.getInstance().startFlipDetection(this)
-            } else {
-                Sensey.getInstance().stopFlipDetection(this)
-            }
-            resources.getString(R.string.orientation_gesture) -> if (isChecked) {
-                Sensey.getInstance().startOrientationDetection(this)
-            } else {
-                Sensey.getInstance().stopOrientationDetection(this)
-            }
-            resources.getString(R.string.proximity_gesture) -> if (isChecked) {
-                Sensey.getInstance().startProximityDetection(this)
-            } else {
-                Sensey.getInstance().stopProximityDetection(this)
-            }
-            resources.getString(R.string.light_gesture) -> if (isChecked) {
-                Sensey.getInstance().startLightDetection(10f, this)
-            } else {
-                Sensey.getInstance().stopLightDetection(this)
-            }
-
-            resources.getString(R.string.wave_gesture) -> if (isChecked) {
-                Sensey.getInstance().startWaveDetection(this)
-            } else {
-                Sensey.getInstance().stopWaveDetection(this)
-            }
-
-            resources.getString(R.string.sound_level_detection) -> if (isChecked) {
-                if (hasRecordAudioPermission) {
-                    Sensey.getInstance().startSoundLevelDetection(this, this)
+        Sensey.getInstance().let {
+            when (switchbtn.text) {
+                resources.getString(R.string.shake_gesture) -> if (isChecked) {
+                    it.startShakeDetection(10f, 2000, this)
                 } else {
-                    RuntimePermissionUtil.requestPermission(this, recordAudioPermission, 100)
+                    it.stopShakeDetection(this)
+                }
+                resources.getString(R.string.flip_gesture) -> if (isChecked) {
+                    it.startFlipDetection(this)
+                } else {
+                    it.stopFlipDetection(this)
+                }
+                resources.getString(R.string.orientation_gesture) -> if (isChecked) {
+                    it.startOrientationDetection(this)
+                } else {
+                    it.stopOrientationDetection(this)
+                }
+                resources.getString(R.string.proximity_gesture) -> if (isChecked) {
+                    it.startProximityDetection(this)
+                } else {
+                    it.stopProximityDetection(this)
+                }
+                resources.getString(R.string.light_gesture) -> if (isChecked) {
+                    it.startLightDetection(10f, this)
+                } else {
+                    it.stopLightDetection(this)
                 }
 
-            } else {
-                Sensey.getInstance().stopSoundLevelDetection()
-            }
-            resources.getString(R.string.movement_detection) -> if (isChecked) {
-                Sensey.getInstance().startMovementDetection(this)
-            } else {
-                Sensey.getInstance().stopMovementDetection(this)
-            }
-            resources.getString(R.string.chop_detector) -> if (isChecked) {
-                Sensey.getInstance().startChopDetection(30f, 500, this)
-            } else {
-                Sensey.getInstance().stopChopDetection(this)
-            }
-            resources.getString(R.string.wrist_twist_detection) -> if (isChecked) {
-                Sensey.getInstance().startWristTwistDetection(this)
-            } else {
-                Sensey.getInstance().stopWristTwistDetection(this)
-            }
+                resources.getString(R.string.wave_gesture) -> if (isChecked) {
+                    it.startWaveDetection(this)
+                } else {
+                    it.stopWaveDetection(this)
+                }
 
-            resources.getString(R.string.rotation_angle_detection) -> if (isChecked) {
-                Sensey.getInstance().startRotationAngleDetection(this)
-            } else {
-                Sensey.getInstance().stopRotationAngleDetection(this)
-            }
+                resources.getString(R.string.sound_level_detection) -> if (isChecked) {
+                    if (hasRecordAudioPermission) {
+                        it.startSoundLevelDetection(this, this)
+                    } else {
+                        RuntimePermissionUtil.requestPermission(this, recordAudioPermission, 100)
+                    }
 
-            resources.getString(R.string.tilt_direction_detection) -> if (isChecked) {
-                Sensey.getInstance().startTiltDirectionDetection(this)
-            } else {
-                Sensey.getInstance().stopTiltDirectionDetection(this)
-            }
-            resources.getString(R.string.step_detector) -> if (isChecked) {
-                Sensey.getInstance().startStepDetection(this, this, StepDetectorUtil.MALE)
-            } else {
-                Sensey.getInstance().stopStepDetection(this)
-            }
+                } else {
+                    it.stopSoundLevelDetection()
+                }
+                resources.getString(R.string.movement_detection) -> if (isChecked) {
+                    it.startMovementDetection(this)
+                } else {
+                    it.stopMovementDetection(this)
+                }
+                resources.getString(R.string.chop_detector) -> if (isChecked) {
+                    it.startChopDetection(30f, 500, this)
+                } else {
+                    it.stopChopDetection(this)
+                }
+                resources.getString(R.string.wrist_twist_detection) -> if (isChecked) {
+                    it.startWristTwistDetection(this)
+                } else {
+                    it.stopWristTwistDetection(this)
+                }
 
-            resources.getString(R.string.pickup_device_detector) -> if (isChecked) {
-                Sensey.getInstance().startPickupDeviceDetection(this)
-            } else {
-                Sensey.getInstance().stopPickupDeviceDetection(this)
-            }
+                resources.getString(R.string.rotation_angle_detection) -> if (isChecked) {
+                    it.startRotationAngleDetection(this)
+                } else {
+                    it.stopRotationAngleDetection(this)
+                }
 
-            resources.getString(R.string.scoop_detector) -> if (isChecked) {
-                Sensey.getInstance().startScoopDetection(this)
-            } else {
-                Sensey.getInstance().stopScoopDetection(this)
-            }
+                resources.getString(R.string.tilt_direction_detection) -> if (isChecked) {
+                    it.startTiltDirectionDetection(this)
+                } else {
+                    it.stopTiltDirectionDetection(this)
+                }
+                resources.getString(R.string.step_detector) -> if (isChecked) {
+                    it.startStepDetection(this, this, StepDetectorUtil.MALE)
+                } else {
+                    it.stopStepDetection(this)
+                }
 
-            else -> {
+                resources.getString(R.string.pickup_device_detector) -> if (isChecked) {
+                    it.startPickupDeviceDetection(this)
+                } else {
+                    it.stopPickupDeviceDetection(this)
+                }
+
+                resources.getString(R.string.scoop_detector) -> if (isChecked) {
+                    it.startScoopDetection(this)
+                } else {
+                    it.stopScoopDetection(this)
+                }
+
+                else -> {
+                    // Do nothing
+                }
             }
-        }// Do nothing
+        }
     }
 
     override fun onChop() {
