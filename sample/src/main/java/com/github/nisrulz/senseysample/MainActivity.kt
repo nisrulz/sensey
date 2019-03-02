@@ -46,7 +46,10 @@ import com.github.nisrulz.sensey.TiltDirectionDetector
 import com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListener
 import com.github.nisrulz.sensey.WaveDetector.WaveListener
 import com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.btn_touchevent
+import kotlinx.android.synthetic.main.activity_main.linearlayout_controls
+import kotlinx.android.synthetic.main.activity_main.switchMainActivitySound
+import kotlinx.android.synthetic.main.activity_main.textView_result
 import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener, FlipListener, LightListener, OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener, ChopListener, WristTwistListener, RotationAngleListener, TiltDirectionListener, StepListener, ScoopListener, PickupDeviceListener {
@@ -168,7 +171,7 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
     @SuppressLint("MissingPermission")
     override fun onCheckedChanged(switchbtn: CompoundButton, isChecked: Boolean) {
 
-        Sensey.getInstance().let {
+        Sensey.getInstance()?.let {
             when (switchbtn.text) {
                 resources.getString(R.string.shake_gesture) -> if (isChecked) {
                     it.startShakeDetection(10f, 2000, this)
