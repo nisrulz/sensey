@@ -27,7 +27,7 @@ import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Build;
-import android.support.annotation.RequiresPermission;
+import androidx.annotation.RequiresPermission;
 import android.view.MotionEvent;
 import com.github.nisrulz.sensey.ChopDetector.ChopListener;
 import com.github.nisrulz.sensey.FlipDetector.FlipListener;

@@ -48,7 +48,7 @@ dependencies {
     testImplementation deps.robolectric
 
     // Support
-    implementation deps.support_compat
+    implementation deps.x_core
 }
 
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/nishant-config.gradle'

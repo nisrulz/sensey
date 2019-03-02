@@ -48,7 +48,7 @@ dependencies {
     testImplementation deps.junit
 
     // Support
-    implementation deps.app_compat_v7
+    implementation deps.x_app_compat
 
     // Module Dependency
     implementation project(':sensey')

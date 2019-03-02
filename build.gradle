@@ -31,7 +31,7 @@ buildscript {
             "android_maven_gradle_plugin": "2.1",
 
             // Support
-            "support_lib"                : "28.0.0",
+            "support_lib"                : '1.0.0',
 
             // Testing
             "junit"                      : "4.12",
@@ -49,8 +49,8 @@ buildscript {
             "android_maven_gradle_plugin": "com.github.dcendents:android-maven-gradle-plugin:${versions.android_maven_gradle_plugin}",
 
             //Support Library
-            "app_compat_v7"              : "com.android.support:appcompat-v7:${versions.support_lib}",
-            "support_compat"             : "com.android.support:support-compat:${versions.support_lib}",
+            "x_app_compat"              : "androidx.appcompat:appcompat:${versions.support_lib}",
+            "x_core"             : "androidx.core:core:${versions.support_lib}",
 
             // Kotlin
             "kotlin_stdlib"              : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",

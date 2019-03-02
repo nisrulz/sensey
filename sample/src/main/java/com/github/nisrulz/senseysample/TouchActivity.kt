@@ -18,8 +18,8 @@ package com.github.nisrulz.senseysample
 
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SwitchCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
