@@ -89,8 +89,8 @@ allprojects {
 
 ext {
     // Library Info
-    libVersionCode = 16
-    libVersionName = '1.9.0'
+    libVersionCode = 17
+    libVersionName = '2.0.0'
     libPomUrl = 'https://github.com/nisrulz/sensey'
     libGithubRepo = 'nisrulz/sensey'
 
