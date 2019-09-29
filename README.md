@@ -223,16 +223,11 @@ I welcome and encourage all pull requests. It usually will take me within 24-48 
 5. Check for existing [issues](https://github.com/nisrulz/sensey/issues) first, before filing an issue.
 6. Have fun!
 
-## Apps using Sensey
+## References of Sensey
 
-If you are using Sensey in your app and would like to be listed here, please let me know by opening a [new issue](https://github.com/nisrulz/sensey/issues/new)!
+Sensey is being used in production apps as well as research & development for thesis at universities.
 
-- Push-Ups - [Playstore](https://play.google.com/store/apps/details?id=com.mk.push)
-- FastAccess - [Github](https://github.com/k0shk0sh/FastAccess)
-- Catradiod - [Playstore](https://play.google.com/store/apps/details?id=com.yopachara.catradiod), [Github](https://github.com/yopachara/Catradiod)
-- Get Off Your Phone - [Play Store](https://play.google.com/store/apps/details?id=com.nephi.getoffyourphone)
-
-[Other apps using Sensey, via AppBrain Stats](https://www.appbrain.com/stats/libraries/details/sensey/sensey)
+[Click here for the full list of references](references/Readme.md)
 
 ## License
 
@@ -245,7 +240,6 @@ This project was created by [Nishant Srivastava](https://github.com/nisrulz/nisr
 > If you appreciate my work, consider buying me a cup of :coffee: to keep me recharged :metal:
 >
 > - [PayPal](https://www.paypal.me/nisrulz/5usd)
-> - Bitcoin Address: 13PjuJcfVW2Ad81fawqwLtku4bZLv1AxCL
 >
 > I love using my work and I'm available for contract work. Freelancing helps to maintain and keep [my open source projects](https://github.com/nisrulz/) up to date!
 
