@@ -14,29 +14,10 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
-// Common configs
-apply from: "$rootProject.projectDir/common_config.gradle"
-
-android {
-    defaultConfig {
-        applicationId "com.github.nisrulz.senseysample"
-
-        versionCode Versions.appCode
-        versionName Versions.appName
-    }
-}
-
-dependencies {
-    // Kotlin
-    implementation Dependencies.kotlinStdLib
-
-    // Support
-    implementation Dependencies.appCompat
-
-    // Module Dependency
-    implementation project(':sensey')
+object LibraryConfig {
+    const val libPomUrl = "https://github.com/nisrulz/sensey"
+    const val libGithubRepo = "nisrulz/sensey"
+    const val libModuleName = "sensey"
+    const val libModuleDesc = "Android library which makes playing with sensor events & detecting gestures a breeze."
+    const val libBintrayName = "com.github.nisrulz:sensey"
 }

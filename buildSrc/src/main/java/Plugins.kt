@@ -14,29 +14,15 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+object Plugins {
+    // Plugins
+    const val android = "com.android.tools.build:gradle:${Versions.androidGradlePlugin}"
 
-// Common configs
-apply from: "$rootProject.projectDir/common_config.gradle"
-
-android {
-    defaultConfig {
-        applicationId "com.github.nisrulz.senseysample"
-
-        versionCode Versions.appCode
-        versionName Versions.appName
-    }
-}
-
-dependencies {
     // Kotlin
-    implementation Dependencies.kotlinStdLib
+    const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
-    // Support
-    implementation Dependencies.appCompat
 
-    // Module Dependency
-    implementation project(':sensey')
+    // Publish
+    const val bintray = "com.jfrog.bintray.gradle:gradle-bintray-plugin:${Versions.bintrayPlugin}"
+    const val androidMaven = "com.github.dcendents:android-maven-gradle-plugin:${Versions.androidMavenPlugin}"
 }

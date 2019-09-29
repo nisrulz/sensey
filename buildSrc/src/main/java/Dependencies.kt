@@ -14,29 +14,18 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+object Dependencies {
 
-// Common configs
-apply from: "$rootProject.projectDir/common_config.gradle"
-
-android {
-    defaultConfig {
-        applicationId "com.github.nisrulz.senseysample"
-
-        versionCode Versions.appCode
-        versionName Versions.appName
-    }
-}
-
-dependencies {
     // Kotlin
-    implementation Dependencies.kotlinStdLib
+    const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
-    // Support
-    implementation Dependencies.appCompat
+    // Testing
+    const val junit = "junit:junit:${Versions.junit}"
+    const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espresso}"
+    const val testRunner = "androidx.test:runner:${Versions.testRunner}"
+    const val mockito = "org.mockito:mockito-core:${Versions.mockito}"
 
-    // Module Dependency
-    implementation project(':sensey')
+    // Support Library
+    const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
+    const val supportCore = "androidx.core:core:${Versions.support}"
 }

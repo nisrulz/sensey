@@ -16,43 +16,22 @@
 
 apply plugin: 'com.android.library'
 
+// Common configs
+apply from: "$rootProject.projectDir/common_config.gradle"
+
 android {
-    compileSdkVersion versions.compile_sdk
-
     defaultConfig {
-        minSdkVersion versions.min_sdk
-        targetSdkVersion versions.target_sdk
-
-        versionCode rootProject.ext.libVersionCode
-        versionName rootProject.ext.libVersionName
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        debug {
-            minifyEnabled false
-            debuggable true
-        }
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+        versionCode Versions.libraryCode
+        versionName Versions.libraryName
     }
 }
 
-
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     // Testing
-    testImplementation deps.junit
-    testImplementation deps.mockito
-
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation Dependencies.mockito
 
     // Support
-    implementation deps.x_core
+    implementation Dependencies.supportCore
 }
 
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/nishant-config.gradle'
