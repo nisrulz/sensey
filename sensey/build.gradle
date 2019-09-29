@@ -25,6 +25,8 @@ android {
 
         versionCode rootProject.ext.libVersionCode
         versionName rootProject.ext.libVersionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         debug {
@@ -45,7 +47,9 @@ dependencies {
     // Testing
     testImplementation deps.junit
     testImplementation deps.mockito
-    testImplementation deps.robolectric
+
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // Support
     implementation deps.x_core
