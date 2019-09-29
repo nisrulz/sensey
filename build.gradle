@@ -19,8 +19,8 @@
 buildscript {
     ext.versions = [
             "min_sdk"                    : 14,
-            "target_sdk"                 : 28,
-            "compile_sdk"                : 28,
+            "target_sdk"                 : 29,
+            "compile_sdk"                : 29,
             "android_gradle_plugin"      : "3.5.0",
 
             // Kotlin
