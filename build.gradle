@@ -24,7 +24,7 @@ buildscript {
             "android_gradle_plugin"      : "3.3.1",
 
             // Kotlin
-            "kotlin"                     : "1.3.21",
+            "kotlin"                     : "1.3.50",
 
             // Publish Library
             "gradle_bintray_plugin"      : "1.8.4",
