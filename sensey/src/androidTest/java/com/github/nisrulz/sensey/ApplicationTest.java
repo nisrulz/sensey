@@ -16,15 +16,26 @@
 
 package com.github.nisrulz.sensey;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import static org.junit.Assert.*;
+
+import android.content.Context;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import org.junit.*;
+import org.junit.runner.*;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * Instrumented test, which will execute on an Android device.
+ *
+ * See [testing documentation](http://d.android.com/tools/testing).
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
+@RunWith(AndroidJUnit4.class)
+class ExampleInstrumentedTest {
 
-    public ApplicationTest() {
-        super(Application.class);
+    @Test
+    void useAppContext() {
+        // Context of the app under test.
+        Context appContext = ApplicationProvider.getApplicationContext();
+        assertEquals("com.github.nisrulz.sensey", appContext.getPackageName());
     }
 }

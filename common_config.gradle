@@ -45,6 +45,8 @@ dependencies {
 
     // Testing
     testImplementation Dependencies.junit
+    androidTestImplementation Dependencies.androidJunitExt
     androidTestImplementation Dependencies.testRunner
+    androidTestImplementation Dependencies.testRules
     androidTestImplementation Dependencies.espressoCore
 }

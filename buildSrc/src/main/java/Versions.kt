@@ -26,7 +26,6 @@ object Versions {
     const val bintrayPlugin = "1.8.4"
     const val androidMavenPlugin = "2.1"
 
-
     // Dependencies
     const val kotlin = "1.3.50"
     const val support = "1.0.0"
@@ -34,9 +33,12 @@ object Versions {
 
     // Testing
     const val junit = "4.12"
+    const val junitExt = "1.1.1"
     const val espresso = "3.2.0"
     const val testRunner = "1.2.0"
+    const val testRules = "1.2.0"
     const val mockito = "2.12.0"
+    const val robolectric = "4.3"
 
     // App
     const val appCode = 1

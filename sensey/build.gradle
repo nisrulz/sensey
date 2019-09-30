@@ -24,11 +24,18 @@ android {
         versionCode Versions.libraryCode
         versionName Versions.libraryName
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
     // Testing
     testImplementation Dependencies.mockito
+    testImplementation Dependencies.robolectric
 
     // Support
     implementation Dependencies.supportCore
