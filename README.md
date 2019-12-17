@@ -44,6 +44,10 @@
     <a href="http://androidweekly.net/issues/issue-245">
         <img src="https://img.shields.io/badge/Android%20Weekly-%23245-blue.svg"/>
     </a>
+    <!-- Number of Android apps (AppBrain) -->
+    <a href="https://www.appbrain.com/stats/libraries/details/sensey/sensey">
+        <img src="https://www.appbrain.com/stats/libraries/shield/sensey.svg">
+    </a>
     <!-- Awesome Android -->
     <a href="https://snowdream.github.io/awesome-android/Other.html#Gesture">
         <img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"/>
