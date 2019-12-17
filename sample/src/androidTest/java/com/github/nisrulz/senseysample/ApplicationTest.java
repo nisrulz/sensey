@@ -16,15 +16,28 @@
 
 package com.github.nisrulz.senseysample;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import android.content.Context;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import static org.junit.Assert.assertEquals;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * Instrumented test, which will execute on an Android device.
+ * <p>
+ * See [testing documentation](http://d.android.com/tools/testing).
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
+@RunWith(AndroidJUnit4.class)
+class ExampleInstrumentedTest {
 
-    public ApplicationTest() {
-        super(Application.class);
-    }
+  @Test
+  void testContext() {
+    // Context of the app under test.
+    Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    assertEquals("com.github.nisrulz.senseysample", context.getPackageName());
+  }
 }
