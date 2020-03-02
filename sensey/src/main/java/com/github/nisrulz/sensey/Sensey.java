@@ -428,6 +428,10 @@ public class Sensey {
      * Stop.
      */
     public void stop() {
+        for (SensorDetector sensor : defaultSensorsMap.values()) {
+            stopSensorDetection(sensor);
+        }
+        defaultSensorsMap.clear();
         this.sensorManager = null;
     }
 
