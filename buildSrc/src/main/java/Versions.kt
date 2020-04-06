@@ -27,7 +27,7 @@ object Versions {
     const val androidMavenPlugin = "2.1"
 
     // Dependencies
-    const val kotlin = "1.3.70"
+    const val kotlin = "1.3.71"
     const val support = "1.0.0"
     const val appCompat = "1.1.0"
 
