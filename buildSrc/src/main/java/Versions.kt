@@ -47,5 +47,5 @@ object Versions {
 
     // Library
     const val libraryCode = 17
-    const val libraryName = "2.0.0"
+    const val libraryName = "1.9.0"
 }
