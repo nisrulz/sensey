@@ -237,10 +237,28 @@ Sensey is being used in production apps as well as research & development for th
 
 Licensed under the Apache License, Version 2.0, [click here for the full license](/LICENSE.txt).
 
-## Author & support
+# Author & Contributors
 
 This project was created by [Nishant Srivastava](https://github.com/nisrulz/nisrulz.github.io#nishant-srivastava) but hopefully developed and maintained by many others. See the [the list of contributors here](https://github.com/nisrulz/sensey/graphs/contributors).
 
-If you appreciate my work, consider [buying me](https://www.paypal.me/nisrulz/5usd) a cup of :coffee: to keep me recharged :metal: [[PayPal](https://www.paypal.me/nisrulz/5usd)]
+# Ways You Can Help/Support this project
+
+- **Star** this repository and tell all your friends about it.
+- **Watch** for new releases to get an update if something happens.
+- [**Open an Issue**](https://github.com/nisrulz/sensey/issues/new/choose) if you catch any error in copy text or within the project itself.
+- **Open a Pull Request** to add more reference links of where Sensey is being used or fixes against [existing issues](https://github.com/nisrulz/sensey/issues).
+
+- If you can spare a few 💵:
+
+  - [Buy me a coffee :coffee:](https://www.buymeacoffee.com/nisrulz) (one-time),
+  - or [Sponsor me on GitHub](https://github.com/sponsors/nisrulz) (recurring monthly).
+
+- Tell me you like this project or how it helped you out!
+
+  - [Comment in the project's guestbook](https://github.com/nisrulz/sensey/issues/54) :blush:,
+  - Reach out on [Twitter](https://twitter.com/nisrulz),
+  - or [send a nice email my way](mailto:nisrulz@gmail.com)!
+
+Thanks for your interest in this software :heart:
 
 <img src="http://forthebadge.com/images/badges/built-for-android.svg" />
