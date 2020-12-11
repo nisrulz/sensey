@@ -18,23 +18,23 @@ object Versions {
 
     // Build Config
     const val minSDK = 14
-    const val compileSDK = 29
+    const val compileSDK = 30
     const val targetSDK = compileSDK
 
     // Plugins
-    const val androidGradlePlugin = "4.0.0"
+    const val androidGradlePlugin = "4.2.0-beta01"
     const val bintrayPlugin = "1.8.4"
     const val androidMavenPlugin = "2.1"
 
     // Dependencies
-    const val kotlin = "1.3.72"
-    const val support = "1.0.0"
-    const val appCompat = "1.1.0"
+    const val kotlin = "1.4.21"
+    const val support = "1.3.2"
+    const val appCompat = "1.2.0"
 
     // Testing
-    const val junit = "4.12"
-    const val junitExt = "1.1.1"
-    const val espresso = "3.2.0"
+    const val junit = "4.13.1"
+    const val junitExt = "1.1.2"
+    const val espresso = "3.3.0"
     const val testRunner = "1.2.0"
     const val testRules = "1.2.0"
     const val mockito = "2.12.0"
