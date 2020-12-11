@@ -21,13 +21,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import com.github.nisrulz.sensey.ChopDetector.ChopListener
 import com.github.nisrulz.sensey.FlipDetector.FlipListener
 import com.github.nisrulz.sensey.LightDetector.LightListener
@@ -46,19 +48,20 @@ import com.github.nisrulz.sensey.TiltDirectionDetector
 import com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListener
 import com.github.nisrulz.sensey.WaveDetector.WaveListener
 import com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener
-import kotlinx.android.synthetic.main.activity_main.btn_touchevent
-import kotlinx.android.synthetic.main.activity_main.linearlayout_controls
-import kotlinx.android.synthetic.main.activity_main.switchMainActivitySound
-import kotlinx.android.synthetic.main.activity_main.textView_result
 import java.text.DecimalFormat
 
-class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener, FlipListener, LightListener, OrientationListener, ProximityListener, WaveListener, SoundLevelListener, MovementListener, ChopListener, WristTwistListener, RotationAngleListener, TiltDirectionListener, StepListener, ScoopListener, PickupDeviceListener {
+class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener, FlipListener, LightListener, OrientationListener, ProximityListener, WaveListener,
+    SoundLevelListener, MovementListener, ChopListener, WristTwistListener, RotationAngleListener, TiltDirectionListener, StepListener, ScoopListener, PickupDeviceListener {
 
     private var hasRecordAudioPermission = false
     private val recordAudioPermission = permission.RECORD_AUDIO
     private val LOGTAG = javaClass.canonicalName
 
     private lateinit var handler: Handler
+    private lateinit var btn_touchevent: Button
+    private lateinit var linearlayout_controls: LinearLayout
+    private lateinit var textView_result: TextView
+    private lateinit var switchMainActivitySound: SwitchCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +70,7 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
         hasRecordAudioPermission = RuntimePermissionUtil.checkPermissonGranted(this, recordAudioPermission)
 
         // Init UI controls,views and handler
+        setupUi()
         handler = Handler()
 
         // Setup switches
@@ -76,6 +80,13 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
         btn_touchevent.setOnClickListener {
             startActivity(Intent(this@MainActivity, TouchActivity::class.java))
         }
+    }
+
+    private fun setupUi() {
+        btn_touchevent = findViewById(R.id.btn_touchevent)
+        linearlayout_controls = findViewById(R.id.linearlayout_controls)
+        textView_result = findViewById(R.id.textView_result)
+        switchMainActivitySound = findViewById(R.id.switchMainActivitySound)
     }
 
     override fun onPause() {
@@ -94,7 +105,6 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
         // Stop Sensey and release the context held by it
         Sensey.getInstance().stop()
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -125,7 +135,6 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
         }
     }
 
-
     private fun stopAllDetectors() {
         Sensey.getInstance()?.let {
             it.stopShakeDetection(this)
@@ -146,8 +155,10 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == 100) {
             RuntimePermissionUtil.onRequestPermissionsResult(grantResults, object : RPResultListener {
                 override fun onPermissionDenied() {
@@ -211,7 +222,6 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
                     } else {
                         RuntimePermissionUtil.requestPermission(this, recordAudioPermission, 100)
                     }
-
                 } else {
                     it.stopSoundLevelDetection()
                 }

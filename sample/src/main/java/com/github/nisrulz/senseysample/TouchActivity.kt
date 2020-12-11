@@ -18,36 +18,43 @@ package com.github.nisrulz.senseysample
 
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import com.github.nisrulz.sensey.PinchScaleDetector
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.TouchTypeDetector
-import kotlinx.android.synthetic.main.activity_main.linearlayout_controls
-import kotlinx.android.synthetic.main.activity_touch.textView_result
 
 class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener {
 
     private val LOGTAG = javaClass.canonicalName
 
     private lateinit var handler: Handler
+    private lateinit var textView_result: TextView
+    private lateinit var linearlayout_controls: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_touch)
 
         // Init UI controls,views and handler
+        setupUi()
         handler = Handler()
 
         //Setup Switches
         setOnCheckedChangeListenerForAllSwitches()
         setAllSwitchesToFalseState()
+    }
+
+    private fun setupUi() {
+        textView_result = findViewById(R.id.textView_result)
+        linearlayout_controls = findViewById(R.id.linearlayout_controls)
     }
 
     override fun onPause() {
@@ -64,7 +71,6 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
         // *** IMPORTANT ***
         // Stop Sensey and release the context held by it
         Sensey.getInstance().stop()
-
     }
 
     override fun onResume() {
@@ -73,7 +79,6 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
         // Init Sensey
         Sensey.getInstance().init(this)
     }
-
 
     private fun setAllSwitchesToFalseState() {
         var v: View
@@ -96,7 +101,6 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
             }
         }
     }
-
 
     private fun stopAllDetectors() {
         Sensey.getInstance()?.apply {
@@ -146,69 +150,69 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
 
     private fun startPinchDetection() {
         Sensey.getInstance()
-                .startPinchScaleDetection(this@TouchActivity, object : PinchScaleDetector.PinchScaleListener {
-                    override fun onScale(scaleGestureDetector: ScaleGestureDetector, isScalingOut: Boolean) {
-                        if (isScalingOut) {
-                            setResultTextView("Scaling Out")
-                        } else {
-                            setResultTextView("Scaling In")
-                        }
+            .startPinchScaleDetection(this@TouchActivity, object : PinchScaleDetector.PinchScaleListener {
+                override fun onScale(scaleGestureDetector: ScaleGestureDetector, isScalingOut: Boolean) {
+                    if (isScalingOut) {
+                        setResultTextView("Scaling Out")
+                    } else {
+                        setResultTextView("Scaling In")
                     }
+                }
 
-                    override fun onScaleEnd(scaleGestureDetector: ScaleGestureDetector) {
-                        setResultTextView("Scaling : Stopped")
-                    }
+                override fun onScaleEnd(scaleGestureDetector: ScaleGestureDetector) {
+                    setResultTextView("Scaling : Stopped")
+                }
 
-                    override fun onScaleStart(scaleGestureDetector: ScaleGestureDetector) {
-                        setResultTextView("Scaling : Started")
-                    }
-                })
+                override fun onScaleStart(scaleGestureDetector: ScaleGestureDetector) {
+                    setResultTextView("Scaling : Started")
+                }
+            })
     }
 
     private fun startTouchTypeDetection() {
         Sensey.getInstance()
-                .startTouchTypeDetection(this, object : TouchTypeDetector.TouchTypListener {
-                    override fun onDoubleTap() {
-                        setResultTextView("Double Tap")
-                    }
+            .startTouchTypeDetection(this, object : TouchTypeDetector.TouchTypListener {
+                override fun onDoubleTap() {
+                    setResultTextView("Double Tap")
+                }
 
-                    override fun onLongPress() {
-                        setResultTextView("Long press")
-                    }
+                override fun onLongPress() {
+                    setResultTextView("Long press")
+                }
 
-                    override fun onScroll(scrollDirection: Int) {
-                        when (scrollDirection) {
-                            TouchTypeDetector.SCROLL_DIR_UP -> setResultTextView("Scrolling Up")
-                            TouchTypeDetector.SCROLL_DIR_DOWN -> setResultTextView("Scrolling Down")
-                            TouchTypeDetector.SCROLL_DIR_LEFT -> setResultTextView("Scrolling Left")
-                            TouchTypeDetector.SCROLL_DIR_RIGHT -> setResultTextView("Scrolling Right")
-                            else -> {
-                            }
-                        }// Do nothing
-                    }
+                override fun onScroll(scrollDirection: Int) {
+                    when (scrollDirection) {
+                        TouchTypeDetector.SCROLL_DIR_UP -> setResultTextView("Scrolling Up")
+                        TouchTypeDetector.SCROLL_DIR_DOWN -> setResultTextView("Scrolling Down")
+                        TouchTypeDetector.SCROLL_DIR_LEFT -> setResultTextView("Scrolling Left")
+                        TouchTypeDetector.SCROLL_DIR_RIGHT -> setResultTextView("Scrolling Right")
+                        else -> {
+                        }
+                    }// Do nothing
+                }
 
-                    override fun onSingleTap() {
-                        setResultTextView("Single Tap")
-                    }
+                override fun onSingleTap() {
+                    setResultTextView("Single Tap")
+                }
 
-                    override fun onSwipe(swipeDirection: Int) {
-                        when (swipeDirection) {
-                            TouchTypeDetector.SWIPE_DIR_UP -> setResultTextView("Swipe Up")
-                            TouchTypeDetector.SWIPE_DIR_DOWN -> setResultTextView("Swipe Down")
-                            TouchTypeDetector.SWIPE_DIR_LEFT -> setResultTextView("Swipe Left")
-                            TouchTypeDetector.SWIPE_DIR_RIGHT -> setResultTextView("Swipe Right")
-                            else -> {
-                            }
-                        }//do nothing
-                    }
+                override fun onSwipe(swipeDirection: Int) {
+                    when (swipeDirection) {
+                        TouchTypeDetector.SWIPE_DIR_UP -> setResultTextView("Swipe Up")
+                        TouchTypeDetector.SWIPE_DIR_DOWN -> setResultTextView("Swipe Down")
+                        TouchTypeDetector.SWIPE_DIR_LEFT -> setResultTextView("Swipe Left")
+                        TouchTypeDetector.SWIPE_DIR_RIGHT -> setResultTextView("Swipe Right")
+                        else -> {
+                        }
+                    }//do nothing
+                }
 
-                    override fun onThreeFingerSingleTap() {
-                        setResultTextView("Three Finger Tap")
-                    }
+                override fun onThreeFingerSingleTap() {
+                    setResultTextView("Three Finger Tap")
+                }
 
-                    override fun onTwoFingerSingleTap() {
-                        setResultTextView("Two Finger Tap")
-                    }
-                })
+                override fun onTwoFingerSingleTap() {
+                    setResultTextView("Two Finger Tap")
+                }
+            })
     }
 }
