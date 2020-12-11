@@ -166,7 +166,7 @@ where `{latest version}` corresponds to published version in [ ![Download](https
 
 # Simple example
 
-- To initialize Sensey under your `onCreate()`` in the activity/service, call
+- To initialize Sensey under your `onCreate()` in the activity/service, call
 
 ```java
 Sensey.getInstance().init(context);
