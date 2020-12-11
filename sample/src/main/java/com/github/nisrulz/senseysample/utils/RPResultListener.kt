@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.nisrulz.senseysample
+package com.github.nisrulz.senseysample.utils
 
 internal interface RPResultListener {
 

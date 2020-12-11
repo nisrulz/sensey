@@ -30,31 +30,27 @@ import androidx.appcompat.widget.SwitchCompat
 import com.github.nisrulz.sensey.PinchScaleDetector
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.TouchTypeDetector
+import com.github.nisrulz.senseysample.databinding.ActivityTouchBinding
 
 class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener {
+
+    private lateinit var binding: ActivityTouchBinding
 
     private val LOGTAG = javaClass.canonicalName
 
     private lateinit var handler: Handler
-    private lateinit var textView_result: TextView
-    private lateinit var linearlayout_controls: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_touch)
+        binding = ActivityTouchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Init UI controls,views and handler
-        setupUi()
         handler = Handler()
 
         //Setup Switches
         setOnCheckedChangeListenerForAllSwitches()
         setAllSwitchesToFalseState()
-    }
-
-    private fun setupUi() {
-        textView_result = findViewById(R.id.textView_result)
-        linearlayout_controls = findViewById(R.id.linearlayout_controls)
     }
 
     override fun onPause() {
@@ -66,7 +62,7 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
         // Set the all switches to off position
         setAllSwitchesToFalseState()
 
-        resetResultInView(textView_result)
+        resetResultInView(binding.textViewResult)
 
         // *** IMPORTANT ***
         // Stop Sensey and release the context held by it
@@ -82,8 +78,8 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
 
     private fun setAllSwitchesToFalseState() {
         var v: View
-        for (i in 0 until linearlayout_controls.childCount) {
-            v = linearlayout_controls.getChildAt(i)
+        for (i in 0 until binding.linearlayoutControls.childCount) {
+            v = binding.linearlayoutControls.getChildAt(i)
             //do something with your child element
             if (v is SwitchCompat) {
                 v.isChecked = false
@@ -93,8 +89,8 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
 
     private fun setOnCheckedChangeListenerForAllSwitches() {
         var v: View
-        for (i in 0 until linearlayout_controls.childCount) {
-            v = linearlayout_controls.getChildAt(i)
+        for (i in 0 until binding.linearlayoutControls.childCount) {
+            v = binding.linearlayoutControls.getChildAt(i)
             //do something with your child element
             if (v is SwitchCompat) {
                 v.setOnCheckedChangeListener(this)
@@ -139,9 +135,9 @@ class TouchActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListene
     }
 
     private fun setResultTextView(text: String) {
-        if (textView_result != null) {
-            textView_result.text = text
-            resetResultInView(textView_result)
+        if (binding.textViewResult != null) {
+            binding.textViewResult.text = text
+            resetResultInView(binding.textViewResult)
             if (BuildConfig.DEBUG) {
                 Log.d(LOGTAG, text)
             }

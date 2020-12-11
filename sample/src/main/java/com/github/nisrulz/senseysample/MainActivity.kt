@@ -23,10 +23,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -48,45 +46,41 @@ import com.github.nisrulz.sensey.TiltDirectionDetector
 import com.github.nisrulz.sensey.TiltDirectionDetector.TiltDirectionListener
 import com.github.nisrulz.sensey.WaveDetector.WaveListener
 import com.github.nisrulz.sensey.WristTwistDetector.WristTwistListener
+import com.github.nisrulz.senseysample.databinding.ActivityMainBinding
+import com.github.nisrulz.senseysample.utils.RPResultListener
+import com.github.nisrulz.senseysample.utils.RuntimePermissionUtil
 import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener, FlipListener, LightListener, OrientationListener, ProximityListener, WaveListener,
     SoundLevelListener, MovementListener, ChopListener, WristTwistListener, RotationAngleListener, TiltDirectionListener, StepListener, ScoopListener, PickupDeviceListener {
+
+    private lateinit var binding: ActivityMainBinding
 
     private var hasRecordAudioPermission = false
     private val recordAudioPermission = permission.RECORD_AUDIO
     private val LOGTAG = javaClass.canonicalName
 
     private lateinit var handler: Handler
-    private lateinit var btn_touchevent: Button
-    private lateinit var linearlayout_controls: LinearLayout
-    private lateinit var textView_result: TextView
-    private lateinit var switchMainActivitySound: SwitchCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         hasRecordAudioPermission = RuntimePermissionUtil.checkPermissonGranted(this, recordAudioPermission)
 
         // Init UI controls,views and handler
-        setupUi()
         handler = Handler()
 
         // Setup switches
         setAllSwitchesToFalseState()
         setOnCheckedChangeListenerForAllSwitches()
 
-        btn_touchevent.setOnClickListener {
+        binding.btnTouchevent.setOnClickListener {
             startActivity(Intent(this@MainActivity, TouchActivity::class.java))
         }
-    }
-
-    private fun setupUi() {
-        btn_touchevent = findViewById(R.id.btn_touchevent)
-        linearlayout_controls = findViewById(R.id.linearlayout_controls)
-        textView_result = findViewById(R.id.textView_result)
-        switchMainActivitySound = findViewById(R.id.switchMainActivitySound)
     }
 
     override fun onPause() {
@@ -99,7 +93,7 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
         setAllSwitchesToFalseState()
 
         // Reset the result view
-        resetResultInView(textView_result)
+        resetResultInView(binding.textViewResult)
 
         // *** IMPORTANT ***
         // Stop Sensey and release the context held by it
@@ -115,8 +109,8 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
 
     private fun setAllSwitchesToFalseState() {
         var v: View
-        for (i in 0 until linearlayout_controls.childCount) {
-            v = linearlayout_controls.getChildAt(i)
+        for (i in 0 until binding.linearlayoutControls.childCount) {
+            v = binding.linearlayoutControls.getChildAt(i)
             //do something with your child element
             if (v is SwitchCompat) {
                 v.isChecked = false
@@ -126,8 +120,8 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
 
     private fun setOnCheckedChangeListenerForAllSwitches() {
         var v: View
-        for (i in 0 until linearlayout_controls.childCount) {
-            v = linearlayout_controls.getChildAt(i)
+        for (i in 0 until binding.linearlayoutControls.childCount) {
+            v = binding.linearlayoutControls.getChildAt(i)
             //do something with your child element
             if (v is SwitchCompat) {
                 v.setOnCheckedChangeListener(this)
@@ -168,7 +162,7 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
                 override fun onPermissionGranted() {
                     if (RuntimePermissionUtil.checkPermissonGranted(this@MainActivity, recordAudioPermission)) {
                         hasRecordAudioPermission = true
-                        switchMainActivitySound.isChecked = true
+                        binding.switchMainActivitySound.isChecked = true
                     }
                 }
             })
@@ -399,11 +393,11 @@ class MainActivity : AppCompatActivity(), OnCheckedChangeListener, ShakeListener
     }
 
     private fun setResultTextView(text: String, realtime: Boolean) {
-        if (textView_result != null) {
+        if (binding.textViewResult != null) {
             runOnUiThread {
-                textView_result.text = text
+                binding.textViewResult.text = text
                 if (!realtime) {
-                    resetResultInView(textView_result)
+                    resetResultInView(binding.textViewResult)
                 }
             }
 

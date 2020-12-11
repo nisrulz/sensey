@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.nisrulz.senseysample
+package com.github.nisrulz.senseysample.utils
 
 import android.app.Activity
 import android.content.Context
@@ -28,7 +28,8 @@ internal object RuntimePermissionUtil {
     }
 
     fun onRequestPermissionsResult(grantResults: IntArray,
-                                   rpResultListener: RPResultListener) {
+                                   rpResultListener: RPResultListener
+    ) {
         if (grantResults.isNotEmpty()) {
             for (grantResult in grantResults) {
                 if (grantResult == PackageManager.PERMISSION_GRANTED) {
