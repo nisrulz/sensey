@@ -1,104 +1,306 @@
-in.excogitation.lib.sensey.BuildConfig -> in.excogitation.lib.sensey.BuildConfig:
-    boolean DEBUG -> DEBUG
-    java.lang.String APPLICATION_ID -> APPLICATION_ID
-    java.lang.String BUILD_TYPE -> BUILD_TYPE
-    java.lang.String FLAVOR -> FLAVOR
-    int VERSION_CODE -> VERSION_CODE
-    java.lang.String VERSION_NAME -> VERSION_NAME
-    6:6:void <init>() -> <init>
-in.excogitation.lib.sensey.FlipDetector -> in.excogitation.lib.sensey.FlipDetector:
-    in.excogitation.lib.sensey.FlipDetector$FlipListener flipListener -> a
-    android.hardware.SensorEventListener sensorEventListener -> b
-    8:35:void <init>() -> <init>
-    8:8:in.excogitation.lib.sensey.FlipDetector$FlipListener access$000(in.excogitation.lib.sensey.FlipDetector) -> a
-in.excogitation.lib.sensey.FlipDetector$1 -> in.excogitation.lib.sensey.FlipDetector$1:
-    in.excogitation.lib.sensey.FlipDetector this$0 -> a
-    18:18:void <init>(in.excogitation.lib.sensey.FlipDetector) -> <init>
-    21:27:void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
-    32:32:void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
-in.excogitation.lib.sensey.FlipDetector$FlipListener -> in.excogitation.lib.sensey.FlipDetector$FlipListener:
-    void onFaceUp() -> onFaceUp
-    void onFaceDown() -> onFaceDown
-in.excogitation.lib.sensey.OrientationDetector -> in.excogitation.lib.sensey.OrientationDetector:
-    in.excogitation.lib.sensey.OrientationDetector$OrientationListener orientationListener -> a
-    android.hardware.SensorEventListener sensorEventListener -> b
-    8:41:void <init>() -> <init>
-    8:8:in.excogitation.lib.sensey.OrientationDetector$OrientationListener access$000(in.excogitation.lib.sensey.OrientationDetector) -> a
-in.excogitation.lib.sensey.OrientationDetector$1 -> in.excogitation.lib.sensey.OrientationDetector$1:
-    in.excogitation.lib.sensey.OrientationDetector this$0 -> a
-    18:18:void <init>(in.excogitation.lib.sensey.OrientationDetector) -> <init>
-    21:33:void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
-    38:38:void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
-in.excogitation.lib.sensey.OrientationDetector$OrientationListener -> in.excogitation.lib.sensey.OrientationDetector$OrientationListener:
-    void onTopSideUp() -> onTopSideUp
-    void onBottomSideUp() -> onBottomSideUp
-    void onRightSideUp() -> onRightSideUp
-    void onLeftSideUp() -> onLeftSideUp
-in.excogitation.lib.sensey.ProximityDetector -> in.excogitation.lib.sensey.ProximityDetector:
-    in.excogitation.lib.sensey.ProximityDetector$ProximityListener proximityListener -> a
-    float max -> b
-    android.hardware.SensorEventListener sensorEventListener -> c
-    8:40:void <init>() -> <init>
-    8:8:in.excogitation.lib.sensey.ProximityDetector$ProximityListener access$000(in.excogitation.lib.sensey.ProximityDetector) -> a
-in.excogitation.lib.sensey.ProximityDetector$1 -> in.excogitation.lib.sensey.ProximityDetector$1:
-    in.excogitation.lib.sensey.ProximityDetector this$0 -> a
-    21:21:void <init>(in.excogitation.lib.sensey.ProximityDetector) -> <init>
-    24:31:void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
-    36:36:void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
-in.excogitation.lib.sensey.ProximityDetector$ProximityListener -> in.excogitation.lib.sensey.ProximityDetector$ProximityListener:
-    void onNear() -> onNear
-    void onFar() -> onFar
-in.excogitation.lib.sensey.Sensey -> in.excogitation.lib.sensey.Sensey:
-    android.hardware.SensorManager sensorManager -> a
-    in.excogitation.lib.sensey.ShakeDetector shakeDetector -> b
-    in.excogitation.lib.sensey.FlipDetector flipDetector -> c
-    in.excogitation.lib.sensey.OrientationDetector orientationDetector -> d
-    in.excogitation.lib.sensey.ProximityDetector proximityDetector -> e
-    17:18:void <init>() -> <init>
-    25:25:in.excogitation.lib.sensey.Sensey getInstance() -> getInstance
-    29:30:void init(android.content.Context) -> init
-    33:40:void startShakeDetection(in.excogitation.lib.sensey.ShakeDetector$ShakeListener) -> startShakeDetection
-    1018:1023:void in.excogitation.lib.sensey.ShakeDetector.init(in.excogitation.lib.sensey.ShakeDetector$ShakeListener):18:23 -> startShakeDetection
-    1018:1023:void startShakeDetection(in.excogitation.lib.sensey.ShakeDetector$ShakeListener):38 -> startShakeDetection
-    43:45:void stopShakeDetection() -> stopShakeDetection
-    48:55:void startFlipDetection(in.excogitation.lib.sensey.FlipDetector$FlipListener) -> startFlipDetection
-    2014:2015:void in.excogitation.lib.sensey.FlipDetector.init(in.excogitation.lib.sensey.FlipDetector$FlipListener):14:15 -> startFlipDetection
-    2014:2015:void startFlipDetection(in.excogitation.lib.sensey.FlipDetector$FlipListener):53 -> startFlipDetection
-    58:60:void stopFlipDetection() -> stopFlipDetection
-    64:73:void startOrientationDetection(in.excogitation.lib.sensey.OrientationDetector$OrientationListener) -> startOrientationDetection
-    3014:3015:void in.excogitation.lib.sensey.OrientationDetector.init(in.excogitation.lib.sensey.OrientationDetector$OrientationListener):14:15 -> startOrientationDetection
-    3014:3015:void startOrientationDetection(in.excogitation.lib.sensey.OrientationDetector$OrientationListener):71 -> startOrientationDetection
-    76:78:void stopOrientationDetection() -> stopOrientationDetection
-    81:92:void startProximityDetection(in.excogitation.lib.sensey.ProximityDetector$ProximityListener) -> startProximityDetection
-    3017:3018:void in.excogitation.lib.sensey.ProximityDetector.init(in.excogitation.lib.sensey.ProximityDetector$ProximityListener):17:18 -> startProximityDetection
-    3017:3018:void startProximityDetection(in.excogitation.lib.sensey.ProximityDetector$ProximityListener):90 -> startProximityDetection
-    96:99:void stopProximityDetection() -> stopProximityDetection
-    7:7:void <init>(byte) -> <init>
-in.excogitation.lib.sensey.Sensey$LazyHolder -> in.excogitation.lib.sensey.Sensey$a:
-    in.excogitation.lib.sensey.Sensey INSTANCE -> a
-    20:20:in.excogitation.lib.sensey.Sensey access$100() -> a
-    21:21:void <clinit>() -> <clinit>
-in.excogitation.lib.sensey.ShakeDetector -> in.excogitation.lib.sensey.ShakeDetector:
+# compiler: R8
+# compiler_version: 2.2.40
+# pg_map_id: 517d4c5
+# common_typos_disable
+com.github.nisrulz.sensey.BuildConfig -> com.github.nisrulz.sensey.BuildConfig:
+    1:1:void <init>():6:6 -> <init>
+com.github.nisrulz.sensey.ChopDetector -> com.github.nisrulz.sensey.ChopDetector:
+    long timeForChopGesture -> f
+    float threshold -> e
+    long lastTimeChopDetected -> d
+    com.github.nisrulz.sensey.ChopDetector$ChopListener chopListener -> b
+    boolean isGestureInProgress -> c
+    1:1:void <init>(com.github.nisrulz.sensey.ChopDetector$ChopListener):41:41 -> <init>
+    2:2:void <init>(float,long,com.github.nisrulz.sensey.ChopDetector$ChopListener):45:45 -> <init>
+    3:19:void <init>(float,long,com.github.nisrulz.sensey.ChopDetector$ChopListener):32:48 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):23:23 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):23:23 -> onSensorChanged
+    1:14:void onSensorEvent(android.hardware.SensorEvent):53:66 -> onSensorEvent
+com.github.nisrulz.sensey.FlipDetector -> com.github.nisrulz.sensey.FlipDetector:
+    com.github.nisrulz.sensey.FlipDetector$FlipListener flipListener -> c
+    int eventOccurred -> b
+    1:3:void <init>(com.github.nisrulz.sensey.FlipDetector$FlipListener):37:39 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):23:23 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):23:23 -> onSensorChanged
+    1:7:void onSensorEvent(android.hardware.SensorEvent):44:50 -> onSensorEvent
+com.github.nisrulz.sensey.LightDetector -> com.github.nisrulz.sensey.LightDetector:
+    com.github.nisrulz.sensey.LightDetector$LightListener lightListener -> b
+    float threshold -> c
+    1:1:void <init>(com.github.nisrulz.sensey.LightDetector$LightListener):37:37 -> <init>
+    2:4:void <init>(float,com.github.nisrulz.sensey.LightDetector$LightListener):41:43 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):23:23 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):23:23 -> onSensorChanged
+    1:7:void onSensorEvent(android.hardware.SensorEvent):48:54 -> onSensorEvent
+com.github.nisrulz.sensey.MovementDetector -> com.github.nisrulz.sensey.MovementDetector:
+    float threshold -> f
+    long timeBeforeDeclaringStationary -> g
+    float mAccelCurrent -> d
+    long lastTimeMovementDetected -> c
+    boolean isMoving -> b
+    com.github.nisrulz.sensey.MovementDetector$MovementListener movementListener -> e
+    1:1:void <init>(com.github.nisrulz.sensey.MovementDetector$MovementListener):46:46 -> <init>
+    2:2:void <init>(float,long,com.github.nisrulz.sensey.MovementDetector$MovementListener):51:51 -> <init>
+    3:24:void <init>(float,long,com.github.nisrulz.sensey.MovementDetector$MovementListener):33:54 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):24:24 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):24:24 -> onSensorChanged
+    1:25:void onSensorEvent(android.hardware.SensorEvent):59:83 -> onSensorEvent
+com.github.nisrulz.sensey.OrientationDetector -> com.github.nisrulz.sensey.OrientationDetector:
+    float[] pitches -> i
+    float[] rolls -> j
+    int smoothness -> k
+    float[] mGeomagnetic -> e
+    float averageRoll -> c
     float[] mGravity -> f
-    float mAccel -> a
-    float mAccelCurrent -> b
-    float mAccelLast -> c
-    in.excogitation.lib.sensey.ShakeDetector$ShakeListener shakeListener -> d
-    android.hardware.SensorEventListener sensorEventListener -> e
-    8:50:void <init>() -> <init>
-    8:8:float[] access$002(in.excogitation.lib.sensey.ShakeDetector,float[]) -> a
-    8:8:float[] access$000(in.excogitation.lib.sensey.ShakeDetector) -> a
-    8:8:float access$102(in.excogitation.lib.sensey.ShakeDetector,float) -> a
-    8:8:float access$200(in.excogitation.lib.sensey.ShakeDetector) -> b
-    8:8:float access$202(in.excogitation.lib.sensey.ShakeDetector,float) -> b
-    8:8:float access$100(in.excogitation.lib.sensey.ShakeDetector) -> c
-    8:8:float access$302(in.excogitation.lib.sensey.ShakeDetector,float) -> c
-    8:8:float access$300(in.excogitation.lib.sensey.ShakeDetector) -> d
-    8:8:in.excogitation.lib.sensey.ShakeDetector$ShakeListener access$400(in.excogitation.lib.sensey.ShakeDetector) -> e
-in.excogitation.lib.sensey.ShakeDetector$1 -> in.excogitation.lib.sensey.ShakeDetector$1:
-    in.excogitation.lib.sensey.ShakeDetector this$0 -> a
-    25:25:void <init>(in.excogitation.lib.sensey.ShakeDetector) -> <init>
-    28:42:void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
-    46:46:void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
-in.excogitation.lib.sensey.ShakeDetector$ShakeListener -> in.excogitation.lib.sensey.ShakeDetector$ShakeListener:
-    void onShakeDetected() -> onShakeDetected
+    int orientation -> g
+    float averagePitch -> b
+    int eventOccurred -> d
+    com.github.nisrulz.sensey.OrientationDetector$OrientationListener orientationListener -> h
+    1:1:void <init>(com.github.nisrulz.sensey.OrientationDetector$OrientationListener):68:68 -> <init>
+    2:2:void <init>(int,com.github.nisrulz.sensey.OrientationDetector$OrientationListener):72:72 -> <init>
+    3:33:void <init>(int,com.github.nisrulz.sensey.OrientationDetector$OrientationListener):47:77 -> <init>
+    1:7:float addValue(float,float[]):132:138 -> a
+    1:18:int calculateOrientation():145:162 -> b
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):26:26 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):26:26 -> onSensorChanged
+    1:33:void onSensorEvent(android.hardware.SensorEvent):82:114 -> onSensorEvent
+    34:54:void onSensorEvent(android.hardware.SensorEvent):100:120 -> onSensorEvent
+    55:57:void onSensorEvent(android.hardware.SensorEvent):106:108 -> onSensorEvent
+com.github.nisrulz.sensey.PickupDeviceDetector -> com.github.nisrulz.sensey.PickupDeviceDetector:
+    com.github.nisrulz.sensey.PickupDeviceDetector$PickupDeviceListener pickupDeviceListener -> b
+    1:2:void <init>(com.github.nisrulz.sensey.PickupDeviceDetector$PickupDeviceListener):35:36 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):23:23 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):23:23 -> onSensorChanged
+    1:7:void onSensorEvent(android.hardware.SensorEvent):41:47 -> onSensorEvent
+com.github.nisrulz.sensey.PinchScaleDetector -> com.github.nisrulz.sensey.PinchScaleDetector:
+    android.view.ScaleGestureDetector scaleGestureDetector -> e
+    int countOfScaleOut -> b
+    int eventOccurred -> c
+    com.github.nisrulz.sensey.PinchScaleDetector$PinchScaleListener pinchScaleListener -> d
+    int countOfScaleIn -> a
+    1:6:void <init>(android.content.Context,com.github.nisrulz.sensey.PinchScaleDetector$PinchScaleListener):81:86 -> <init>
+    1:1:int access$000(com.github.nisrulz.sensey.PinchScaleDetector):23:23 -> a
+    2:2:int access$002(com.github.nisrulz.sensey.PinchScaleDetector,int):23:23 -> a
+    3:3:boolean onTouchEvent(android.view.MotionEvent):90:90 -> a
+    1:1:int access$100(com.github.nisrulz.sensey.PinchScaleDetector):23:23 -> b
+    2:2:int access$102(com.github.nisrulz.sensey.PinchScaleDetector,int):23:23 -> b
+    1:1:com.github.nisrulz.sensey.PinchScaleDetector$PinchScaleListener access$200(com.github.nisrulz.sensey.PinchScaleDetector):23:23 -> c
+    2:2:int access$302(com.github.nisrulz.sensey.PinchScaleDetector,int):23:23 -> c
+    1:1:int access$300(com.github.nisrulz.sensey.PinchScaleDetector):23:23 -> d
+com.github.nisrulz.sensey.PinchScaleDetector$1 -> com.github.nisrulz.sensey.PinchScaleDetector$a:
+com.github.nisrulz.sensey.PinchScaleDetector$ScaleGestureListener -> com.github.nisrulz.sensey.PinchScaleDetector$b:
+    com.github.nisrulz.sensey.PinchScaleDetector this$0 -> a
+    1:1:void <init>(com.github.nisrulz.sensey.PinchScaleDetector):25:25 -> <init>
+    2:2:void <init>(com.github.nisrulz.sensey.PinchScaleDetector,com.github.nisrulz.sensey.PinchScaleDetector$1):25:25 -> <init>
+    1:12:boolean onScale(android.view.ScaleGestureDetector):30:41 -> onScale
+    1:4:boolean onScaleBegin(android.view.ScaleGestureDetector):49:52 -> onScaleBegin
+    1:1:void onScaleEnd(android.view.ScaleGestureDetector):58:58 -> onScaleEnd
+com.github.nisrulz.sensey.ProximityDetector -> com.github.nisrulz.sensey.ProximityDetector:
+    com.github.nisrulz.sensey.ProximityDetector$ProximityListener proximityListener -> b
+    1:2:void <init>(com.github.nisrulz.sensey.ProximityDetector$ProximityListener):35:36 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):23:23 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):23:23 -> onSensorChanged
+    1:7:void onSensorEvent(android.hardware.SensorEvent):41:47 -> onSensorEvent
+com.github.nisrulz.sensey.RotationAngleDetector -> com.github.nisrulz.sensey.RotationAngleDetector:
+    com.github.nisrulz.sensey.RotationAngleDetector$RotationAngleListener rotationAngleListener -> b
+    1:2:void <init>(com.github.nisrulz.sensey.RotationAngleDetector$RotationAngleListener):34:35 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):24:24 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):24:24 -> onSensorChanged
+    1:18:void onSensorEvent(android.hardware.SensorEvent):41:58 -> onSensorEvent
+com.github.nisrulz.sensey.ScoopDetector -> com.github.nisrulz.sensey.ScoopDetector:
+    float threshold -> c
+    com.github.nisrulz.sensey.ScoopDetector$ScoopListener scoopListener -> b
+    1:1:void <init>(com.github.nisrulz.sensey.ScoopDetector$ScoopListener):35:35 -> <init>
+    2:4:void <init>(float,com.github.nisrulz.sensey.ScoopDetector$ScoopListener):39:41 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):23:23 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):23:23 -> onSensorChanged
+    1:6:void onSensorEvent(android.hardware.SensorEvent):46:51 -> onSensorEvent
+com.github.nisrulz.sensey.Sensey -> com.github.nisrulz.sensey.Sensey:
+    java.util.Map defaultSensorsMap -> a
+    com.github.nisrulz.sensey.SoundLevelDetector soundLevelDetector -> e
+    com.github.nisrulz.sensey.TouchTypeDetector touchTypeDetector -> f
+    android.hardware.SensorManager sensorManager -> d
+    com.github.nisrulz.sensey.PinchScaleDetector pinchScaleDetector -> b
+    int samplingPeriod -> c
+    1:1:void <init>(com.github.nisrulz.sensey.Sensey$1):49:49 -> <init>
+    2:2:void <init>():80:80 -> <init>
+    3:7:void <init>():64:68 -> <init>
+    1:1:boolean checkHardware(android.content.Context,java.lang.String):308:308 -> a
+    2:2:boolean areAllSensorsValid(java.lang.Iterable):316:316 -> a
+    3:6:java.lang.Iterable convertTypesToSensors(int[]):326:329 -> a
+    7:8:void registerDetectorForAllSensors(com.github.nisrulz.sensey.SensorDetector,java.lang.Iterable):336:337 -> a
+    9:11:void startLibrarySensorDetection(com.github.nisrulz.sensey.SensorDetector,java.lang.Object):342:344 -> a
+    12:14:void startSensorDetection(com.github.nisrulz.sensey.SensorDetector):349:351 -> a
+    15:16:void stopLibrarySensorDetection(java.lang.Object):356:357 -> a
+    1:1:boolean checkPermission(android.content.Context,java.lang.String):312:312 -> b
+    2:3:void stopSensorDetection(com.github.nisrulz.sensey.SensorDetector):361:362 -> b
+    1:1:com.github.nisrulz.sensey.Sensey getInstance():77:77 -> getInstance
+    1:2:void init(android.content.Context,int):84:85 -> init
+    3:3:void init(android.content.Context):89:89 -> init
+    1:6:void setupDispatchTouchEvent(android.view.MotionEvent):93:98 -> setupDispatchTouchEvent
+    1:1:void startChopDetection(com.github.nisrulz.sensey.ChopDetector$ChopListener):103:103 -> startChopDetection
+    2:2:void startChopDetection(float,long,com.github.nisrulz.sensey.ChopDetector$ChopListener):108:108 -> startChopDetection
+    1:1:void startFlipDetection(com.github.nisrulz.sensey.FlipDetector$FlipListener):113:113 -> startFlipDetection
+    1:1:void startLightDetection(com.github.nisrulz.sensey.LightDetector$LightListener):117:117 -> startLightDetection
+    2:2:void startLightDetection(float,com.github.nisrulz.sensey.LightDetector$LightListener):121:121 -> startLightDetection
+    1:1:void startMovementDetection(com.github.nisrulz.sensey.MovementDetector$MovementListener):125:125 -> startMovementDetection
+    2:2:void startMovementDetection(float,long,com.github.nisrulz.sensey.MovementDetector$MovementListener):130:130 -> startMovementDetection
+    1:1:void startOrientationDetection(com.github.nisrulz.sensey.OrientationDetector$OrientationListener):136:136 -> startOrientationDetection
+    2:2:void startOrientationDetection(int,com.github.nisrulz.sensey.OrientationDetector$OrientationListener):140:140 -> startOrientationDetection
+    1:1:void startPickupDeviceDetection(com.github.nisrulz.sensey.PickupDeviceDetector$PickupDeviceListener):145:145 -> startPickupDeviceDetection
+    1:1:void startPinchScaleDetection(android.content.Context,com.github.nisrulz.sensey.PinchScaleDetector$PinchScaleListener):151:151 -> startPinchScaleDetection
+    1:1:void startProximityDetection(com.github.nisrulz.sensey.ProximityDetector$ProximityListener):156:156 -> startProximityDetection
+    1:1:void startRotationAngleDetection(com.github.nisrulz.sensey.RotationAngleDetector$RotationAngleListener):160:160 -> startRotationAngleDetection
+    1:1:void startScoopDetection(com.github.nisrulz.sensey.ScoopDetector$ScoopListener):165:165 -> startScoopDetection
+    2:2:void startScoopDetection(float,com.github.nisrulz.sensey.ScoopDetector$ScoopListener):169:169 -> startScoopDetection
+    1:1:void startShakeDetection(com.github.nisrulz.sensey.ShakeDetector$ShakeListener):173:173 -> startShakeDetection
+    2:2:void startShakeDetection(float,long,com.github.nisrulz.sensey.ShakeDetector$ShakeListener):178:178 -> startShakeDetection
+    1:5:void startSoundLevelDetection(android.content.Context,com.github.nisrulz.sensey.SoundLevelDetector$SoundLevelListener):185:189 -> startSoundLevelDetection
+    1:5:void startStepDetection(android.content.Context,com.github.nisrulz.sensey.StepListener,int):194:198 -> startStepDetection
+    1:1:void startTiltDirectionDetection(com.github.nisrulz.sensey.TiltDirectionDetector$TiltDirectionListener):203:203 -> startTiltDirectionDetection
+    1:1:void startTouchTypeDetection(android.content.Context,com.github.nisrulz.sensey.TouchTypeDetector$TouchTypListener):209:209 -> startTouchTypeDetection
+    1:1:void startWaveDetection(com.github.nisrulz.sensey.WaveDetector$WaveListener):214:214 -> startWaveDetection
+    2:2:void startWaveDetection(float,com.github.nisrulz.sensey.WaveDetector$WaveListener):218:218 -> startWaveDetection
+    1:1:void startWristTwistDetection(com.github.nisrulz.sensey.WristTwistDetector$WristTwistListener):222:222 -> startWristTwistDetection
+    2:2:void startWristTwistDetection(float,long,com.github.nisrulz.sensey.WristTwistDetector$WristTwistListener):227:227 -> startWristTwistDetection
+    1:1:void stop():233:233 -> stop
+    1:1:void stopChopDetection(com.github.nisrulz.sensey.ChopDetector$ChopListener):237:237 -> stopChopDetection
+    1:1:void stopFlipDetection(com.github.nisrulz.sensey.FlipDetector$FlipListener):241:241 -> stopFlipDetection
+    1:1:void stopLightDetection(com.github.nisrulz.sensey.LightDetector$LightListener):245:245 -> stopLightDetection
+    1:1:void stopMovementDetection(com.github.nisrulz.sensey.MovementDetector$MovementListener):249:249 -> stopMovementDetection
+    1:1:void stopOrientationDetection(com.github.nisrulz.sensey.OrientationDetector$OrientationListener):253:253 -> stopOrientationDetection
+    1:1:void stopPickupDeviceDetection(com.github.nisrulz.sensey.PickupDeviceDetector$PickupDeviceListener):257:257 -> stopPickupDeviceDetection
+    1:1:void stopPinchScaleDetection():261:261 -> stopPinchScaleDetection
+    1:1:void stopProximityDetection(com.github.nisrulz.sensey.ProximityDetector$ProximityListener):265:265 -> stopProximityDetection
+    1:1:void stopRotationAngleDetection(com.github.nisrulz.sensey.RotationAngleDetector$RotationAngleListener):269:269 -> stopRotationAngleDetection
+    1:1:void stopScoopDetection(com.github.nisrulz.sensey.ScoopDetector$ScoopListener):273:273 -> stopScoopDetection
+    1:1:void stopShakeDetection(com.github.nisrulz.sensey.ShakeDetector$ShakeListener):277:277 -> stopShakeDetection
+    1:4:void stopSoundLevelDetection():281:284 -> stopSoundLevelDetection
+    1:1:void stopStepDetection(com.github.nisrulz.sensey.StepListener):288:288 -> stopStepDetection
+    1:1:void stopTiltDirectionDetection(com.github.nisrulz.sensey.TiltDirectionDetector$TiltDirectionListener):292:292 -> stopTiltDirectionDetection
+    1:1:void stopTouchTypeDetection():296:296 -> stopTouchTypeDetection
+    1:1:void stopWaveDetection(com.github.nisrulz.sensey.WaveDetector$WaveListener):300:300 -> stopWaveDetection
+    1:1:void stopWristTwistDetection(com.github.nisrulz.sensey.WristTwistDetector$WristTwistListener):304:304 -> stopWristTwistDetection
+com.github.nisrulz.sensey.Sensey$1 -> com.github.nisrulz.sensey.Sensey$a:
+com.github.nisrulz.sensey.Sensey$LazyHolder -> com.github.nisrulz.sensey.Sensey$b:
+    com.github.nisrulz.sensey.Sensey INSTANCE -> a
+    1:1:void <clinit>():53:53 -> <clinit>
+    1:1:com.github.nisrulz.sensey.Sensey access$100():51:51 -> a
+com.github.nisrulz.sensey.SensorDetector -> com.github.nisrulz.sensey.a:
+    int[] sensorTypes -> a
+    1:2:void <init>(int[]):27:28 -> <init>
+    1:1:int[] getSensorTypes():43:43 -> a
+    2:3:boolean isSensorEventBelongsToPluggedTypes(android.hardware.SensorEvent):51:52 -> a
+    1:2:void onSensorChanged(android.hardware.SensorEvent):37:38 -> onSensorChanged
+com.github.nisrulz.sensey.ShakeDetector -> com.github.nisrulz.sensey.ShakeDetector:
+    float threshold -> g
+    com.github.nisrulz.sensey.ShakeDetector$ShakeListener shakeListener -> f
+    long timeBeforeDeclaringShakeStopped -> h
+    float mAccelCurrent -> e
+    float mAccel -> d
+    long lastTimeShakeDetected -> c
+    boolean isShaking -> b
+    1:1:void <init>(com.github.nisrulz.sensey.ShakeDetector$ShakeListener):48:48 -> <init>
+    2:2:void <init>(float,long,com.github.nisrulz.sensey.ShakeDetector$ShakeListener):53:53 -> <init>
+    3:26:void <init>(float,long,com.github.nisrulz.sensey.ShakeDetector$ShakeListener):33:56 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):24:24 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):24:24 -> onSensorChanged
+    1:18:void onSensorEvent(android.hardware.SensorEvent):62:79 -> onSensorEvent
+com.github.nisrulz.sensey.SoundLevelDetector -> com.github.nisrulz.sensey.SoundLevelDetector:
+    java.lang.Thread audioRecordingThread -> d
+    java.lang.Runnable audioRecordRunnable -> i
+    int bufferSize -> f
+    boolean shouldContinueProcessingAudio -> g
+    int audioSource -> e
+    int audioChannel -> b
+    com.github.nisrulz.sensey.SoundLevelDetector$SoundLevelListener soundLevelListener -> h
+    int audioEncoding -> c
+    int SAMPLE_RATE -> a
+    1:1:void <init>(com.github.nisrulz.sensey.SoundLevelDetector$SoundLevelListener):123:123 -> <init>
+    2:94:void <init>(com.github.nisrulz.sensey.SoundLevelDetector$SoundLevelListener):35:127 -> <init>
+    1:1:int access$000(com.github.nisrulz.sensey.SoundLevelDetector):24:24 -> a
+    2:2:int access$102(com.github.nisrulz.sensey.SoundLevelDetector,int):24:24 -> a
+    3:3:boolean access$202(com.github.nisrulz.sensey.SoundLevelDetector,boolean):24:24 -> a
+    4:10:void start():131:137 -> a
+    11:16:int getValidBufferSize(int,int,int,int):148:153 -> a
+    17:20:int getValidSampleRates(int,int):161:164 -> a
+    1:1:int access$100(com.github.nisrulz.sensey.SoundLevelDetector):24:24 -> b
+    2:3:void stop():142:143 -> b
+    1:1:boolean access$200(com.github.nisrulz.sensey.SoundLevelDetector):24:24 -> c
+    2:6:void stopThreadAndProcessing():174:178 -> c
+    1:1:com.github.nisrulz.sensey.SoundLevelDetector$SoundLevelListener access$300(com.github.nisrulz.sensey.SoundLevelDetector):24:24 -> d
+com.github.nisrulz.sensey.SoundLevelDetector$1 -> com.github.nisrulz.sensey.SoundLevelDetector$a:
+    com.github.nisrulz.sensey.SoundLevelDetector this$0 -> a
+    1:1:void <init>(com.github.nisrulz.sensey.SoundLevelDetector):49:49 -> <init>
+    1:64:void run():53:116 -> run
+    65:71:void run():113:119 -> run
+    72:72:void run():56:56 -> run
+com.github.nisrulz.sensey.StepDetectorPostKitKat -> com.github.nisrulz.sensey.b:
+    long timeDelta -> f
+    com.github.nisrulz.sensey.StepListener stepListener -> d
+    long startTime -> g
+    int steps -> e
+    int baseStepCount -> b
+    int gender -> c
+    1:1:void <init>(int,com.github.nisrulz.sensey.StepListener):36:36 -> <init>
+    2:16:void <init>(int,com.github.nisrulz.sensey.StepListener):25:39 -> <init>
+    1:17:void onSensorEvent(android.hardware.SensorEvent):44:60 -> onSensorEvent
+com.github.nisrulz.sensey.StepDetectorPreKitKat -> com.github.nisrulz.sensey.c:
+    long startTime -> i
+    com.github.nisrulz.sensey.StepListener stepListener -> e
+    float threshold -> g
+    long timeDelta -> h
+    float previousY -> d
+    int steps -> f
+    float currentY -> b
+    int gender -> c
+    1:1:void <init>(int,com.github.nisrulz.sensey.StepListener):40:40 -> <init>
+    2:20:void <init>(int,com.github.nisrulz.sensey.StepListener):25:43 -> <init>
+    1:16:void onSensorEvent(android.hardware.SensorEvent):48:63 -> onSensorEvent
+com.github.nisrulz.sensey.StepDetectorUtil -> com.github.nisrulz.sensey.StepDetectorUtil:
+    1:1:void <init>():19:19 -> <init>
+    float getDistanceCovered(long,int) -> a
+    int getStepActivityType(float,long) -> a
+com.github.nisrulz.sensey.TiltDirectionDetector -> com.github.nisrulz.sensey.TiltDirectionDetector:
+    com.github.nisrulz.sensey.TiltDirectionDetector$TiltDirectionListener tiltDirectionListener -> b
+    1:2:void <init>(com.github.nisrulz.sensey.TiltDirectionDetector$TiltDirectionListener):41:42 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):23:23 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):23:23 -> onSensorChanged
+    1:26:void onSensorEvent(android.hardware.SensorEvent):48:73 -> onSensorEvent
+com.github.nisrulz.sensey.TouchTypeDetector -> com.github.nisrulz.sensey.TouchTypeDetector:
+    androidx.core.view.GestureDetectorCompat gDetect -> b
+    com.github.nisrulz.sensey.TouchTypeDetector$GestureListener gestureListener -> a
+    com.github.nisrulz.sensey.TouchTypeDetector$TouchTypListener touchTypListener -> c
+    1:4:void <init>(android.content.Context,com.github.nisrulz.sensey.TouchTypeDetector$TouchTypListener):161:164 -> <init>
+    1:1:com.github.nisrulz.sensey.TouchTypeDetector$TouchTypListener access$000(com.github.nisrulz.sensey.TouchTypeDetector):24:24 -> a
+    2:10:boolean onTouchEvent(android.view.MotionEvent):169:177 -> a
+com.github.nisrulz.sensey.TouchTypeDetector$GestureListener -> com.github.nisrulz.sensey.TouchTypeDetector$a:
+    com.github.nisrulz.sensey.TouchTypeDetector this$0 -> a
+    1:1:void <init>(com.github.nisrulz.sensey.TouchTypeDetector):26:26 -> <init>
+    1:2:boolean onDoubleTap(android.view.MotionEvent):35:36 -> onDoubleTap
+    1:19:boolean onFling(android.view.MotionEvent,android.view.MotionEvent,float,float):46:64 -> onFling
+    1:2:void onLongPress(android.view.MotionEvent):75:76 -> onLongPress
+    1:24:boolean onScroll(android.view.MotionEvent,android.view.MotionEvent,float,float):84:107 -> onScroll
+    1:2:boolean onSingleTapConfirmed(android.view.MotionEvent):113:114 -> onSingleTapConfirmed
+com.github.nisrulz.sensey.WaveDetector -> com.github.nisrulz.sensey.WaveDetector:
+    long lastProximityEventTime -> b
+    float threshold -> d
+    com.github.nisrulz.sensey.WaveDetector$WaveListener waveListener -> e
+    int lastProximityState -> c
+    1:1:void <init>(com.github.nisrulz.sensey.WaveDetector$WaveListener):39:39 -> <init>
+    2:2:void <init>(float,com.github.nisrulz.sensey.WaveDetector$WaveListener):43:43 -> <init>
+    3:18:void <init>(float,com.github.nisrulz.sensey.WaveDetector$WaveListener):30:45 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):23:23 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):23:23 -> onSensorChanged
+    1:27:void onSensorEvent(android.hardware.SensorEvent):50:76 -> onSensorEvent
+com.github.nisrulz.sensey.WristTwistDetector -> com.github.nisrulz.sensey.WristTwistDetector:
+    long timeForWristTwistGesture -> e
+    com.github.nisrulz.sensey.WristTwistDetector$WristTwistListener wristTwistListener -> f
+    float threshold -> d
+    long lastTimeWristTwistDetected -> c
+    boolean isGestureInProgress -> b
+    1:1:void <init>(com.github.nisrulz.sensey.WristTwistDetector$WristTwistListener):41:41 -> <init>
+    2:2:void <init>(float,long,com.github.nisrulz.sensey.WristTwistDetector$WristTwistListener):46:46 -> <init>
+    3:22:void <init>(float,long,com.github.nisrulz.sensey.WristTwistDetector$WristTwistListener):30:49 -> <init>
+    1:1:void onAccuracyChanged(android.hardware.Sensor,int):23:23 -> onAccuracyChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):23:23 -> onSensorChanged
+    1:14:void onSensorEvent(android.hardware.SensorEvent):54:67 -> onSensorEvent

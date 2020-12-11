@@ -37,8 +37,9 @@ object Versions {
     const val espresso = "3.3.0"
     const val testRunner = "1.2.0"
     const val testRules = "1.2.0"
+    const val testCore = "1.1.2"
     const val mockito = "2.12.0"
-    const val robolectric = "4.3"
+    const val robolectric = "4.4"
 
     // App
     const val appCode = 1

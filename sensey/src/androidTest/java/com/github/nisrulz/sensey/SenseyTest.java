@@ -20,6 +20,8 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.github.nisrulz.sensey.FlipDetector.FlipListener;
 import com.github.nisrulz.sensey.LightDetector.LightListener;
 import com.github.nisrulz.sensey.OrientationDetector.OrientationListener;
@@ -30,8 +32,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowSensorManager;
 
@@ -46,7 +48,6 @@ import static android.hardware.Sensor.TYPE_PROXIMITY;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 public class SenseyTest {
@@ -55,10 +56,26 @@ public class SenseyTest {
 
     private ShadowSensorManager shadowSensorManager;
 
+    @Before
+    public void setUp() {
+        Context context = ApplicationProvider.getApplicationContext();
+        shadowSensorManager =
+                Shadows.shadowOf((SensorManager) context.getSystemService(SENSOR_SERVICE));
+
+        sensey = Sensey.getInstance();
+        sensey.init(context);
+    }
+
+    @After
+    public void tearDown() {
+        sensey = null;
+        shadowSensorManager = null;
+    }
+
     @Test
     public void detectListenerWithStartFlipDetection() {
         addSensor(TYPE_ACCELEROMETER);
-        FlipListener fakeListener = mock(FlipListener.class);
+        FlipListener fakeListener = Mockito.mock(FlipListener.class);
         sensey.startFlipDetection(fakeListener);
         FlipDetector detector = getDetector(fakeListener, FlipDetector.class);
         if (detector != null) {
@@ -73,7 +90,7 @@ public class SenseyTest {
     @Test
     public void detectListenerWithStartLightDetection() {
         addSensor(TYPE_LIGHT);
-        LightListener fakeListener = mock(LightListener.class);
+        LightListener fakeListener = Mockito.mock(LightListener.class);
         sensey.startLightDetection(fakeListener);
         LightDetector detector = getDetector(fakeListener, LightDetector.class);
         if (detector != null) {
@@ -88,7 +105,7 @@ public class SenseyTest {
     @Test
     public void detectListenerWithStartLightDetectionWithCustomThreshold() {
         addSensor(TYPE_LIGHT);
-        LightListener fakeListener = mock(LightListener.class);
+        LightListener fakeListener = Mockito.mock(LightListener.class);
         sensey.startLightDetection(4, fakeListener);
         LightDetector detector = getDetector(fakeListener, LightDetector.class);
         if (detector != null) {
@@ -104,7 +121,7 @@ public class SenseyTest {
     public void detectListenerWithStartOrientationDetection() {
         addSensor(TYPE_ACCELEROMETER);
         addSensor(TYPE_MAGNETIC_FIELD);
-        OrientationListener fakeListener = mock(OrientationListener.class);
+        OrientationListener fakeListener = Mockito.mock(OrientationListener.class);
         sensey.startOrientationDetection(fakeListener);
         OrientationDetector detector = getDetector(fakeListener, OrientationDetector.class);
         if (detector != null) {
@@ -120,7 +137,7 @@ public class SenseyTest {
     public void detectListenerWithStartOrientationDetectionWithCustomSmoothness() {
         addSensor(TYPE_ACCELEROMETER);
         addSensor(TYPE_MAGNETIC_FIELD);
-        OrientationListener fakeListener = mock(OrientationListener.class);
+        OrientationListener fakeListener = Mockito.mock(OrientationListener.class);
         sensey.startOrientationDetection(3, fakeListener);
         OrientationDetector detector = getDetector(fakeListener, OrientationDetector.class);
         if (detector != null) {
@@ -135,7 +152,7 @@ public class SenseyTest {
     @Test
     public void detectListenerWithStartProximityDetection() {
         addSensor(TYPE_PROXIMITY);
-        ProximityListener fakeListener = mock(ProximityListener.class);
+        ProximityListener fakeListener = Mockito.mock(ProximityListener.class);
         sensey.startProximityDetection(fakeListener);
         ProximityDetector detector = getDetector(fakeListener, ProximityDetector.class);
         if (detector != null) {
@@ -150,7 +167,7 @@ public class SenseyTest {
     @Test
     public void detectListenerWithStartShakeDetection() {
         addSensor(TYPE_ACCELEROMETER);
-        ShakeListener fakeListener = mock(ShakeListener.class);
+        ShakeListener fakeListener = Mockito.mock(ShakeListener.class);
         sensey.startShakeDetection(fakeListener);
         ShakeDetector detector = getDetector(fakeListener, ShakeDetector.class);
         if (detector != null) {
@@ -165,7 +182,7 @@ public class SenseyTest {
     @Test
     public void detectListenerWithStartShakeDetectionWithCustomThreshold() {
         addSensor(TYPE_ACCELEROMETER);
-        ShakeListener fakeListener = mock(ShakeListener.class);
+        ShakeListener fakeListener = Mockito.mock(ShakeListener.class);
         sensey.startShakeDetection(4f, 1000, fakeListener);
         ShakeDetector detector = getDetector(fakeListener, ShakeDetector.class);
         if (detector != null) {
@@ -180,7 +197,7 @@ public class SenseyTest {
     @Test
     public void detectNoListenerWithStopFlipDetection() {
         addSensor(TYPE_ACCELEROMETER);
-        FlipListener fakeListener = mock(FlipListener.class);
+        FlipListener fakeListener = Mockito.mock(FlipListener.class);
         sensey.startFlipDetection(fakeListener);
         FlipDetector detector = getDetector(fakeListener, FlipDetector.class);
         if (detector != null) {
@@ -198,7 +215,7 @@ public class SenseyTest {
     @Test
     public void detectNoListenerWithStopLightDetection() {
         addSensor(TYPE_LIGHT);
-        LightListener fakeListener = mock(LightListener.class);
+        LightListener fakeListener = Mockito.mock(LightListener.class);
         sensey.startLightDetection(fakeListener);
         LightDetector detector = getDetector(fakeListener, LightDetector.class);
         if (detector != null) {
@@ -217,7 +234,7 @@ public class SenseyTest {
     public void detectNoListenerWithStopOrientationDetection() {
         addSensor(TYPE_ACCELEROMETER);
         addSensor(TYPE_MAGNETIC_FIELD);
-        OrientationListener fakeListener = mock(OrientationListener.class);
+        OrientationListener fakeListener = Mockito.mock(OrientationListener.class);
         sensey.startOrientationDetection(fakeListener);
         OrientationDetector detector = getDetector(fakeListener, OrientationDetector.class);
         if (detector != null) {
@@ -235,7 +252,7 @@ public class SenseyTest {
     @Test
     public void detectNoListenerWithStopProximityDetection() {
         addSensor(TYPE_PROXIMITY);
-        ProximityListener fakeListener = mock(ProximityListener.class);
+        ProximityListener fakeListener = Mockito.mock(ProximityListener.class);
         sensey.startProximityDetection(fakeListener);
         ProximityDetector detector = getDetector(fakeListener, ProximityDetector.class);
         if (detector != null) {
@@ -253,7 +270,7 @@ public class SenseyTest {
     @Test
     public void detectNoListenerWithStopShakeDetection() {
         addSensor(TYPE_ACCELEROMETER);
-        ShakeListener fakeListener = mock(ShakeListener.class);
+        ShakeListener fakeListener = Mockito.mock(ShakeListener.class);
         sensey.startShakeDetection(fakeListener);
         ShakeDetector detector = getDetector(fakeListener, ShakeDetector.class);
         if (detector != null) {
@@ -271,8 +288,8 @@ public class SenseyTest {
     @Test
     public void detectNoListenerWithStoppingTwoSameDetections() {
         addSensor(TYPE_PROXIMITY);
-        ProximityListener fakeListener1 = mock(ProximityListener.class);
-        ProximityListener fakeListener2 = mock(ProximityListener.class);
+        ProximityListener fakeListener1 = Mockito.mock(ProximityListener.class);
+        ProximityListener fakeListener2 = Mockito.mock(ProximityListener.class);
         ProximityDetector detector1 = startProximityDetection(fakeListener1);
         ProximityDetector detector2 = startProximityDetection(fakeListener2);
         sensey.stopProximityDetection(fakeListener1);
@@ -283,24 +300,8 @@ public class SenseyTest {
                 shadowSensorManager.hasListener(detector1));
     }
 
-    @Before
-    public void setUp() {
-        Context context = RuntimeEnvironment.application.getApplicationContext();
-        shadowSensorManager =
-                Shadows.shadowOf((SensorManager) context.getSystemService(SENSOR_SERVICE));
-
-        sensey = Sensey.getInstance();
-        sensey.init(context);
-    }
-
-    @After
-    public void tearDown() {
-        sensey = null;
-        shadowSensorManager = null;
-    }
-
     private void addSensor(int type) {
-        shadowSensorManager.addSensor(type, mock(Sensor.class));
+        shadowSensorManager.addSensor(type, Mockito.mock(Sensor.class));
     }
 
     //Hardcode because of can not get appropriate detector from Sensey.class

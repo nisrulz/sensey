@@ -19,13 +19,14 @@ package com.github.nisrulz.sensey;
 import android.content.Context;
 import android.view.MotionEvent;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.github.nisrulz.sensey.TouchTypeDetector.TouchTypListener;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import static com.github.nisrulz.sensey.TouchTypeDetector.SCROLL_DIR_DOWN;
 import static com.github.nisrulz.sensey.TouchTypeDetector.SCROLL_DIR_LEFT;
@@ -192,7 +193,7 @@ public class TouchTypeDetectorTest {
 
     @Before
     public void setUp() {
-        Context context = RuntimeEnvironment.application.getApplicationContext();
+        Context context = ApplicationProvider.getApplicationContext();
         mockListener = mock(TouchTypListener.class);
         testTouchTypeDetector = new TouchTypeDetector(context, mockListener);
     }

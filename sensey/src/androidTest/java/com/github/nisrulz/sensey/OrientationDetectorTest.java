@@ -38,7 +38,7 @@ public class OrientationDetectorTest {
     @Test
     public void detectBottomSideUp() {
         testOrientationDetector.onSensorChanged(
-                testAccelerometerEvent(new float[]{-9.81f, -9.81f, -9.81f}));
+                SensorUtils.testAccelerometerEvent(new float[]{-9.81f, -9.81f, -9.81f}));
         testOrientationDetector.onSensorChanged(testMagneticEvent(new float[]{0, 0, 1}));
         verify(mockListener, only()).onBottomSideUp();
     }
@@ -46,14 +46,14 @@ public class OrientationDetectorTest {
     @Test
     public void detectLeftSideUp() {
         testOrientationDetector.onSensorChanged(
-                testAccelerometerEvent(new float[]{-9.81f, 0, -9.81f}));
+                SensorUtils.testAccelerometerEvent(new float[]{-9.81f, 0, -9.81f}));
         testOrientationDetector.onSensorChanged(testMagneticEvent(new float[]{0, 0, 1}));
         verify(mockListener, only()).onLeftSideUp();
     }
 
     @Test
     public void detectNothingForOnlyAccelerometerEvent() {
-        testOrientationDetector.onSensorChanged(testAccelerometerEvent(new float[]{1, 2, 3}));
+        testOrientationDetector.onSensorChanged(SensorUtils.testAccelerometerEvent(new float[]{1, 2, 3}));
         verifyNoMoreInteractions(mockListener);
     }
 
@@ -66,7 +66,7 @@ public class OrientationDetectorTest {
     @Test
     public void detectRightSideUp() {
         testOrientationDetector.onSensorChanged(
-                testAccelerometerEvent(new float[]{9.81f, 0, 9.81f}));
+                SensorUtils.testAccelerometerEvent(new float[]{9.81f, 0, 9.81f}));
         testOrientationDetector.onSensorChanged(testMagneticEvent(new float[]{0, 0, 1}));
         verify(mockListener, only()).onRightSideUp();
     }
@@ -74,7 +74,7 @@ public class OrientationDetectorTest {
     @Test
     public void detectTopSideUp() {
         testOrientationDetector.onSensorChanged(
-                testAccelerometerEvent(new float[]{9.81f, 9.81f, 9.81f}));
+                SensorUtils.testAccelerometerEvent(new float[]{9.81f, 9.81f, 9.81f}));
         testOrientationDetector.onSensorChanged(testMagneticEvent(new float[]{0, 0, 1}));
         verify(mockListener, only()).onTopSideUp();
     }
@@ -86,6 +86,6 @@ public class OrientationDetectorTest {
     }
 
     private SensorEvent testMagneticEvent(float[] values) {
-        return testSensorEvent(values, Sensor.TYPE_MAGNETIC_FIELD);
+        return SensorUtils.testSensorEvent(values, Sensor.TYPE_MAGNETIC_FIELD);
     }
 }

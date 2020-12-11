@@ -34,8 +34,9 @@ android {
 
 dependencies {
     // Testing
+    androidTestImplementation Dependencies.mockito
     testImplementation Dependencies.mockito
-    testImplementation Dependencies.robolectric
+    androidTestImplementation Dependencies.robolectric
 
     // Support
     implementation Dependencies.supportCore
