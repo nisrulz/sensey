@@ -1,0 +1,182 @@
+[versions]
+
+#region ---- Kotlin version dependent
+# https://github.com/JetBrains/kotlin/releases
+core = "1.6.1"
+kotlin = "2.0.0"
+# https://github.com/google/ksp/releases
+ksp = "2.0.0-1.0.22"
+#endregion
+
+#region ---- Android Core
+agp = "8.5.0"
+androidTools = "31.5.0"
+core-ktx = "1.13.1"
+lifecycleVer = "2.8.3"
+appcompat = "1.7.0"
+#endregion
+
+# Logs
+mockitoCore = "5.12.0"
+robolectric = "4.12.2"
+timber = "5.0.1"
+
+# Material
+material3 = "1.10.0"
+
+#region ---- Kotlin
+kotlinxCoroutines = "1.8.1"
+kotlinxSerializationJson = "1.7.1"
+#endregion
+
+#region ---- Jetpack Compose
+activity-compose = "1.9.0"
+compose-bom = "2024.06.00"
+#endregion
+
+# Navigation
+navigationCompose = "2.8.0-beta04"
+
+#region ---- Hilt
+hilt = "2.51.1"
+hiltNavigation = "1.2.0"
+hiltExt = "1.2.0"
+#endregion
+
+#region ---- Retrofit
+okhttp = "4.12.0"
+retrofit-bom = "2.11.0"
+#endregion
+
+#region ---- Room
+room = "2.6.1"
+#endregion
+
+# Coil
+coil = "2.6.0"
+
+# Testing
+junit = "4.13.2"
+androidx-test-ext-junit = "1.2.1"
+espresso-core = "3.6.0"
+truth = "1.4.2"
+turbineVer = "1.1.0"
+mockkVersion = "1.13.11"
+junitKtx = "1.2.1"
+coreTesting = "2.2.0"
+kotlinxCoroutinesTest = "1.8.1"
+
+# Chucker
+chucker = "4.0.0"
+
+mavenPublish = "0.29.0"
+
+[libraries]
+# build-logic
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+android-tools-common = { module = "com.android.tools:common", version.ref = "androidTools" }
+androidx-core = { module = "androidx.test:core", version.ref = "core" }
+androidx-rules = { module = "androidx.test:rules", version.ref = "core" }
+androidx-runner = { module = "androidx.test:runner", version.ref = "core" }
+compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
+chucker-noop = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+symbol-processing-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+#----- end
+
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+
+# Logs
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+
+# Lifecycle
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleVer" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleVer" }
+lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleVer" }
+
+# Compose
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
+# Material
+material = { group = "androidx.compose.material", name = "material" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
+
+# Coil
+coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+
+# Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
+hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigation" }
+
+# Navigation
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+
+# Retrofit
+retrofit-bom = { group = "com.squareup.retrofit2", name = "retrofit-bom", version.ref = "retrofit-bom" }
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit" }
+retrofit2-kotlinx-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization" }
+
+
+# Serialization
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
+# Okhttp
+okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor" }
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver" }
+
+# Room
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockkVersion" }
+mockk-agent = { group = "io.mockk", name = "mockk-agent", version.ref = "mockkVersion" }
+truth-assertions = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
+testing-core = { group = "androidx.arch.core", name = "core-testing", version.ref = "coreTesting" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVer" }
+
+[plugins]
+
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
+
+[bundles]
+lifecycle = ["lifecycle-runtime-ktx", "lifecycle-runtime-compose"]
+ktx = ["core-ktx", "androidx-junit-ktx"]
+material = ["material", "material3"]
+core = ["appcompat"]
+compose = ["activity-compose", "ui", "ui-graphics", "ui-tooling-preview", "material3", "navigation-compose"]
+hilt = ["hilt-android", "hilt-navigation"]
+room = ["room-ktx", "room-runtime"]
+retrofit = ["retrofit-core", "kotlinx-serialization-json", "retrofit2-kotlinx-serialization-converter", "okhttp-logging"]
+coil = ["coil-kt", "coil-kt-compose"]
+compose-debug = ["ui-tooling", "ui-test-manifest"]
+mockk = ["mockk-android", "mockk-agent"]
+testing = ["junit", "testing-core", "truth-assertions", "kotlinx-coroutines-test", "turbine"]
+android-testing = ["androidx-test-ext-junit", "espresso-core", "truth-assertions", "kotlinx-coroutines-test", "turbine"]
