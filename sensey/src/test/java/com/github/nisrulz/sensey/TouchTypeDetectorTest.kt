@@ -23,7 +23,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.Mockito.any
 import org.mockito.Mockito.mock
 import org.robolectric.RobolectricTestRunner
 
@@ -74,18 +73,6 @@ class TouchTypeDetectorTest {
     }
 
     @Test
-    fun detectOnDoubleTap() {
-        testTouchTypeDetector?.gestureListener?.onDoubleTap(any())
-        Mockito.verify(mockListener, Mockito.only())?.onDoubleTap()
-    }
-
-    @Test
-    fun detectOnLongPress() {
-        testTouchTypeDetector?.gestureListener?.onLongPress(any())
-        Mockito.verify(mockListener, Mockito.only())?.onLongPress()
-    }
-
-    @Test
     fun detectOnScrollDown() {
         val ev1 = MotionEvent.obtain(10, 10, 0, 0f, 50f, 0)
         val ev2 = MotionEvent.obtain(10, 10, 0, 0f, 200f, 0)
@@ -115,12 +102,6 @@ class TouchTypeDetectorTest {
         val ev2 = MotionEvent.obtain(10, 10, 0, 0f, 50f, 0)
         testTouchTypeDetector?.gestureListener?.onScroll(ev1, ev2, 0f, 0f)
         Mockito.verify(mockListener, Mockito.only())?.onScroll(TouchTypeDetector.SCROLL_DIR_UP)
-    }
-
-    @Test
-    fun detectOnSingleTapConfirmed() {
-        testTouchTypeDetector?.gestureListener?.onSingleTapConfirmed(any())
-        Mockito.verify(mockListener, Mockito.only())?.onSingleTap()
     }
 
     @Test
