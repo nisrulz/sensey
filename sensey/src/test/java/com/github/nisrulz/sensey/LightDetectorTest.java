@@ -16,82 +16,80 @@
 
 package com.github.nisrulz.sensey;
 
+import static com.github.nisrulz.sensey.SensorUtils.testSensorEvent;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-
-import com.github.nisrulz.sensey.LightDetector.LightListener;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static com.github.nisrulz.sensey.SensorUtils.testSensorEvent;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
-
 @RunWith(MockitoJUnitRunner.class)
 public class LightDetectorTest {
 
     @Mock
-    private LightListener mockListener;
+    private LightDetector.LightListener mockListener;
 
     @Test
     public void detectOnDarkWithLuxLessThanCustomThreshold() {
-        testDetector(9).onSensorChanged(testLightEvent(new float[]{3}));
-        verify(mockListener, only()).onDark();
+        this.testDetector(9).onSensorChanged(this.testLightEvent(new float[]{3}));
+        verify(this.mockListener, only()).onDark();
     }
 
     @Test
     public void detectOnDarkWithLuxLessThanDefaultThreshold() {
-        testDetector().onSensorChanged(testLightEvent(new float[]{1}));
-        verify(mockListener, only()).onDark();
+        this.testDetector().onSensorChanged(this.testLightEvent(new float[]{1}));
+        verify(this.mockListener, only()).onDark();
     }
 
     @Test
     public void detectOnLightWithExtraValues() {
-        testDetector().onSensorChanged(testLightEvent(new float[]{10, 0, 43, 3, -423}));
-        verify(mockListener, only()).onLight();
+        this.testDetector().onSensorChanged(this.testLightEvent(new float[]{10, 0, 43, 3, -423}));
+        verify(this.mockListener, only()).onLight();
     }
 
     @Test
     public void detectOnLightWithLuxEqualsToCustomThreshold() {
-        testDetector(9).onSensorChanged(testLightEvent(new float[]{9}));
-        verify(mockListener, only()).onLight();
+        this.testDetector(9).onSensorChanged(this.testLightEvent(new float[]{9}));
+        verify(this.mockListener, only()).onLight();
     }
 
     @Test
     public void detectOnLightWithLuxEqualsToDefaultThreshold() {
-        testDetector().onSensorChanged(testLightEvent(new float[]{3}));
-        verify(mockListener, only()).onLight();
+        this.testDetector().onSensorChanged(this.testLightEvent(new float[]{3}));
+        verify(this.mockListener, only()).onLight();
     }
 
     @Test
     public void detectOnLightWithLuxMoreThanCustomThreshold() {
-        testDetector(9).onSensorChanged(testLightEvent(new float[]{12}));
-        verify(mockListener, only()).onLight();
+        this.testDetector(9).onSensorChanged(this.testLightEvent(new float[]{12}));
+        verify(this.mockListener, only()).onLight();
     }
 
     @Test
     public void detectOnLightWithLuxMoreThanDefaultThreshold() {
-        testDetector().onSensorChanged(testLightEvent(new float[]{10}));
-        verify(mockListener, only()).onLight();
+        this.testDetector().onSensorChanged(this.testLightEvent(new float[]{10}));
+        verify(this.mockListener, only()).onLight();
     }
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void exceptionWithEmptyValues() {
-        testDetector().onSensorChanged(testLightEvent(new float[]{}));
+        this.testDetector().onSensorChanged(this.testLightEvent(new float[]{}));
     }
 
     private LightDetector testDetector() {
-        return new LightDetector(mockListener);
+        return new LightDetector(this.mockListener);
     }
 
-    private LightDetector testDetector(float threshold) {
-        return new LightDetector(threshold, mockListener);
+    private LightDetector testDetector(final float threshold) {
+        return new LightDetector(threshold, this.mockListener);
     }
 
-    private SensorEvent testLightEvent(float[] values) {
+    private SensorEvent testLightEvent(final float[] values) {
         return testSensorEvent(values, Sensor.TYPE_LIGHT);
     }
 }

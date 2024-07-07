@@ -16,42 +16,43 @@
 
 package com.github.nisrulz.sensey;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 
 import java.lang.reflect.Field;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+enum SensorUtils {
+    ;
 
-class SensorUtils {
-
-    public static SensorEvent testAccelerometerEvent(float[] values) {
-        return testSensorEvent(values, Sensor.TYPE_ACCELEROMETER);
+    public static SensorEvent testAccelerometerEvent(final float[] values) {
+        return SensorUtils.testSensorEvent(values, Sensor.TYPE_ACCELEROMETER);
     }
 
-    public static SensorEvent testSensorEvent(float[] values, int type) {
-        SensorEvent sensorEvent = mock(SensorEvent.class);
+    public static SensorEvent testSensorEvent(final float[] values, final int type) {
+        final SensorEvent sensorEvent = mock(SensorEvent.class);
 
         try {
-            Field valuesField = SensorEvent.class.getField("values");
+            final Field valuesField = SensorEvent.class.getField("values");
             valuesField.setAccessible(true);
             try {
                 valuesField.set(sensorEvent, values);
-            } catch (IllegalAccessException e) {
+            } catch (final IllegalAccessException e) {
                 e.printStackTrace();
             }
-        } catch (NoSuchFieldException e) {
+        } catch (final NoSuchFieldException e) {
             e.printStackTrace();
         }
 
-        sensorEvent.sensor = testSensor(type);
+        sensorEvent.sensor = SensorUtils.testSensor(type);
 
         return sensorEvent;
     }
 
-    private static Sensor testSensor(int type) {
-        Sensor sensor = mock(Sensor.class);
+    private static Sensor testSensor(final int type) {
+        final Sensor sensor = mock(Sensor.class);
         when(sensor.getType()).thenReturn(type);
         return sensor;
     }

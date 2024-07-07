@@ -16,6 +16,15 @@
 
 package com.github.nisrulz.sensey;
 
+import static android.content.Context.SENSOR_SERVICE;
+import static android.hardware.Sensor.TYPE_ACCELEROMETER;
+import static android.hardware.Sensor.TYPE_LIGHT;
+import static android.hardware.Sensor.TYPE_MAGNETIC_FIELD;
+import static android.hardware.Sensor.TYPE_PROXIMITY;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -39,15 +48,6 @@ import org.robolectric.shadows.ShadowSensorManager;
 
 import java.lang.reflect.Field;
 import java.util.Map;
-
-import static android.content.Context.SENSOR_SERVICE;
-import static android.hardware.Sensor.TYPE_ACCELEROMETER;
-import static android.hardware.Sensor.TYPE_LIGHT;
-import static android.hardware.Sensor.TYPE_MAGNETIC_FIELD;
-import static android.hardware.Sensor.TYPE_PROXIMITY;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 @RunWith(RobolectricTestRunner.class)
 public class SenseyTest {

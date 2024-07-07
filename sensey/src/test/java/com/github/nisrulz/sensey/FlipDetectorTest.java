@@ -16,7 +16,10 @@
 
 package com.github.nisrulz.sensey;
 
-import com.github.nisrulz.sensey.FlipDetector.FlipListener;
+import static com.github.nisrulz.sensey.SensorUtils.testAccelerometerEvent;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,69 +27,64 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static com.github.nisrulz.sensey.SensorUtils.testAccelerometerEvent;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-
 @RunWith(MockitoJUnitRunner.class)
 public class FlipDetectorTest {
 
     @Mock
-    private FlipListener mockListener;
+    private FlipDetector.FlipListener mockListener;
 
     private FlipDetector testFlipDetector;
 
     @Test
     public void detectFlipWithMiddleFaceDownValue() {
-        testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, -9.5f}));
-        verify(mockListener, only()).onFaceDown();
+        this.testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, -9.5f}));
+        verify(this.mockListener, only()).onFaceDown();
     }
 
     @Test
     public void detectFlipWithMiddleFaceUpValue() {
-        testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, 9.5f}));
-        verify(mockListener, only()).onFaceUp();
+        this.testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, 9.5f}));
+        verify(this.mockListener, only()).onFaceUp();
     }
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void exceptionWithArrayLessThenThreeElements() {
-        testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0}));
-        verifyNoMoreInteractions(mockListener);
+        this.testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0}));
+        verifyNoMoreInteractions(this.mockListener);
     }
 
     @Test
     public void notDetectFlipWithMaxFaceDownValue() {
-        testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, -9}));
-        verifyNoMoreInteractions(mockListener);
+        this.testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, -9}));
+        verifyNoMoreInteractions(this.mockListener);
     }
 
     @Test
     public void notDetectFlipWithMaxFaceUpValue() {
-        testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, 10}));
-        verifyNoMoreInteractions(mockListener);
+        this.testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, 10}));
+        verifyNoMoreInteractions(this.mockListener);
     }
 
     @Test
     public void notDetectFlipWithMinFaceDownValue() {
-        testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, -10}));
-        verifyNoMoreInteractions(mockListener);
+        this.testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, -10}));
+        verifyNoMoreInteractions(this.mockListener);
     }
 
     @Test
     public void notDetectFlipWithMinFaceUpValue() {
-        testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, 9}));
-        verifyNoMoreInteractions(mockListener);
+        this.testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, 9}));
+        verifyNoMoreInteractions(this.mockListener);
     }
 
     @Test
     public void notDetectFlipWithOtherValue() {
-        testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, 0}));
-        verifyNoMoreInteractions(mockListener);
+        this.testFlipDetector.onSensorChanged(testAccelerometerEvent(new float[]{0, 0, 0}));
+        verifyNoMoreInteractions(this.mockListener);
     }
 
     @Before
     public void setUp() {
-        testFlipDetector = new FlipDetector(mockListener);
+        this.testFlipDetector = new FlipDetector(this.mockListener);
     }
 }

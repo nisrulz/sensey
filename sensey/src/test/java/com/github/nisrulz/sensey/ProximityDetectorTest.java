@@ -16,48 +16,46 @@
 
 package com.github.nisrulz.sensey;
 
+import static com.github.nisrulz.sensey.SensorUtils.testSensorEvent;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-
-import com.github.nisrulz.sensey.ProximityDetector.ProximityListener;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static com.github.nisrulz.sensey.SensorUtils.testSensorEvent;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
-
 @RunWith(MockitoJUnitRunner.class)
 public class ProximityDetectorTest {
 
     @Mock
-    private ProximityListener mockListener;
+    private ProximityDetector.ProximityListener mockListener;
 
     @Test
     public void detectOnFarWithExtraValues() {
-        testDetector().onSensorChanged(testProximityEvent(new float[]{10, 0, 43, 3, -423}));
-        verify(mockListener, only()).onFar();
+        this.testDetector().onSensorChanged(this.testProximityEvent(new float[]{10, 0, 43, 3, -423}));
+        verify(this.mockListener, only()).onFar();
     }
 
     @Test
     public void detectOnFarWithLuxMoreThanDefaultThreshold() {
-        testDetector().onSensorChanged(testProximityEvent(new float[]{10}));
-        verify(mockListener, only()).onFar();
+        this.testDetector().onSensorChanged(this.testProximityEvent(new float[]{10}));
+        verify(this.mockListener, only()).onFar();
     }
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void exceptionWithEmptyValues() {
-        testDetector().onSensorChanged(testProximityEvent(new float[]{}));
+        this.testDetector().onSensorChanged(this.testProximityEvent(new float[]{}));
     }
 
     private ProximityDetector testDetector() {
-        return new ProximityDetector(mockListener);
+        return new ProximityDetector(this.mockListener);
     }
 
-    private SensorEvent testProximityEvent(float[] values) {
+    private SensorEvent testProximityEvent(final float[] values) {
         return testSensorEvent(values, Sensor.TYPE_PROXIMITY);
     }
 }

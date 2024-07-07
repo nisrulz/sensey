@@ -16,18 +16,6 @@
 
 package com.github.nisrulz.sensey;
 
-import android.content.Context;
-import android.view.MotionEvent;
-
-import androidx.test.core.app.ApplicationProvider;
-
-import com.github.nisrulz.sensey.TouchTypeDetector.TouchTypListener;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-
 import static com.github.nisrulz.sensey.TouchTypeDetector.SCROLL_DIR_DOWN;
 import static com.github.nisrulz.sensey.TouchTypeDetector.SCROLL_DIR_LEFT;
 import static com.github.nisrulz.sensey.TouchTypeDetector.SCROLL_DIR_RIGHT;
@@ -41,6 +29,18 @@ import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+
+import android.content.Context;
+import android.view.MotionEvent;
+
+import androidx.test.core.app.ApplicationProvider;
+
+import com.github.nisrulz.sensey.TouchTypeDetector.TouchTypListener;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 @RunWith(RobolectricTestRunner.class)
 public class TouchTypeDetectorTest {
