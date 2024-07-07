@@ -51,21 +51,16 @@ android {
 }
 
 dependencies {
-    // Testing
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.core)
-    androidTestImplementation(libs.androidx.runner)
-    androidTestImplementation(libs.androidx.rules)
-
-    testImplementation(libs.junit)
-
-    testImplementation(libs.mockito.core)
-    androidTestImplementation(libs.mockito.core)
-
-    androidTestImplementation(libs.robolectric)
-
-    // Support
     implementation(libs.core.ktx)
+
+    // Testing
+    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.junit)
+    testImplementation(libs.androidx.core)
+    testImplementation(libs.androidx.runner)
+    testImplementation(libs.androidx.rules)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.robolectric)
 }
 
 //region Maven Publishing

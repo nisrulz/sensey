@@ -19,11 +19,12 @@ package com.github.nisrulz.sensey;
 import android.content.Context;
 import androidx.core.view.GestureDetectorCompat;
 import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 
 public class TouchTypeDetector {
 
-    class GestureListener extends GestureDetector.SimpleOnGestureListener {
+    class GestureListener extends SimpleOnGestureListener {
 
         private static final int SWIPE_MIN_DISTANCE = 120;
 
