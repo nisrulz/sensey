@@ -277,12 +277,15 @@ private class PinchScalePlugin(
     private val dispatcher: (PinchScaleEvent) -> Unit,
 ) : GesturePlugin {
     override val key = PinchScalePlugin::class.java.name
+    private val provider = ComposeGestureProvider { installPinchScale() }
 
     override fun onRegister(sensey: Sensey) {
-        sensey.registerComposeGestureProvider(ComposeGestureProvider { installPinchScale() })
+        sensey.registerComposeGestureProvider(provider)
     }
 
-    override fun onUnregister(sensey: Sensey) = Unit
+    override fun onUnregister(sensey: Sensey) {
+        sensey.unregisterComposeGestureProvider(provider)
+    }
 
     private suspend fun PointerInputScope.installPinchScale() {
         detectTransformGestures { _, _, zoom, _ ->
@@ -300,13 +303,18 @@ private class TouchTypePlugin(
     private var tapCount = 0
     private var lastTapTime = 0L
     private var dragStart = Offset.Zero
+    private val tapProvider = ComposeGestureProvider { installTapGestures() }
+    private val dragProvider = ComposeGestureProvider { installDragGestures() }
 
     override fun onRegister(sensey: Sensey) {
-        sensey.registerComposeGestureProvider(ComposeGestureProvider { installTapGestures() })
-        sensey.registerComposeGestureProvider(ComposeGestureProvider { installDragGestures() })
+        sensey.registerComposeGestureProvider(tapProvider)
+        sensey.registerComposeGestureProvider(dragProvider)
     }
 
-    override fun onUnregister(sensey: Sensey) = Unit
+    override fun onUnregister(sensey: Sensey) {
+        sensey.unregisterComposeGestureProvider(tapProvider)
+        sensey.unregisterComposeGestureProvider(dragProvider)
+    }
 
     private suspend fun PointerInputScope.installTapGestures() {
         detectTapGestures(
