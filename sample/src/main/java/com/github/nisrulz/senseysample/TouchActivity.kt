@@ -25,8 +25,7 @@ class TouchActivity : ComponentActivity() {
     private val handler = Handler(Looper.getMainLooper())
 
     private var resultText by mutableStateOf("[ Hit Area ]")
-    private var touchDetectionChecked by mutableStateOf(false)
-    private var pinchScaleChecked by mutableStateOf(false)
+    private var selectedSensor by mutableStateOf<String?>(null)
 
     private val pinchDispatcher: (PinchScaleEvent) -> Unit = { event ->
         updateResultText(if (event.isScalingOut) "Scaling Out" else "Scaling In")
@@ -66,37 +65,51 @@ class TouchActivity : ComponentActivity() {
 
         setContent {
             TouchScreen(
-                touchDetectionChecked = touchDetectionChecked,
-                pinchScaleChecked = pinchScaleChecked,
-                onTouchDetectionToggle = { checked ->
-                    touchDetectionChecked = checked
-                    if (checked) startTouchTypeDetection() else Sensey.getInstance().stopTouchTypeDetection()
-                },
-                onPinchScaleToggle = { checked ->
-                    pinchScaleChecked = checked
-                    if (checked) startPinchDetection() else Sensey.getInstance().stopPinchScaleDetection()
-                },
+                touchDetectionChecked = selectedSensor == "touch",
+                pinchScaleChecked = selectedSensor == "pinch",
+                onTouchDetectionToggle = { select("touch") },
+                onPinchScaleToggle = { select("pinch") },
                 resultText = resultText,
             )
         }
     }
 
+    private fun select(sensor: String) {
+        val prev = selectedSensor
+        if (prev == sensor) {
+            stopDetector(sensor)
+            selectedSensor = null
+            return
+        }
+        if (prev != null) stopDetector(prev)
+        startDetector(sensor)
+        selectedSensor = sensor
+    }
+
+    private fun startDetector(sensor: String) {
+        when (sensor) {
+            "touch" -> Sensey.getInstance().startTouchTypeDetection(this, touchDispatcher)
+            "pinch" -> Sensey.getInstance().startPinchScaleDetection(this, pinchDispatcher)
+        }
+    }
+
+    private fun stopDetector(sensor: String) {
+        when (sensor) {
+            "touch" -> Sensey.getInstance().stopTouchTypeDetection()
+            "pinch" -> Sensey.getInstance().stopPinchScaleDetection()
+        }
+    }
+
     override fun onPause() {
         super.onPause()
-        stopAllDetectors()
+        selectedSensor?.let { stopDetector(it) }
+        selectedSensor = null
         Sensey.getInstance().stop()
     }
 
     override fun onResume() {
         super.onResume()
         Sensey.getInstance().init(this)
-    }
-
-    private fun stopAllDetectors() {
-        Sensey.getInstance().apply {
-            stopTouchTypeDetection()
-            stopPinchScaleDetection()
-        }
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -109,13 +122,5 @@ class TouchActivity : ComponentActivity() {
         handler.removeCallbacksAndMessages(null)
         handler.postDelayed({ resultText = "[ Hit Area ]" }, 3000)
         if (BuildConfig.DEBUG) Log.d(LOGTAG, text)
-    }
-
-    private fun startPinchDetection() {
-        Sensey.getInstance().startPinchScaleDetection(this, pinchDispatcher)
-    }
-
-    private fun startTouchTypeDetection() {
-        Sensey.getInstance().startTouchTypeDetection(this, touchDispatcher)
     }
 }

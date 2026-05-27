@@ -1,6 +1,5 @@
 package com.github.nisrulz.senseysample.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,14 +16,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 data class SensorItem(
     val label: String,
-    val isChecked: Boolean,
-    val onToggle: (Boolean) -> Unit,
+    val isSelected: Boolean,
+    val onSelect: () -> Unit,
 )
 
 @Composable
@@ -49,16 +49,16 @@ fun MainScreen(
             ) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Scroll to access more detectors",
-                    color = androidx.compose.ui.graphics.Color(0xFF5D9CEC),
+                    text = "Select a gesture detector",
+                    color = Color(0xFF5D9CEC),
                     fontSize = 20.sp,
                     modifier = Modifier.padding(vertical = 8.dp),
                 )
                 sensors.forEach { sensor ->
-                    SenseySwitch(
+                    SenseyRadioButton(
                         label = sensor.label,
-                        checked = sensor.isChecked,
-                        onCheckedChange = sensor.onToggle,
+                        selected = sensor.isSelected,
+                        onSelect = sensor.onSelect,
                     )
                 }
             }

@@ -15,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.github.nisrulz.sensey.Sensey
-import com.github.nisrulz.sensey.gesture.step.StepDetectorUtil
 import com.github.nisrulz.sensey.gesture.chop.ChopEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.light.LightEvent
@@ -27,6 +26,7 @@ import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleEvent
 import com.github.nisrulz.sensey.gesture.scoop.ScoopEvent
 import com.github.nisrulz.sensey.gesture.shake.ShakeEvent
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelEvent
+import com.github.nisrulz.sensey.gesture.step.StepDetectorUtil
 import com.github.nisrulz.sensey.gesture.step.StepEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionTrigger
@@ -47,8 +47,11 @@ class MainActivity : ComponentActivity() {
 
     private var resultText by mutableStateOf("Results show here")
     private var isRealtimeResult by mutableStateOf(false)
-    private var switchStates by mutableStateOf(sensors.associateWith { false })
+    private var selectedSensor by mutableStateOf<String?>(null)
 
+    private val soundLevelDispatcher: (SoundLevelEvent) -> Unit = { event ->
+        setResultText("${DecimalFormat("##.##").format(event.level.toDouble())} dB", true)
+    }
     private val shakeDispatcher: (ShakeEvent) -> Unit = { event ->
         when (event) {
             ShakeEvent.Detected -> setResultText("Shake Detected!", false)
@@ -139,13 +142,8 @@ class MainActivity : ComponentActivity() {
                 sensors = sensors.map { label ->
                     SensorItem(
                         label = label,
-                        isChecked = switchStates[label] ?: false,
-                        onToggle = { isChecked ->
-                            switchStates = switchStates.toMutableMap().apply {
-                                put(label, isChecked)
-                            }
-                            handleSensorToggle(label, isChecked)
-                        },
+                        isSelected = label == selectedSensor,
+                        onSelect = { onSensorSelected(label) },
                     )
                 },
                 resultText = resultText,
@@ -158,7 +156,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
-        stopAllDetectors()
+        stopSelectedDetector()
         Sensey.getInstance().stop()
     }
 
@@ -167,105 +165,72 @@ class MainActivity : ComponentActivity() {
         Sensey.getInstance().init(this)
     }
 
-    private fun stopAllDetectors() {
-        Sensey.getInstance().let {
-            it.stopShakeDetection(shakeDispatcher)
-            it.stopFlipDetection(flipDispatcher)
-            it.stopOrientationDetection(orientationDispatcher)
-            it.stopProximityDetection(proximityDispatcher)
-            it.stopLightDetection(lightDispatcher)
-            it.stopWaveDetection(waveDispatcher)
-            it.stopSoundLevelDetection()
-            it.stopMovementDetection(movementDispatcher)
-            it.stopChopDetection(chopDispatcher)
-            it.stopWristTwistDetection(wristTwistDispatcher)
-            it.stopRotationAngleDetection(rotationAngleDispatcher)
-            it.stopTiltDirectionDetection(tiltDirectionDispatcher)
-            it.stopStepDetection(stepDispatcher)
-            it.stopPickupDeviceDetection(pickupDeviceDispatcher)
-            it.stopScoopDetection(scoopDispatcher)
-        }
+    private fun stopSelectedDetector() {
+        val current = selectedSensor ?: return
+        handleStartDetector(current, start = false)
+        selectedSensor = null
     }
 
-    private fun handleSensorToggle(sensor: String, isChecked: Boolean) {
+    private fun onSensorSelected(sensor: String) {
+        val previous = selectedSensor
+        if (previous == sensor) {
+            handleStartDetector(sensor, start = false)
+            selectedSensor = null
+            return
+        }
+        if (previous != null) {
+            handleStartDetector(previous, start = false)
+        }
+        if (sensor == "Sound Level Detection" && !hasRecordAudioPermission) {
+            RuntimePermissionUtil.requestPermission(this, recordAudioPermission, 100)
+            return
+        }
+        handleStartDetector(sensor, start = true)
+        selectedSensor = sensor
+    }
+
+    private fun handleStartDetector(sensor: String, start: Boolean) {
+        if (!start) {
+            Sensey.getInstance().let {
+                when (sensor) {
+                    "Shake Gesture" -> it.stopShakeDetection(shakeDispatcher)
+                    "Flip Gesture" -> it.stopFlipDetection(flipDispatcher)
+                    "Orientation Gesture" -> it.stopOrientationDetection(orientationDispatcher)
+                    "Proximity Gesture" -> it.stopProximityDetection(proximityDispatcher)
+                    "Light Detection" -> it.stopLightDetection(lightDispatcher)
+                    "Wave Detection" -> it.stopWaveDetection(waveDispatcher)
+                    "Sound Level Detection" -> it.stopSoundLevelDetection()
+                    "Movement Detection" -> it.stopMovementDetection(movementDispatcher)
+                    "Chop Detector" -> it.stopChopDetection(chopDispatcher)
+                    "Wrist Twist Detection" -> it.stopWristTwistDetection(wristTwistDispatcher)
+                    "Rotation Angle Detection" -> it.stopRotationAngleDetection(rotationAngleDispatcher)
+                    "Tilt Direction Detection" -> it.stopTiltDirectionDetection(tiltDirectionDispatcher)
+                    "Step Detector" -> it.stopStepDetection(stepDispatcher)
+                    "Pickup Device Detector" -> it.stopPickupDeviceDetection(pickupDeviceDispatcher)
+                    "Scoop Detector" -> it.stopScoopDetection(scoopDispatcher)
+                }
+            }
+            return
+        }
         Sensey.getInstance().let {
             when (sensor) {
-                "Shake Gesture" ->
-                    if (isChecked) it.startShakeDetection(10f, 2000, shakeDispatcher)
-                    else it.stopShakeDetection(shakeDispatcher)
-
-                "Flip Gesture" ->
-                    if (isChecked) it.startFlipDetection(flipDispatcher)
-                    else it.stopFlipDetection(flipDispatcher)
-
-                "Orientation Gesture" ->
-                    if (isChecked) it.startOrientationDetection(orientationDispatcher)
-                    else it.stopOrientationDetection(orientationDispatcher)
-
-                "Proximity Gesture" ->
-                    if (isChecked) it.startProximityDetection(proximityDispatcher)
-                    else it.stopProximityDetection(proximityDispatcher)
-
-                "Light Detection" ->
-                    if (isChecked) it.startLightDetection(10f, lightDispatcher)
-                    else it.stopLightDetection(lightDispatcher)
-
-                "Wave Detection" ->
-                    if (isChecked) it.startWaveDetection(waveDispatcher)
-                    else it.stopWaveDetection(waveDispatcher)
-
-                "Sound Level Detection" ->
-                    if (isChecked) {
-                        if (hasRecordAudioPermission) {
-                            it.startSoundLevelDetection(this, soundLevelDispatcher)
-                        } else {
-                            RuntimePermissionUtil.requestPermission(
-                                this,
-                                recordAudioPermission,
-                                100,
-                            )
-                        }
-                    } else {
-                        it.stopSoundLevelDetection()
-                    }
-
-                "Movement Detection" ->
-                    if (isChecked) it.startMovementDetection(movementDispatcher)
-                    else it.stopMovementDetection(movementDispatcher)
-
-                "Chop Detector" ->
-                    if (isChecked) it.startChopDetection(30f, 500, chopDispatcher)
-                    else it.stopChopDetection(chopDispatcher)
-
-                "Wrist Twist Detection" ->
-                    if (isChecked) it.startWristTwistDetection(wristTwistDispatcher)
-                    else it.stopWristTwistDetection(wristTwistDispatcher)
-
-                "Rotation Angle Detection" ->
-                    if (isChecked) it.startRotationAngleDetection(rotationAngleDispatcher)
-                    else it.stopRotationAngleDetection(rotationAngleDispatcher)
-
-                "Tilt Direction Detection" ->
-                    if (isChecked) it.startTiltDirectionDetection(tiltDirectionDispatcher)
-                    else it.stopTiltDirectionDetection(tiltDirectionDispatcher)
-
-                "Step Detector" ->
-                    if (isChecked) it.startStepDetection(this, stepDispatcher, StepDetectorUtil.MALE)
-                    else it.stopStepDetection(stepDispatcher)
-
-                "Pickup Device Detector" ->
-                    if (isChecked) it.startPickupDeviceDetection(pickupDeviceDispatcher)
-                    else it.stopPickupDeviceDetection(pickupDeviceDispatcher)
-
-                "Scoop Detector" ->
-                    if (isChecked) it.startScoopDetection(scoopDispatcher)
-                    else it.stopScoopDetection(scoopDispatcher)
+                "Shake Gesture" -> it.startShakeDetection(10f, 2000, shakeDispatcher)
+                "Flip Gesture" -> it.startFlipDetection(flipDispatcher)
+                "Orientation Gesture" -> it.startOrientationDetection(orientationDispatcher)
+                "Proximity Gesture" -> it.startProximityDetection(proximityDispatcher)
+                "Light Detection" -> it.startLightDetection(10f, lightDispatcher)
+                "Wave Detection" -> it.startWaveDetection(waveDispatcher)
+                "Sound Level Detection" -> it.startSoundLevelDetection(this, soundLevelDispatcher)
+                "Movement Detection" -> it.startMovementDetection(movementDispatcher)
+                "Chop Detector" -> it.startChopDetection(30f, 500, chopDispatcher)
+                "Wrist Twist Detection" -> it.startWristTwistDetection(wristTwistDispatcher)
+                "Rotation Angle Detection" -> it.startRotationAngleDetection(rotationAngleDispatcher)
+                "Tilt Direction Detection" -> it.startTiltDirectionDetection(tiltDirectionDispatcher)
+                "Step Detector" -> it.startStepDetection(this, stepDispatcher, StepDetectorUtil.MALE)
+                "Pickup Device Detector" -> it.startPickupDeviceDetection(pickupDeviceDispatcher)
+                "Scoop Detector" -> it.startScoopDetection(scoopDispatcher)
             }
         }
-    }
-
-    private val soundLevelDispatcher: (SoundLevelEvent) -> Unit = { event ->
-        setResultText("${DecimalFormat("##.##").format(event.level.toDouble())} dB", true)
     }
 
     override fun onRequestPermissionsResult(
@@ -286,10 +251,8 @@ class MainActivity : ComponentActivity() {
                             )
                         ) {
                             hasRecordAudioPermission = true
-                            switchStates = switchStates.toMutableMap().apply {
-                                put("Sound Level Detection", true)
-                            }
-                            handleSensorToggle("Sound Level Detection", true)
+                            selectedSensor = "Sound Level Detection"
+                            handleStartDetector("Sound Level Detection", start = true)
                         }
                     }
                 },

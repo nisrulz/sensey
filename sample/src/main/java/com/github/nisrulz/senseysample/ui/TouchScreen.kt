@@ -33,15 +33,15 @@ fun TouchScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
             ) {
                 Spacer(modifier = Modifier.height(8.dp))
-                SenseySwitch(
+                SenseyRadioButton(
                     label = "Touch Detection",
-                    checked = touchDetectionChecked,
-                    onCheckedChange = onTouchDetectionToggle,
+                    selected = touchDetectionChecked,
+                    onSelect = { onTouchDetectionToggle(true) },
                 )
-                SenseySwitch(
+                SenseyRadioButton(
                     label = "Pinch Scale Detection",
-                    checked = pinchScaleChecked,
-                    onCheckedChange = onPinchScaleToggle,
+                    selected = pinchScaleChecked,
+                    onSelect = { onPinchScaleToggle(true) },
                 )
             }
 
