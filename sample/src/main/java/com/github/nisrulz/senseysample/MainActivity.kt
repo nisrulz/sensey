@@ -8,7 +8,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.github.nisrulz.sensey.Sensey
+import com.github.nisrulz.sensey.senseyRegister
+import com.github.nisrulz.sensey.senseyStop
 import com.github.nisrulz.senseysample.ui.MainScreen
 import com.github.nisrulz.senseysample.ui.SensorItem
 import com.github.nisrulz.senseysample.utils.RPResultListener
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         sensorManager.stopSelectedDetector()
-        Sensey.stop()
+        senseyStop()
     }
 
     override fun onDestroy() {
@@ -59,7 +60,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        Sensey.init(this, sensorDataLoggingEnabled = true)
+        sensorManager.sensey = senseyRegister(sensorDataLoggingEnabled = true) {
+            // plugin registration happens in SensorManager
+        }
     }
 
     private fun onSensorSelected(sensor: String) {

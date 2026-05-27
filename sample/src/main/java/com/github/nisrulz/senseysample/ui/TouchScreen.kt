@@ -11,13 +11,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.nisrulz.sensey.gesture.compose.senseyGestures
 
 @Composable
 fun TouchScreen(
     touchDetectionChecked: Boolean,
     pinchScaleChecked: Boolean,
-    onTouchDetectionToggle: (Boolean) -> Unit,
-    onPinchScaleToggle: (Boolean) -> Unit,
+    onTouchDetectionToggle: () -> Unit,
+    onPinchScaleToggle: () -> Unit,
     resultText: String,
 ) {
     Surface(
@@ -36,12 +37,12 @@ fun TouchScreen(
                 SenseyRadioButton(
                     label = "Touch Detection",
                     selected = touchDetectionChecked,
-                    onSelect = { onTouchDetectionToggle(true) },
+                    onSelect = { onTouchDetectionToggle() },
                 )
                 SenseyRadioButton(
                     label = "Pinch Scale Detection",
                     selected = pinchScaleChecked,
-                    onSelect = { onPinchScaleToggle(true) },
+                    onSelect = { onPinchScaleToggle() },
                 )
             }
 
@@ -50,7 +51,8 @@ fun TouchScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp)
+                    .senseyGestures(),
             )
         }
     }

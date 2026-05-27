@@ -2,17 +2,27 @@ package com.github.nisrulz.senseysample
 
 import android.app.Activity
 import android.util.Log
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.github.nisrulz.sensey.Sensey
+import com.github.nisrulz.sensey.contract.GesturePlugin
+import com.github.nisrulz.sensey.gesture.chopPlugin
+import com.github.nisrulz.sensey.gesture.flipPlugin
+import com.github.nisrulz.sensey.gesture.lightPlugin
+import com.github.nisrulz.sensey.gesture.movementPlugin
+import com.github.nisrulz.sensey.gesture.orientationPlugin
+import com.github.nisrulz.sensey.gesture.pickupDevicePlugin
+import com.github.nisrulz.sensey.gesture.proximityPlugin
+import com.github.nisrulz.sensey.gesture.rotationAnglePlugin
+import com.github.nisrulz.sensey.gesture.scoopPlugin
+import com.github.nisrulz.sensey.gesture.shakePlugin
+import com.github.nisrulz.sensey.gesture.soundLevelPlugin
+import com.github.nisrulz.sensey.gesture.stepPlugin
+import com.github.nisrulz.sensey.gesture.tapOnBackPlugin
+import com.github.nisrulz.sensey.gesture.tiltDirectionPlugin
+import com.github.nisrulz.sensey.gesture.wavePlugin
+import com.github.nisrulz.sensey.gesture.wristTwistPlugin
 import com.github.nisrulz.sensey.gesture.chop.ChopEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.light.LightEvent
@@ -31,6 +41,13 @@ import com.github.nisrulz.sensey.gesture.step.StepDetectorUtil
 import com.github.nisrulz.sensey.gesture.step.StepEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
 import com.github.nisrulz.senseysample.utils.HapticUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 internal class SensorManager(
@@ -59,7 +76,9 @@ internal class SensorManager(
 
     var resultText by mutableStateOf("Results show here")
     var selectedSensor by mutableStateOf<String?>(null)
+    var sensey: Sensey? = null
 
+    private var currentPlugin: GesturePlugin? = null
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var resetJob: Job? = null
 
@@ -195,51 +214,40 @@ internal class SensorManager(
     }
 
     fun stopSelectedDetector() {
-        val current = selectedSensor ?: return
-        handleStartDetector(current, start = false)
+        currentPlugin?.let { sensey?.unregister(it) }
+        currentPlugin = null
         selectedSensor = null
     }
 
     private fun handleStartDetector(sensor: String, start: Boolean) {
         if (!start) {
-            when (sensor) {
-                SHAKE -> Sensey.stopShakeDetection()
-                FLIP -> Sensey.stopFlipDetection()
-                ORIENTATION -> Sensey.stopOrientationDetection()
-                PROXIMITY -> Sensey.stopProximityDetection()
-                LIGHT -> Sensey.stopLightDetection()
-                WAVE -> Sensey.stopWaveDetection()
-                SOUND_LEVEL -> Sensey.stopSoundLevelDetection()
-                MOVEMENT -> Sensey.stopMovementDetection()
-                CHOP -> Sensey.stopChopDetection()
-                WRIST_TWIST -> Sensey.stopWristTwistDetection()
-                ROTATION_ANGLE -> Sensey.stopRotationAngleDetection()
-                TILT_DIRECTION -> Sensey.stopTiltDirectionDetection()
-                STEP -> Sensey.stopStepDetection()
-                PICKUP_DEVICE -> Sensey.stopPickupDeviceDetection()
-                SCOOP -> Sensey.stopScoopDetection()
-                TAP_ON_BACK -> Sensey.stopTapOnBackDetection()
-            }
+            currentPlugin?.let { sensey?.unregister(it) }
+            currentPlugin = null
             return
         }
-        when (sensor) {
-            SHAKE -> Sensey.startShakeDetection(10f, 2000, shakeDispatcher)
-            FLIP -> Sensey.startFlipDetection(flipDispatcher)
-            ORIENTATION -> Sensey.startOrientationDetection(orientationDispatcher)
-            PROXIMITY -> Sensey.startProximityDetection(proximityDispatcher)
-            LIGHT -> Sensey.startLightDetection(10f, lightDispatcher)
-            WAVE -> Sensey.startWaveDetection(waveDispatcher)
-            SOUND_LEVEL -> Sensey.startSoundLevelDetection(activity, soundLevelDispatcher)
-            MOVEMENT -> Sensey.startMovementDetection(movementDispatcher)
-            CHOP -> Sensey.startChopDetection(30f, 500, chopDispatcher)
-            WRIST_TWIST -> Sensey.startWristTwistDetection(wristTwistDispatcher)
-            ROTATION_ANGLE -> Sensey.startRotationAngleDetection(rotationAngleDispatcher)
-            TILT_DIRECTION -> Sensey.startTiltDirectionDetection(tiltDirectionDispatcher)
-            STEP -> Sensey.startStepDetection(activity, stepDispatcher, StepDetectorUtil.MALE)
-            PICKUP_DEVICE -> Sensey.startPickupDeviceDetection(pickupDeviceDispatcher)
-            SCOOP -> Sensey.startScoopDetection(scoopDispatcher)
-            TAP_ON_BACK -> Sensey.startTapOnBackDetection(tapOnBackDispatcher)
-        }
+        val plugin: GesturePlugin = createPlugin(sensor)
+        sensey?.register(plugin)
+        currentPlugin = plugin
+    }
+
+    private fun createPlugin(sensor: String): GesturePlugin = when (sensor) {
+        SHAKE -> shakePlugin(threshold = 10f, timeBeforeDeclaringShakeStopped = 2000, dispatcher = shakeDispatcher)
+        FLIP -> flipPlugin(dispatcher = flipDispatcher)
+        ORIENTATION -> orientationPlugin(dispatcher = orientationDispatcher)
+        PROXIMITY -> proximityPlugin(dispatcher = proximityDispatcher)
+        LIGHT -> lightPlugin(darkThreshold = 10f, dispatcher = lightDispatcher)
+        WAVE -> wavePlugin(dispatcher = waveDispatcher)
+        SOUND_LEVEL -> soundLevelPlugin(activity, dispatcher = soundLevelDispatcher)
+        MOVEMENT -> movementPlugin(dispatcher = movementDispatcher)
+        CHOP -> chopPlugin(threshold = 30f, timeForChopGesture = 500, dispatcher = chopDispatcher)
+        WRIST_TWIST -> wristTwistPlugin(dispatcher = wristTwistDispatcher)
+        ROTATION_ANGLE -> rotationAnglePlugin(dispatcher = rotationAngleDispatcher)
+        TILT_DIRECTION -> tiltDirectionPlugin(dispatcher = tiltDirectionDispatcher)
+        STEP -> stepPlugin(gender = StepDetectorUtil.MALE, dispatcher = stepDispatcher)
+        PICKUP_DEVICE -> pickupDevicePlugin(dispatcher = pickupDeviceDispatcher)
+        SCOOP -> scoopPlugin(dispatcher = scoopDispatcher)
+        TAP_ON_BACK -> tapOnBackPlugin(dispatcher = tapOnBackDispatcher)
+        else -> error("Unknown sensor: $sensor")
     }
 
     fun cancel() {
