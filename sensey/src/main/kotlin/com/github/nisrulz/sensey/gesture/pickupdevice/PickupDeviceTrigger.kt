@@ -27,7 +27,7 @@ class PickupDeviceTrigger(
     private val settleReadings: Int = 6,
 ) : GestureTrigger<PickupDeviceEvent> {
 
-    private val buffer = mutableListOf<Float>()
+    private val buffer = ArrayDeque<Float>(windowSize + 1)
     private var isHeld = false
     private var settleCount = 0
 
@@ -36,8 +36,8 @@ class PickupDeviceTrigger(
             (values[0] * values[0] + values[1] * values[1] + values[2] * values[2]).toDouble(),
         ).toFloat()
 
-        buffer.add(vm)
-        if (buffer.size > windowSize) buffer.removeAt(0)
+        buffer.addLast(vm)
+        if (buffer.size > windowSize) buffer.removeFirst()
 
         if (buffer.size < 3) return null
 
