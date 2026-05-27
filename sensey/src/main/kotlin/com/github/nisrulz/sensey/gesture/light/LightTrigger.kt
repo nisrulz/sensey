@@ -18,11 +18,28 @@ package com.github.nisrulz.sensey.gesture.light
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class LightTrigger(
-    private val threshold: Float = 3f,
+    private val darkThreshold: Float = 8f,
+    private val lightThreshold: Float = 12f,
 ) : GestureTrigger<LightEvent> {
+
+    private var lastWasDark = true
+    private var ready = false
 
     override fun evaluate(values: FloatArray, timestamp: Long): LightEvent? {
         val lux = values[0]
-        return if (lux < threshold) LightEvent.Dark else LightEvent.Light
+        if (!ready) {
+            ready = true
+            lastWasDark = lux < lightThreshold
+            return if (lux < darkThreshold) LightEvent.Dark else LightEvent.Light
+        }
+        return if (lux < darkThreshold && !lastWasDark) {
+            lastWasDark = true
+            LightEvent.Dark
+        } else if (lux > lightThreshold && lastWasDark) {
+            lastWasDark = false
+            LightEvent.Light
+        } else {
+            null
+        }
     }
 }

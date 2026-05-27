@@ -17,10 +17,25 @@ package com.github.nisrulz.sensey.gesture.rotationangle
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class RotationAngleTrigger : GestureTrigger<RotationAngleEvent> {
+class RotationAngleTrigger(
+    private val minAngleChange: Float = 1f,
+) : GestureTrigger<RotationAngleEvent> {
+
+    private var lastEvent: RotationAngleEvent? = null
 
     override fun evaluate(values: FloatArray, timestamp: Long): RotationAngleEvent? {
         val (ax, ay, az) = values
-        return RotationAngleEvent(ax, ay, az)
+        val event = RotationAngleEvent(ax, ay, az)
+
+        return if (lastEvent == null ||
+            kotlin.math.abs(ax - lastEvent!!.angleInAxisX) > minAngleChange ||
+            kotlin.math.abs(ay - lastEvent!!.angleInAxisY) > minAngleChange ||
+            kotlin.math.abs(az - lastEvent!!.angleInAxisZ) > minAngleChange
+        ) {
+            lastEvent = event
+            event
+        } else {
+            null
+        }
     }
 }

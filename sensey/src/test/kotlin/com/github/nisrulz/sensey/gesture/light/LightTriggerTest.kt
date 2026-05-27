@@ -16,15 +16,10 @@
 package com.github.nisrulz.sensey.gesture.light
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class LightTriggerTest {
-
-    @Test
-    fun darkWhenLuxBelowCustomThreshold() {
-        val trigger = LightTrigger(threshold = 9f)
-        assertEquals(LightEvent.Dark, trigger.evaluate(floatArrayOf(3f), 0L))
-    }
 
     @Test
     fun darkWhenLuxBelowDefaultThreshold() {
@@ -39,26 +34,35 @@ class LightTriggerTest {
     }
 
     @Test
-    fun lightWhenLuxEqualsCustomThreshold() {
-        val trigger = LightTrigger(threshold = 9f)
-        assertEquals(LightEvent.Light, trigger.evaluate(floatArrayOf(9f), 0L))
-    }
-
-    @Test
-    fun lightWhenLuxEqualsDefaultThreshold() {
-        val trigger = LightTrigger()
-        assertEquals(LightEvent.Light, trigger.evaluate(floatArrayOf(3f), 0L))
-    }
-
-    @Test
-    fun lightWhenLuxAboveCustomThreshold() {
-        val trigger = LightTrigger(threshold = 9f)
-        assertEquals(LightEvent.Light, trigger.evaluate(floatArrayOf(12f), 0L))
-    }
-
-    @Test
     fun lightWhenLuxAboveDefaultThreshold() {
         val trigger = LightTrigger()
         assertEquals(LightEvent.Light, trigger.evaluate(floatArrayOf(10f), 0L))
+    }
+
+    @Test
+    fun darkWithCustomThreshold() {
+        val trigger = LightTrigger(darkThreshold = 5f, lightThreshold = 10f)
+        assertEquals(LightEvent.Dark, trigger.evaluate(floatArrayOf(3f), 0L))
+    }
+
+    @Test
+    fun hysteresisPreventsOscillation() {
+        val trigger = LightTrigger(darkThreshold = 8f, lightThreshold = 12f)
+        trigger.evaluate(floatArrayOf(1f), 0L)  // Dark
+        assertNull(trigger.evaluate(floatArrayOf(10f), 100L))  // Hysteresis: stays Dark
+    }
+
+    @Test
+    fun transitionToLightAfterExceedingLightThreshold() {
+        val trigger = LightTrigger(darkThreshold = 8f, lightThreshold = 12f)
+        trigger.evaluate(floatArrayOf(1f), 0L)  // Dark
+        assertEquals(LightEvent.Light, trigger.evaluate(floatArrayOf(15f), 100L))
+    }
+
+    @Test
+    fun transitionToDarkAfterDroppingBelowDarkThreshold() {
+        val trigger = LightTrigger(darkThreshold = 8f, lightThreshold = 12f)
+        trigger.evaluate(floatArrayOf(15f), 0L)  // Light
+        assertEquals(LightEvent.Dark, trigger.evaluate(floatArrayOf(1f), 100L))
     }
 }

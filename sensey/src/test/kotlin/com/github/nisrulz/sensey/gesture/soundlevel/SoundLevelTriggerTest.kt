@@ -35,8 +35,9 @@ class SoundLevelTriggerTest {
     }
 
     @Test
-    fun nullForZeroValues() {
-        assertNull(trigger.evaluate(floatArrayOf(0f, 0f), 0L))
+    fun zeroValuesProduceVeryLowLevel() {
+        val result = trigger.evaluate(floatArrayOf(0f, 0f), 0L)
+        assertNotNull(result)
     }
 
     @Test

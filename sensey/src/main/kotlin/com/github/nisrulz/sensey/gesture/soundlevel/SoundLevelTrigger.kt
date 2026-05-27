@@ -32,7 +32,8 @@ class SoundLevelTrigger(
             sumLevel += value / 32768.0
         }
         val numberOfSamples = values.size
-        val rms = sqrt(abs(sumLevel / numberOfSamples))
+        val meanSquare = abs(sumLevel / numberOfSamples).coerceAtLeast(1e-10)
+        val rms = sqrt(meanSquare)
         var soundLevel = (20.0 * log10(rms)).toFloat()
 
         if (soundLevel.isNaN() || soundLevel.isInfinite()) return null

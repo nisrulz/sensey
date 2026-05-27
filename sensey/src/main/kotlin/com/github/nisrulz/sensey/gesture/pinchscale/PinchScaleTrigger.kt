@@ -36,13 +36,13 @@ class PinchScaleTrigger : GestureTrigger<PinchScaleEvent> {
         var newCountOfScaleOut = countOfScaleOut
         var result: PinchScaleEvent? = null
 
-        if (scaleFactor > 1) {
+        if (scaleFactor > 1.01f) {
             newCountOfScaleIn += 1
             if (newEventOccurred != 1 && newCountOfScaleIn > 2) {
                 newEventOccurred = 1
                 result = PinchScaleEvent(scaleFactor, false)
             }
-        } else {
+        } else if (scaleFactor < 0.99f) {
             newCountOfScaleOut += 1
             if (newEventOccurred != 2 && newCountOfScaleOut > 2) {
                 newEventOccurred = 2
