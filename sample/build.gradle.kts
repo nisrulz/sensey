@@ -18,7 +18,7 @@ plugins {
     alias(libs.plugins.android.application)
 
     // Compose
-    id("org.jetbrains.kotlin.plugin.compose") version "2.3.21"
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
