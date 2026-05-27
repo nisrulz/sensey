@@ -7,16 +7,16 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
-import android.view.ScaleGestureDetector
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.github.nisrulz.sensey.PinchScaleDetector
 import com.github.nisrulz.sensey.Sensey
-import com.github.nisrulz.sensey.TouchTypeDetector
+import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleEvent
+import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
+import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeTrigger
 import com.github.nisrulz.senseysample.ui.TouchScreen
 
 class TouchActivity : ComponentActivity() {
@@ -27,6 +27,38 @@ class TouchActivity : ComponentActivity() {
     private var resultText by mutableStateOf("[ Hit Area ]")
     private var touchDetectionChecked by mutableStateOf(false)
     private var pinchScaleChecked by mutableStateOf(false)
+
+    private val pinchDispatcher: (PinchScaleEvent) -> Unit = { event ->
+        updateResultText(if (event.isScalingOut) "Scaling Out" else "Scaling In")
+    }
+
+    private fun swipeDirText(dir: Int): String? = when (dir) {
+        TouchTypeTrigger.SWIPE_DIR_UP -> "Swipe Up"
+        TouchTypeTrigger.SWIPE_DIR_DOWN -> "Swipe Down"
+        TouchTypeTrigger.SWIPE_DIR_LEFT -> "Swipe Left"
+        TouchTypeTrigger.SWIPE_DIR_RIGHT -> "Swipe Right"
+        else -> null
+    }
+
+    private fun scrollDirText(dir: Int): String? = when (dir) {
+        TouchTypeTrigger.SCROLL_DIR_UP -> "Scrolling Up"
+        TouchTypeTrigger.SCROLL_DIR_DOWN -> "Scrolling Down"
+        TouchTypeTrigger.SCROLL_DIR_LEFT -> "Scrolling Left"
+        TouchTypeTrigger.SCROLL_DIR_RIGHT -> "Scrolling Right"
+        else -> null
+    }
+
+    private val touchDispatcher: (TouchTypeEvent) -> Unit = { event ->
+        when (event) {
+            TouchTypeEvent.DoubleTap -> updateResultText("Double Tap")
+            TouchTypeEvent.LongPress -> updateResultText("Long press")
+            TouchTypeEvent.SingleTap -> updateResultText("Single Tap")
+            is TouchTypeEvent.Swipe -> swipeDirText(event.direction)?.let { updateResultText(it) }
+            is TouchTypeEvent.Scroll -> scrollDirText(event.direction)?.let { updateResultText(it) }
+            TouchTypeEvent.ThreeFingerSingleTap -> updateResultText("Three Finger Tap")
+            TouchTypeEvent.TwoFingerSingleTap -> updateResultText("Two Finger Tap")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,50 +112,10 @@ class TouchActivity : ComponentActivity() {
     }
 
     private fun startPinchDetection() {
-        Sensey.getInstance()
-            .startPinchScaleDetection(this, object : PinchScaleDetector.PinchScaleListener {
-                override fun onScale(gestureDetector: ScaleGestureDetector, isScalingOut: Boolean) {
-                    updateResultText(if (isScalingOut) "Scaling Out" else "Scaling In")
-                }
-                override fun onScaleEnd(gestureDetector: ScaleGestureDetector) {
-                    updateResultText("Scaling : Stopped")
-                }
-                override fun onScaleStart(gestureDetector: ScaleGestureDetector) {
-                    updateResultText("Scaling : Started")
-                }
-            })
+        Sensey.getInstance().startPinchScaleDetection(this, pinchDispatcher)
     }
 
     private fun startTouchTypeDetection() {
-        Sensey.getInstance()
-            .startTouchTypeDetection(this, object : TouchTypeDetector.TouchTypListener {
-                override fun onDoubleTap() { updateResultText("Double Tap") }
-                override fun onLongPress() { updateResultText("Long press") }
-                override fun onScroll(scrollDirection: Int) {
-                    updateResultText(
-                        when (scrollDirection) {
-                            TouchTypeDetector.SCROLL_DIR_UP -> "Scrolling Up"
-                            TouchTypeDetector.SCROLL_DIR_DOWN -> "Scrolling Down"
-                            TouchTypeDetector.SCROLL_DIR_LEFT -> "Scrolling Left"
-                            TouchTypeDetector.SCROLL_DIR_RIGHT -> "Scrolling Right"
-                            else -> return
-                        }
-                    )
-                }
-                override fun onSingleTap() { updateResultText("Single Tap") }
-                override fun onSwipe(swipeDirection: Int) {
-                    updateResultText(
-                        when (swipeDirection) {
-                            TouchTypeDetector.SWIPE_DIR_UP -> "Swipe Up"
-                            TouchTypeDetector.SWIPE_DIR_DOWN -> "Swipe Down"
-                            TouchTypeDetector.SWIPE_DIR_LEFT -> "Swipe Left"
-                            TouchTypeDetector.SWIPE_DIR_RIGHT -> "Swipe Right"
-                            else -> return
-                        }
-                    )
-                }
-                override fun onThreeFingerSingleTap() { updateResultText("Three Finger Tap") }
-                override fun onTwoFingerSingleTap() { updateResultText("Two Finger Tap") }
-            })
+        Sensey.getInstance().startTouchTypeDetection(this, touchDispatcher)
     }
 }
