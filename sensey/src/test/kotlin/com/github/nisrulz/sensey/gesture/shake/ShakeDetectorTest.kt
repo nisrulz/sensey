@@ -25,6 +25,7 @@ class ShakeDetectorTest {
     fun dispatchesShakeDetectedOnAccelerometerEvent() {
         val events = mutableListOf<ShakeEvent>()
         val detector = ShakeDetector(ShakeTrigger()) { events.add(it) }
+        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 9.81f)))
         detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 2 * 9.81f)))
         assertTrue(events.contains(ShakeEvent.Detected))
     }
@@ -33,7 +34,8 @@ class ShakeDetectorTest {
     fun dispatchesNothingOnStableValues() {
         val events = mutableListOf<ShakeEvent>()
         val detector = ShakeDetector(ShakeTrigger()) { events.add(it) }
-        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 0f)))
+        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 9.81f)))
+        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 9.81f)))
         assertTrue(events.isEmpty())
     }
 }

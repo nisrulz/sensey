@@ -30,22 +30,25 @@ class ShakeTriggerTest {
 
     @Test
     fun noEventWhenValuesAreStable() {
-        val result = trigger.evaluate(floatArrayOf(0f, 0f, 0f), timestamp = 0L)
+        trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), timestamp = 0L)
+        val result = trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), timestamp = 10L)
         assertNull(result)
     }
 
     @Test
     fun noEventWithZeroGravityForCustomThreshold() {
         val trigger = ShakeTrigger(threshold = 10f)
-        val result = trigger.evaluate(floatArrayOf(0f, 0f, 0f), timestamp = 0L)
+        trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), timestamp = 0L)
+        val result = trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), timestamp = 10L)
         assertNull(result)
     }
 
     @Test
     fun shakeDetectedWhenAccelerationExceedsThreshold() {
+        trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), timestamp = 0L)
         val result = trigger.evaluate(
             floatArrayOf(0f, 0f, 2 * 9.81f),
-            timestamp = 0L,
+            timestamp = 10L,
         )
         assertEquals(ShakeEvent.Detected, result)
     }
@@ -53,18 +56,20 @@ class ShakeTriggerTest {
     @Test
     fun shakeDetectedWithDoubleGravityForCustomThreshold() {
         val trigger = ShakeTrigger(threshold = 9f)
+        trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), timestamp = 0L)
         val result = trigger.evaluate(
             floatArrayOf(0f, 0f, 2 * 9.81f),
-            timestamp = 0L,
+            timestamp = 10L,
         )
         assertEquals(ShakeEvent.Detected, result)
     }
 
     @Test
     fun shakeDetectedMultipleTimesWithStrongAcceleration() {
+        trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), timestamp = 0L)
         val result1 = trigger.evaluate(
             floatArrayOf(0f, 0f, 2 * 9.81f),
-            timestamp = 0L,
+            timestamp = 10L,
         )
         assertEquals(ShakeEvent.Detected, result1)
 
@@ -77,7 +82,8 @@ class ShakeTriggerTest {
 
     @Test
     fun shakeStoppedAfterTimeoutWithoutAcceleration() {
-        trigger.evaluate(floatArrayOf(0f, 0f, 2 * 9.81f), timestamp = 0L)
+        trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), timestamp = 0L)
+        trigger.evaluate(floatArrayOf(0f, 0f, 2 * 9.81f), timestamp = 10L)
 
         val result = trigger.evaluate(
             floatArrayOf(0f, 0f, 0f),
@@ -88,7 +94,8 @@ class ShakeTriggerTest {
 
     @Test
     fun noStopEventBeforeTimeout() {
-        trigger.evaluate(floatArrayOf(0f, 0f, 2 * 9.81f), timestamp = 0L)
+        trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), timestamp = 0L)
+        trigger.evaluate(floatArrayOf(0f, 0f, 2 * 9.81f), timestamp = 10L)
 
         val result = trigger.evaluate(
             floatArrayOf(0f, 0f, 0f),
@@ -99,8 +106,8 @@ class ShakeTriggerTest {
 
     @Test
     fun shakeDetectedThenStoppedThenDetectedAgain() {
-        trigger.evaluate(floatArrayOf(0f, 0f, 2 * 9.81f), timestamp = 0L)
-
+        trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), timestamp = 0L)
+        trigger.evaluate(floatArrayOf(0f, 0f, 2 * 9.81f), timestamp = 10L)
         trigger.evaluate(floatArrayOf(0f, 0f, 0f), timestamp = 2000L)
 
         val result = trigger.evaluate(
