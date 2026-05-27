@@ -86,10 +86,22 @@ fun shakePlugin(
         },
     )
 
-fun flipPlugin(dispatcher: (FlipEvent) -> Unit): GesturePlugin =
+fun flipPlugin(
+    faceUpLowerBound: Float = 8f,
+    faceUpUpperBound: Float = 10.5f,
+    faceDownLowerBound: Float = -10.5f,
+    faceDownUpperBound: Float = -8f,
+    dispatcher: (FlipEvent) -> Unit,
+): GesturePlugin =
     SensorGesturePlugin(
         key = "FlipPlugin",
-        detectorFactory = { TypedSensorDetector(FlipTrigger(), dispatcher, Sensor.TYPE_ACCELEROMETER) },
+        detectorFactory = {
+            TypedSensorDetector(
+                FlipTrigger(faceUpLowerBound, faceUpUpperBound, faceDownLowerBound, faceDownUpperBound),
+                dispatcher,
+                Sensor.TYPE_ACCELEROMETER,
+            )
+        },
     )
 
 fun lightPlugin(
@@ -252,6 +264,17 @@ fun touchTypePlugin(
     dispatcher: (TouchTypeEvent) -> Unit,
 ): GesturePlugin = TouchTypePlugin(TouchTypeTrigger(), dispatcher)
 
+/**
+ * Creates a sound level detection plugin.
+ *
+ * Requires `RECORD_AUDIO` permission at runtime. Captures raw audio from the
+ * microphone via [android.media.AudioRecord] with `VOICE_RECOGNITION` source
+ * to compute sound pressure levels (RMS → dB). No audio data is stored,
+ * transmitted, or persisted — only the computed decibel level is exposed.
+ *
+ * On API 33+ the system grants `RECORD_AUDIO` at install time for apps
+ * targeting the permission via manifest, so no runtime prompt is shown.
+ */
 fun soundLevelPlugin(
     context: Context,
     dispatcher: (SoundLevelEvent) -> Unit,
@@ -376,7 +399,9 @@ private class SoundLevelPlugin(
     private var detector: SoundLevelDetector? = null
 
     override fun onRegister(sensey: Sensey) {
-        if (context.checkCallingOrSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+        if (context.checkCallingOrSelfPermission(Manifest.permission.RECORD_AUDIO) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
             android.util.Log.w("Sensey", "RECORD_AUDIO permission not granted — SoundLevelPlugin disabled")
             return
         }
