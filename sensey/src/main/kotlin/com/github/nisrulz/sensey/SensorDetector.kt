@@ -21,7 +21,7 @@ import android.hardware.SensorEventListener
 
 abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
 
-    private val sensorTypes: IntArray = sensorTypes
+    val sensorTypes: IntArray = sensorTypes
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
 
@@ -30,8 +30,6 @@ abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
             onSensorEvent(event)
         }
     }
-
-    fun getSensorTypes(): IntArray = sensorTypes
 
     protected open fun onSensorEvent(sensorEvent: SensorEvent) {}
 
