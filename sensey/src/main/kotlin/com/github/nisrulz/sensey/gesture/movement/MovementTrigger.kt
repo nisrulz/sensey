@@ -26,6 +26,7 @@ internal class MovementTrigger(
     private var currentAccel = GRAVITY_EARTH
     private var isMoving = false
     private var lastMovementTime = 0L
+    private var hasBaseline = false
 
     override fun evaluate(
         values: FloatArray,
@@ -33,6 +34,10 @@ internal class MovementTrigger(
     ): MovementEvent? {
         val previousAccel = currentAccel
         currentAccel = computeMagnitude(values)
+        if (!hasBaseline) {
+            hasBaseline = true
+            return null
+        }
         val delta = abs(currentAccel - previousAccel)
 
         return if (delta > threshold) {
