@@ -16,6 +16,7 @@
 
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.compose.compiler)
 
     alias(libs.plugins.maven.publish)
 }
@@ -30,6 +31,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildFeatures {
+        compose = true
     }
 
     buildTypes {
@@ -65,6 +70,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.compose.foundation)
 
     testImplementation(libs.bundles.testing)
 }
