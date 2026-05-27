@@ -1,0 +1,54 @@
+package com.github.nisrulz.senseysample.ui
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun TouchScreen(
+    touchDetectionChecked: Boolean,
+    pinchScaleChecked: Boolean,
+    onTouchDetectionToggle: (Boolean) -> Unit,
+    onPinchScaleToggle: (Boolean) -> Unit,
+    resultText: String,
+) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = PrimaryBlue,
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+            ) {
+                Spacer(modifier = Modifier.height(8.dp))
+                SenseySwitch(
+                    label = "Touch Detection",
+                    checked = touchDetectionChecked,
+                    onCheckedChange = onTouchDetectionToggle,
+                )
+                SenseySwitch(
+                    label = "Pinch Scale Detection",
+                    checked = pinchScaleChecked,
+                    onCheckedChange = onPinchScaleToggle,
+                )
+            }
+
+            ResultArea(
+                text = resultText,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(horizontal = 16.dp),
+            )
+        }
+    }
+}

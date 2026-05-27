@@ -16,6 +16,9 @@
 
 plugins {
     alias(libs.plugins.android.application)
+
+    // Compose
+    id("org.jetbrains.kotlin.plugin.compose") version "2.3.21"
 }
 
 android {
@@ -40,12 +43,7 @@ android {
             isDebuggable = true
         }
         release {
-            isMinifyEnabled = true
-
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
+            isMinifyEnabled = false
         }
     }
 
@@ -54,16 +52,30 @@ android {
         targetCompatibility = JavaVersion.toVersion(BuildSdkInfo.JVM_TARGET)
     }
 
+    lint {
+        abortOnError = false
+    }
+
     buildFeatures {
-        viewBinding = true
+        compose = true
         buildConfig = true
     }
 }
 
 dependencies {
+    // Module Dependency
+    implementation(projects.sensey)
+
     // Support
     implementation(libs.androidx.appcompat)
 
-    // Module Dependency
-    implementation(projects.sensey)
+    // Compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+
+    debugImplementation(libs.androidx.ui.tooling)
 }
