@@ -49,9 +49,7 @@ class Sensey(
 
     init {
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        if (lifecycle != null) {
-            registerLifecycleObserver(lifecycle)
-        }
+        lifecycle?.let(::registerLifecycleObserver)
     }
 
     fun register(plugin: GesturePlugin) {
@@ -63,7 +61,7 @@ class Sensey(
     fun register(builder: SenseyPluginRegistry.() -> Unit) {
         val registry = SenseyPluginRegistry()
         registry.builder()
-        registry.collect().forEach { register(it) }
+        registry.collect().forEach(::register)
     }
 
     fun unregister(plugin: GesturePlugin) {
@@ -96,12 +94,12 @@ class Sensey(
 
     internal fun registerSensorDetector(detector: SensorDetector) {
         detector.sensorDataLoggingEnabled = this.sensorDataLoggingEnabled
-        val sensors = convertTypesToSensors(*detector.sensorTypes)
-        registerDetectorForAllSensors(detector, sensors)
+        val sensors = resolveSensors(*detector.sensorTypes)
+        sensors.forEach { sensorManager?.registerListener(detector, it, samplingPeriodActual) }
     }
 
     internal fun unregisterSensorDetector(detector: SensorDetector) {
-        stopSensorDetection(detector)
+        sensorManager?.unregisterListener(detector)
     }
 
     internal fun registerComposeGestureProvider(provider: ComposeGestureProvider) {
@@ -116,41 +114,18 @@ class Sensey(
         lifecycleObserver?.let { registeredLifecycle?.removeObserver(it) }
         lifecycleObserver =
             LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_DESTROY) {
-                    stop()
-                }
+                if (event == Lifecycle.Event.ON_DESTROY) stop()
             }
         registeredLifecycle = lifecycle
         lifecycleObserver?.let { lifecycle.addObserver(it) }
     }
 
-    private fun convertTypesToSensors(vararg sensorTypes: Int): List<Sensor> {
-        val sensors = mutableListOf<Sensor>()
-        sensorManager?.let { manager ->
-            for (sensorType in sensorTypes) {
-                val sensor = manager.getDefaultSensor(sensorType)
-                if (sensor != null) {
-                    sensors.add(sensor)
-                } else {
-                    Log.w(LOGTAG, "Sensor type $sensorType not available on this device")
-                }
+    private fun resolveSensors(vararg sensorTypes: Int): List<Sensor> {
+        val manager = sensorManager ?: return emptyList()
+        return sensorTypes.toList().mapNotNull { type ->
+            manager.getDefaultSensor(type).also { sensor ->
+                if (sensor == null) Log.w(LOGTAG, "Sensor type $type not available on this device")
             }
-        }
-        return sensors
-    }
-
-    private fun registerDetectorForAllSensors(
-        detector: SensorDetector,
-        sensors: Iterable<Sensor>,
-    ) {
-        for (sensor in sensors) {
-            sensorManager?.registerListener(detector, sensor, samplingPeriodActual)
-        }
-    }
-
-    private fun stopSensorDetection(detector: SensorDetector?) {
-        if (detector != null && sensorManager != null) {
-            sensorManager?.unregisterListener(detector)
         }
     }
 }

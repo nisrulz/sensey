@@ -30,24 +30,24 @@ internal abstract class SensorDetector(
     override fun onAccuracyChanged(
         sensor: Sensor,
         accuracy: Int,
-    ) {}
+    ) = Unit
 
     override fun onSensorChanged(event: SensorEvent) {
-        if (isSensorEventBelongsToPluggedTypes(event)) {
-            logSensorEvent(event)
-            onSensorEvent(event)
-        }
+        if (event.sensor.type !in sensorTypes) return
+        logSensorEvent(event)
+        onSensorEvent(event)
     }
 
     private fun logSensorEvent(event: SensorEvent) {
         if (!sensorDataLoggingEnabled) return
-        val tag = TAG_BY_TYPE[event.sensor.type] ?: return
-        val values = event.values.joinToString(",")
-        Log.d(tag, values)
+        val tag = SENSOR_TAGS[event.sensor.type] ?: return
+        Log.d(tag, event.values.joinToString(","))
     }
 
-    companion object {
-        private val TAG_BY_TYPE =
+    protected open fun onSensorEvent(sensorEvent: SensorEvent) = Unit
+
+    private companion object {
+        val SENSOR_TAGS =
             mapOf(
                 Sensor.TYPE_ACCELEROMETER to "===Accelerometer===",
                 Sensor.TYPE_GYROSCOPE to "===Gyroscope===",
@@ -61,13 +61,6 @@ internal abstract class SensorDetector(
                 Sensor.TYPE_LINEAR_ACCELERATION to "===LinAccel===",
             )
     }
-
-    protected open fun onSensorEvent(sensorEvent: SensorEvent) {}
-
-    private fun isSensorEventBelongsToPluggedTypes(event: SensorEvent): Boolean =
-        sensorTypes.any {
-            it == event.sensor.type
-        }
 }
 
 internal open class TypedSensorDetector<T>(
