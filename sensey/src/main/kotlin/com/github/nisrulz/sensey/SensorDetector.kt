@@ -21,9 +21,10 @@ import android.hardware.SensorEventListener
 import android.util.Log
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
+internal abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
 
     val sensorTypes: IntArray = sensorTypes
+    internal var sensorDataLoggingEnabled: Boolean = false
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
 
@@ -35,7 +36,7 @@ abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
     }
 
     private fun logSensorEvent(event: SensorEvent) {
-        if (!Sensey.sensorDataLoggingEnabled) return
+        if (!sensorDataLoggingEnabled) return
         val tag = TAG_BY_TYPE[event.sensor.type] ?: return
         val values = event.values.joinToString(",")
         Log.d(tag, values)
@@ -63,7 +64,7 @@ abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
     }
 }
 
-open class TypedSensorDetector<T>(
+internal open class TypedSensorDetector<T>(
     val trigger: GestureTrigger<T>,
     val dispatcher: (T) -> Unit,
     vararg sensorTypes: Int,
