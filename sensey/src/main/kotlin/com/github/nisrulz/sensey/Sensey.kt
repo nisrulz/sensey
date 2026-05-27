@@ -23,6 +23,8 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.view.MotionEvent
 import androidx.annotation.RequiresPermission
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.github.nisrulz.sensey.gesture.chop.ChopDetector
 import com.github.nisrulz.sensey.gesture.chop.ChopEvent
 import com.github.nisrulz.sensey.gesture.chop.ChopTrigger
@@ -90,14 +92,26 @@ object Sensey {
     private var touchTypeDetector: TouchTypeDetector? = null
     private var samplingPeriod = SAMPLING_PERIOD_NORMAL
     private var sensorManager: SensorManager? = null
+    private var lifecycleObserver: LifecycleEventObserver? = null
+    private var registeredLifecycle: Lifecycle? = null
 
     fun init(context: Context) {
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
 
+    fun init(context: Context, lifecycle: Lifecycle) {
+        init(context)
+        registerLifecycleObserver(lifecycle)
+    }
+
     fun init(context: Context, samplingPeriod: Int) {
         init(context)
         this.samplingPeriod = samplingPeriod
+    }
+
+    fun init(context: Context, samplingPeriod: Int, lifecycle: Lifecycle) {
+        init(context, samplingPeriod)
+        registerLifecycleObserver(lifecycle)
     }
 
     fun setupDispatchTouchEvent(event: MotionEvent) {
@@ -260,6 +274,9 @@ object Sensey {
             stopSensorDetection(sensor)
         }
         defaultSensorsMap.clear()
+        lifecycleObserver?.let { registeredLifecycle?.removeObserver(it) }
+        lifecycleObserver = null
+        registeredLifecycle = null
         sensorManager = null
     }
 
@@ -338,6 +355,17 @@ object Sensey {
 
     fun checkPermission(context: Context, permission: String): Boolean {
         return context.checkCallingOrSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun registerLifecycleObserver(lifecycle: Lifecycle) {
+        lifecycleObserver?.let { registeredLifecycle?.removeObserver(it) }
+        lifecycleObserver = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_DESTROY) {
+                stop()
+            }
+        }
+        registeredLifecycle = lifecycle
+        lifecycleObserver?.let { lifecycle.addObserver(it) }
     }
 
     private fun areAllSensorsValid(sensors: Iterable<Sensor>): Boolean {
