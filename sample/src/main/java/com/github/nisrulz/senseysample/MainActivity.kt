@@ -34,6 +34,7 @@ import com.github.nisrulz.sensey.gesture.wave.WaveEvent
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
 import com.github.nisrulz.senseysample.ui.MainScreen
 import com.github.nisrulz.senseysample.ui.SensorItem
+import com.github.nisrulz.senseysample.utils.HapticUtil
 import com.github.nisrulz.senseysample.utils.RPResultListener
 import com.github.nisrulz.senseysample.utils.RuntimePermissionUtil
 import java.text.DecimalFormat
@@ -49,28 +50,33 @@ class MainActivity : ComponentActivity() {
     private var isRealtimeResult by mutableStateOf(false)
     private var selectedSensor by mutableStateOf<String?>(null)
 
-    private val soundLevelDispatcher: (SoundLevelEvent) -> Unit = { event ->
+    private fun <T> withHaptic(dispatcher: (T) -> Unit): (T) -> Unit = { event ->
+        HapticUtil.quickTap(this)
+        dispatcher(event)
+    }
+
+    private val soundLevelDispatcher: (SoundLevelEvent) -> Unit = withHaptic { event: SoundLevelEvent ->
         setResultText("${DecimalFormat("##.##").format(event.level.toDouble())} dB", true)
     }
-    private val shakeDispatcher: (ShakeEvent) -> Unit = { event ->
+    private val shakeDispatcher: (ShakeEvent) -> Unit = withHaptic { event: ShakeEvent ->
         when (event) {
             ShakeEvent.Detected -> setResultText("Shake Detected!", false)
             ShakeEvent.Stopped -> setResultText("Shake Stopped!", false)
         }
     }
-    private val flipDispatcher: (FlipEvent) -> Unit = { event ->
+    private val flipDispatcher: (FlipEvent) -> Unit = withHaptic { event: FlipEvent ->
         when (event) {
             FlipEvent.FaceUp -> setResultText("Face UP", false)
             FlipEvent.FaceDown -> setResultText("Face Down", false)
         }
     }
-    private val lightDispatcher: (LightEvent) -> Unit = { event ->
+    private val lightDispatcher: (LightEvent) -> Unit = withHaptic { event: LightEvent ->
         when (event) {
             LightEvent.Dark -> setResultText("Dark", false)
             LightEvent.Light -> setResultText("Not Dark", false)
         }
     }
-    private val orientationDispatcher: (OrientationEvent) -> Unit = { event ->
+    private val orientationDispatcher: (OrientationEvent) -> Unit = withHaptic { event: OrientationEvent ->
         val text = when (event) {
             OrientationEvent.TopSideUp -> "Top Side UP"
             OrientationEvent.BottomSideUp -> "Bottom Side UP"
@@ -79,29 +85,28 @@ class MainActivity : ComponentActivity() {
         }
         setResultText(text, false)
     }
-    private val proximityDispatcher: (ProximityEvent) -> Unit = { event ->
+    private val proximityDispatcher: (ProximityEvent) -> Unit = withHaptic { event: ProximityEvent ->
         when (event) {
             ProximityEvent.Near -> setResultText("Near", false)
             ProximityEvent.Far -> setResultText("Far", false)
         }
     }
-    private val waveDispatcher: (WaveEvent) -> Unit = { setResultText("Wave Detected!", false) }
-    private val movementDispatcher: (MovementEvent) -> Unit = { event ->
+    private val waveDispatcher: (WaveEvent) -> Unit = withHaptic { setResultText("Wave Detected!", false) }
+    private val movementDispatcher: (MovementEvent) -> Unit = withHaptic { event: MovementEvent ->
         when (event) {
             MovementEvent.Moved -> setResultText("Movement Detected!", false)
             MovementEvent.Stationary -> setResultText("Device Stationary!", false)
         }
     }
-    private val chopDispatcher: (ChopEvent) -> Unit = { setResultText("Chop Detected!", false) }
-    private val wristTwistDispatcher: (WristTwistEvent) -> Unit =
-        { setResultText("Wrist Twist Detected!", false) }
-    private val rotationAngleDispatcher: (RotationAngleEvent) -> Unit = { event ->
+    private val chopDispatcher: (ChopEvent) -> Unit = withHaptic { setResultText("Chop Detected!", false) }
+    private val wristTwistDispatcher: (WristTwistEvent) -> Unit = withHaptic { setResultText("Wrist Twist Detected!", false) }
+    private val rotationAngleDispatcher: (RotationAngleEvent) -> Unit = withHaptic { event: RotationAngleEvent ->
         setResultText(
             "Rotation in Axis Detected(deg):\nX=${event.angleInAxisX},\nY=${event.angleInAxisY},\nZ=${event.angleInAxisZ}",
             true,
         )
     }
-    private val tiltDirectionDispatcher: (TiltDirectionEvent) -> Unit = { event ->
+    private val tiltDirectionDispatcher: (TiltDirectionEvent) -> Unit = withHaptic { event: TiltDirectionEvent ->
         val (label, axis) = when (event) {
             is TiltDirectionEvent.AxisXTilt -> Pair(event.direction, "X")
             is TiltDirectionEvent.AxisYTilt -> Pair(event.direction, "Y")
@@ -110,7 +115,7 @@ class MainActivity : ComponentActivity() {
         val dir = if (label == TiltDirectionTrigger.DIRECTION_CLOCKWISE) "ClockWise" else "AntiClockWise"
         setResultText("Tilt in $axis Axis: $dir", false)
     }
-    private val stepDispatcher: (StepEvent) -> Unit = { event ->
+    private val stepDispatcher: (StepEvent) -> Unit = withHaptic { event: StepEvent ->
         val typeOfActivity = when (event.activityType) {
             StepDetectorUtil.ACTIVITY_RUNNING -> "Running"
             StepDetectorUtil.ACTIVITY_WALKING -> "Walking"
@@ -121,14 +126,13 @@ class MainActivity : ComponentActivity() {
             true,
         )
     }
-    private val pickupDeviceDispatcher: (PickupDeviceEvent) -> Unit = { event ->
+    private val pickupDeviceDispatcher: (PickupDeviceEvent) -> Unit = withHaptic { event: PickupDeviceEvent ->
         when (event) {
             PickupDeviceEvent.PickedUp -> setResultText("Device Picked up Detected!", false)
             PickupDeviceEvent.PutDown -> setResultText("Device Put down Detected!", false)
         }
     }
-    private val scoopDispatcher: (ScoopEvent) -> Unit =
-        { setResultText("Scoop Gesture Detected!", false) }
+    private val scoopDispatcher: (ScoopEvent) -> Unit = withHaptic { setResultText("Scoop Gesture Detected!", false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

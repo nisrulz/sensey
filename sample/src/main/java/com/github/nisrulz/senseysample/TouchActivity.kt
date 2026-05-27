@@ -18,6 +18,7 @@ import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleEvent
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeTrigger
 import com.github.nisrulz.senseysample.ui.TouchScreen
+import com.github.nisrulz.senseysample.utils.HapticUtil
 
 class TouchActivity : ComponentActivity() {
 
@@ -27,7 +28,12 @@ class TouchActivity : ComponentActivity() {
     private var resultText by mutableStateOf("[ Hit Area ]")
     private var selectedSensor by mutableStateOf<String?>(null)
 
-    private val pinchDispatcher: (PinchScaleEvent) -> Unit = { event ->
+    private fun <T> withHaptic(dispatcher: (T) -> Unit): (T) -> Unit = { event ->
+        HapticUtil.quickTap(this)
+        dispatcher(event)
+    }
+
+    private val pinchDispatcher: (PinchScaleEvent) -> Unit = withHaptic { event: PinchScaleEvent ->
         updateResultText(if (event.isScalingOut) "Scaling Out" else "Scaling In")
     }
 
@@ -47,7 +53,7 @@ class TouchActivity : ComponentActivity() {
         else -> null
     }
 
-    private val touchDispatcher: (TouchTypeEvent) -> Unit = { event ->
+    private val touchDispatcher: (TouchTypeEvent) -> Unit = withHaptic { event: TouchTypeEvent ->
         when (event) {
             TouchTypeEvent.DoubleTap -> updateResultText("Double Tap")
             TouchTypeEvent.LongPress -> updateResultText("Long press")
