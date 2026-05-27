@@ -137,6 +137,7 @@
 | Movement | `MovementEvent.Moved`, `MovementEvent.Stationary` |
 | Orientation | `OrientationEvent.TopSideUp`, `BottomSideUp`, `LeftSideUp`, `RightSideUp` |
 | Chop | `ChopEvent.Chopped` |
+| TapOnBack | `TapOnBackEvent` |
 | WristTwist | `WristTwistEvent.Twisted` |
 | Wave | `WaveEvent.Waved` |
 | Scoop | `ScoopEvent.Scooped` |

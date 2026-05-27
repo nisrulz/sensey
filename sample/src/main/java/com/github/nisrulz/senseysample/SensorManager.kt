@@ -24,6 +24,7 @@ import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleEvent
 import com.github.nisrulz.sensey.gesture.scoop.ScoopEvent
 import com.github.nisrulz.sensey.gesture.shake.ShakeEvent
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelEvent
+import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
 import com.github.nisrulz.sensey.gesture.wave.WaveEvent
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
 import com.github.nisrulz.sensey.gesture.step.StepDetectorUtil
@@ -53,6 +54,7 @@ internal class SensorManager(
         const val STEP = "Step Detector"
         const val PICKUP_DEVICE = "Pickup Device Detector"
         const val SCOOP = "Scoop Detector"
+        const val TAP_ON_BACK = "Tap On Back"
     }
 
     var resultText by mutableStateOf("Results show here")
@@ -159,10 +161,14 @@ internal class SensorManager(
 
     private val scoopDispatcher: (ScoopEvent) -> Unit = withHaptic { setResultText("Scoop Gesture Detected!", false) }
 
+    private val tapOnBackDispatcher: (TapOnBackEvent) -> Unit = withHaptic {
+        setResultText("Tap On Back Detected!", false)
+    }
+
     val sensors = listOf(
         SHAKE, FLIP, ORIENTATION, PROXIMITY, LIGHT, WAVE,
         SOUND_LEVEL, MOVEMENT, CHOP, WRIST_TWIST, ROTATION_ANGLE,
-        TILT_DIRECTION, STEP, PICKUP_DEVICE, SCOOP,
+        TILT_DIRECTION, STEP, PICKUP_DEVICE, SCOOP, TAP_ON_BACK,
     )
 
     fun onSensorSelected(sensor: String, hasRecordAudioPermission: Boolean, onPermissionNeeded: () -> Unit) {
@@ -212,6 +218,7 @@ internal class SensorManager(
                 STEP -> Sensey.stopStepDetection()
                 PICKUP_DEVICE -> Sensey.stopPickupDeviceDetection()
                 SCOOP -> Sensey.stopScoopDetection()
+                TAP_ON_BACK -> Sensey.stopTapOnBackDetection()
             }
             return
         }
@@ -231,6 +238,7 @@ internal class SensorManager(
             STEP -> Sensey.startStepDetection(activity, stepDispatcher, StepDetectorUtil.MALE)
             PICKUP_DEVICE -> Sensey.startPickupDeviceDetection(pickupDeviceDispatcher)
             SCOOP -> Sensey.startScoopDetection(scoopDispatcher)
+            TAP_ON_BACK -> Sensey.startTapOnBackDetection(tapOnBackDispatcher)
         }
     }
 

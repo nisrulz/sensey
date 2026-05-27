@@ -343,6 +343,35 @@ Sensey.startRotationAngleDetection { event ->
 
 ---
 
+### TapOnBack
+
+Detects double-taps on the device back/side using gravity vector angle analysis.
+Single taps are ignored as false positives — only two rapid taps trigger.
+
+Tracks the gravity direction (per-axis EMA) and measures angular deviation.
+A tap rotates the phone slightly, causing a spike in the angle between the
+current gravity vector and the running baseline. Gradual orientation changes
+(such as moving the phone around) are rejected by the jerk filter and slow
+baseline adaptation.
+
+```kotlin
+Sensey.startTapOnBackDetection {
+    println("Tap on back detected!")
+}
+```
+
+With custom parameters:
+
+```kotlin
+Sensey.startTapOnBackDetection(
+    angleThreshold = 1.5f,
+    tapDebounceMs = 250L,
+    tapSequenceTimeoutMs = 500L,
+) { /* ... */ }
+```
+
+---
+
 ### SoundLevel
 
 | Event | Properties |

@@ -32,18 +32,18 @@ class ChopTrigger(
         val magnitude = sqrt(x * x + y * y + z * z)
         val linearMagnitude = abs(magnitude - GRAVITY_EARTH)
 
-        return if (linearMagnitude > threshold) {
+        if (linearMagnitude > threshold) {
             lastTimeChopDetected = timestamp
             isGestureInProgress = true
-            null
+            return null
+        }
+
+        val timeDelta = timestamp - lastTimeChopDetected
+        return if (timeDelta > timeForChopGesture && isGestureInProgress) {
+            isGestureInProgress = false
+            ChopEvent.Chopped
         } else {
-            val timeDelta = timestamp - lastTimeChopDetected
-            if (timeDelta > timeForChopGesture && isGestureInProgress) {
-                isGestureInProgress = false
-                ChopEvent.Chopped
-            } else {
-                null
-            }
+            null
         }
     }
 

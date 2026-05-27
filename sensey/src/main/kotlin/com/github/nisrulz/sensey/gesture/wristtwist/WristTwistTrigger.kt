@@ -32,18 +32,18 @@ class WristTwistTrigger(
         val magnitude = sqrt(x * x + y * y + z * z)
         val linearMagnitude = abs(magnitude - GRAVITY_EARTH)
 
-        return if (linearMagnitude > threshold) {
+        if (linearMagnitude > threshold) {
             lastTimeWristTwistDetected = timestamp
             isGestureInProgress = true
-            null
+            return null
+        }
+
+        val timeDelta = timestamp - lastTimeWristTwistDetected
+        return if (timeDelta > timeForWristTwistGesture && isGestureInProgress) {
+            isGestureInProgress = false
+            WristTwistEvent.Twisted
         } else {
-            val timeDelta = timestamp - lastTimeWristTwistDetected
-            if (timeDelta > timeForWristTwistGesture && isGestureInProgress) {
-                isGestureInProgress = false
-                WristTwistEvent.Twisted
-            } else {
-                null
-            }
+            null
         }
     }
 
