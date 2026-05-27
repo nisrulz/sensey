@@ -32,7 +32,6 @@
     <a href="https://www.androiddevdigest.com/digest-100/">
         <img src="https://img.shields.io/badge/AndroidDev%20Digest-%23100-blue.svg"/>
     </a>
-    <!-- Android Dev Digest -->
     <a href="https://www.androiddevdigest.com/digest-131/">
         <img src="https://img.shields.io/badge/AndroidDev%20Digest-%23131-blue.svg"/>
     </a>
@@ -40,7 +39,6 @@
     <a href="http://androidweekly.net/issues/issue-209">
         <img src="https://img.shields.io/badge/Android%20Weekly-%23209-blue.svg"/>
     </a>
-    <!-- Android Weekly -->
     <a href="http://androidweekly.net/issues/issue-245">
         <img src="https://img.shields.io/badge/Android%20Weekly-%23245-blue.svg"/>
     </a>
@@ -94,7 +92,7 @@
          Codepath's Must Have Libraries
     </a>, 
     <a href="https://medium.cobeisfresh.com/cobes-top-5-android-libraries-september-2016-883757e61bf0#.oe2lzaxyn">
-         COBE’s Top 5 Android Libraries — September 2016
+         COBE's Top 5 Android Libraries — September 2016
     </a>, 
     <a href="https://cloudrail.com/best-android-libraries-for-developers/">
          Best Android Libraries for Developers
@@ -130,29 +128,47 @@
 
 # Supported gestures/events
 
-| Gesture       | Methods                                                                                                                                                        | Usage                                                              |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| Flip          | onFaceUp<br/>onFaceDown                                                                                                                                        | [Link](https://github.com/nisrulz/sensey/wiki/Usage#flip)          |
-| Light         | onDark<br/>onLight                                                                                                                                             | [Link](https://github.com/nisrulz/sensey/wiki/Usage#light)         |
-| Orientation   | onTopSideUp<br/>onBottomSideUp<br/>onLeftSideUp<br/>onRightSideUp                                                                                              | [Link](https://github.com/nisrulz/sensey/wiki/Usage#orientation)   |
-| PinchScale    | onScale<br/>onScaleStart<br/>onScaleEnd                                                                                                                        | [Link](https://github.com/nisrulz/sensey/wiki/Usage#pinchscale)    |
-| Proximity     | onNear<br/>onFar                                                                                                                                               | [Link](https://github.com/nisrulz/sensey/wiki/Usage#proximity)     |
-| Shake         | onShakeDetected<br/>onShakeStopped                                                                                                                             | [Link](https://github.com/nisrulz/sensey/wiki/Usage#shake)         |
-| Wave          | onWave                                                                                                                                                         | [Link](https://github.com/nisrulz/sensey/wiki/Usage#wave)          |
-| Chop          | onChop                                                                                                                                                         | [Link](https://github.com/nisrulz/sensey/wiki/Usage#chop)          |
-| WristTwist    | onWristTwist                                                                                                                                                   | [Link](https://github.com/nisrulz/sensey/wiki/Usage#wristtwist)    |
-| Movement      | onMovement<br/>onStationary                                                                                                                                    | [Link](https://github.com/nisrulz/sensey/wiki/Usage#movement)      |
-| SoundLevel    | onSoundDetected                                                                                                                                                | [Link](https://github.com/nisrulz/sensey/wiki/Usage#soundlevel)    |
-| RotationAngle | onRotation                                                                                                                                                     | [Link](https://github.com/nisrulz/sensey/wiki/Usage#rotationangle) |
-| TiltDirection | onTiltInAxisX<br/>onTiltInAxisY<br/>onTiltInAxisZ                                                                                                              | [Link](https://github.com/nisrulz/sensey/wiki/Usage#tiltdirection) |
-| Scoop         | onScooped                                                                                                                                                      | [Link](https://github.com/nisrulz/sensey/wiki/Usage#scoop)         |
-| PickupDevice  | onDevicePickedUp<br/>onDevicePutDown                                                                                                                           | [Link](https://github.com/nisrulz/sensey/wiki/Usage#pickupdevice)  |
-| Steps         | stepInformation                                                                                                                                                | [Link](https://github.com/nisrulz/sensey/wiki/Usage#steps)         |
-| TouchType     | onDoubleTap<br/>onScroll(direction)<br/>onSingleTap<br/>onSwipeLeft<br/>onSwipeRight<br/>onLongPress<br/>onTwoFingerSingleTap<br/>onThreeFingerSingleTap | [Link](https://github.com/nisrulz/sensey/wiki/Usage#touchtype)     |
+| Gesture | Event type |
+|---------|------------|
+| Shake | `ShakeEvent.Detected`, `ShakeEvent.Stopped` |
+| Flip | `FlipEvent.FaceUp`, `FlipEvent.FaceDown` |
+| Light | `LightEvent.Dark`, `LightEvent.Light` |
+| Proximity | `ProximityEvent.Near`, `ProximityEvent.Far` |
+| Movement | `MovementEvent.Moved`, `MovementEvent.Stationary` |
+| Orientation | `OrientationEvent.TopSideUp`, `BottomSideUp`, `LeftSideUp`, `RightSideUp` |
+| Chop | `ChopEvent.Chopped` |
+| WristTwist | `WristTwistEvent.Twisted` |
+| Wave | `WaveEvent.Waved` |
+| Scoop | `ScoopEvent.Scooped` |
+| PickupDevice | `PickupDeviceEvent.PickedUp`, `PutDown` |
+| TiltDirection | `AxisXTilt`, `AxisYTilt`, `AxisZTilt` (with clockwise/anticlockwise) |
+| RotationAngle | `RotationAngleEvent` (angles in degrees) |
+| PinchScale | `PinchScaleEvent` (scale factor) |
+| TouchType | `DoubleTap`, `LongPress`, `SingleTap`, `Swipe` (8 dirs), `Scroll` (4 dirs) |
+| SoundLevel | `SoundLevelEvent` (dB level) |
+| Step | `StepEvent` (step count, distance, activity type) |
 
-# Changelog
+---
 
-Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/nisrulz/sensey/releases).
+# Quick start
+
+```kotlin
+// Initialize
+Sensey.getInstance().init(this)
+
+// Start detection with a dispatcher lambda
+Sensey.getInstance().startShakeDetection { event ->
+    when (event) {
+        ShakeEvent.Detected -> println("Shake detected!")
+        ShakeEvent.Stopped  -> println("Shake stopped")
+    }
+}
+
+// Stop
+Sensey.getInstance().stop()
+```
+
+See the **[full usage guide](sensey/USAGE.md)** for every gesture with parameter options.
 
 # Including in your project
 
@@ -164,57 +180,17 @@ implementation 'com.github.nisrulz:sensey:{latest version}'
 
 where `{latest version}` corresponds to the latest published version on [Maven Central](https://search.maven.org/artifact/com.github.nisrulz/sensey).
 
-# Simple example
+# Architecture
 
-- To initialize Sensey under your `onCreate()` in the activity/service, call
+Each gesture is split into three components:
 
-```java
-Sensey.getInstance().init(context);
-```
+- **`GestureTrigger<T>`** — Pure Kotlin contract. The detection algorithm lives here, with no Android dependencies.
+- **Trigger implementation** — e.g., `ShakeTrigger`, `FlipTrigger`. Can be unit tested without a device or emulator.
+- **Detector** — Thin Android-aware bridge that converts `SensorEvent` → trigger → your callback.
 
-- To stop Sensey, under your `onDestroy()` in the activity/service, call
+# Changelog
 
-```java
- // *** IMPORTANT ***
- // Stop Sensey and release the context held by it
- Sensey.getInstance().stop();
-```
-
-- Next to enable shake detection
-
-  - Create an instance of ShakeListener
-
-  ```java
-  ShakeDetector.ShakeListener shakeListener=new ShakeDetector.ShakeListener() {
-      @Override public void onShakeDetected() {
-         // Shake detected, do something
-     }
-
-     @Override public void onShakeStopped() {
-         // Shake stopped, do something
-     }
-  };
-  ```
-
-  - Now to start listening for Shake gesture, pass the instance `shakeListener` to `startShakeDetection()` function
-
-  ```java
-  Sensey.getInstance().startShakeDetection(shakeListener);
-  ```
-
-  If you want to modify the `threshold` and `time` before declaring that shake gesture is stopped, use
-
-  ```java
-  Sensey.getInstance().startShakeDetection(threshold,timeBeforeDeclaringShakeStopped,shakeListener);
-  ```
-
-  - To stop listening for Shake gesture, pass the instance `shakeListener` to `stopShakeDetection()` function
-
-  ```java
-  Sensey.getInstance().stopShakeDetection(shakeListener);
-  ```
-
-### :page_with_curl: For more info , check the **[Wiki Docs](https://github.com/nisrulz/sensey/wiki/Usage)**
+Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/nisrulz/sensey/releases).
 
 # Pull Requests
 
