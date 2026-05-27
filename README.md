@@ -154,22 +154,46 @@
 # Quick start
 
 ```kotlin
-// Initialize
-Sensey.init(this)
+import com.github.nisrulz.sensey.senseyRegister
+import com.github.nisrulz.sensey.senseyStop
+import com.github.nisrulz.sensey.gesture.shake.ShakeEvent
+import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 
-// Start detection with a dispatcher lambda
-Sensey.startShakeDetection { event ->
-    when (event) {
-        ShakeEvent.Detected -> println("Shake detected!")
-        ShakeEvent.Stopped  -> println("Shake stopped")
+// In an Activity:
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    senseyRegister(lifecycle) {
+        shakePlugin { event ->
+            when (event) {
+                ShakeEvent.Detected -> println("Shake detected!")
+                ShakeEvent.Stopped  -> println("Shake stopped")
+            }
+        }
+        flipPlugin { event ->
+            when (event) {
+                FlipEvent.FaceUp   -> println("Face up")
+                FlipEvent.FaceDown -> println("Face down")
+            }
+        }
     }
 }
 
-// Stop all detection
-Sensey.stop()
+// In Compose:
+@Composable
+fun MyScreen(lifecycle: Lifecycle) {
+    SenseyGestureEffect(lifecycle) {
+        shakePlugin { event ->
+            when (event) {
+                ShakeEvent.Detected -> println("Shake detected!")
+                ShakeEvent.Stopped  -> println("Shake stopped")
+            }
+        }
+    }
+    Box(modifier = Modifier.fillMaxSize().senseyGestures())
+}
 ```
 
-See the **[full usage guide](sensey/USAGE.md)** for every gesture with parameter options.
+See the **[full usage guide](sensey/USAGE.md)** for every gesture with parameter options and common examples.
 
 # Including in your project
 
@@ -185,9 +209,9 @@ where `{latest version}` corresponds to the latest published version on [Maven C
 
 Each gesture is split into three components:
 
-- **`GestureTrigger<T>`** — Pure Kotlin contract. The detection algorithm lives here, with no Android dependencies.
-- **Trigger implementation** — e.g., `ShakeTrigger`, `FlipTrigger`. Can be unit tested without a device or emulator.
-- **Detector** — Thin Android-aware bridge that converts `SensorEvent` → trigger → your callback.
+- **`GestureTrigger<T>`** — Pure Kotlin contract with no Android dependencies. The detection algorithm lives here and can be unit tested without a device.
+- **`GesturePlugin`** — Wraps a trigger into a plugin that registers with a `Sensey` instance via `Sensey.register(plugin)`.
+- **`Sensey` class** — Plugin registry with lifecycle management. Provides `register {}` DSL, `senseyRegister()` / `SenseyGestureEffect()` extension functions, and auto-cleanup on lifecycle destroy.
 
 # Changelog
 
