@@ -21,7 +21,6 @@ import kotlin.math.sqrt
 class ShakeTrigger(
     private val threshold: Float = 3f,
     private val timeBeforeDeclaringShakeStopped: Long = 1000L,
-    private val gravityEarth: Float = 9.81f,
 ) : GestureTrigger<ShakeEvent> {
 
     private var mAccel = 0f

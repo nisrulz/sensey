@@ -25,7 +25,6 @@ class ShakeTriggerTest {
     private val trigger = ShakeTrigger(
         threshold = 3f,
         timeBeforeDeclaringShakeStopped = 1000L,
-        gravityEarth = 9.81f,
     )
 
     @Test
