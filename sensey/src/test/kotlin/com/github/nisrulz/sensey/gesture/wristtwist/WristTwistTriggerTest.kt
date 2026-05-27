@@ -25,18 +25,18 @@ class WristTwistTriggerTest {
 
     @Test
     fun gestureStartedButNotCompletedWithThresholdValues() {
-        assertNull(trigger.evaluate(floatArrayOf(-10f, -2f, -20f), 0L))
+        assertNull(trigger.evaluate(floatArrayOf(-30f, 0f, 0f), 0L))
     }
 
     @Test
     fun twistCompletedAfterTimeout() {
-        trigger.evaluate(floatArrayOf(-10f, -2f, -20f), 0L)
+        trigger.evaluate(floatArrayOf(-30f, 0f, 0f), 0L)
         assertEquals(WristTwistEvent.Twisted, trigger.evaluate(floatArrayOf(0f, 0f, 0f), 2000L))
     }
 
     @Test
     fun noTwistBeforeTimeout() {
-        trigger.evaluate(floatArrayOf(-10f, -2f, -20f), 0L)
+        trigger.evaluate(floatArrayOf(-30f, 0f, 0f), 0L)
         assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 0f), 500L))
     }
 
@@ -46,7 +46,7 @@ class WristTwistTriggerTest {
     }
 
     @Test
-    fun noEventWhenXNotNegativeEnough() {
-        assertNull(trigger.evaluate(floatArrayOf(-5f, -2f, -20f), 0L))
+    fun noEventWhenMagnitudeBelowThreshold() {
+        assertNull(trigger.evaluate(floatArrayOf(-10f, -2f, -20f), 0L))
     }
 }
