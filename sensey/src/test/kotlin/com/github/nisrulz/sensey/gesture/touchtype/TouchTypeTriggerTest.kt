@@ -29,7 +29,7 @@ class TouchTypeTriggerTest {
     @Test
     fun swipeRight() {
         assertEquals(
-            TouchTypeEvent.Swipe(TouchTypeTrigger.SWIPE_DIR_RIGHT),
+            TouchTypeEvent.Swipe(TouchTypeEvent.Direction.RIGHT),
             trigger.evaluate(floatArrayOf(200f, 0f, 300f, 0f), 0L),
         )
     }
@@ -37,7 +37,7 @@ class TouchTypeTriggerTest {
     @Test
     fun swipeLeft() {
         assertEquals(
-            TouchTypeEvent.Swipe(TouchTypeTrigger.SWIPE_DIR_LEFT),
+            TouchTypeEvent.Swipe(TouchTypeEvent.Direction.LEFT),
             trigger.evaluate(floatArrayOf(-200f, 0f, -300f, 0f), 0L),
         )
     }
@@ -45,7 +45,7 @@ class TouchTypeTriggerTest {
     @Test
     fun swipeDown() {
         assertEquals(
-            TouchTypeEvent.Swipe(TouchTypeTrigger.SWIPE_DIR_DOWN),
+            TouchTypeEvent.Swipe(TouchTypeEvent.Direction.DOWN),
             trigger.evaluate(floatArrayOf(0f, 200f, 0f, 300f), 0L),
         )
     }
@@ -53,7 +53,7 @@ class TouchTypeTriggerTest {
     @Test
     fun swipeUp() {
         assertEquals(
-            TouchTypeEvent.Swipe(TouchTypeTrigger.SWIPE_DIR_UP),
+            TouchTypeEvent.Swipe(TouchTypeEvent.Direction.UP),
             trigger.evaluate(floatArrayOf(0f, -200f, 0f, -300f), 0L),
         )
     }
@@ -61,7 +61,7 @@ class TouchTypeTriggerTest {
     @Test
     fun scrollRight() {
         assertEquals(
-            TouchTypeEvent.Scroll(TouchTypeTrigger.SCROLL_DIR_RIGHT),
+            TouchTypeEvent.Scroll(TouchTypeEvent.Direction.RIGHT),
             trigger.evaluate(floatArrayOf(200f, 0f, 0f, 0f), 0L),
         )
     }
@@ -80,7 +80,7 @@ class TouchTypeTriggerTest {
     fun swipeDownRightDiagonal() {
         val result = trigger.evaluate(floatArrayOf(150f, 150f, 250f, 250f), 0L)
         assertEquals(
-            TouchTypeEvent.Swipe(TouchTypeTrigger.SWIPE_DIR_DOWN_RIGHT),
+            TouchTypeEvent.Swipe(TouchTypeEvent.Direction.DOWN_RIGHT),
             result,
         )
     }
@@ -89,7 +89,7 @@ class TouchTypeTriggerTest {
     fun swipeUpLeftDiagonal() {
         val result = trigger.evaluate(floatArrayOf(-150f, -150f, -250f, -250f), 0L)
         assertEquals(
-            TouchTypeEvent.Swipe(TouchTypeTrigger.SWIPE_DIR_UP_LEFT),
+            TouchTypeEvent.Swipe(TouchTypeEvent.Direction.UP_LEFT),
             result,
         )
     }
@@ -98,7 +98,7 @@ class TouchTypeTriggerTest {
     fun swipeDownLeftDiagonal() {
         val result = trigger.evaluate(floatArrayOf(-150f, 150f, -250f, 250f), 0L)
         assertEquals(
-            TouchTypeEvent.Swipe(TouchTypeTrigger.SWIPE_DIR_DOWN_LEFT),
+            TouchTypeEvent.Swipe(TouchTypeEvent.Direction.DOWN_LEFT),
             result,
         )
     }
@@ -107,7 +107,7 @@ class TouchTypeTriggerTest {
     fun swipeUpRightDiagonal() {
         val result = trigger.evaluate(floatArrayOf(150f, -150f, 250f, -250f), 0L)
         assertEquals(
-            TouchTypeEvent.Swipe(TouchTypeTrigger.SWIPE_DIR_UP_RIGHT),
+            TouchTypeEvent.Swipe(TouchTypeEvent.Direction.UP_RIGHT),
             result,
         )
     }
@@ -116,7 +116,7 @@ class TouchTypeTriggerTest {
     fun scrollDownFromDiagonalMainComponent() {
         val result = trigger.evaluate(floatArrayOf(50f, 200f, 0f, 0f), 0L)
         assertEquals(
-            TouchTypeEvent.Scroll(TouchTypeTrigger.SCROLL_DIR_DOWN),
+            TouchTypeEvent.Scroll(TouchTypeEvent.Direction.DOWN),
             result,
         )
     }

@@ -16,7 +16,9 @@
 package com.github.nisrulz.sensey.gesture.tiltdirection
 
 sealed interface TiltDirectionEvent {
-    data class AxisXTilt(val direction: Int) : TiltDirectionEvent
-    data class AxisYTilt(val direction: Int) : TiltDirectionEvent
-    data class AxisZTilt(val direction: Int) : TiltDirectionEvent
+    enum class Direction { CLOCKWISE, ANTICLOCKWISE }
+
+    data class AxisXTilt(val direction: Direction) : TiltDirectionEvent
+    data class AxisYTilt(val direction: Direction) : TiltDirectionEvent
+    data class AxisZTilt(val direction: Direction) : TiltDirectionEvent
 }

@@ -26,7 +26,7 @@ class TiltDirectionTriggerTest {
     @Test
     fun xAxisClockwise() {
         assertEquals(
-            TiltDirectionEvent.AxisXTilt(TiltDirectionTrigger.DIRECTION_CLOCKWISE),
+            TiltDirectionEvent.AxisXTilt(TiltDirectionEvent.Direction.CLOCKWISE),
             trigger.evaluate(floatArrayOf(-1f, 0f, 0f), 0L),
         )
     }
@@ -34,7 +34,7 @@ class TiltDirectionTriggerTest {
     @Test
     fun xAxisAnticlockwise() {
         assertEquals(
-            TiltDirectionEvent.AxisXTilt(TiltDirectionTrigger.DIRECTION_ANTICLOCKWISE),
+            TiltDirectionEvent.AxisXTilt(TiltDirectionEvent.Direction.ANTICLOCKWISE),
             trigger.evaluate(floatArrayOf(1f, 0f, 0f), 0L),
         )
     }
@@ -42,7 +42,7 @@ class TiltDirectionTriggerTest {
     @Test
     fun yAxisAnticlockwise() {
         assertEquals(
-            TiltDirectionEvent.AxisYTilt(TiltDirectionTrigger.DIRECTION_ANTICLOCKWISE),
+            TiltDirectionEvent.AxisYTilt(TiltDirectionEvent.Direction.ANTICLOCKWISE),
             trigger.evaluate(floatArrayOf(0f, 1f, 0f), 0L),
         )
     }
@@ -50,7 +50,7 @@ class TiltDirectionTriggerTest {
     @Test
     fun zAxisClockwise() {
         assertEquals(
-            TiltDirectionEvent.AxisZTilt(TiltDirectionTrigger.DIRECTION_CLOCKWISE),
+            TiltDirectionEvent.AxisZTilt(TiltDirectionEvent.Direction.CLOCKWISE),
             trigger.evaluate(floatArrayOf(0f, 0f, -1f), 0L),
         )
     }
@@ -63,12 +63,12 @@ class TiltDirectionTriggerTest {
     @Test
     fun dominantAxisReturnedWhenMultipleExceedThreshold() {
         val result = trigger.evaluate(floatArrayOf(0.6f, 2f, 0f), 0L)
-        assertEquals(TiltDirectionEvent.AxisYTilt(TiltDirectionTrigger.DIRECTION_ANTICLOCKWISE), result)
+        assertEquals(TiltDirectionEvent.AxisYTilt(TiltDirectionEvent.Direction.ANTICLOCKWISE), result)
     }
 
     @Test
     fun axisWithHighestMagnitudeChosen() {
         val result = trigger.evaluate(floatArrayOf(2f, 1f, 0f), 0L)
-        assertEquals(TiltDirectionEvent.AxisXTilt(TiltDirectionTrigger.DIRECTION_ANTICLOCKWISE), result)
+        assertEquals(TiltDirectionEvent.AxisXTilt(TiltDirectionEvent.Direction.ANTICLOCKWISE), result)
     }
 }

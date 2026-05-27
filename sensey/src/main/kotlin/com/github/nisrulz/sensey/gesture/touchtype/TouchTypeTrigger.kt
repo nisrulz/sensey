@@ -38,38 +38,22 @@ class TouchTypeTrigger(
 
         val isSwipe = abs(velocityX) > swipeThresholdVelocity ||
             abs(velocityY) > swipeThresholdVelocity
-        val maxVelocity = maxOf(abs(velocityX), abs(velocityY))
 
         val angle = atan2(deltaY.toDouble(), deltaX.toDouble())
         val degrees = Math.toDegrees(angle)
 
         val direction = when {
-            degrees in -22.5..22.5 -> if (isSwipe) SWIPE_DIR_RIGHT else SCROLL_DIR_RIGHT
-            degrees in 22.5..67.5 -> if (isSwipe) SWIPE_DIR_DOWN_RIGHT else SCROLL_DIR_DOWN
-            degrees in 67.5..112.5 -> if (isSwipe) SWIPE_DIR_DOWN else SCROLL_DIR_DOWN
-            degrees in 112.5..157.5 -> if (isSwipe) SWIPE_DIR_DOWN_LEFT else SCROLL_DIR_DOWN
-            degrees > 157.5 || degrees < -157.5 -> if (isSwipe) SWIPE_DIR_LEFT else SCROLL_DIR_LEFT
-            degrees in -157.5..-112.5 -> if (isSwipe) SWIPE_DIR_UP_LEFT else SCROLL_DIR_UP
-            degrees in -112.5..-67.5 -> if (isSwipe) SWIPE_DIR_UP else SCROLL_DIR_UP
-            degrees in -67.5..-22.5 -> if (isSwipe) SWIPE_DIR_UP_RIGHT else SCROLL_DIR_UP
+            degrees in -22.5..22.5 -> TouchTypeEvent.Direction.RIGHT
+            degrees in 22.5..67.5 -> if (isSwipe) TouchTypeEvent.Direction.DOWN_RIGHT else TouchTypeEvent.Direction.DOWN
+            degrees in 67.5..112.5 -> TouchTypeEvent.Direction.DOWN
+            degrees in 112.5..157.5 -> if (isSwipe) TouchTypeEvent.Direction.DOWN_LEFT else TouchTypeEvent.Direction.DOWN
+            degrees > 157.5 || degrees < -157.5 -> TouchTypeEvent.Direction.LEFT
+            degrees in -157.5..-112.5 -> if (isSwipe) TouchTypeEvent.Direction.UP_LEFT else TouchTypeEvent.Direction.UP
+            degrees in -112.5..-67.5 -> TouchTypeEvent.Direction.UP
+            degrees in -67.5..-22.5 -> if (isSwipe) TouchTypeEvent.Direction.UP_RIGHT else TouchTypeEvent.Direction.UP
             else -> return null
         }
 
         return if (isSwipe) TouchTypeEvent.Swipe(direction) else TouchTypeEvent.Scroll(direction)
-    }
-
-    companion object {
-        const val SCROLL_DIR_UP = 1
-        const val SCROLL_DIR_RIGHT = 2
-        const val SCROLL_DIR_DOWN = 3
-        const val SCROLL_DIR_LEFT = 4
-        const val SWIPE_DIR_UP = 5
-        const val SWIPE_DIR_RIGHT = 6
-        const val SWIPE_DIR_DOWN = 7
-        const val SWIPE_DIR_LEFT = 8
-        const val SWIPE_DIR_UP_RIGHT = 9
-        const val SWIPE_DIR_UP_LEFT = 10
-        const val SWIPE_DIR_DOWN_RIGHT = 11
-        const val SWIPE_DIR_DOWN_LEFT = 12
     }
 }

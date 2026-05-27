@@ -27,9 +27,6 @@ import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelEvent
 import com.github.nisrulz.sensey.gesture.step.StepDetectorUtil
 import com.github.nisrulz.sensey.gesture.step.StepEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
-import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionTrigger
-import com.github.nisrulz.sensey.gesture.wave.WaveEvent
-import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
 import com.github.nisrulz.senseysample.utils.HapticUtil
 import java.text.DecimalFormat
 
@@ -135,7 +132,7 @@ internal class SensorManager(
             is TiltDirectionEvent.AxisYTilt -> Pair(event.direction, "Y")
             is TiltDirectionEvent.AxisZTilt -> Pair(event.direction, "Z")
         }
-        val dir = if (label == TiltDirectionTrigger.DIRECTION_CLOCKWISE) "ClockWise" else "AntiClockWise"
+        val dir = if (label == TiltDirectionEvent.Direction.CLOCKWISE) "ClockWise" else "AntiClockWise"
         setResultText("Tilt in $axis Axis: $dir", false)
     }
 

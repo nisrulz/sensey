@@ -32,19 +32,14 @@ class TiltDirectionTrigger(
 
         return when (maxAxis) {
             absX -> TiltDirectionEvent.AxisXTilt(
-                if (x > 0) DIRECTION_ANTICLOCKWISE else DIRECTION_CLOCKWISE,
+                if (x > 0) TiltDirectionEvent.Direction.ANTICLOCKWISE else TiltDirectionEvent.Direction.CLOCKWISE,
             )
             absY -> TiltDirectionEvent.AxisYTilt(
-                if (y > 0) DIRECTION_ANTICLOCKWISE else DIRECTION_CLOCKWISE,
+                if (y > 0) TiltDirectionEvent.Direction.ANTICLOCKWISE else TiltDirectionEvent.Direction.CLOCKWISE,
             )
             else -> TiltDirectionEvent.AxisZTilt(
-                if (z > 0) DIRECTION_ANTICLOCKWISE else DIRECTION_CLOCKWISE,
+                if (z > 0) TiltDirectionEvent.Direction.ANTICLOCKWISE else TiltDirectionEvent.Direction.CLOCKWISE,
             )
         }
-    }
-
-    companion object {
-        const val DIRECTION_CLOCKWISE = 0
-        const val DIRECTION_ANTICLOCKWISE = 1
     }
 }

@@ -29,7 +29,7 @@ class TiltDirectionDetectorTest {
         detector.onSensorChanged(SensorUtils.testSensorEvent(
             floatArrayOf(1f, 0f, 0f), Sensor.TYPE_GYROSCOPE,
         ))
-        assertTrue(events.contains(TiltDirectionEvent.AxisXTilt(TiltDirectionTrigger.DIRECTION_ANTICLOCKWISE)))
+        assertTrue(events.contains(TiltDirectionEvent.AxisXTilt(TiltDirectionEvent.Direction.ANTICLOCKWISE)))
     }
 
     @Test
