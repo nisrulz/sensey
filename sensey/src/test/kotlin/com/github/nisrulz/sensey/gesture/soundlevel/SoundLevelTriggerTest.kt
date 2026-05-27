@@ -20,7 +20,6 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class SoundLevelTriggerTest {
-
     private val trigger = SoundLevelTrigger(offset = 100f)
 
     @Test

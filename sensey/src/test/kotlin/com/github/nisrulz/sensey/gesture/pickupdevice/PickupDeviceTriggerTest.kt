@@ -20,7 +20,6 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class PickupDeviceTriggerTest {
-
     @Test
     fun noEventOnStableFlatSurface() {
         val trigger = PickupDeviceTrigger(windowSize = 4, settleReadings = 3)
@@ -46,19 +45,23 @@ class PickupDeviceTriggerTest {
 
     @Test
     fun putDownAfterBeingHeldAndSettled() {
-        val trigger = PickupDeviceTrigger(
-            stableRange = 0.5f, movingRange = 1.5f,
-            windowSize = 4, settleReadings = 3,
-        )
+        val trigger =
+            PickupDeviceTrigger(
+                stableRange = 0.5f,
+                movingRange = 1.5f,
+                windowSize = 4,
+                settleReadings = 3,
+            )
 
         repeat(4) { trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), 0L) }
         trigger.evaluate(floatArrayOf(5f, 0f, 5f), 0L) // PickedUp
         repeat(4) { trigger.evaluate(floatArrayOf(5f, 0f, 5.1f), 0L) } // held
 
         // Return to table: fill buffer with gravity values
-        val putDownFired = (1..10).any {
-            trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), 0L) == PickupDeviceEvent.PutDown
-        }
+        val putDownFired =
+            (1..10).any {
+                trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), 0L) == PickupDeviceEvent.PutDown
+            }
         assert(putDownFired)
     }
 
@@ -72,10 +75,13 @@ class PickupDeviceTriggerTest {
 
     @Test
     fun putDownRequiresStabilization() {
-        val trigger = PickupDeviceTrigger(
-            stableRange = 0.5f, movingRange = 1.5f,
-            windowSize = 4, settleReadings = 5,
-        )
+        val trigger =
+            PickupDeviceTrigger(
+                stableRange = 0.5f,
+                movingRange = 1.5f,
+                windowSize = 4,
+                settleReadings = 5,
+            )
 
         repeat(4) { trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), 0L) }
         trigger.evaluate(floatArrayOf(5f, 0f, 5f), 0L) // PickedUp
@@ -87,9 +93,10 @@ class PickupDeviceTriggerTest {
         assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), 0L))
 
         // Full flush of buffer + settleReadings
-        val putDownFired = (1..10).any {
-            trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), 0L) == PickupDeviceEvent.PutDown
-        }
+        val putDownFired =
+            (1..10).any {
+                trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), 0L) == PickupDeviceEvent.PutDown
+            }
         assert(putDownFired)
     }
 }

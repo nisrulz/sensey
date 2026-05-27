@@ -42,59 +42,61 @@ internal class SoundLevelDetector(
         if (audioJob?.isActive == true) {
             stop()
         }
-        audioJob = scope.launch(Dispatchers.IO) {
-            Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO)
+        audioJob =
+            scope.launch(Dispatchers.IO) {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO)
 
-            if (sampleRate == 0 || bufferSize == 0) {
-                Log.e(LOGTAG, "Invalid SampleRate/BufferSize! AudioRecord cannot be initialized. Exiting!")
-                return@launch
-            }
+                if (sampleRate == 0 || bufferSize == 0) {
+                    Log.e(LOGTAG, "Invalid SampleRate/BufferSize! AudioRecord cannot be initialized. Exiting!")
+                    return@launch
+                }
 
-            if (bufferSize == AudioRecord.ERROR || bufferSize == AudioRecord.ERROR_BAD_VALUE) {
-                bufferSize = sampleRate * 2
-            }
+                if (bufferSize == AudioRecord.ERROR || bufferSize == AudioRecord.ERROR_BAD_VALUE) {
+                    bufferSize = sampleRate * 2
+                }
 
-            val audioBuffer = ShortArray(bufferSize / 2)
-            val floats = FloatArray(bufferSize / 2)
-            val audioRecord = AudioRecord(
-                AUDIO_SOURCE,
-                sampleRate,
-                AUDIO_CHANNEL,
-                AUDIO_ENCODING,
-                bufferSize,
-            )
+                val audioBuffer = ShortArray(bufferSize / 2)
+                val floats = FloatArray(bufferSize / 2)
+                val audioRecord =
+                    AudioRecord(
+                        AUDIO_SOURCE,
+                        sampleRate,
+                        AUDIO_CHANNEL,
+                        AUDIO_ENCODING,
+                        bufferSize,
+                    )
 
-            if (audioRecord.state != AudioRecord.STATE_INITIALIZED) {
-                Log.e(LOGTAG, "AudioRecord could not be initialized. Exiting!")
-                return@launch
-            }
+                if (audioRecord.state != AudioRecord.STATE_INITIALIZED) {
+                    Log.e(LOGTAG, "AudioRecord could not be initialized. Exiting!")
+                    return@launch
+                }
 
-            audioRecord.startRecording()
+                audioRecord.startRecording()
 
-            try {
-                while (isActive) {
-                    val numberOfShorts = audioRecord.read(audioBuffer, 0, audioBuffer.size)
-                    if (numberOfShorts <= 0) continue
-                    for (i in 0 until numberOfShorts) {
-                        floats[i] = audioBuffer[i].toFloat()
-                    }
-                    val event = trigger.evaluate(floats.copyOfRange(0, numberOfShorts), System.currentTimeMillis())
-                    if (event != null) {
-                        withContext(Dispatchers.Main) {
-                            dispatcher(event)
+                try {
+                    while (isActive) {
+                        val numberOfShorts = audioRecord.read(audioBuffer, 0, audioBuffer.size)
+                        if (numberOfShorts <= 0) continue
+                        for (i in 0 until numberOfShorts) {
+                            floats[i] = audioBuffer[i].toFloat()
+                        }
+                        val event = trigger.evaluate(floats.copyOfRange(0, numberOfShorts), System.currentTimeMillis())
+                        if (event != null) {
+                            withContext(Dispatchers.Main) {
+                                dispatcher(event)
+                            }
                         }
                     }
-                }
-            } finally {
-                try {
-                    audioRecord.stop()
-                } catch (e: Exception) {
-                    e.printStackTrace()
                 } finally {
-                    audioRecord.release()
+                    try {
+                        audioRecord.stop()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    } finally {
+                        audioRecord.release()
+                    }
                 }
             }
-        }
     }
 
     fun stop() {
@@ -118,10 +120,14 @@ internal class SoundLevelDetector(
 
         private fun getValidBufferSize(sampleRate: Int): Int {
             for (bufferSize in intArrayOf(256, 512, 1024, 2048, 4096)) {
-                val tempRecord = AudioRecord(
-                    AUDIO_SOURCE, sampleRate,
-                    AUDIO_CHANNEL, AUDIO_ENCODING, bufferSize,
-                )
+                val tempRecord =
+                    AudioRecord(
+                        AUDIO_SOURCE,
+                        sampleRate,
+                        AUDIO_CHANNEL,
+                        AUDIO_ENCODING,
+                        bufferSize,
+                    )
                 if (tempRecord.state == AudioRecord.STATE_INITIALIZED) {
                     return bufferSize
                 }

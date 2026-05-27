@@ -20,7 +20,6 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class ChopTriggerTest {
-
     private val trigger = ChopTrigger(threshold = 35f, timeForChopGesture = 700L)
 
     @Test

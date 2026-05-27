@@ -20,7 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SoundLevelDetectorTest {
-
     @Test
     fun triggerProcessesAudioData() {
         val events = mutableListOf<SoundLevelEvent>()

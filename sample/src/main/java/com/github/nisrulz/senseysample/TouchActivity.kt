@@ -7,13 +7,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.github.nisrulz.sensey.gesture.compose.SenseyGestureEffect
-import com.github.nisrulz.sensey.gesture.compose.senseyGestures
 import com.github.nisrulz.sensey.gesture.pinchScalePlugin
 import com.github.nisrulz.sensey.gesture.touchTypePlugin
 import com.github.nisrulz.senseysample.ui.TouchScreen
 
 class TouchActivity : ComponentActivity() {
-
     private val sensorManager = TouchSensorManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -20,7 +20,6 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class WristTwistTriggerTest {
-
     private val trigger = WristTwistTrigger(threshold = 15f, timeForWristTwistGesture = 1000L)
 
     @Test

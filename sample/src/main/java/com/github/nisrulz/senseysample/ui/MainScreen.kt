@@ -34,18 +34,20 @@ fun MainScreen(
     onTouchDetectorClick: () -> Unit,
 ) {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .systemBarsPadding(),
         color = PrimaryBlue,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp),
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 16.dp),
             ) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -65,22 +67,25 @@ fun MainScreen(
 
             ResultArea(
                 text = resultText,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.8f)
-                    .padding(horizontal = 16.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(0.8f)
+                        .padding(horizontal = 16.dp),
             )
 
             Button(
                 onClick = onTouchDetectorClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .height(48.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = AccentOrange,
-                    contentColor = White,
-                ),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .height(48.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = AccentOrange,
+                        contentColor = White,
+                    ),
                 shape = RoundedCornerShape(0.dp),
             ) {
                 Text(

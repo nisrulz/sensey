@@ -20,7 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MovementDetectorTest {
-
     @Test
     fun dispatchesMovedOnAccelerationChange() {
         val events = mutableListOf<MovementEvent>()

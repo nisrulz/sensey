@@ -21,26 +21,29 @@ internal class WaveTrigger(
     private val timeWindowMillis: Float = 1000f,
     private val debounceMillis: Long = 1000L,
 ) : GestureTrigger<WaveEvent> {
-
     private var lastProximityEventTime = 0L
     private var lastProximityState = FAR
     private var lastWaveTime = 0L
 
-    override fun evaluate(values: FloatArray, timestamp: Long): WaveEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): WaveEvent? {
         val distance = values[0]
         val proximityState = if (distance == 0f) NEAR else FAR
 
         val eventDeltaMillis = timestamp - lastProximityEventTime
-        val result = if ((lastWaveTime == 0L || timestamp - lastWaveTime > debounceMillis)
-            && eventDeltaMillis < timeWindowMillis
-            && NEAR == lastProximityState
-            && FAR == proximityState
-        ) {
-            lastWaveTime = timestamp
-            WaveEvent.Waved
-        } else {
-            null
-        }
+        val result =
+            if ((lastWaveTime == 0L || timestamp - lastWaveTime > debounceMillis) &&
+                eventDeltaMillis < timeWindowMillis &&
+                NEAR == lastProximityState &&
+                FAR == proximityState
+            ) {
+                lastWaveTime = timestamp
+                WaveEvent.Waved
+            } else {
+                null
+            }
 
         lastProximityEventTime = timestamp
         lastProximityState = proximityState

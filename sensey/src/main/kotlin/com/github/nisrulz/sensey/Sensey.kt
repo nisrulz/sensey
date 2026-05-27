@@ -84,13 +84,15 @@ class Sensey(
         sensorManager = null
     }
 
-    fun checkHardware(context: Context, hardware: String): Boolean {
-        return context.packageManager.hasSystemFeature(hardware)
-    }
+    fun checkHardware(
+        context: Context,
+        hardware: String,
+    ): Boolean = context.packageManager.hasSystemFeature(hardware)
 
-    fun checkPermission(context: Context, permission: String): Boolean {
-        return context.checkCallingOrSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
-    }
+    fun checkPermission(
+        context: Context,
+        permission: String,
+    ): Boolean = context.checkCallingOrSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
 
     internal fun registerSensorDetector(detector: SensorDetector) {
         detector.sensorDataLoggingEnabled = this.sensorDataLoggingEnabled
@@ -112,11 +114,12 @@ class Sensey(
 
     private fun registerLifecycleObserver(lifecycle: Lifecycle) {
         lifecycleObserver?.let { registeredLifecycle?.removeObserver(it) }
-        lifecycleObserver = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_DESTROY) {
-                stop()
+        lifecycleObserver =
+            LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_DESTROY) {
+                    stop()
+                }
             }
-        }
         registeredLifecycle = lifecycle
         lifecycleObserver?.let { lifecycle.addObserver(it) }
     }
@@ -136,7 +139,10 @@ class Sensey(
         return sensors
     }
 
-    private fun registerDetectorForAllSensors(detector: SensorDetector, sensors: Iterable<Sensor>) {
+    private fun registerDetectorForAllSensors(
+        detector: SensorDetector,
+        sensors: Iterable<Sensor>,
+    ) {
         for (sensor in sensors) {
             sensorManager?.registerListener(detector, sensor, samplingPeriodActual)
         }
@@ -147,6 +153,4 @@ class Sensey(
             sensorManager?.unregisterListener(detector)
         }
     }
-
-
 }

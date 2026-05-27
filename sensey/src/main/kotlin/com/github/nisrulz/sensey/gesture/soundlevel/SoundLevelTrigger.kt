@@ -23,8 +23,10 @@ import kotlin.math.sqrt
 internal class SoundLevelTrigger(
     private val offset: Float = 100f,
 ) : GestureTrigger<SoundLevelEvent> {
-
-    override fun evaluate(values: FloatArray, timestamp: Long): SoundLevelEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): SoundLevelEvent? {
         if (values.isEmpty()) return null
 
         var sumLevel = 0.0

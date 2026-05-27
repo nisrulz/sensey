@@ -23,10 +23,12 @@ internal class FlipTrigger(
     private val faceDownLowerBound: Float = -10.5f,
     private val faceDownUpperBound: Float = -8f,
 ) : GestureTrigger<FlipEvent> {
-
     private var eventOccurred = 0
 
-    override fun evaluate(values: FloatArray, timestamp: Long): FlipEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): FlipEvent? {
         val z = values[2]
         return when {
             z > faceUpLowerBound && z < faceUpUpperBound && eventOccurred != 1 -> {

@@ -23,11 +23,13 @@ internal class ChopTrigger(
     private val threshold: Float = 25f,
     private val timeForChopGesture: Long = 700L,
 ) : GestureTrigger<ChopEvent> {
-
     private var isGestureInProgress = false
     private var lastTimeChopDetected = 0L
 
-    override fun evaluate(values: FloatArray, timestamp: Long): ChopEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): ChopEvent? {
         val (x, y, z) = values
         val magnitude = sqrt(x * x + y * y + z * z)
         val linearMagnitude = abs(magnitude - GRAVITY_EARTH)

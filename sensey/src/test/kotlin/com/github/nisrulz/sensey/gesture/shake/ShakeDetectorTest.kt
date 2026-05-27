@@ -20,7 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ShakeDetectorTest {
-
     @Test
     fun dispatchesShakeDetectedOnAccelerometerEvent() {
         val events = mutableListOf<ShakeEvent>()

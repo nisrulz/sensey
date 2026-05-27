@@ -26,7 +26,6 @@ internal class TapOnBackTrigger(
     private val tapDebounceMs: Long = 250L,
     private val tapSequenceTimeoutMs: Long = 500L,
 ) : GestureTrigger<TapOnBackEvent> {
-
     private var axBaseline = 0f
     private var ayBaseline = 0f
     private var azBaseline = 9.8f
@@ -35,7 +34,10 @@ internal class TapOnBackTrigger(
     private var lastTapTime = 0L
     private var tapCount = 0
 
-    override fun evaluate(values: FloatArray, timestamp: Long): TapOnBackEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): TapOnBackEvent? {
         val (ax, ay, az) = values
 
         val accelMag = sqrt(ax * ax + ay * ay + az * az)

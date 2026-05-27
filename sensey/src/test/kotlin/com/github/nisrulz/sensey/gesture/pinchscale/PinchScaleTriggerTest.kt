@@ -20,7 +20,6 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class PinchScaleTriggerTest {
-
     private val trigger = PinchScaleTrigger()
 
     @Test

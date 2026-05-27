@@ -25,14 +25,16 @@ internal class ScoopTrigger(
     private val minSustainedSamples: Int = 3,
     private val debounceMs: Long = 1000L,
 ) : GestureTrigger<ScoopEvent> {
-
     private var accelBaseline = 9.8f
     private var prevAccelMag = 9.8f
     private var lastEventTime = 0L
     private var samplesAboveThreshold = 0
     private var peakJerkInWindow = 0f
 
-    override fun evaluate(values: FloatArray, timestamp: Long): ScoopEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): ScoopEvent? {
         val (ax, ay, az) = values
 
         val accelMag = sqrt(ax * ax + ay * ay + az * az)
@@ -49,8 +51,9 @@ internal class ScoopTrigger(
             peakJerkInWindow = 0f
         }
 
-        return if (samplesAboveThreshold >= minSustainedSamples && peakJerkInWindow > minPeakJerk
-            && timestamp - lastEventTime > debounceMs
+        return if (samplesAboveThreshold >= minSustainedSamples &&
+            peakJerkInWindow > minPeakJerk &&
+            timestamp - lastEventTime > debounceMs
         ) {
             samplesAboveThreshold = 0
             peakJerkInWindow = 0f

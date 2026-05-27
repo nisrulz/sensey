@@ -21,7 +21,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class LightDetectorTest {
-
     @Test
     fun dispatchesDarkOnLowLux() {
         val events = mutableListOf<LightEvent>()

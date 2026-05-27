@@ -20,11 +20,11 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class TouchTypeTriggerTest {
-
-    private val trigger = TouchTypeTrigger(
-        swipeMinDistance = 120f,
-        swipeThresholdVelocity = 200f,
-    )
+    private val trigger =
+        TouchTypeTrigger(
+            swipeMinDistance = 120f,
+            swipeThresholdVelocity = 200f,
+        )
 
     @Test
     fun swipeRight() {

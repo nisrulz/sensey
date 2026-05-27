@@ -36,11 +36,12 @@ fun Modifier.senseyGestures(): Modifier {
     val sensey = defaultSensey ?: return this
     var combined = this
     for (provider in sensey.composeGestureProviders) {
-        combined = combined.then(
-            pointerInput(Unit) {
-                with(provider) { installGestures() }
-            },
-        )
+        combined =
+            combined.then(
+                pointerInput(Unit) {
+                    with(provider) { installGestures() }
+                },
+            )
     }
     return combined
 }

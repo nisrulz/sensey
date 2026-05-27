@@ -47,5 +47,8 @@ interface GestureTrigger<T> {
      * @param timestamp Event timestamp in milliseconds.
      * @return A typed event if the gesture is detected, or `null` otherwise.
      */
-    fun evaluate(values: FloatArray, timestamp: Long): T?
+    fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): T?
 }

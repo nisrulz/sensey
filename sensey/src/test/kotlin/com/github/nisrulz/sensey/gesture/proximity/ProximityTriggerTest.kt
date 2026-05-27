@@ -19,7 +19,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ProximityTriggerTest {
-
     private val trigger = ProximityTrigger()
 
     @Test

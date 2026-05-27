@@ -20,8 +20,10 @@ import com.github.nisrulz.sensey.contract.GestureTrigger
 internal class TiltDirectionTrigger(
     private val threshold: Float = 0.5f,
 ) : GestureTrigger<TiltDirectionEvent> {
-
-    override fun evaluate(values: FloatArray, timestamp: Long): TiltDirectionEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): TiltDirectionEvent? {
         val (x, y, z) = values
         val absX = kotlin.math.abs(x)
         val absY = kotlin.math.abs(y)
@@ -31,15 +33,18 @@ internal class TiltDirectionTrigger(
         if (maxAxis < threshold) return null
 
         return when (maxAxis) {
-            absX -> TiltDirectionEvent.AxisXTilt(
-                if (x > 0) TiltDirectionEvent.Direction.ANTICLOCKWISE else TiltDirectionEvent.Direction.CLOCKWISE,
-            )
-            absY -> TiltDirectionEvent.AxisYTilt(
-                if (y > 0) TiltDirectionEvent.Direction.ANTICLOCKWISE else TiltDirectionEvent.Direction.CLOCKWISE,
-            )
-            else -> TiltDirectionEvent.AxisZTilt(
-                if (z > 0) TiltDirectionEvent.Direction.ANTICLOCKWISE else TiltDirectionEvent.Direction.CLOCKWISE,
-            )
+            absX ->
+                TiltDirectionEvent.AxisXTilt(
+                    if (x > 0) TiltDirectionEvent.Direction.ANTICLOCKWISE else TiltDirectionEvent.Direction.CLOCKWISE,
+                )
+            absY ->
+                TiltDirectionEvent.AxisYTilt(
+                    if (y > 0) TiltDirectionEvent.Direction.ANTICLOCKWISE else TiltDirectionEvent.Direction.CLOCKWISE,
+                )
+            else ->
+                TiltDirectionEvent.AxisZTilt(
+                    if (z > 0) TiltDirectionEvent.Direction.ANTICLOCKWISE else TiltDirectionEvent.Direction.CLOCKWISE,
+                )
         }
     }
 }

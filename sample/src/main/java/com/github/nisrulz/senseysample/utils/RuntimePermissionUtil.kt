@@ -22,13 +22,14 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 
 internal object RuntimePermissionUtil {
+    fun checkPermissonGranted(
+        context: Context,
+        permission: String,
+    ): Boolean = ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
 
-    fun checkPermissonGranted(context: Context, permission: String): Boolean {
-        return ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
-    }
-
-    fun onRequestPermissionsResult(grantResults: IntArray,
-                                   rpResultListener: RPResultListener
+    fun onRequestPermissionsResult(
+        grantResults: IntArray,
+        rpResultListener: RPResultListener,
     ) {
         if (grantResults.isNotEmpty()) {
             for (grantResult in grantResults) {
@@ -41,14 +42,20 @@ internal object RuntimePermissionUtil {
         }
     }
 
-    fun requestPermission(activity: Activity, permission: String,
-                          REQUEST_CODE: Int) {
+    fun requestPermission(
+        activity: Activity,
+        permission: String,
+        REQUEST_CODE: Int,
+    ) {
         // No explanation needed, we can request the permission.
         ActivityCompat.requestPermissions(activity, arrayOf(permission), REQUEST_CODE)
     }
 
-    fun requestPermission(activity: Activity, permissions: Array<String>,
-                          REQUEST_CODE: Int) {
+    fun requestPermission(
+        activity: Activity,
+        permissions: Array<String>,
+        REQUEST_CODE: Int,
+    ) {
         // No explanation needed, we can request the permission.
         ActivityCompat.requestPermissions(activity, permissions, REQUEST_CODE)
     }

@@ -24,12 +24,14 @@ internal class MovementTrigger(
     private val timeBeforeDeclaringStationary: Long = 5000L,
     private val gravityEarth: Float = 9.81f,
 ) : GestureTrigger<MovementEvent> {
-
     private var mAccelCurrent = gravityEarth
     private var isMoving = false
     private var lastTimeMovementDetected = 0L
 
-    override fun evaluate(values: FloatArray, timestamp: Long): MovementEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): MovementEvent? {
         val (x, y, z) = values
         val mAccelLast = mAccelCurrent
         mAccelCurrent = sqrt(x * x + y * y + z * z)

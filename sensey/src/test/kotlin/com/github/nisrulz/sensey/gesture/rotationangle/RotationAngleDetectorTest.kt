@@ -21,13 +21,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class RotationAngleDetectorTest {
-
     @Test
     fun dispatchesNothingOnEmptyEvents() {
         val events = mutableListOf<RotationAngleEvent>()
-        val alwaysNullTrigger = object : GestureTrigger<RotationAngleEvent> {
-            override fun evaluate(values: FloatArray, timestamp: Long) = null
-        }
+        val alwaysNullTrigger =
+            object : GestureTrigger<RotationAngleEvent> {
+                override fun evaluate(
+                    values: FloatArray,
+                    timestamp: Long,
+                ) = null
+            }
         val detector = RotationAngleDetector(alwaysNullTrigger) { events.add(it) }
         assertTrue(events.isEmpty())
     }

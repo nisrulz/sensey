@@ -17,5 +17,6 @@ package com.github.nisrulz.sensey.gesture.movement
 
 sealed interface MovementEvent {
     data object Moved : MovementEvent
+
     data object Stationary : MovementEvent
 }

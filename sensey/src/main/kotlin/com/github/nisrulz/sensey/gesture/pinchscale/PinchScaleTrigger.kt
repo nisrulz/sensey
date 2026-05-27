@@ -18,12 +18,14 @@ package com.github.nisrulz.sensey.gesture.pinchscale
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
 internal class PinchScaleTrigger : GestureTrigger<PinchScaleEvent> {
-
     private var eventOccurred = 0
     private var countOfScaleIn = 0
     private var countOfScaleOut = 0
 
-    override fun evaluate(values: FloatArray, timestamp: Long): PinchScaleEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): PinchScaleEvent? {
         val scaleFactor = values.getOrNull(0) ?: return null
 
         return if (scaleFactor > 1.01f) {

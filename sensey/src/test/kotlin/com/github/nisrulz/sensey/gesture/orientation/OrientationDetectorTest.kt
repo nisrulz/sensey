@@ -21,7 +21,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class OrientationDetectorTest {
-
     @Test
     fun dispatchesNothingWithOnlyAccelerometer() {
         val events = mutableListOf<OrientationEvent>()
@@ -34,9 +33,12 @@ class OrientationDetectorTest {
     fun dispatchesNothingWithOnlyMagnetic() {
         val events = mutableListOf<OrientationEvent>()
         val detector = OrientationDetector(OrientationTrigger()) { events.add(it) }
-        detector.onSensorChanged(SensorUtils.testSensorEvent(
-            floatArrayOf(1f, 2f, 3f), Sensor.TYPE_MAGNETIC_FIELD,
-        ))
+        detector.onSensorChanged(
+            SensorUtils.testSensorEvent(
+                floatArrayOf(1f, 2f, 3f),
+                Sensor.TYPE_MAGNETIC_FIELD,
+            ),
+        )
         assertTrue(events.isEmpty())
     }
 }

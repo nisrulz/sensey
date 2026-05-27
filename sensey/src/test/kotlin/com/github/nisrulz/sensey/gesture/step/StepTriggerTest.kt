@@ -20,7 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class StepTriggerTest {
-
     @Test
     fun stepCounterRegistersBaseValue() {
         val trigger = StepTrigger(gender = StepDetectorUtil.MALE)

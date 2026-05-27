@@ -22,14 +22,16 @@ internal class ShakeTrigger(
     private val threshold: Float = 3f,
     private val timeBeforeDeclaringShakeStopped: Long = 1000L,
 ) : GestureTrigger<ShakeEvent> {
-
     private var mAccel = 0f
     private var mAccelCurrent = 0f
     private var isShaking = false
     private var lastTimeShakeDetected = 0L
     private var ready = false
 
-    override fun evaluate(values: FloatArray, timestamp: Long): ShakeEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): ShakeEvent? {
         val (x, y, z) = values
         val newMag = sqrt(x * x + y * y + z * z)
 

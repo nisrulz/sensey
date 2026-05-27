@@ -22,7 +22,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class WristTwistDetectorTest {
-
     @Test
     fun dispatchesNothingOnStableValues() {
         val events = mutableListOf<WristTwistEvent>()
@@ -42,9 +41,13 @@ class WristTwistDetectorTest {
     @Test
     fun dispatchesEventWhenTriggerReturnsNonNull() {
         val events = mutableListOf<WristTwistEvent>()
-        val alwaysTrigger = object : GestureTrigger<WristTwistEvent> {
-            override fun evaluate(values: FloatArray, timestamp: Long) = WristTwistEvent.Twisted
-        }
+        val alwaysTrigger =
+            object : GestureTrigger<WristTwistEvent> {
+                override fun evaluate(
+                    values: FloatArray,
+                    timestamp: Long,
+                ) = WristTwistEvent.Twisted
+            }
         val detector = WristTwistDetector(alwaysTrigger) { events.add(it) }
         detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 0f)))
         assertEquals(listOf(WristTwistEvent.Twisted), events)

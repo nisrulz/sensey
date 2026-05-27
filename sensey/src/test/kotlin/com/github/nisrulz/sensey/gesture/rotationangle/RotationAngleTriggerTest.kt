@@ -19,7 +19,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class RotationAngleTriggerTest {
-
     private val trigger = RotationAngleTrigger()
 
     @Test

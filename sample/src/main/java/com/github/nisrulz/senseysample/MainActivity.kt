@@ -16,7 +16,6 @@ import com.github.nisrulz.senseysample.utils.RPResultListener
 import com.github.nisrulz.senseysample.utils.RuntimePermissionUtil
 
 class MainActivity : ComponentActivity() {
-
     private var hasRecordAudioPermission = false
     private val recordAudioPermission = permission.RECORD_AUDIO
     private val logTag = javaClass.canonicalName
@@ -32,13 +31,14 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MainScreen(
-                sensors = sensorManager.sensors.map { label ->
-                    SensorItem(
-                        label = label,
-                        isSelected = label == sensorManager.selectedSensor,
-                        onSelect = { onSensorSelected(label) },
-                    )
-                },
+                sensors =
+                    sensorManager.sensors.map { label ->
+                        SensorItem(
+                            label = label,
+                            isSelected = label == sensorManager.selectedSensor,
+                            onSelect = { onSensorSelected(label) },
+                        )
+                    },
                 resultText = sensorManager.resultText,
                 onTouchDetectorClick = {
                     startActivity(Intent(this@MainActivity, TouchActivity::class.java))
@@ -60,9 +60,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        sensorManager.sensey = senseyRegister(sensorDataLoggingEnabled = true) {
-            // plugin registration happens in SensorManager
-        }
+        sensorManager.sensey =
+            senseyRegister(sensorDataLoggingEnabled = true) {
+                // plugin registration happens in SensorManager
+            }
     }
 
     private fun onSensorSelected(sensor: String) {
@@ -82,6 +83,7 @@ class MainActivity : ComponentActivity() {
                 grantResults,
                 object : RPResultListener {
                     override fun onPermissionDenied() {}
+
                     override fun onPermissionGranted() {
                         if (RuntimePermissionUtil.checkPermissonGranted(
                                 this@MainActivity,

@@ -20,7 +20,6 @@ import com.github.nisrulz.sensey.contract.GestureTrigger
 internal class OrientationTrigger(
     private val smoothness: Int = 1,
 ) : GestureTrigger<OrientationEvent> {
-
     private val windowSize = smoothness.coerceAtLeast(1)
     private var eventOccurred = 0
     private var currentOrientation = ORIENTATION_PORTRAIT
@@ -31,7 +30,10 @@ internal class OrientationTrigger(
     private var bufferIndex = 0
     private var bufferInitialized = false
 
-    override fun evaluate(values: FloatArray, timestamp: Long): OrientationEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): OrientationEvent? {
         val pitch = values.getOrNull(0) ?: return null
         val roll = values.getOrNull(1) ?: return null
 
@@ -57,21 +59,38 @@ internal class OrientationTrigger(
 
         currentOrientation = calculateOrientation(averagePitch, averageRoll, currentOrientation)
 
-        val result = when (currentOrientation) {
-            ORIENTATION_PORTRAIT -> if (eventOccurred != 1) {
-                eventOccurred = 1; OrientationEvent.TopSideUp
-            } else null
-            ORIENTATION_LANDSCAPE -> if (eventOccurred != 2) {
-                eventOccurred = 2; OrientationEvent.RightSideUp
-            } else null
-            ORIENTATION_PORTRAIT_REVERSE -> if (eventOccurred != 3) {
-                eventOccurred = 3; OrientationEvent.BottomSideUp
-            } else null
-            ORIENTATION_LANDSCAPE_REVERSE -> if (eventOccurred != 4) {
-                eventOccurred = 4; OrientationEvent.LeftSideUp
-            } else null
-            else -> null
-        }
+        val result =
+            when (currentOrientation) {
+                ORIENTATION_PORTRAIT ->
+                    if (eventOccurred != 1) {
+                        eventOccurred = 1
+                        OrientationEvent.TopSideUp
+                    } else {
+                        null
+                    }
+                ORIENTATION_LANDSCAPE ->
+                    if (eventOccurred != 2) {
+                        eventOccurred = 2
+                        OrientationEvent.RightSideUp
+                    } else {
+                        null
+                    }
+                ORIENTATION_PORTRAIT_REVERSE ->
+                    if (eventOccurred != 3) {
+                        eventOccurred = 3
+                        OrientationEvent.BottomSideUp
+                    } else {
+                        null
+                    }
+                ORIENTATION_LANDSCAPE_REVERSE ->
+                    if (eventOccurred != 4) {
+                        eventOccurred = 4
+                        OrientationEvent.LeftSideUp
+                    } else {
+                        null
+                    }
+                else -> null
+            }
         return result
     }
 
@@ -79,9 +98,11 @@ internal class OrientationTrigger(
         averagePitch: Float,
         averageRoll: Float,
         previousOrientation: Int,
-    ): Int {
-        return if ((previousOrientation == ORIENTATION_PORTRAIT ||
-                    previousOrientation == ORIENTATION_PORTRAIT_REVERSE) &&
+    ): Int =
+        if ((
+                previousOrientation == ORIENTATION_PORTRAIT ||
+                    previousOrientation == ORIENTATION_PORTRAIT_REVERSE
+            ) &&
             averageRoll in -30f..30f
         ) {
             if (averagePitch > 0) ORIENTATION_PORTRAIT_REVERSE else ORIENTATION_PORTRAIT
@@ -92,7 +113,6 @@ internal class OrientationTrigger(
                 if (averageRoll > 0) ORIENTATION_LANDSCAPE_REVERSE else ORIENTATION_LANDSCAPE
             }
         }
-    }
 
     private companion object {
         const val ORIENTATION_PORTRAIT = 1

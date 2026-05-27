@@ -20,7 +20,6 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class ScoopTriggerTest {
-
     @Test
     fun scoopedWhenValuesExceedThreshold() {
         val trigger = ScoopTrigger(impulseThreshold = 15f)

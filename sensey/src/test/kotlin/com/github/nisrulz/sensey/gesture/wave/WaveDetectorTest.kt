@@ -21,7 +21,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class WaveDetectorTest {
-
     @Test
     fun dispatchesWavedOnNearThenFarSequence() {
         val events = mutableListOf<WaveEvent>()

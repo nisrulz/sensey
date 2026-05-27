@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 internal class TouchSensorManager(
     private val context: Context,
 ) {
-
     var resultText by mutableStateOf("[ Hit Area ]")
     var touchDetectionEnabled by mutableStateOf(false)
     var pinchScaleEnabled by mutableStateOf(false)
@@ -37,16 +36,17 @@ internal class TouchSensorManager(
 
     fun onTouchEvent(event: TouchTypeEvent) {
         HapticUtil.quickTap(context)
-        val text = when (event) {
-            is TouchTypeEvent.NTap -> "${event.count}-Tap"
-            TouchTypeEvent.DoubleTap -> "Double Tap"
-            TouchTypeEvent.LongPress -> "Long press"
-            TouchTypeEvent.SingleTap -> "Single Tap"
-            is TouchTypeEvent.Swipe -> swipeDirText(event.direction)
-            is TouchTypeEvent.Scroll -> scrollDirText(event.direction)
-            TouchTypeEvent.ThreeFingerSingleTap -> "Three Finger Tap"
-            TouchTypeEvent.TwoFingerSingleTap -> "Two Finger Tap"
-        }
+        val text =
+            when (event) {
+                is TouchTypeEvent.NTap -> "${event.count}-Tap"
+                TouchTypeEvent.DoubleTap -> "Double Tap"
+                TouchTypeEvent.LongPress -> "Long press"
+                TouchTypeEvent.SingleTap -> "Single Tap"
+                is TouchTypeEvent.Swipe -> swipeDirText(event.direction)
+                is TouchTypeEvent.Scroll -> scrollDirText(event.direction)
+                TouchTypeEvent.ThreeFingerSingleTap -> "Three Finger Tap"
+                TouchTypeEvent.TwoFingerSingleTap -> "Two Finger Tap"
+            }
         updateResultText(text)
     }
 
@@ -59,35 +59,38 @@ internal class TouchSensorManager(
         scope.cancel()
     }
 
-    private fun swipeDirText(dir: TouchTypeEvent.Direction): String = when (dir) {
-        TouchTypeEvent.Direction.UP -> "Swipe Up"
-        TouchTypeEvent.Direction.DOWN -> "Swipe Down"
-        TouchTypeEvent.Direction.LEFT -> "Swipe Left"
-        TouchTypeEvent.Direction.RIGHT -> "Swipe Right"
-        TouchTypeEvent.Direction.UP_RIGHT -> "Swipe Up-Right"
-        TouchTypeEvent.Direction.UP_LEFT -> "Swipe Up-Left"
-        TouchTypeEvent.Direction.DOWN_RIGHT -> "Swipe Down-Right"
-        TouchTypeEvent.Direction.DOWN_LEFT -> "Swipe Down-Left"
-    }
+    private fun swipeDirText(dir: TouchTypeEvent.Direction): String =
+        when (dir) {
+            TouchTypeEvent.Direction.UP -> "Swipe Up"
+            TouchTypeEvent.Direction.DOWN -> "Swipe Down"
+            TouchTypeEvent.Direction.LEFT -> "Swipe Left"
+            TouchTypeEvent.Direction.RIGHT -> "Swipe Right"
+            TouchTypeEvent.Direction.UP_RIGHT -> "Swipe Up-Right"
+            TouchTypeEvent.Direction.UP_LEFT -> "Swipe Up-Left"
+            TouchTypeEvent.Direction.DOWN_RIGHT -> "Swipe Down-Right"
+            TouchTypeEvent.Direction.DOWN_LEFT -> "Swipe Down-Left"
+        }
 
-    private fun scrollDirText(dir: TouchTypeEvent.Direction): String = when (dir) {
-        TouchTypeEvent.Direction.UP -> "Scrolling Up"
-        TouchTypeEvent.Direction.DOWN -> "Scrolling Down"
-        TouchTypeEvent.Direction.LEFT -> "Scrolling Left"
-        TouchTypeEvent.Direction.RIGHT -> "Scrolling Right"
-        TouchTypeEvent.Direction.UP_RIGHT -> "Scrolling Up-Right"
-        TouchTypeEvent.Direction.UP_LEFT -> "Scrolling Up-Left"
-        TouchTypeEvent.Direction.DOWN_RIGHT -> "Scrolling Down-Right"
-        TouchTypeEvent.Direction.DOWN_LEFT -> "Scrolling Down-Left"
-    }
+    private fun scrollDirText(dir: TouchTypeEvent.Direction): String =
+        when (dir) {
+            TouchTypeEvent.Direction.UP -> "Scrolling Up"
+            TouchTypeEvent.Direction.DOWN -> "Scrolling Down"
+            TouchTypeEvent.Direction.LEFT -> "Scrolling Left"
+            TouchTypeEvent.Direction.RIGHT -> "Scrolling Right"
+            TouchTypeEvent.Direction.UP_RIGHT -> "Scrolling Up-Right"
+            TouchTypeEvent.Direction.UP_LEFT -> "Scrolling Up-Left"
+            TouchTypeEvent.Direction.DOWN_RIGHT -> "Scrolling Down-Right"
+            TouchTypeEvent.Direction.DOWN_LEFT -> "Scrolling Down-Left"
+        }
 
     private fun updateResultText(text: String) {
         resultText = text
         resetJob?.cancel()
-        resetJob = scope.launch {
-            delay(3000)
-            resultText = "[ Hit Area ]"
-        }
+        resetJob =
+            scope.launch {
+                delay(3000)
+                resultText = "[ Hit Area ]"
+            }
         if (BuildConfig.DEBUG) Log.d(javaClass.canonicalName, text)
     }
 }

@@ -20,10 +20,12 @@ import com.github.nisrulz.sensey.contract.GestureTrigger
 internal class RotationAngleTrigger(
     private val minAngleChange: Float = 1f,
 ) : GestureTrigger<RotationAngleEvent> {
-
     private var lastEvent: RotationAngleEvent? = null
 
-    override fun evaluate(values: FloatArray, timestamp: Long): RotationAngleEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): RotationAngleEvent? {
         val (ax, ay, az) = values
         val event = RotationAngleEvent(ax, ay, az)
 

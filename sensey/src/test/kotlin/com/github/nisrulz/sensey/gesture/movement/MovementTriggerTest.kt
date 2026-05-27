@@ -20,12 +20,12 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class MovementTriggerTest {
-
-    private val trigger = MovementTrigger(
-        threshold = 0.3f,
-        timeBeforeDeclaringStationary = 5000L,
-        gravityEarth = 9.81f,
-    )
+    private val trigger =
+        MovementTrigger(
+            threshold = 0.3f,
+            timeBeforeDeclaringStationary = 5000L,
+            gravityEarth = 9.81f,
+        )
 
     @Test
     fun noEventWithStableGravityValues() {

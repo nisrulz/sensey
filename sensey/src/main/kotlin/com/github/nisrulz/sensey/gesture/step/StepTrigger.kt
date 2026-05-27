@@ -23,21 +23,25 @@ internal class StepTrigger(
     private val gender: Int = StepDetectorUtil.MALE,
     private val threshold: Float = 3f,
 ) : GestureTrigger<StepEvent> {
-
     private var steps = 0
     private var previousMagnitude = 0f
     private var startTime = 0L
     private var baseStepCount = 0
 
-    override fun evaluate(values: FloatArray, timestamp: Long): StepEvent? {
-        return when {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): StepEvent? =
+        when {
             values.size == 1 -> evaluateStepCounter(values[0], timestamp)
             values.size >= 3 -> evaluateAccelerometer(values, timestamp)
             else -> null
         }
-    }
 
-    private fun evaluateStepCounter(sensorValue: Float, timestamp: Long): StepEvent? {
+    private fun evaluateStepCounter(
+        sensorValue: Float,
+        timestamp: Long,
+    ): StepEvent? {
         if (baseStepCount < 1) {
             baseStepCount = sensorValue.toInt()
         }
@@ -50,7 +54,10 @@ internal class StepTrigger(
         return StepEvent(steps, distance, activityType)
     }
 
-    private fun evaluateAccelerometer(values: FloatArray, timestamp: Long): StepEvent? {
+    private fun evaluateAccelerometer(
+        values: FloatArray,
+        timestamp: Long,
+    ): StepEvent? {
         val magnitude = sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2])
         if (abs(magnitude - previousMagnitude) > threshold) {
             steps++

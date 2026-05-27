@@ -18,8 +18,10 @@ package com.github.nisrulz.sensey.gesture.proximity
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
 internal class ProximityTrigger : GestureTrigger<ProximityEvent> {
-
-    override fun evaluate(values: FloatArray, timestamp: Long): ProximityEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): ProximityEvent? {
         val distance = values[0]
         val maxRange = values.getOrNull(1) ?: return null
         return if (distance < maxRange) ProximityEvent.Near else ProximityEvent.Far

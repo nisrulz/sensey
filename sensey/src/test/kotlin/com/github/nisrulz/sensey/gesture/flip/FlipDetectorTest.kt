@@ -20,7 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class FlipDetectorTest {
-
     @Test
     fun dispatchesFaceDownOnAccelerometerEvent() {
         val events = mutableListOf<FlipEvent>()

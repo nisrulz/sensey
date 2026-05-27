@@ -20,7 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ScoopDetectorTest {
-
     @Test
     fun dispatchesScoopedWhenValuesExceedThreshold() {
         val events = mutableListOf<ScoopEvent>()

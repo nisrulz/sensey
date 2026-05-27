@@ -1,11 +1,9 @@
 package com.github.nisrulz.senseysample.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,9 +30,10 @@ internal fun SenseyRadioButton(
     onSelect: () -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 0.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 0.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -42,17 +41,19 @@ internal fun SenseyRadioButton(
             text = label,
             color = White,
             fontSize = 16.sp,
-            modifier = Modifier
-                .weight(1f)
-                .padding(vertical = 20.dp),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .padding(vertical = 20.dp),
         )
         RadioButton(
             selected = selected,
             onClick = onSelect,
-            colors = RadioButtonDefaults.colors(
-                selectedColor = AccentOrange,
-                unselectedColor = White,
-            ),
+            colors =
+                RadioButtonDefaults.colors(
+                    selectedColor = AccentOrange,
+                    unselectedColor = White,
+                ),
         )
     }
 }
@@ -63,10 +64,11 @@ internal fun ResultArea(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(White, RoundedCornerShape(0.dp))
-            .padding(20.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(White, RoundedCornerShape(0.dp))
+                .padding(20.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(

@@ -20,7 +20,6 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class WaveTriggerTest {
-
     private val trigger = WaveTrigger(timeWindowMillis = 1000f, debounceMillis = 1000L)
 
     @Test

@@ -25,7 +25,6 @@ internal class RotationAngleDetector(
     private val trigger: GestureTrigger<RotationAngleEvent>,
     private val dispatcher: (RotationAngleEvent) -> Unit,
 ) : SensorDetector(Sensor.TYPE_ROTATION_VECTOR) {
-
     override fun onSensorEvent(sensorEvent: SensorEvent) {
         val rotationMatrix = FloatArray(16)
         SensorManager.getRotationMatrixFromVector(rotationMatrix, sensorEvent.values)
@@ -45,10 +44,11 @@ internal class RotationAngleDetector(
             orientations[i] = Math.toDegrees(orientations[i].toDouble()).toFloat()
         }
 
-        val event = trigger.evaluate(
-            values = orientations,
-            timestamp = sensorEvent.timestamp / 1_000_000,
-        )
+        val event =
+            trigger.evaluate(
+                values = orientations,
+                timestamp = sensorEvent.timestamp / 1_000_000,
+            )
         event?.let(dispatcher)
     }
 }

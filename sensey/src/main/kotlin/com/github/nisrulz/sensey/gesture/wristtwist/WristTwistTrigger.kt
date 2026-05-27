@@ -23,11 +23,13 @@ internal class WristTwistTrigger(
     private val threshold: Float = 12f,
     private val timeForWristTwistGesture: Long = 1000L,
 ) : GestureTrigger<WristTwistEvent> {
-
     private var isGestureInProgress = false
     private var lastTimeWristTwistDetected = 0L
 
-    override fun evaluate(values: FloatArray, timestamp: Long): WristTwistEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): WristTwistEvent? {
         val (x, y, z) = values
         val magnitude = sqrt(x * x + y * y + z * z)
         val linearMagnitude = abs(magnitude - GRAVITY_EARTH)

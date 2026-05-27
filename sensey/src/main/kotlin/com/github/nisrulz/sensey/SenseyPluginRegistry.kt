@@ -44,22 +44,34 @@ class SenseyPluginRegistry {
         timeBeforeDeclaringShakeStopped: Long = 1000L,
         dispatcher: (ShakeEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.shakePlugin(threshold, timeBeforeDeclaringShakeStopped, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .shakePlugin(threshold, timeBeforeDeclaringShakeStopped, dispatcher),
+        )
     }
 
     fun flipPlugin(dispatcher: (FlipEvent) -> Unit) {
-        plugins.add(com.github.nisrulz.sensey.gesture.flipPlugin(dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .flipPlugin(dispatcher),
+        )
     }
 
     fun lightPlugin(
         darkThreshold: Float = 8f,
         dispatcher: (LightEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.lightPlugin(darkThreshold, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .lightPlugin(darkThreshold, dispatcher),
+        )
     }
 
     fun proximityPlugin(dispatcher: (ProximityEvent) -> Unit) {
-        plugins.add(com.github.nisrulz.sensey.gesture.proximityPlugin(dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .proximityPlugin(dispatcher),
+        )
     }
 
     fun movementPlugin(
@@ -67,14 +79,20 @@ class SenseyPluginRegistry {
         timeBeforeDeclaringStationary: Long = 5000L,
         dispatcher: (MovementEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.movementPlugin(threshold, timeBeforeDeclaringStationary, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .movementPlugin(threshold, timeBeforeDeclaringStationary, dispatcher),
+        )
     }
 
     fun orientationPlugin(
         smoothness: Int = 1,
         dispatcher: (OrientationEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.orientationPlugin(smoothness, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .orientationPlugin(smoothness, dispatcher),
+        )
     }
 
     fun chopPlugin(
@@ -82,7 +100,10 @@ class SenseyPluginRegistry {
         timeForChopGesture: Long = 700L,
         dispatcher: (ChopEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.chopPlugin(threshold, timeForChopGesture, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .chopPlugin(threshold, timeForChopGesture, dispatcher),
+        )
     }
 
     fun wristTwistPlugin(
@@ -90,7 +111,10 @@ class SenseyPluginRegistry {
         timeForWristTwistGesture: Long = 1000L,
         dispatcher: (WristTwistEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.wristTwistPlugin(threshold, timeForWristTwistGesture, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .wristTwistPlugin(threshold, timeForWristTwistGesture, dispatcher),
+        )
     }
 
     fun wavePlugin(
@@ -98,18 +122,27 @@ class SenseyPluginRegistry {
         debounceMillis: Long = 1000L,
         dispatcher: (WaveEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.wavePlugin(timeWindowMillis, debounceMillis, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .wavePlugin(timeWindowMillis, debounceMillis, dispatcher),
+        )
     }
 
     fun scoopPlugin(
         threshold: Float = 10f,
         dispatcher: (ScoopEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.scoopPlugin(threshold, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .scoopPlugin(threshold, dispatcher),
+        )
     }
 
     fun pickupDevicePlugin(dispatcher: (PickupDeviceEvent) -> Unit) {
-        plugins.add(com.github.nisrulz.sensey.gesture.pickupDevicePlugin(dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .pickupDevicePlugin(dispatcher),
+        )
     }
 
     fun tapOnBackPlugin(
@@ -119,21 +152,35 @@ class SenseyPluginRegistry {
         tapSequenceTimeoutMs: Long = 500L,
         dispatcher: (TapOnBackEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.tapOnBackPlugin(angleThreshold, minAngleJerk, tapDebounceMs, tapSequenceTimeoutMs, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture.tapOnBackPlugin(
+                angleThreshold,
+                minAngleJerk,
+                tapDebounceMs,
+                tapSequenceTimeoutMs,
+                dispatcher,
+            ),
+        )
     }
 
     fun tiltDirectionPlugin(
         threshold: Float = 0.5f,
         dispatcher: (TiltDirectionEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.tiltDirectionPlugin(threshold, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .tiltDirectionPlugin(threshold, dispatcher),
+        )
     }
 
     fun rotationAnglePlugin(
         minAngleChange: Float = 1f,
         dispatcher: (RotationAngleEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.rotationAnglePlugin(minAngleChange, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .rotationAnglePlugin(minAngleChange, dispatcher),
+        )
     }
 
     fun stepPlugin(
@@ -141,28 +188,40 @@ class SenseyPluginRegistry {
         threshold: Float = 3f,
         dispatcher: (StepEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.stepPlugin(gender, threshold, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .stepPlugin(gender, threshold, dispatcher),
+        )
     }
 
     fun pinchScalePlugin(
         context: Context,
         dispatcher: (PinchScaleEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.pinchScalePlugin(context, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .pinchScalePlugin(context, dispatcher),
+        )
     }
 
     fun touchTypePlugin(
         context: Context,
         dispatcher: (TouchTypeEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.touchTypePlugin(context, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .touchTypePlugin(context, dispatcher),
+        )
     }
 
     fun soundLevelPlugin(
         context: Context,
         dispatcher: (SoundLevelEvent) -> Unit,
     ) {
-        plugins.add(com.github.nisrulz.sensey.gesture.soundLevelPlugin(context, dispatcher))
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .soundLevelPlugin(context, dispatcher),
+        )
     }
 
     internal fun collect(): List<GesturePlugin> = plugins.toList()

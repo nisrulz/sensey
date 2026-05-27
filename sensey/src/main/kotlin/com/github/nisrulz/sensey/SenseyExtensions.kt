@@ -22,7 +22,9 @@ private var defaultInstance: Sensey? = null
 
 internal var defaultSensey: Sensey?
     get() = defaultInstance
-    set(value) { defaultInstance = value }
+    set(value) {
+        defaultInstance = value
+    }
 
 fun Context.senseyRegister(
     lifecycle: Lifecycle? = null,

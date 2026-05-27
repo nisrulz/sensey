@@ -21,12 +21,16 @@ import android.hardware.SensorEventListener
 import android.util.Log
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-internal abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
-
+internal abstract class SensorDetector(
+    vararg sensorTypes: Int,
+) : SensorEventListener {
     val sensorTypes: IntArray = sensorTypes
     internal var sensorDataLoggingEnabled: Boolean = false
 
-    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+    override fun onAccuracyChanged(
+        sensor: Sensor,
+        accuracy: Int,
+    ) {}
 
     override fun onSensorChanged(event: SensorEvent) {
         if (isSensorEventBelongsToPluggedTypes(event)) {
@@ -43,25 +47,27 @@ internal abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventLis
     }
 
     companion object {
-        private val TAG_BY_TYPE = mapOf(
-            Sensor.TYPE_ACCELEROMETER to "Accelerometer",
-            Sensor.TYPE_GYROSCOPE to "Gyroscope",
-            Sensor.TYPE_MAGNETIC_FIELD to "Magnetometer",
-            Sensor.TYPE_ROTATION_VECTOR to "RotationVector",
-            Sensor.TYPE_LIGHT to "Light",
-            Sensor.TYPE_PROXIMITY to "Proximity",
-            Sensor.TYPE_PRESSURE to "Pressure",
-            Sensor.TYPE_STEP_COUNTER to "StepCounter",
-            Sensor.TYPE_GRAVITY to "Gravity",
-            Sensor.TYPE_LINEAR_ACCELERATION to "LinearAcceleration",
-        )
+        private val TAG_BY_TYPE =
+            mapOf(
+                Sensor.TYPE_ACCELEROMETER to "Accelerometer",
+                Sensor.TYPE_GYROSCOPE to "Gyroscope",
+                Sensor.TYPE_MAGNETIC_FIELD to "Magnetometer",
+                Sensor.TYPE_ROTATION_VECTOR to "RotationVector",
+                Sensor.TYPE_LIGHT to "Light",
+                Sensor.TYPE_PROXIMITY to "Proximity",
+                Sensor.TYPE_PRESSURE to "Pressure",
+                Sensor.TYPE_STEP_COUNTER to "StepCounter",
+                Sensor.TYPE_GRAVITY to "Gravity",
+                Sensor.TYPE_LINEAR_ACCELERATION to "LinearAcceleration",
+            )
     }
 
     protected open fun onSensorEvent(sensorEvent: SensorEvent) {}
 
-    private fun isSensorEventBelongsToPluggedTypes(event: SensorEvent): Boolean {
-        return sensorTypes.any { it == event.sensor.type }
-    }
+    private fun isSensorEventBelongsToPluggedTypes(event: SensorEvent): Boolean =
+        sensorTypes.any {
+            it == event.sensor.type
+        }
 }
 
 internal open class TypedSensorDetector<T>(
@@ -69,12 +75,12 @@ internal open class TypedSensorDetector<T>(
     val dispatcher: (T) -> Unit,
     vararg sensorTypes: Int,
 ) : SensorDetector(*sensorTypes) {
-
     override fun onSensorEvent(sensorEvent: SensorEvent) {
-        val event = trigger.evaluate(
-            values = getValues(sensorEvent),
-            timestamp = sensorEvent.timestamp / 1_000_000,
-        )
+        val event =
+            trigger.evaluate(
+                values = getValues(sensorEvent),
+                timestamp = sensorEvent.timestamp / 1_000_000,
+            )
         event?.let(dispatcher)
     }
 

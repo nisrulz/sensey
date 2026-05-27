@@ -21,11 +21,13 @@ internal class LightTrigger(
     private val darkThreshold: Float = 8f,
     private val lightThreshold: Float = 12f,
 ) : GestureTrigger<LightEvent> {
-
     private var lastWasDark = true
     private var ready = false
 
-    override fun evaluate(values: FloatArray, timestamp: Long): LightEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): LightEvent? {
         val lux = values[0]
         if (!ready) {
             ready = true

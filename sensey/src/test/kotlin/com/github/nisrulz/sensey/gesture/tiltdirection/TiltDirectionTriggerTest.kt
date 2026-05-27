@@ -20,7 +20,6 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class TiltDirectionTriggerTest {
-
     private val trigger = TiltDirectionTrigger()
 
     @Test

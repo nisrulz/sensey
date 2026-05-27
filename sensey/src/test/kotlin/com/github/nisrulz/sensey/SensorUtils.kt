@@ -20,10 +20,12 @@ import android.hardware.SensorEvent
 import org.mockito.Mockito
 
 object SensorUtils {
-    fun testAccelerometerEvent(values: FloatArray?): SensorEvent =
-        testSensorEvent(values, Sensor.TYPE_ACCELEROMETER)
+    fun testAccelerometerEvent(values: FloatArray?): SensorEvent = testSensorEvent(values, Sensor.TYPE_ACCELEROMETER)
 
-    fun testSensorEvent(values: FloatArray?, type: Int): SensorEvent {
+    fun testSensorEvent(
+        values: FloatArray?,
+        type: Int,
+    ): SensorEvent {
         val sensorEvent = Mockito.mock(SensorEvent::class.java)
         try {
             val valuesField = SensorEvent::class.java.getField("values")
@@ -36,7 +38,11 @@ object SensorUtils {
         return sensorEvent
     }
 
-    fun testSensorWithRange(values: FloatArray?, type: Int, maxRange: Float): SensorEvent {
+    fun testSensorWithRange(
+        values: FloatArray?,
+        type: Int,
+        maxRange: Float,
+    ): SensorEvent {
         val sensorEvent = Mockito.mock(SensorEvent::class.java)
         try {
             val valuesField = SensorEvent::class.java.getField("values")

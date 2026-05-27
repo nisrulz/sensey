@@ -24,8 +24,10 @@ internal class TouchTypeTrigger(
     private val swipeMinDistance: Float = 120f,
     private val swipeThresholdVelocity: Float = 200f,
 ) : GestureTrigger<TouchTypeEvent> {
-
-    override fun evaluate(values: FloatArray, timestamp: Long): TouchTypeEvent? {
+    override fun evaluate(
+        values: FloatArray,
+        timestamp: Long,
+    ): TouchTypeEvent? {
         if (values.size < 2) return null
 
         val deltaX = values[0]
@@ -36,23 +38,33 @@ internal class TouchTypeTrigger(
 
         if (distance < swipeMinDistance) return null
 
-        val isSwipe = abs(velocityX) > swipeThresholdVelocity ||
-            abs(velocityY) > swipeThresholdVelocity
+        val isSwipe =
+            abs(velocityX) > swipeThresholdVelocity ||
+                abs(velocityY) > swipeThresholdVelocity
 
         val angle = atan2(deltaY.toDouble(), deltaX.toDouble())
         val degrees = Math.toDegrees(angle)
 
-        val direction = when {
-            degrees in -22.5..22.5 -> TouchTypeEvent.Direction.RIGHT
-            degrees in 22.5..67.5 -> if (isSwipe) TouchTypeEvent.Direction.DOWN_RIGHT else TouchTypeEvent.Direction.DOWN
-            degrees in 67.5..112.5 -> TouchTypeEvent.Direction.DOWN
-            degrees in 112.5..157.5 -> if (isSwipe) TouchTypeEvent.Direction.DOWN_LEFT else TouchTypeEvent.Direction.DOWN
-            degrees > 157.5 || degrees < -157.5 -> TouchTypeEvent.Direction.LEFT
-            degrees in -157.5..-112.5 -> if (isSwipe) TouchTypeEvent.Direction.UP_LEFT else TouchTypeEvent.Direction.UP
-            degrees in -112.5..-67.5 -> TouchTypeEvent.Direction.UP
-            degrees in -67.5..-22.5 -> if (isSwipe) TouchTypeEvent.Direction.UP_RIGHT else TouchTypeEvent.Direction.UP
-            else -> return null
-        }
+        val direction =
+            when {
+                degrees in -22.5..22.5 -> TouchTypeEvent.Direction.RIGHT
+                degrees in 22.5..67.5 -> {
+                    if (isSwipe) TouchTypeEvent.Direction.DOWN_RIGHT else TouchTypeEvent.Direction.DOWN
+                }
+                degrees in 67.5..112.5 -> TouchTypeEvent.Direction.DOWN
+                degrees in 112.5..157.5 -> {
+                    if (isSwipe) TouchTypeEvent.Direction.DOWN_LEFT else TouchTypeEvent.Direction.DOWN
+                }
+                degrees > 157.5 || degrees < -157.5 -> TouchTypeEvent.Direction.LEFT
+                degrees in -157.5..-112.5 -> {
+                    if (isSwipe) TouchTypeEvent.Direction.UP_LEFT else TouchTypeEvent.Direction.UP
+                }
+                degrees in -112.5..-67.5 -> TouchTypeEvent.Direction.UP
+                degrees in -67.5..-22.5 -> {
+                    if (isSwipe) TouchTypeEvent.Direction.UP_RIGHT else TouchTypeEvent.Direction.UP
+                }
+                else -> return null
+            }
 
         return if (isSwipe) TouchTypeEvent.Swipe(direction) else TouchTypeEvent.Scroll(direction)
     }
