@@ -68,6 +68,3 @@
 # -keep public interface mypackage.MyInterface
 # -keep public class * implements mypackage.MyInterface
 
--assumenosideeffects class android.util.Log {
-    public static *** d(...);
-}
