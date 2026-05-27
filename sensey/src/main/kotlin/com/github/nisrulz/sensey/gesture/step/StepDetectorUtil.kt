@@ -33,11 +33,15 @@ object StepDetectorUtil {
     }
 
     fun getStepActivityType(distance: Float, timeDelta: Long): Int {
-        val speed = distance / timeDelta
+        if (timeDelta <= 0) return ACTIVITY_STILL
+        val speedMs = distance * 1000f / timeDelta
         return when {
-            speed > 20 -> ACTIVITY_RUNNING
-            speed < 20 && speed > 0.3f -> ACTIVITY_WALKING
+            speedMs > ACTIVITY_RUNNING_THRESHOLD -> ACTIVITY_RUNNING
+            speedMs > ACTIVITY_WALKING_THRESHOLD -> ACTIVITY_WALKING
             else -> ACTIVITY_STILL
         }
     }
+
+    private const val ACTIVITY_WALKING_THRESHOLD = 0.2f
+    private const val ACTIVITY_RUNNING_THRESHOLD = 2.0f
 }
