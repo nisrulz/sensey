@@ -1,8 +1,61 @@
 # Dev Documentation
 
+## Building
+
+```sh
+./gradlew assembleDebug
+```
+
+## Code Quality
+
+### ktlint
+
+This project uses [ktlint](https://github.com/pinterest/ktlint) via the
+[ktlint-gradle plugin](https://github.com/JLLeitschuh/ktlint-gradle) to enforce
+consistent Kotlin code style.
+
+```sh
+# Check for violations
+./gradlew ktlintCheck
+
+# Auto-format all Kotlin files
+./gradlew ktlintFormat
+```
+
+Configuration is in `.editorconfig` at the project root.
+
+## Documentation
+
+API reference documentation is generated with
+[Dokka 2.2.0](https://kotlinlang.org/docs/dokka-get-started.html) and deployed
+to GitHub Pages.
+
+### Generate locally
+
+```sh
+./gradlew :sensey:dokkaGeneratePublicationHtml
+```
+
+Open `sensey/build/dokka/html/index.html` in a browser.
+
+### Versioned docs (local)
+
+```sh
+./gradlew publishDocs
+```
+
+Output goes to `build/dokka/{version}/` with a `latest/` symlink.
+
+### CI Deployment
+
+The [docs workflow](.github/workflows/docs.yml) runs on pushes to `master`/
+`develop` and version tags (`v*`). It generates docs with the Dokka versioning
+plugin, organizes output into versioned directories, and deploys to GitHub
+Pages at [nisrulz.github.io/sensey](https://nisrulz.github.io/sensey/latest/index.html).
+
 ## Publishing
 
-- To release library to MavenLocal(~/.m2/):
+- To release library to MavenLocal (~/.m2/):
 
   ```sh
   ./gradlew releaseToMavenLocal
@@ -22,6 +75,7 @@
 - Kotlin 2.3.21
 - Java 21
 - compileSdk 36 / minSdk 23 / targetSdk 35
+- Configuration cache enabled
 
 ## Creating a Custom Plugin
 

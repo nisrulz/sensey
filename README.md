@@ -16,6 +16,14 @@
     <a href="https://search.maven.org/artifact/com.github.nisrulz/sensey">
         <img src="https://img.shields.io/maven-central/v/com.github.nisrulz/sensey"/>
     </a>
+    <!-- Docs -->
+    <a href="https://nisrulz.github.io/sensey/latest/index.html">
+        <img src="https://img.shields.io/badge/docs-Dokka-blue"/>
+    </a>
+    <!-- ktlint -->
+    <a href="https://github.com/JLLeitschuh/ktlint-gradle">
+        <img src="https://img.shields.io/badge/code%20style-ktlint-%23FF4081"/>
+    </a>
     <!-- API -->
     <a href="https://android-arsenal.com/api?level=23">
         <img src="https://img.shields.io/badge/API-23%2B-orange.svg?style=flat"/>
@@ -209,8 +217,8 @@ where `{latest version}` corresponds to the latest published version on [Maven C
 
 Each gesture is split into three components:
 
-- **`GestureTrigger<T>`** — Pure Kotlin contract with no Android dependencies. The detection algorithm lives here and can be unit tested without a device.
-- **`GesturePlugin`** — Wraps a trigger into a plugin that registers with a `Sensey` instance via `Sensey.register(plugin)`.
+- **`GestureTrigger<T>`** — Pure Kotlin contract with no Android dependencies. The detection algorithm lives here and can be unit tested without a device. All complex logic is extracted into private functions for readability.
+- **`GesturePlugin`** — Wraps a trigger into a plugin that registers with a `Sensey` instance via `Sensey.register(plugin)`. Sensor-based gestures use `TypedSensorDetector` directly (composition over inheritance), avoiding intermediate Detector classes.
 - **`Sensey` class** — Plugin registry with lifecycle management. Provides `register {}` DSL, `senseyRegister()` / `SenseyGestureEffect()` extension functions, and auto-cleanup on lifecycle destroy.
 
 # Changelog
