@@ -16,6 +16,8 @@
 package com.github.nisrulz.sensey.gesture.chop
 
 import com.github.nisrulz.sensey.SensorUtils
+import com.github.nisrulz.sensey.contract.GestureTrigger
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -27,5 +29,24 @@ class ChopDetectorTest {
         val detector = ChopDetector(ChopTrigger()) { events.add(it) }
         detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 0f)))
         assertTrue(events.isEmpty())
+    }
+
+    @Test
+    fun dispatchesNothingOnPartialCondition() {
+        val events = mutableListOf<ChopEvent>()
+        val detector = ChopDetector(ChopTrigger()) { events.add(it) }
+        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(40f, -5f, 40f)))
+        assertTrue(events.isEmpty())
+    }
+
+    @Test
+    fun dispatchesEventWhenTriggerReturnsNonNull() {
+        val events = mutableListOf<ChopEvent>()
+        val alwaysTrigger = object : GestureTrigger<ChopEvent> {
+            override fun evaluate(values: FloatArray, timestamp: Long) = ChopEvent.Chopped
+        }
+        val detector = ChopDetector(alwaysTrigger) { events.add(it) }
+        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 0f)))
+        assertEquals(listOf(ChopEvent.Chopped), events)
     }
 }

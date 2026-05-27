@@ -25,10 +25,17 @@ class OrientationTrigger(
     private var currentOrientation = ORIENTATION_PORTRAIT
     private val pitches = FloatArray(smoothness)
     private val rolls = FloatArray(smoothness)
+    private var bufferInitialized = false
 
     override fun evaluate(values: FloatArray, timestamp: Long): OrientationEvent? {
         val pitch = values.getOrNull(0) ?: return null
         val roll = values.getOrNull(1) ?: return null
+
+        if (!bufferInitialized) {
+            pitches.fill(pitch)
+            rolls.fill(roll)
+            bufferInitialized = true
+        }
 
         val averagePitch = addSmoothValue(pitch, pitches)
         val averageRoll = addSmoothValue(roll, rolls)
@@ -54,14 +61,13 @@ class OrientationTrigger(
     }
 
     private fun addSmoothValue(value: Float, values: FloatArray): Float {
-        val tempValue = value.toDouble().let { if (it > 0) kotlin.math.round(it).toFloat() else kotlin.math.round(it).toFloat() }
         var average = 0f
         for (i in 1 until smoothness) {
             values[i - 1] = values[i]
             average += values[i]
         }
-        values[smoothness - 1] = tempValue
-        average = (average + tempValue) / smoothness
+        values[smoothness - 1] = value
+        average = (average + value) / smoothness
         return average
     }
 

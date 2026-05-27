@@ -18,9 +18,10 @@ package com.github.nisrulz.sensey.gesture.chop
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class ChopDetector(
-    private val trigger: ChopTrigger,
+    private val trigger: GestureTrigger<ChopEvent>,
     private val dispatcher: (ChopEvent) -> Unit,
 ) : SensorDetector(Sensor.TYPE_ACCELEROMETER) {
 

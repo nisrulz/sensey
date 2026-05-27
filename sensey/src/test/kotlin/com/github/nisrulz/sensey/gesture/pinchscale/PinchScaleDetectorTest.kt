@@ -18,6 +18,7 @@ package com.github.nisrulz.sensey.gesture.pinchscale
 import android.content.Context
 import android.view.MotionEvent
 import androidx.test.core.app.ApplicationProvider
+import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -26,12 +27,27 @@ import org.robolectric.RobolectricTestRunner
 class PinchScaleDetectorTest {
 
     @Test
-    fun createsDetector() {
+    fun dispatcherNotCalledOnActionDown() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        val events = mutableListOf<PinchScaleEvent>()
-        val detector = PinchScaleDetector(context, PinchScaleTrigger(), dispatcher = { events.add(it) })
-        // Verify it can handle a touch event without crashing
+        var called = false
+        val detector = PinchScaleDetector(
+            context, PinchScaleTrigger(),
+            dispatcher = { called = true },
+        )
         val event = MotionEvent.obtain(10, 10, MotionEvent.ACTION_DOWN, 100f, 100f, 0)
         detector.onTouchEvent(event)
+        assert(!called)
+    }
+
+    @Test
+    fun initDoesNotCrash() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val detector = PinchScaleDetector(
+            context, PinchScaleTrigger(),
+            dispatcher = {},
+            onScaleStart = {},
+            onScaleEnd = {},
+        )
+        assertNotNull(detector)
     }
 }

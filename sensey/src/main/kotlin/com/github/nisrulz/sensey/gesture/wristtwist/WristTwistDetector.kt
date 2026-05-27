@@ -18,9 +18,10 @@ package com.github.nisrulz.sensey.gesture.wristtwist
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class WristTwistDetector(
-    private val trigger: WristTwistTrigger,
+    private val trigger: GestureTrigger<WristTwistEvent>,
     private val dispatcher: (WristTwistEvent) -> Unit,
 ) : SensorDetector(Sensor.TYPE_ACCELEROMETER) {
 

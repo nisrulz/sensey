@@ -15,7 +15,10 @@
  */
 package com.github.nisrulz.sensey.gesture.soundlevel
 
+import com.github.nisrulz.sensey.contract.GestureTrigger
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SoundLevelDetectorTest {
@@ -26,5 +29,30 @@ class SoundLevelDetectorTest {
         val trigger = SoundLevelTrigger()
         val result = trigger.evaluate(floatArrayOf(1000f, 2000f, -500f), 0L)
         assertNotNull(result)
+    }
+
+    @Test
+    fun triggerReturnsNullForEmptyInput() {
+        val trigger = SoundLevelTrigger()
+        assertTrue(trigger.evaluate(floatArrayOf(), 0L) == null)
+    }
+
+    @Test
+    fun triggerReturnsNullForZeroValues() {
+        val trigger = SoundLevelTrigger()
+        assertTrue(trigger.evaluate(floatArrayOf(0f, 0f), 0L) == null)
+    }
+
+    @Test
+    fun triggerHandlesSingleSample() {
+        val trigger = SoundLevelTrigger()
+        val result = trigger.evaluate(floatArrayOf(10000f), 0L)
+        assertNotNull(result)
+    }
+
+    @Test
+    fun evaluateWithInfiniteValues() {
+        val trigger = SoundLevelTrigger()
+        assertTrue(trigger.evaluate(floatArrayOf(Float.POSITIVE_INFINITY), 0L) == null)
     }
 }

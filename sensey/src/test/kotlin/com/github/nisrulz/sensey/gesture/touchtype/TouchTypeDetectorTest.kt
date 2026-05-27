@@ -27,16 +27,18 @@ import org.robolectric.RobolectricTestRunner
 class TouchTypeDetectorTest {
 
     @Test
-    fun dispatchesSwipeLeftOnFling() {
+    fun dispatchesNothingOnActionDown() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val events = mutableListOf<TouchTypeEvent>()
         val detector = TouchTypeDetector(context, TouchTypeTrigger()) { events.add(it) }
-        val down = MotionEvent.obtain(10, 10, MotionEvent.ACTION_DOWN, 300f, 50f, 0)
-        val up = MotionEvent.obtain(10, 10, MotionEvent.ACTION_UP, 100f, 60f, 0)
-        detector.onTouchEvent(down)
-        detector.onTouchEvent(up)
-        // onFling not directly called via onTouchEvent without gesture detector
-        // Verifying detector initializes without error
-        assertTrue(true)
+        detector.onTouchEvent(MotionEvent.obtain(10, 10, MotionEvent.ACTION_DOWN, 100f, 100f, 0))
+        assertTrue(events.isEmpty())
+    }
+
+    @Test
+    fun initDoesNotCrash() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val detector = TouchTypeDetector(context, TouchTypeTrigger()) { }
+        assertTrue(detector is TouchTypeDetector)
     }
 }
