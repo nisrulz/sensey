@@ -67,10 +67,13 @@ class SenseyPluginRegistry {
         )
     }
 
-    fun proximityPlugin(dispatcher: (ProximityEvent) -> Unit) {
+    fun proximityPlugin(
+        debounceMillis: Long = 200L,
+        dispatcher: (ProximityEvent) -> Unit,
+    ) {
         plugins.add(
             com.github.nisrulz.sensey.gesture
-                .proximityPlugin(dispatcher),
+                .proximityPlugin(debounceMillis, dispatcher),
         )
     }
 

@@ -108,11 +108,14 @@ fun lightPlugin(
         },
     )
 
-fun proximityPlugin(dispatcher: (ProximityEvent) -> Unit): GesturePlugin =
+fun proximityPlugin(
+    debounceMillis: Long = 200L,
+    dispatcher: (ProximityEvent) -> Unit,
+): GesturePlugin =
     SensorGesturePlugin(
         key = "ProximityPlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_PROXIMITY),
-        detectorFactory = { ProximityDetector(ProximityTrigger(), dispatcher) },
+        detectorFactory = { ProximityDetector(ProximityTrigger(debounceMillis), dispatcher) },
     )
 
 fun movementPlugin(
