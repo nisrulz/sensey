@@ -62,6 +62,9 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.annotation)
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     testImplementation(libs.bundles.testing)
 }
