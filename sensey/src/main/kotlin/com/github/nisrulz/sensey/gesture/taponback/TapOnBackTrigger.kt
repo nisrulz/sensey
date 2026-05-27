@@ -24,7 +24,6 @@ internal class TapOnBackTrigger(
     private val angleThreshold: Float = 1.5f,
     private val minAngleJerk: Float = 1.5f,
     private val tapDebounceMs: Long = 250L,
-    private val tapSequenceTimeoutMs: Long = 500L,
 ) : GestureTrigger<TapOnBackEvent> {
     private var baselineX = 0f
     private var baselineY = 0f
@@ -32,7 +31,6 @@ internal class TapOnBackTrigger(
     private var hasBaseline = false
     private var previousAngleDeg = 0f
     private var lastTapTime = 0L
-    private var tapCount = 0
 
     override fun evaluate(
         values: FloatArray,
@@ -47,18 +45,11 @@ internal class TapOnBackTrigger(
         previousAngleDeg = angleDeg
 
         if (isValidTap(angleDeg, angleJerk, timestamp)) {
-            tapCount++
             lastTapTime = timestamp
-            return null
+            return TapOnBackEvent
         }
 
-        return if (tapCount > 0 && timestamp - lastTapTime > tapSequenceTimeoutMs) {
-            val event = if (tapCount >= 2) TapOnBackEvent else null
-            tapCount = 0
-            event
-        } else {
-            null
-        }
+        return null
     }
 
     private fun updateBaseline(
