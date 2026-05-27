@@ -27,7 +27,7 @@ class TiltDirectionDetector(
     override fun onSensorEvent(sensorEvent: SensorEvent) {
         val event = trigger.evaluate(
             values = sensorEvent.values.clone(),
-            timestamp = System.currentTimeMillis(),
+            timestamp = sensorEvent.timestamp / 1_000_000,
         )
         event?.let(dispatcher)
     }

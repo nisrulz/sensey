@@ -28,7 +28,7 @@ class ProximityDetector(
         val maxRange = sensorEvent.sensor.maximumRange
         val event = trigger.evaluate(
             values = floatArrayOf(sensorEvent.values[0], maxRange),
-            timestamp = System.currentTimeMillis(),
+            timestamp = sensorEvent.timestamp / 1_000_000,
         )
         event?.let(dispatcher)
     }

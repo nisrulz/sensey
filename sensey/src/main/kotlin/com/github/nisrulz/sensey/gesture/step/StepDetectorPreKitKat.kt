@@ -28,7 +28,7 @@ class StepDetectorPreKitKat(
         val y = sensorEvent.values[1]
         val event = trigger.evaluate(
             values = floatArrayOf(y, 0f),
-            timestamp = System.currentTimeMillis(),
+            timestamp = sensorEvent.timestamp / 1_000_000,
         )
         event?.let(dispatcher)
     }

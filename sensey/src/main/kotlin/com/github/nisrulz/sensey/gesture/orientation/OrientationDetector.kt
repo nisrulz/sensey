@@ -45,7 +45,7 @@ class OrientationDetector(
             SensorManager.getOrientation(R, orientationData)
             val pitch = Math.toDegrees(orientationData[1].toDouble()).toFloat()
             val roll = Math.toDegrees(orientationData[2].toDouble()).toFloat()
-            val result = trigger.evaluate(floatArrayOf(pitch, roll), System.currentTimeMillis())
+            val result = trigger.evaluate(floatArrayOf(pitch, roll), event.timestamp / 1_000_000)
             result?.let(dispatcher)
         }
     }
