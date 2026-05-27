@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.github.nisrulz.senseysample
 
 import android.Manifest.permission
@@ -8,19 +6,27 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import com.github.nisrulz.sensey.senseyRegister
 import com.github.nisrulz.sensey.senseyStop
 import com.github.nisrulz.senseysample.ui.MainScreen
 import com.github.nisrulz.senseysample.ui.SensorItem
-import com.github.nisrulz.senseysample.utils.RPResultListener
 import com.github.nisrulz.senseysample.utils.RuntimePermissionUtil
 
 class MainActivity : ComponentActivity() {
     private var hasRecordAudioPermission = false
     private val recordAudioPermission = permission.RECORD_AUDIO
-    private val logTag = javaClass.canonicalName
+    private val logTag = javaClass.name
 
-    private val sensorManager = SensorManager(this, logTag)
+    private val sensorManager = SenseySensorManager(this, logTag)
+
+    private val audioPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                hasRecordAudioPermission = true
+                sensorManager.startAfterPermissionGranted()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,40 +68,13 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         sensorManager.sensey =
             senseyRegister(sensorDataLoggingEnabled = true) {
-                // plugin registration happens in SensorManager
+                // plugin registration happens in SenseySensorManager
             }
     }
 
     private fun onSensorSelected(sensor: String) {
         sensorManager.onSensorSelected(sensor, hasRecordAudioPermission) {
-            RuntimePermissionUtil.requestPermission(this, recordAudioPermission, 100)
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray,
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 100) {
-            RuntimePermissionUtil.onRequestPermissionsResult(
-                grantResults,
-                object : RPResultListener {
-                    override fun onPermissionDenied() {}
-
-                    override fun onPermissionGranted() {
-                        if (RuntimePermissionUtil.checkPermissonGranted(
-                                this@MainActivity,
-                                recordAudioPermission,
-                            )
-                        ) {
-                            hasRecordAudioPermission = true
-                            sensorManager.startAfterPermissionGranted()
-                        }
-                    }
-                },
-            )
+            audioPermissionLauncher.launch(recordAudioPermission)
         }
     }
 }

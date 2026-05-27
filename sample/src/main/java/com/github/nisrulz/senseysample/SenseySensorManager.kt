@@ -50,7 +50,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
-internal class SensorManager(
+internal class SenseySensorManager(
     private val activity: Activity,
     private val logTag: String,
 ) {
