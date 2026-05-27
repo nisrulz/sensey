@@ -17,44 +17,39 @@ package com.github.nisrulz.sensey.gesture.pinchscale
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-data class PinchScaleState(
-    val eventOccurred: Int = 0,
-    val countOfScaleIn: Int = 0,
-    val countOfScaleOut: Int = 0,
-)
-
 class PinchScaleTrigger : GestureTrigger<PinchScaleEvent> {
 
-    private var state = PinchScaleState()
+    private var eventOccurred = 0
+    private var countOfScaleIn = 0
+    private var countOfScaleOut = 0
 
     override fun evaluate(values: FloatArray, timestamp: Long): PinchScaleEvent? {
         val scaleFactor = values.getOrNull(0) ?: return null
 
-        val (eventOccurred, countOfScaleIn, countOfScaleOut) = state
-        var newEventOccurred = eventOccurred
-        var newCountOfScaleIn = countOfScaleIn
-        var newCountOfScaleOut = countOfScaleOut
-        var result: PinchScaleEvent? = null
-
-        if (scaleFactor > 1.01f) {
-            newCountOfScaleIn += 1
-            if (newEventOccurred != 1 && newCountOfScaleIn > 2) {
-                newEventOccurred = 1
-                result = PinchScaleEvent(scaleFactor, false)
+        return if (scaleFactor > 1.01f) {
+            countOfScaleIn += 1
+            if (eventOccurred != 1 && countOfScaleIn > 2) {
+                eventOccurred = 1
+                PinchScaleEvent(scaleFactor, false)
+            } else {
+                null
             }
         } else if (scaleFactor < 0.99f) {
-            newCountOfScaleOut += 1
-            if (newEventOccurred != 2 && newCountOfScaleOut > 2) {
-                newEventOccurred = 2
-                result = PinchScaleEvent(scaleFactor, true)
+            countOfScaleOut += 1
+            if (eventOccurred != 2 && countOfScaleOut > 2) {
+                eventOccurred = 2
+                PinchScaleEvent(scaleFactor, true)
+            } else {
+                null
             }
+        } else {
+            null
         }
-
-        state = PinchScaleState(newEventOccurred, newCountOfScaleIn, newCountOfScaleOut)
-        return result
     }
 
     fun reset() {
-        state = PinchScaleState()
+        eventOccurred = 0
+        countOfScaleIn = 0
+        countOfScaleOut = 0
     }
 }
