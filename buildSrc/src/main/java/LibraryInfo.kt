@@ -1,5 +1,5 @@
 object LibraryInfo {
-    const val POM_VERSION = "1.9.0"
+    const val POM_VERSION = "2.0.0"
     const val POM_ARTIFACT_ID = "sensey"
     const val POM_NAME = "Sensey"
     const val POM_DESCRIPTION =
