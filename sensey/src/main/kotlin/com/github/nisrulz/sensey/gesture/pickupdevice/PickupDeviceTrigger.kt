@@ -26,7 +26,10 @@ internal class PickupDeviceTrigger(
     private val windowSize: Int = 8,
     private val settleReadings: Int = 6,
 ) : GestureTrigger<PickupDeviceEvent> {
-    private val buffer = ArrayDeque<Float>(windowSize + 1)
+    private val buffer = FloatArray(windowSize)
+    private var bufferIndex = 0
+    private var bufferCount = 0
+    private var bufferSum = 0f
     private var isHeld = false
     private var settleCount = 0
 
@@ -35,18 +38,24 @@ internal class PickupDeviceTrigger(
         timestamp: Long,
     ): PickupDeviceEvent? {
         val magnitude = computeMagnitude(values)
-        buffer.addLast(magnitude)
-        if (buffer.size > windowSize) buffer.removeFirst()
-        if (buffer.size < 3) return null
+        val oldValue = buffer[bufferIndex]
+        buffer[bufferIndex] = magnitude
+        bufferIndex = (bufferIndex + 1) % windowSize
+        if (bufferCount < windowSize) bufferCount++
+        bufferSum = bufferSum - oldValue + magnitude
+        if (bufferCount < 3) return null
 
-        val range = buffer.max() - buffer.min()
-        val mean = buffer.sum() / buffer.size
+        val range = computeRange()
+        val mean = bufferSum / bufferCount
 
         return when {
             isPickedUp(range) -> {
                 isHeld = true
                 settleCount = 0
-                buffer.clear()
+                buffer.fill(0f)
+                bufferIndex = 0
+                bufferCount = 0
+                bufferSum = 0f
                 PickupDeviceEvent.PickedUp
             }
             isPutDown(mean, range) -> {
@@ -67,6 +76,17 @@ internal class PickupDeviceTrigger(
 
     private fun computeMagnitude(values: FloatArray): Float =
         sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2])
+
+    private fun computeRange(): Float {
+        var min = Float.MAX_VALUE
+        var max = Float.MIN_VALUE
+        for (i in 0 until bufferCount) {
+            val v = buffer[i]
+            if (v < min) min = v
+            if (v > max) max = v
+        }
+        return max - min
+    }
 
     private fun isPickedUp(range: Float): Boolean = !isHeld && range > movingRange
 
