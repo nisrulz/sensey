@@ -45,6 +45,7 @@ internal class TouchSensorManager(
 
     private val touchDispatcher: (TouchTypeEvent) -> Unit = withHaptic { event: TouchTypeEvent ->
         when (event) {
+            is TouchTypeEvent.NTap -> updateResultText("${event.count}-Tap")
             TouchTypeEvent.DoubleTap -> updateResultText("Double Tap")
             TouchTypeEvent.LongPress -> updateResultText("Long press")
             TouchTypeEvent.SingleTap -> updateResultText("Single Tap")

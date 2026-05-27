@@ -24,7 +24,22 @@ class TouchTypeDetector(
     context: Context,
     private val trigger: TouchTypeTrigger,
     private val dispatcher: (TouchTypeEvent) -> Unit,
+    private val multiTapCount: Int = 3,
+    private val multiTapTimeWindow: Long = 400L,
 ) {
+    private var tapCount = 0
+    private var lastTapTime = 0L
+
+    private fun detectMultiTap() {
+        val now = System.currentTimeMillis()
+        tapCount = if (now - lastTapTime <= multiTapTimeWindow) tapCount + 1 else 1
+        lastTapTime = now
+        if (tapCount >= multiTapCount) {
+            tapCount = 0
+            dispatcher(TouchTypeEvent.NTap(multiTapCount))
+        }
+    }
+
     private val gestureDetector = GestureDetectorCompat(
         context,
         object : SimpleOnGestureListener() {
@@ -79,6 +94,8 @@ class TouchTypeDetector(
     fun onTouchEvent(event: MotionEvent): Boolean {
         if (event != null) {
             when (event.actionMasked) {
+                MotionEvent.ACTION_UP -> detectMultiTap()
+
                 MotionEvent.ACTION_POINTER_DOWN -> {
                     when (event.pointerCount) {
                         3 -> dispatcher(TouchTypeEvent.ThreeFingerSingleTap)

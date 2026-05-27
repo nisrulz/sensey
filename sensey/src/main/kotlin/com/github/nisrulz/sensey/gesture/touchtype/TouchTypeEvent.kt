@@ -21,6 +21,7 @@ sealed interface TouchTypeEvent {
         UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT,
     }
 
+    data class NTap(val count: Int) : TouchTypeEvent
     data object DoubleTap : TouchTypeEvent
     data object LongPress : TouchTypeEvent
     data object SingleTap : TouchTypeEvent

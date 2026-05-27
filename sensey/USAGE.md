@@ -405,6 +405,7 @@ Sensey.startPinchScaleDetection(context) { event ->
 
 | Event | Description |
 |-------|-------------|
+| `TouchTypeEvent.NTap(count)` | N consecutive taps within the time window (default `count=3`, 400ms window) |
 | `TouchTypeEvent.DoubleTap` | Double tap |
 | `TouchTypeEvent.LongPress` | Long press |
 | `TouchTypeEvent.SingleTap` | Single tap |
@@ -426,6 +427,7 @@ override fun dispatchTouchEvent(event: MotionEvent): Boolean {
 // Start detection
 Sensey.startTouchTypeDetection(context) { event ->
     when (event) {
+        is TouchTypeEvent.NTap    -> println("${event.count}-tap detected")
         TouchTypeEvent.DoubleTap -> println("Double tap")
         TouchTypeEvent.LongPress -> println("Long press")
         TouchTypeEvent.SingleTap -> println("Single tap")
