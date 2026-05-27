@@ -46,7 +46,13 @@ internal class SoundLevelDetector(
     private suspend fun captureAudio() {
         Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO)
         val audioRecord = createAudioRecord() ?: return
-        audioRecord.startRecording()
+        try {
+            audioRecord.startRecording()
+        } catch (e: SecurityException) {
+            Log.e(LOGTAG, "RECORD_AUDIO permission denied at runtime", e)
+            audioRecord.release()
+            return
+        }
         processAudioStream(audioRecord)
     }
 

@@ -15,7 +15,9 @@
  */
 package com.github.nisrulz.sensey.gesture
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.hardware.Sensor
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -253,7 +255,7 @@ fun touchTypePlugin(
 fun soundLevelPlugin(
     context: Context,
     dispatcher: (SoundLevelEvent) -> Unit,
-): GesturePlugin = SoundLevelPlugin(SoundLevelTrigger(), dispatcher)
+): GesturePlugin = SoundLevelPlugin(context, SoundLevelTrigger(), dispatcher)
 
 private class SensorGesturePlugin(
     override val key: String,
@@ -366,6 +368,7 @@ private class TouchTypePlugin(
 }
 
 private class SoundLevelPlugin(
+    private val context: Context,
     private val trigger: SoundLevelTrigger,
     private val dispatcher: (SoundLevelEvent) -> Unit,
 ) : GesturePlugin {
@@ -373,6 +376,10 @@ private class SoundLevelPlugin(
     private var detector: SoundLevelDetector? = null
 
     override fun onRegister(sensey: Sensey) {
+        if (context.checkCallingOrSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            android.util.Log.w("Sensey", "RECORD_AUDIO permission not granted — SoundLevelPlugin disabled")
+            return
+        }
         detector = SoundLevelDetector(trigger, dispatcher)
         detector?.start()
     }
