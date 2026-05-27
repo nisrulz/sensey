@@ -18,6 +18,7 @@ package com.github.nisrulz.sensey
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
+import android.util.Log
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
 abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
@@ -28,8 +29,31 @@ abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent) {
         if (isSensorEventBelongsToPluggedTypes(event)) {
+            logSensorEvent(event)
             onSensorEvent(event)
         }
+    }
+
+    private fun logSensorEvent(event: SensorEvent) {
+        if (!Sensey.sensorDataLoggingEnabled) return
+        val tag = TAG_BY_TYPE[event.sensor.type] ?: return
+        val values = event.values.joinToString(",")
+        Log.d(tag, values)
+    }
+
+    companion object {
+        private val TAG_BY_TYPE = mapOf(
+            Sensor.TYPE_ACCELEROMETER to "Accelerometer",
+            Sensor.TYPE_GYROSCOPE to "Gyroscope",
+            Sensor.TYPE_MAGNETIC_FIELD to "Magnetometer",
+            Sensor.TYPE_ROTATION_VECTOR to "RotationVector",
+            Sensor.TYPE_LIGHT to "Light",
+            Sensor.TYPE_PROXIMITY to "Proximity",
+            Sensor.TYPE_PRESSURE to "Pressure",
+            Sensor.TYPE_STEP_COUNTER to "StepCounter",
+            Sensor.TYPE_GRAVITY to "Gravity",
+            Sensor.TYPE_LINEAR_ACCELERATION to "LinearAcceleration",
+        )
     }
 
     protected open fun onSensorEvent(sensorEvent: SensorEvent) {}
@@ -40,8 +64,8 @@ abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
 }
 
 open class TypedSensorDetector<T>(
-    private val trigger: GestureTrigger<T>,
-    private val dispatcher: (T) -> Unit,
+    val trigger: GestureTrigger<T>,
+    val dispatcher: (T) -> Unit,
     vararg sensorTypes: Int,
 ) : SensorDetector(*sensorTypes) {
 

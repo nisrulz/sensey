@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        Sensey.init(this)
+        Sensey.init(this, sensorDataLoggingEnabled = true)
     }
 
     private fun onSensorSelected(sensor: String) {

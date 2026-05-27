@@ -61,6 +61,9 @@ import com.github.nisrulz.sensey.gesture.shake.ShakeTrigger
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelDetector
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelEvent
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelTrigger
+import com.github.nisrulz.sensey.gesture.taponback.TapOnBackDetector
+import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
+import com.github.nisrulz.sensey.gesture.taponback.TapOnBackTrigger
 import com.github.nisrulz.sensey.gesture.step.StepDetectorPostKitKat
 import com.github.nisrulz.sensey.gesture.step.StepDetectorUtil
 import com.github.nisrulz.sensey.gesture.step.StepEvent
@@ -95,23 +98,47 @@ object Sensey {
     private var registeredLifecycle: Lifecycle? = null
     private const val LOGTAG = "Sensey"
 
-    fun init(context: Context) {
+    var sensorDataLoggingEnabled: Boolean = false
+        private set
+
+    fun init(
+        context: Context,
+        sensorDataLoggingEnabled: Boolean = false,
+    ) {
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        this.sensorDataLoggingEnabled = sensorDataLoggingEnabled
     }
 
-    fun init(context: Context, lifecycle: Lifecycle) {
+    fun init(
+        context: Context,
+        lifecycle: Lifecycle,
+        sensorDataLoggingEnabled: Boolean = false,
+    ) {
         init(context)
         registerLifecycleObserver(lifecycle)
+        this.sensorDataLoggingEnabled = sensorDataLoggingEnabled
     }
 
-    fun init(context: Context, samplingPeriod: Int) {
-        init(context)
+    fun init(
+        context: Context,
+        samplingPeriod: Int,
+        sensorDataLoggingEnabled: Boolean = false,
+    ) {
+        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         this.samplingPeriod = samplingPeriod
+        this.sensorDataLoggingEnabled = sensorDataLoggingEnabled
     }
 
-    fun init(context: Context, samplingPeriod: Int, lifecycle: Lifecycle) {
-        init(context, samplingPeriod)
+    fun init(
+        context: Context,
+        lifecycle: Lifecycle,
+        samplingPeriod: Int,
+        sensorDataLoggingEnabled: Boolean = false,
+    ) {
+        init(context)
         registerLifecycleObserver(lifecycle)
+        this.samplingPeriod = samplingPeriod
+        this.sensorDataLoggingEnabled = sensorDataLoggingEnabled
     }
 
     fun setupDispatchTouchEvent(event: MotionEvent) {
@@ -125,7 +152,7 @@ object Sensey {
 
     fun startChopDetection(threshold: Float, timeForChopGesture: Long, dispatcher: (ChopEvent) -> Unit) {
         startLibrarySensorDetection(
-            ChopDetector(ChopTrigger(threshold, timeForChopGesture), dispatcher),
+            ChopDetector(ChopTrigger(threshold = threshold, timeForChopGesture = timeForChopGesture), dispatcher),
         )
     }
 
@@ -217,6 +244,21 @@ object Sensey {
         startLibrarySensorDetection(StepDetectorPostKitKat(trigger, dispatcher))
     }
 
+    fun startTapOnBackDetection(dispatcher: (TapOnBackEvent) -> Unit) {
+        startLibrarySensorDetection(TapOnBackDetector(TapOnBackTrigger(), dispatcher))
+    }
+
+    fun startTapOnBackDetection(
+        angleThreshold: Float,
+        tapDebounceMs: Long,
+        tapSequenceTimeoutMs: Long,
+        dispatcher: (TapOnBackEvent) -> Unit,
+    ) {
+        startLibrarySensorDetection(
+            TapOnBackDetector(TapOnBackTrigger(angleThreshold, tapDebounceMs = tapDebounceMs, tapSequenceTimeoutMs = tapSequenceTimeoutMs), dispatcher),
+        )
+    }
+
     fun startTiltDirectionDetection(dispatcher: (TiltDirectionEvent) -> Unit) {
         startLibrarySensorDetection(
             TiltDirectionDetector(TiltDirectionTrigger(), dispatcher),
@@ -246,7 +288,7 @@ object Sensey {
     fun startWristTwistDetection(threshold: Float, timeForWristTwistGesture: Long, dispatcher: (WristTwistEvent) -> Unit) {
         startLibrarySensorDetection(
             WristTwistDetector(
-                WristTwistTrigger(threshold, timeForWristTwistGesture),
+                WristTwistTrigger(threshold = threshold, timeForWristTwistGesture = timeForWristTwistGesture),
                 dispatcher,
             ),
         )
@@ -314,6 +356,10 @@ object Sensey {
 
     fun stopStepDetection() {
         stopLibrarySensorDetection("StepDetectorPostKitKat")
+    }
+
+    fun stopTapOnBackDetection() {
+        stopLibrarySensorDetection("TapOnBackDetector")
     }
 
     fun stopTiltDirectionDetection() {
