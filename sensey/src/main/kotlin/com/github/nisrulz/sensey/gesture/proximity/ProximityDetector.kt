@@ -17,19 +17,14 @@ package com.github.nisrulz.sensey.gesture.proximity
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
-import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.TypedSensorDetector
+import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class ProximityDetector(
-    private val trigger: ProximityTrigger,
-    private val dispatcher: (ProximityEvent) -> Unit,
-) : SensorDetector(Sensor.TYPE_PROXIMITY) {
+    trigger: GestureTrigger<ProximityEvent>,
+    dispatcher: (ProximityEvent) -> Unit,
+) : TypedSensorDetector<ProximityEvent>(trigger, dispatcher, Sensor.TYPE_PROXIMITY) {
 
-    override fun onSensorEvent(sensorEvent: SensorEvent) {
-        val maxRange = sensorEvent.sensor.maximumRange
-        val event = trigger.evaluate(
-            values = floatArrayOf(sensorEvent.values[0], maxRange),
-            timestamp = sensorEvent.timestamp / 1_000_000,
-        )
-        event?.let(dispatcher)
-    }
+    override fun getValues(sensorEvent: SensorEvent): FloatArray =
+        floatArrayOf(sensorEvent.values[0], sensorEvent.sensor.maximumRange)
 }

@@ -18,6 +18,7 @@ package com.github.nisrulz.sensey
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
+import com.github.nisrulz.sensey.contract.GestureTrigger
 
 abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
 
@@ -36,4 +37,21 @@ abstract class SensorDetector(vararg sensorTypes: Int) : SensorEventListener {
     private fun isSensorEventBelongsToPluggedTypes(event: SensorEvent): Boolean {
         return sensorTypes.any { it == event.sensor.type }
     }
+}
+
+open class TypedSensorDetector<T>(
+    private val trigger: GestureTrigger<T>,
+    private val dispatcher: (T) -> Unit,
+    vararg sensorTypes: Int,
+) : SensorDetector(*sensorTypes) {
+
+    override fun onSensorEvent(sensorEvent: SensorEvent) {
+        val event = trigger.evaluate(
+            values = getValues(sensorEvent),
+            timestamp = sensorEvent.timestamp / 1_000_000,
+        )
+        event?.let(dispatcher)
+    }
+
+    protected open fun getValues(sensorEvent: SensorEvent): FloatArray = sensorEvent.values
 }

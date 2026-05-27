@@ -16,19 +16,10 @@
 package com.github.nisrulz.sensey.gesture.movement
 
 import android.hardware.Sensor
-import android.hardware.SensorEvent
-import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.TypedSensorDetector
+import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class MovementDetector(
-    private val trigger: MovementTrigger,
-    private val dispatcher: (MovementEvent) -> Unit,
-) : SensorDetector(Sensor.TYPE_ACCELEROMETER) {
-
-    override fun onSensorEvent(sensorEvent: SensorEvent) {
-        val event = trigger.evaluate(
-            values = sensorEvent.values,
-            timestamp = sensorEvent.timestamp / 1_000_000,
-        )
-        event?.let(dispatcher)
-    }
-}
+    trigger: GestureTrigger<MovementEvent>,
+    dispatcher: (MovementEvent) -> Unit,
+) : TypedSensorDetector<MovementEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

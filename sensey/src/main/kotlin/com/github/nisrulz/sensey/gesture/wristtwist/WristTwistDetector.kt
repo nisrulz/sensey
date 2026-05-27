@@ -16,20 +16,10 @@
 package com.github.nisrulz.sensey.gesture.wristtwist
 
 import android.hardware.Sensor
-import android.hardware.SensorEvent
-import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class WristTwistDetector(
-    private val trigger: GestureTrigger<WristTwistEvent>,
-    private val dispatcher: (WristTwistEvent) -> Unit,
-) : SensorDetector(Sensor.TYPE_ACCELEROMETER) {
-
-    override fun onSensorEvent(sensorEvent: SensorEvent) {
-        val event = trigger.evaluate(
-            values = sensorEvent.values,
-            timestamp = sensorEvent.timestamp / 1_000_000,
-        )
-        event?.let(dispatcher)
-    }
-}
+    trigger: GestureTrigger<WristTwistEvent>,
+    dispatcher: (WristTwistEvent) -> Unit,
+) : TypedSensorDetector<WristTwistEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

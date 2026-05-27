@@ -16,19 +16,10 @@
 package com.github.nisrulz.sensey.gesture.wave
 
 import android.hardware.Sensor
-import android.hardware.SensorEvent
-import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.TypedSensorDetector
+import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class WaveDetector(
-    private val trigger: WaveTrigger,
-    private val dispatcher: (WaveEvent) -> Unit,
-) : SensorDetector(Sensor.TYPE_PROXIMITY) {
-
-    override fun onSensorEvent(sensorEvent: SensorEvent) {
-        val event = trigger.evaluate(
-            values = sensorEvent.values,
-            timestamp = sensorEvent.timestamp / 1_000_000,
-        )
-        event?.let(dispatcher)
-    }
-}
+    trigger: GestureTrigger<WaveEvent>,
+    dispatcher: (WaveEvent) -> Unit,
+) : TypedSensorDetector<WaveEvent>(trigger, dispatcher, Sensor.TYPE_PROXIMITY)

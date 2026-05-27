@@ -16,19 +16,10 @@
 package com.github.nisrulz.sensey.gesture.tiltdirection
 
 import android.hardware.Sensor
-import android.hardware.SensorEvent
-import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.TypedSensorDetector
+import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class TiltDirectionDetector(
-    private val trigger: TiltDirectionTrigger,
-    private val dispatcher: (TiltDirectionEvent) -> Unit,
-) : SensorDetector(Sensor.TYPE_GYROSCOPE) {
-
-    override fun onSensorEvent(sensorEvent: SensorEvent) {
-        val event = trigger.evaluate(
-            values = sensorEvent.values,
-            timestamp = sensorEvent.timestamp / 1_000_000,
-        )
-        event?.let(dispatcher)
-    }
-}
+    trigger: GestureTrigger<TiltDirectionEvent>,
+    dispatcher: (TiltDirectionEvent) -> Unit,
+) : TypedSensorDetector<TiltDirectionEvent>(trigger, dispatcher, Sensor.TYPE_GYROSCOPE)

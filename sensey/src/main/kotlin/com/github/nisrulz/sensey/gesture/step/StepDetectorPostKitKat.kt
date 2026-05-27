@@ -16,19 +16,10 @@
 package com.github.nisrulz.sensey.gesture.step
 
 import android.hardware.Sensor
-import android.hardware.SensorEvent
-import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.TypedSensorDetector
+import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class StepDetectorPostKitKat(
-    private val trigger: StepTrigger,
-    private val dispatcher: (StepEvent) -> Unit,
-) : SensorDetector(Sensor.TYPE_STEP_COUNTER) {
-
-    override fun onSensorEvent(sensorEvent: SensorEvent) {
-        val event = trigger.evaluate(
-            values = sensorEvent.values,
-            timestamp = sensorEvent.timestamp / 1_000_000,
-        )
-        event?.let(dispatcher)
-    }
-}
+    trigger: GestureTrigger<StepEvent>,
+    dispatcher: (StepEvent) -> Unit,
+) : TypedSensorDetector<StepEvent>(trigger, dispatcher, Sensor.TYPE_STEP_COUNTER)

@@ -16,19 +16,10 @@
 package com.github.nisrulz.sensey.gesture.shake
 
 import android.hardware.Sensor
-import android.hardware.SensorEvent
-import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.TypedSensorDetector
+import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class ShakeDetector(
-    private val trigger: ShakeTrigger,
-    private val dispatcher: (ShakeEvent) -> Unit,
-) : SensorDetector(Sensor.TYPE_ACCELEROMETER) {
-
-    override fun onSensorEvent(sensorEvent: SensorEvent) {
-        val event = trigger.evaluate(
-            values = sensorEvent.values,
-            timestamp = sensorEvent.timestamp / 1_000_000,
-        )
-        event?.let(dispatcher)
-    }
-}
+    trigger: GestureTrigger<ShakeEvent>,
+    dispatcher: (ShakeEvent) -> Unit,
+) : TypedSensorDetector<ShakeEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

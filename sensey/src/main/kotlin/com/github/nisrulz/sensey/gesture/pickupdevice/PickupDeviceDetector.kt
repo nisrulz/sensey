@@ -16,19 +16,10 @@
 package com.github.nisrulz.sensey.gesture.pickupdevice
 
 import android.hardware.Sensor
-import android.hardware.SensorEvent
-import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.TypedSensorDetector
+import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class PickupDeviceDetector(
-    private val trigger: PickupDeviceTrigger,
-    private val dispatcher: (PickupDeviceEvent) -> Unit,
-) : SensorDetector(Sensor.TYPE_ACCELEROMETER) {
-
-    override fun onSensorEvent(sensorEvent: SensorEvent) {
-        val event = trigger.evaluate(
-            values = sensorEvent.values,
-            timestamp = sensorEvent.timestamp / 1_000_000,
-        )
-        event?.let(dispatcher)
-    }
-}
+    trigger: GestureTrigger<PickupDeviceEvent>,
+    dispatcher: (PickupDeviceEvent) -> Unit,
+) : TypedSensorDetector<PickupDeviceEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)
