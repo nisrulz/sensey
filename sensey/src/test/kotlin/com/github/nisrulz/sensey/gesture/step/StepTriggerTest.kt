@@ -37,17 +37,17 @@ class StepTriggerTest {
     }
 
     @Test
-    fun accelerometerDetectsStepOnYChange() {
+    fun accelerometerDetectsStepOnMagnitudeChange() {
         val trigger = StepTrigger(gender = StepDetectorUtil.MALE)
-        val result = trigger.evaluate(floatArrayOf(0f, 0f), 0L)
+        val result = trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L)
         assertEquals(0, result?.steps)
     }
 
     @Test
-    fun accelerometerDetectsStepsOnSignificantYChange() {
+    fun accelerometerDetectsStepsOnSignificantMagnitudeChange() {
         val trigger = StepTrigger(gender = StepDetectorUtil.MALE)
-        trigger.evaluate(floatArrayOf(0f, 0f), 0L)
-        val result = trigger.evaluate(floatArrayOf(5f, 0f), 1000L)
+        trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L)
+        val result = trigger.evaluate(floatArrayOf(5f, 0f, 0f), 1000L)
         assertTrue((result?.steps ?: 0) > 0)
     }
 }

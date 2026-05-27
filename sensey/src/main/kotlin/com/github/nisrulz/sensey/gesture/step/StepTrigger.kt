@@ -16,21 +16,23 @@
 package com.github.nisrulz.sensey.gesture.step
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
+import kotlin.math.abs
+import kotlin.math.sqrt
 
 class StepTrigger(
     private val gender: Int = StepDetectorUtil.MALE,
-    private val threshold: Float = 2f,
+    private val threshold: Float = 3f,
 ) : GestureTrigger<StepEvent> {
 
     private var steps = 0
-    private var previousY = 0f
+    private var previousMagnitude = 0f
     private var startTime = 0L
     private var baseStepCount = 0
 
     override fun evaluate(values: FloatArray, timestamp: Long): StepEvent? {
         return when {
             values.size == 1 -> evaluateStepCounter(values[0], timestamp)
-            values.size >= 2 -> evaluateAccelerometer(values[0], values[1], timestamp)
+            values.size >= 3 -> evaluateAccelerometer(values, timestamp)
             else -> null
         }
     }
@@ -48,12 +50,12 @@ class StepTrigger(
         return StepEvent(steps, distance, activityType)
     }
 
-    private fun evaluateAccelerometer(yValue: Float, velocityY: Float, timestamp: Long): StepEvent? {
-        val currentY = yValue
-        if (kotlin.math.abs(currentY - previousY) > threshold) {
+    private fun evaluateAccelerometer(values: FloatArray, timestamp: Long): StepEvent? {
+        val magnitude = sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2])
+        if (abs(magnitude - previousMagnitude) > threshold) {
             steps++
         }
-        previousY = currentY
+        previousMagnitude = magnitude
 
         val distance = StepDetectorUtil.getDistanceCovered(steps, gender)
         val timeDelta = timestamp - startTime

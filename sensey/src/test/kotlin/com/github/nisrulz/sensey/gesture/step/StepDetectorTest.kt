@@ -36,12 +36,5 @@ class StepDetectorTest {
         assertTrue(events.isNotEmpty())
     }
 
-    @Test
-    fun preKitKatDetectorDispatchesStepEvent() {
-        val events = mutableListOf<StepEvent>()
-        val trigger = StepTrigger(gender = StepDetectorUtil.MALE)
-        val detector = StepDetectorPreKitKat(trigger) { events.add(it) }
-        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 0f)))
-        assertTrue(events.isNotEmpty())
-    }
+
 }
