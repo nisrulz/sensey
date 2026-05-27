@@ -26,7 +26,7 @@ class ShakeDetector(
 
     override fun onSensorEvent(sensorEvent: SensorEvent) {
         val event = trigger.evaluate(
-            values = sensorEvent.values.clone(),
+            values = sensorEvent.values,
             timestamp = sensorEvent.timestamp / 1_000_000,
         )
         event?.let(dispatcher)

@@ -46,7 +46,7 @@ class RotationAngleDetector(
         }
 
         val event = trigger.evaluate(
-            values = orientations.clone(),
+            values = orientations,
             timestamp = sensorEvent.timestamp / 1_000_000,
         )
         event?.let(dispatcher)
