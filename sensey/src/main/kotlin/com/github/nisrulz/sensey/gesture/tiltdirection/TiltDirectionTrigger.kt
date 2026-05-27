@@ -23,27 +23,24 @@ class TiltDirectionTrigger(
 
     override fun evaluate(values: FloatArray, timestamp: Long): TiltDirectionEvent? {
         val (x, y, z) = values
-        var result: TiltDirectionEvent? = null
+        val absX = kotlin.math.abs(x)
+        val absY = kotlin.math.abs(y)
+        val absZ = kotlin.math.abs(z)
 
-        if (x > threshold) {
-            result = TiltDirectionEvent.AxisXTilt(DIRECTION_ANTICLOCKWISE)
-        } else if (x < -threshold) {
-            result = TiltDirectionEvent.AxisXTilt(DIRECTION_CLOCKWISE)
+        val maxAxis = maxOf(absX, absY, absZ)
+        if (maxAxis < threshold) return null
+
+        return when (maxAxis) {
+            absX -> TiltDirectionEvent.AxisXTilt(
+                if (x > 0) DIRECTION_ANTICLOCKWISE else DIRECTION_CLOCKWISE,
+            )
+            absY -> TiltDirectionEvent.AxisYTilt(
+                if (y > 0) DIRECTION_ANTICLOCKWISE else DIRECTION_CLOCKWISE,
+            )
+            else -> TiltDirectionEvent.AxisZTilt(
+                if (z > 0) DIRECTION_ANTICLOCKWISE else DIRECTION_CLOCKWISE,
+            )
         }
-
-        if (y > threshold) {
-            result = TiltDirectionEvent.AxisYTilt(DIRECTION_ANTICLOCKWISE)
-        } else if (y < -threshold) {
-            result = TiltDirectionEvent.AxisYTilt(DIRECTION_CLOCKWISE)
-        }
-
-        if (z > threshold) {
-            result = TiltDirectionEvent.AxisZTilt(DIRECTION_ANTICLOCKWISE)
-        } else if (z < -threshold) {
-            result = TiltDirectionEvent.AxisZTilt(DIRECTION_CLOCKWISE)
-        }
-
-        return result
     }
 
     companion object {
