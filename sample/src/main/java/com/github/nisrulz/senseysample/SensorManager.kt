@@ -24,6 +24,8 @@ import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleEvent
 import com.github.nisrulz.sensey.gesture.scoop.ScoopEvent
 import com.github.nisrulz.sensey.gesture.shake.ShakeEvent
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelEvent
+import com.github.nisrulz.sensey.gesture.wave.WaveEvent
+import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
 import com.github.nisrulz.sensey.gesture.step.StepDetectorUtil
 import com.github.nisrulz.sensey.gesture.step.StepEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
