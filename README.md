@@ -12,13 +12,13 @@
 </div>
 <br/>
 <div align="center">
-    <!-- Bintray -->
-    <a href="https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion">
-        <img src="https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg"/>
+    <!-- Maven Central -->
+    <a href="https://search.maven.org/artifact/com.github.nisrulz/sensey">
+        <img src="https://img.shields.io/maven-central/v/com.github.nisrulz/sensey"/>
     </a>
     <!-- API -->
-    <a href="https://android-arsenal.com/api?level=14">
-        <img src="https://img.shields.io/badge/API-14%2B-orange.svg?style=flat"/>
+    <a href="https://android-arsenal.com/api?level=23">
+        <img src="https://img.shields.io/badge/API-23%2B-orange.svg?style=flat"/>
     </a>
     <!-- Android Arsenal -->
     <a href="https://android-arsenal.com/details/1/3550">
@@ -156,13 +156,13 @@ Starting with `1.0.1`, Changes exist in the [releases tab](https://github.com/ni
 
 # Including in your project
 
-Sensey is available in the Jcenter, so getting it as simple as adding it as a dependency
+Sensey is available on Maven Central:
 
 ```gradle
 implementation 'com.github.nisrulz:sensey:{latest version}'
 ```
 
-where `{latest version}` corresponds to published version in [ ![Download](https://api.bintray.com/packages/nisrulz/maven/com.github.nisrulz%3Asensey/images/download.svg) ](https://bintray.com/nisrulz/maven/com.github.nisrulz%3Asensey/_latestVersion)
+where `{latest version}` corresponds to the latest published version on [Maven Central](https://search.maven.org/artifact/com.github.nisrulz/sensey).
 
 # Simple example
 
