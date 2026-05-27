@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class FlipDetector(
+internal class FlipDetector(
     trigger: GestureTrigger<FlipEvent>,
     dispatcher: (FlipEvent) -> Unit,
 ) : TypedSensorDetector<FlipEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

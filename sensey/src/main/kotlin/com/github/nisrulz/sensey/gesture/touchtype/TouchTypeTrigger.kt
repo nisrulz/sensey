@@ -20,7 +20,7 @@ import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
-class TouchTypeTrigger(
+internal class TouchTypeTrigger(
     private val swipeMinDistance: Float = 120f,
     private val swipeThresholdVelocity: Float = 200f,
 ) : GestureTrigger<TouchTypeEvent> {

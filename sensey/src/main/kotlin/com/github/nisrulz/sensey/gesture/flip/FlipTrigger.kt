@@ -17,7 +17,7 @@ package com.github.nisrulz.sensey.gesture.flip
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class FlipTrigger(
+internal class FlipTrigger(
     private val faceUpLowerBound: Float = 8f,
     private val faceUpUpperBound: Float = 10.5f,
     private val faceDownLowerBound: Float = -10.5f,

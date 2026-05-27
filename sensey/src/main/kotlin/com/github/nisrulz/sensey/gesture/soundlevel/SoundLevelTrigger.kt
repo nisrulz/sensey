@@ -20,7 +20,7 @@ import kotlin.math.abs
 import kotlin.math.log10
 import kotlin.math.sqrt
 
-class SoundLevelTrigger(
+internal class SoundLevelTrigger(
     private val offset: Float = 100f,
 ) : GestureTrigger<SoundLevelEvent> {
 

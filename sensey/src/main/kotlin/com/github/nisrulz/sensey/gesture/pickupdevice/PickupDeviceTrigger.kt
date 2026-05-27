@@ -18,7 +18,7 @@ package com.github.nisrulz.sensey.gesture.pickupdevice
 import com.github.nisrulz.sensey.contract.GestureTrigger
 import kotlin.math.sqrt
 
-class PickupDeviceTrigger(
+internal class PickupDeviceTrigger(
     private val stableRange: Float = 0.5f,
     private val movingRange: Float = 1.5f,
     private val gravityLower: Float = 9.0f,

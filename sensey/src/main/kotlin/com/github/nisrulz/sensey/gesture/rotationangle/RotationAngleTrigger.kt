@@ -17,7 +17,7 @@ package com.github.nisrulz.sensey.gesture.rotationangle
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class RotationAngleTrigger(
+internal class RotationAngleTrigger(
     private val minAngleChange: Float = 1f,
 ) : GestureTrigger<RotationAngleEvent> {
 

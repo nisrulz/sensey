@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class LightDetector(
+internal class LightDetector(
     trigger: GestureTrigger<LightEvent>,
     dispatcher: (LightEvent) -> Unit,
 ) : TypedSensorDetector<LightEvent>(trigger, dispatcher, Sensor.TYPE_LIGHT)

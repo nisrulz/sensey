@@ -17,7 +17,7 @@ package com.github.nisrulz.sensey.gesture.proximity
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class ProximityTrigger : GestureTrigger<ProximityEvent> {
+internal class ProximityTrigger : GestureTrigger<ProximityEvent> {
 
     override fun evaluate(values: FloatArray, timestamp: Long): ProximityEvent? {
         val distance = values[0]

@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class TapOnBackDetector(
+internal class TapOnBackDetector(
     trigger: GestureTrigger<TapOnBackEvent>,
     dispatcher: (TapOnBackEvent) -> Unit,
 ) : TypedSensorDetector<TapOnBackEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

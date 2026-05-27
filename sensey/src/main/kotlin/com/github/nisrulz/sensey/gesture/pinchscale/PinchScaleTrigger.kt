@@ -17,7 +17,7 @@ package com.github.nisrulz.sensey.gesture.pinchscale
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class PinchScaleTrigger : GestureTrigger<PinchScaleEvent> {
+internal class PinchScaleTrigger : GestureTrigger<PinchScaleEvent> {
 
     private var eventOccurred = 0
     private var countOfScaleIn = 0

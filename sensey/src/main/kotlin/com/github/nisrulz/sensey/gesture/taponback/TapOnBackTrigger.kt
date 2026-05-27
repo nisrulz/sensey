@@ -20,7 +20,7 @@ import kotlin.math.abs
 import kotlin.math.acos
 import kotlin.math.sqrt
 
-class TapOnBackTrigger(
+internal class TapOnBackTrigger(
     private val angleThreshold: Float = 1.5f,
     private val minAngleJerk: Float = 1.5f,
     private val tapDebounceMs: Long = 250L,

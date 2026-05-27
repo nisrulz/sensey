@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class PickupDeviceDetector(
+internal class PickupDeviceDetector(
     trigger: GestureTrigger<PickupDeviceEvent>,
     dispatcher: (PickupDeviceEvent) -> Unit,
 ) : TypedSensorDetector<PickupDeviceEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

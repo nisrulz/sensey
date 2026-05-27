@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class StepDetectorPostKitKat(
+internal class StepDetectorPostKitKat(
     trigger: GestureTrigger<StepEvent>,
     dispatcher: (StepEvent) -> Unit,
 ) : TypedSensorDetector<StepEvent>(trigger, dispatcher, Sensor.TYPE_STEP_COUNTER)

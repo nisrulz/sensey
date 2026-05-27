@@ -17,7 +17,7 @@ package com.github.nisrulz.sensey.gesture.wave
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class WaveTrigger(
+internal class WaveTrigger(
     private val timeWindowMillis: Float = 1000f,
     private val debounceMillis: Long = 1000L,
 ) : GestureTrigger<WaveEvent> {

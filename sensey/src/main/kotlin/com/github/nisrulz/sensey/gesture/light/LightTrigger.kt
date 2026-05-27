@@ -17,7 +17,7 @@ package com.github.nisrulz.sensey.gesture.light
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class LightTrigger(
+internal class LightTrigger(
     private val darkThreshold: Float = 8f,
     private val lightThreshold: Float = 12f,
 ) : GestureTrigger<LightEvent> {

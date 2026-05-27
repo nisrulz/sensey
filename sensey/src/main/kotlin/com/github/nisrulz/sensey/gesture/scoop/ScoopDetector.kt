@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class ScoopDetector(
+internal class ScoopDetector(
     trigger: GestureTrigger<ScoopEvent>,
     dispatcher: (ScoopEvent) -> Unit,
 ) : TypedSensorDetector<ScoopEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

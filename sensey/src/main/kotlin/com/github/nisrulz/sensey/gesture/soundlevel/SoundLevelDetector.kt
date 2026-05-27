@@ -29,7 +29,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SoundLevelDetector(
+internal class SoundLevelDetector(
     private val trigger: SoundLevelTrigger,
     private val dispatcher: (SoundLevelEvent) -> Unit,
 ) {

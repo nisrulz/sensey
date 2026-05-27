@@ -17,7 +17,7 @@ package com.github.nisrulz.sensey.gesture.tiltdirection
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class TiltDirectionTrigger(
+internal class TiltDirectionTrigger(
     private val threshold: Float = 0.5f,
 ) : GestureTrigger<TiltDirectionEvent> {
 

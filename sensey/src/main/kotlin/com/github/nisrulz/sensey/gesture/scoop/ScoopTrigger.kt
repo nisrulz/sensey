@@ -19,7 +19,7 @@ import com.github.nisrulz.sensey.contract.GestureTrigger
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-class ScoopTrigger(
+internal class ScoopTrigger(
     private val impulseThreshold: Float = 10f,
     private val minPeakJerk: Float = 3.0f,
     private val minSustainedSamples: Int = 3,

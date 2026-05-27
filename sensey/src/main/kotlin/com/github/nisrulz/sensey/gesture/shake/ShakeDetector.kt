@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class ShakeDetector(
+internal class ShakeDetector(
     trigger: GestureTrigger<ShakeEvent>,
     dispatcher: (ShakeEvent) -> Unit,
 ) : TypedSensorDetector<ShakeEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

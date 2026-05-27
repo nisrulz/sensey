@@ -19,7 +19,7 @@ import com.github.nisrulz.sensey.contract.GestureTrigger
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-class ChopTrigger(
+internal class ChopTrigger(
     private val threshold: Float = 25f,
     private val timeForChopGesture: Long = 700L,
 ) : GestureTrigger<ChopEvent> {

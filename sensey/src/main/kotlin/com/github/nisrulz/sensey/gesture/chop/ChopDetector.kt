@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class ChopDetector(
+internal class ChopDetector(
     trigger: GestureTrigger<ChopEvent>,
     dispatcher: (ChopEvent) -> Unit,
 ) : TypedSensorDetector<ChopEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

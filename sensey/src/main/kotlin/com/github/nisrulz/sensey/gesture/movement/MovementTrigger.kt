@@ -19,7 +19,7 @@ import com.github.nisrulz.sensey.contract.GestureTrigger
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-class MovementTrigger(
+internal class MovementTrigger(
     private val threshold: Float = 0.3f,
     private val timeBeforeDeclaringStationary: Long = 5000L,
     private val gravityEarth: Float = 9.81f,

@@ -17,7 +17,7 @@ package com.github.nisrulz.sensey.gesture.orientation
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class OrientationTrigger(
+internal class OrientationTrigger(
     private val smoothness: Int = 1,
 ) : GestureTrigger<OrientationEvent> {
 

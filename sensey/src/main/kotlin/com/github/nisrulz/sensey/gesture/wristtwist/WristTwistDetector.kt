@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class WristTwistDetector(
+internal class WristTwistDetector(
     trigger: GestureTrigger<WristTwistEvent>,
     dispatcher: (WristTwistEvent) -> Unit,
 ) : TypedSensorDetector<WristTwistEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

@@ -21,7 +21,7 @@ import android.hardware.SensorManager
 import com.github.nisrulz.sensey.SensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class RotationAngleDetector(
+internal class RotationAngleDetector(
     private val trigger: GestureTrigger<RotationAngleEvent>,
     private val dispatcher: (RotationAngleEvent) -> Unit,
 ) : SensorDetector(Sensor.TYPE_ROTATION_VECTOR) {

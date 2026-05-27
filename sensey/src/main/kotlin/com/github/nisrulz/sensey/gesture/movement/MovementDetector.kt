@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class MovementDetector(
+internal class MovementDetector(
     trigger: GestureTrigger<MovementEvent>,
     dispatcher: (MovementEvent) -> Unit,
 ) : TypedSensorDetector<MovementEvent>(trigger, dispatcher, Sensor.TYPE_ACCELEROMETER)

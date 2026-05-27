@@ -18,7 +18,7 @@ package com.github.nisrulz.sensey.gesture.shake
 import com.github.nisrulz.sensey.contract.GestureTrigger
 import kotlin.math.sqrt
 
-class ShakeTrigger(
+internal class ShakeTrigger(
     private val threshold: Float = 3f,
     private val timeBeforeDeclaringShakeStopped: Long = 1000L,
 ) : GestureTrigger<ShakeEvent> {

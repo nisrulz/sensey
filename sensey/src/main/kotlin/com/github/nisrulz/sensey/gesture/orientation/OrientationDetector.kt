@@ -20,7 +20,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorManager
 import com.github.nisrulz.sensey.SensorDetector
 
-class OrientationDetector(
+internal class OrientationDetector(
     private val trigger: OrientationTrigger,
     private val dispatcher: (OrientationEvent) -> Unit,
 ) : SensorDetector(Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_MAGNETIC_FIELD) {

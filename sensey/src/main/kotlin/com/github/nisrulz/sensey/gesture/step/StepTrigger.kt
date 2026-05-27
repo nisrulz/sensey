@@ -19,7 +19,7 @@ import com.github.nisrulz.sensey.contract.GestureTrigger
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-class StepTrigger(
+internal class StepTrigger(
     private val gender: Int = StepDetectorUtil.MALE,
     private val threshold: Float = 3f,
 ) : GestureTrigger<StepEvent> {

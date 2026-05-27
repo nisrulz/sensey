@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class WaveDetector(
+internal class WaveDetector(
     trigger: GestureTrigger<WaveEvent>,
     dispatcher: (WaveEvent) -> Unit,
 ) : TypedSensorDetector<WaveEvent>(trigger, dispatcher, Sensor.TYPE_PROXIMITY)

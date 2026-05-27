@@ -19,7 +19,7 @@ import com.github.nisrulz.sensey.contract.GestureTrigger
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-class WristTwistTrigger(
+internal class WristTwistTrigger(
     private val threshold: Float = 12f,
     private val timeForWristTwistGesture: Long = 1000L,
 ) : GestureTrigger<WristTwistEvent> {

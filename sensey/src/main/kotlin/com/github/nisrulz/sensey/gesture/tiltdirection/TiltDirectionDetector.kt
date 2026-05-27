@@ -19,7 +19,7 @@ import android.hardware.Sensor
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-class TiltDirectionDetector(
+internal class TiltDirectionDetector(
     trigger: GestureTrigger<TiltDirectionEvent>,
     dispatcher: (TiltDirectionEvent) -> Unit,
 ) : TypedSensorDetector<TiltDirectionEvent>(trigger, dispatcher, Sensor.TYPE_GYROSCOPE)
