@@ -100,7 +100,7 @@ internal class TapOnBackTrigger(
             angleJerk > minAngleJerk
 
     companion object {
-        private const val GRAVITY_EARTH = 9.8f
+        private const val GRAVITY_EARTH = 9.81f
         private const val SMOOTHING_ALPHA = 0.95f
     }
 }

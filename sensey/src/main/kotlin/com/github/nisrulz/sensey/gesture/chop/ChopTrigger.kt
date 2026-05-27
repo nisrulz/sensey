@@ -55,6 +55,6 @@ internal class ChopTrigger(
     }
 
     companion object {
-        private const val GRAVITY_EARTH = 9.8f
+        private const val GRAVITY_EARTH = 9.81f
     }
 }
