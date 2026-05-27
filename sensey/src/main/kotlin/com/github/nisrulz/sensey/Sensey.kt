@@ -36,7 +36,7 @@ class Sensey(
         const val SAMPLING_PERIOD_GAME = SensorManager.SENSOR_DELAY_GAME
         const val SAMPLING_PERIOD_NORMAL = SensorManager.SENSOR_DELAY_NORMAL
         const val SAMPLING_PERIOD_UI = SensorManager.SENSOR_DELAY_UI
-        private const val LOGTAG = "Sensey"
+        private const val LOGTAG = "===Sensey==="
     }
 
     private val plugins = mutableMapOf<String, GesturePlugin>()

@@ -49,16 +49,16 @@ internal abstract class SensorDetector(
     companion object {
         private val TAG_BY_TYPE =
             mapOf(
-                Sensor.TYPE_ACCELEROMETER to "Accelerometer",
-                Sensor.TYPE_GYROSCOPE to "Gyroscope",
-                Sensor.TYPE_MAGNETIC_FIELD to "Magnetometer",
-                Sensor.TYPE_ROTATION_VECTOR to "RotationVector",
-                Sensor.TYPE_LIGHT to "Light",
-                Sensor.TYPE_PROXIMITY to "Proximity",
-                Sensor.TYPE_PRESSURE to "Pressure",
-                Sensor.TYPE_STEP_COUNTER to "StepCounter",
-                Sensor.TYPE_GRAVITY to "Gravity",
-                Sensor.TYPE_LINEAR_ACCELERATION to "LinearAcceleration",
+                Sensor.TYPE_ACCELEROMETER to "===Accelerometer===",
+                Sensor.TYPE_GYROSCOPE to "===Gyroscope===",
+                Sensor.TYPE_MAGNETIC_FIELD to "===Magnetometer===",
+                Sensor.TYPE_ROTATION_VECTOR to "===RotationVector===",
+                Sensor.TYPE_LIGHT to "===Light===",
+                Sensor.TYPE_PROXIMITY to "===Proximity===",
+                Sensor.TYPE_PRESSURE to "===Pressure===",
+                Sensor.TYPE_STEP_COUNTER to "===StepCounter===",
+                Sensor.TYPE_GRAVITY to "===Gravity===",
+                Sensor.TYPE_LINEAR_ACCELERATION to "===LinAccel===",
             )
     }
 

@@ -105,7 +105,7 @@ internal class SoundLevelDetector(
     }
 
     companion object {
-        private const val LOGTAG = "SoundLevelDetector"
+        private const val LOGTAG = "===SoundLevel==="
         private const val AUDIO_SOURCE = MediaRecorder.AudioSource.VOICE_RECOGNITION
         private const val AUDIO_CHANNEL = AudioFormat.CHANNEL_IN_MONO
         private const val AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT
