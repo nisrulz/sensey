@@ -45,6 +45,12 @@ android {
         targetCompatibility = JavaVersion.toVersion(BuildSdkInfo.JVM_TARGET)
     }
 
+    sourceSets {
+        getByName("test") {
+            java.srcDirs("src/test/java", "src/test/kotlin")
+        }
+    }
+
     testOptions.unitTests.isIncludeAndroidResources = true
 
     lint {
