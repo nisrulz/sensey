@@ -20,11 +20,23 @@ import kotlin.math.sqrt
 
 class PickupDeviceTrigger(
     private val vectorSumThreshold: Double = 11.0,
+    private val settledThreshold: Double = 10.2,
 ) : GestureTrigger<PickupDeviceEvent> {
+
+    private var wasPickedUp = false
 
     override fun evaluate(values: FloatArray, timestamp: Long): PickupDeviceEvent? {
         val (x, y, z) = values
         val vectorSum = sqrt(x * x + y * y + z * z)
-        return if (vectorSum > vectorSumThreshold) PickupDeviceEvent.PickedUp else null
+
+        return if (vectorSum > vectorSumThreshold) {
+            wasPickedUp = true
+            PickupDeviceEvent.PickedUp
+        } else if (wasPickedUp && vectorSum < settledThreshold) {
+            wasPickedUp = false
+            PickupDeviceEvent.PutDown
+        } else {
+            null
+        }
     }
 }

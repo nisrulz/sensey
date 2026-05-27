@@ -36,4 +36,13 @@ class PickupDeviceDetectorTest {
         detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 0f)))
         assertTrue(events.isEmpty())
     }
+
+    @Test
+    fun dispatchesPutDownAfterPickup() {
+        val events = mutableListOf<PickupDeviceEvent>()
+        val detector = PickupDeviceDetector(PickupDeviceTrigger()) { events.add(it) }
+        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(12f, 0f, 0f)))
+        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 9.81f)))
+        assertTrue(events.contains(PickupDeviceEvent.PutDown))
+    }
 }

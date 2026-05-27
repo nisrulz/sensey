@@ -21,20 +21,34 @@ import org.junit.Test
 
 class PickupDeviceTriggerTest {
 
-    private val trigger = PickupDeviceTrigger()
-
     @Test
     fun pickedUpWhenVectorSumExceedsThreshold() {
+        val trigger = PickupDeviceTrigger()
         assertEquals(PickupDeviceEvent.PickedUp, trigger.evaluate(floatArrayOf(12f, 0f, 0f), 0L))
     }
 
     @Test
     fun notPickedUpWhenVectorSumBelowThreshold() {
+        val trigger = PickupDeviceTrigger()
         assertNull(trigger.evaluate(floatArrayOf(1f, 1f, 1f), 0L))
     }
 
     @Test
     fun notPickedUpWithZeroValues() {
+        val trigger = PickupDeviceTrigger()
         assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L))
+    }
+
+    @Test
+    fun putDownAfterBeingPickedUp() {
+        val trigger = PickupDeviceTrigger()
+        trigger.evaluate(floatArrayOf(12f, 0f, 0f), 0L)
+        assertEquals(PickupDeviceEvent.PutDown, trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), 100L))
+    }
+
+    @Test
+    fun noPutDownWithoutPriorPickup() {
+        val trigger = PickupDeviceTrigger()
+        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), 0L))
     }
 }
