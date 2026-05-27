@@ -40,22 +40,32 @@ class FlipTriggerTest {
 
     @Test
     fun notDetectFlipWithMaxFaceUp() {
-        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 10f), 0L))
+        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 11f), 0L))
     }
 
     @Test
     fun notDetectFlipWithMinFaceUp() {
-        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 9f), 0L))
+        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 7f), 0L))
     }
 
     @Test
     fun notDetectFlipWithMaxFaceDown() {
-        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, -10f), 0L))
+        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, -11f), 0L))
     }
 
     @Test
     fun notDetectFlipWithMinFaceDown() {
-        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, -9f), 0L))
+        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, -7f), 0L))
+    }
+
+    @Test
+    fun faceUpAtWideBoundary() {
+        assertEquals(FlipEvent.FaceUp, trigger.evaluate(floatArrayOf(0f, 0f, 8.5f), 0L))
+    }
+
+    @Test
+    fun faceDownAtWideBoundary() {
+        assertEquals(FlipEvent.FaceDown, trigger.evaluate(floatArrayOf(0f, 0f, -8.5f), 0L))
     }
 
     @Test

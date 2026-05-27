@@ -18,10 +18,10 @@ package com.github.nisrulz.sensey.gesture.flip
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class FlipTrigger(
-    private val faceUpLowerBound: Float = 9f,
-    private val faceUpUpperBound: Float = 10f,
-    private val faceDownLowerBound: Float = -10f,
-    private val faceDownUpperBound: Float = -9f,
+    private val faceUpLowerBound: Float = 8f,
+    private val faceUpUpperBound: Float = 10.5f,
+    private val faceDownLowerBound: Float = -10.5f,
+    private val faceDownUpperBound: Float = -8f,
 ) : GestureTrigger<FlipEvent> {
 
     private var eventOccurred = 0
