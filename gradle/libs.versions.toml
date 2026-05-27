@@ -1,55 +1,36 @@
 [versions]
 
-#region ---- Kotlin version dependent
-# https://github.com/JetBrains/kotlin/releases
 kotlin = "2.3.21"
-coroutinesCore = "1.11.0"
-#endregion
-
-#region ---- Android Core
 agp = "9.2.1"
+
 coreKtx = "1.18.0"
 annotation = "1.10.0"
-lifecycleRuntimeKtx = "2.10.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 mockito = "5.23.0"
 robolectric = "4.16.1"
 appcompat = "1.7.1"
 core = "1.7.0"
-#endregion
 
-#region ---- Library/API
 mavenPublish = "0.36.0"
-#endregion
 
-#region ---- Jetpack Compose
 activityCompose = "1.13.0"
 composeBom = "2026.05.01"
-#endregion
 
 [libraries]
 
-# build-logic
-android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-#----- end
-
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-core = { module = "androidx.test:core", version.ref = "core" }
+androidx-runner = { module = "androidx.test:runner", version.ref = "core" }
+androidx-rules = { module = "androidx.test:rules", version.ref = "core" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-androidx-core = { module = "androidx.test:core", version.ref = "core" }
-androidx-rules = { module = "androidx.test:rules", version.ref = "core" }
-androidx-runner = { module = "androidx.test:runner", version.ref = "core" }
 
-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesCore" }
-
-# Compose
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -66,4 +47,11 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
+
+[bundles]
+
+compose = ["androidx-activity-compose", "androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling-preview", "androidx-material3"]
+compose-debug = ["androidx-ui-tooling"]
+
+testing = ["androidx-junit", "junit", "androidx-core", "androidx-runner", "androidx-rules", "mockito-core", "robolectric"]
 

@@ -56,14 +56,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.annotation)
 
-    // Testing
-    testImplementation(libs.androidx.junit)
-    testImplementation(libs.junit)
-    testImplementation(libs.androidx.core)
-    testImplementation(libs.androidx.runner)
-    testImplementation(libs.androidx.rules)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.robolectric)
+    testImplementation(libs.bundles.testing)
 }
 
 //region Maven Publishing
