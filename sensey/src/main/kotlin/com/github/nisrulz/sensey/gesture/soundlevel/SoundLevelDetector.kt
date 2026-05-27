@@ -24,7 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,75 +33,74 @@ internal class SoundLevelDetector(
     private val trigger: SoundLevelTrigger,
     private val dispatcher: (SoundLevelEvent) -> Unit,
 ) {
-    private val sampleRate: Int = getValidSampleRate()
-    private var bufferSize = getValidBufferSize(sampleRate)
+    private val sampleRate = resolveSampleRate()
+    private val bufferSize = resolveBufferSize(sampleRate)
     private var audioJob: Job? = null
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     fun start() {
-        if (audioJob?.isActive == true) {
-            stop()
-        }
-        audioJob =
-            scope.launch(Dispatchers.IO) {
-                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO)
+        if (audioJob?.isActive == true) stop()
+        audioJob = scope.launch(Dispatchers.IO) { captureAudio() }
+    }
 
-                if (sampleRate == 0 || bufferSize == 0) {
-                    Log.e(LOGTAG, "Invalid SampleRate/BufferSize! AudioRecord cannot be initialized. Exiting!")
-                    return@launch
-                }
-
-                if (bufferSize == AudioRecord.ERROR || bufferSize == AudioRecord.ERROR_BAD_VALUE) {
-                    bufferSize = sampleRate * 2
-                }
-
-                val audioBuffer = ShortArray(bufferSize / 2)
-                val floats = FloatArray(bufferSize / 2)
-                val audioRecord =
-                    AudioRecord(
-                        AUDIO_SOURCE,
-                        sampleRate,
-                        AUDIO_CHANNEL,
-                        AUDIO_ENCODING,
-                        bufferSize,
-                    )
-
-                if (audioRecord.state != AudioRecord.STATE_INITIALIZED) {
-                    Log.e(LOGTAG, "AudioRecord could not be initialized. Exiting!")
-                    return@launch
-                }
-
-                audioRecord.startRecording()
-
-                try {
-                    while (isActive) {
-                        val numberOfShorts = audioRecord.read(audioBuffer, 0, audioBuffer.size)
-                        if (numberOfShorts <= 0) continue
-                        for (i in 0 until numberOfShorts) {
-                            floats[i] = audioBuffer[i].toFloat()
-                        }
-                        val event = trigger.evaluate(floats.copyOfRange(0, numberOfShorts), System.currentTimeMillis())
-                        if (event != null) {
-                            withContext(Dispatchers.Main) {
-                                dispatcher(event)
-                            }
-                        }
-                    }
-                } finally {
-                    try {
-                        audioRecord.stop()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    } finally {
-                        audioRecord.release()
-                    }
-                }
-            }
+    private suspend fun captureAudio() {
+        Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO)
+        val audioRecord = createAudioRecord() ?: return
+        audioRecord.startRecording()
+        processAudioStream(audioRecord)
     }
 
     fun stop() {
         audioJob?.cancel()
         audioJob = null
+    }
+
+    private fun createAudioRecord(): AudioRecord? {
+        if (sampleRate == 0 || bufferSize == 0) {
+            Log.e(LOGTAG, "Invalid sample rate or buffer size")
+            return null
+        }
+        val actualBufferSize = if (bufferSize == AudioRecord.ERROR_BAD_VALUE) sampleRate * 2 else bufferSize
+        val record =
+            AudioRecord(AUDIO_SOURCE, sampleRate, AUDIO_CHANNEL, AUDIO_ENCODING, actualBufferSize)
+        if (record.state != AudioRecord.STATE_INITIALIZED) {
+            Log.e(LOGTAG, "AudioRecord could not be initialized")
+            record.release()
+            return null
+        }
+        return record
+    }
+
+    private suspend fun processAudioStream(audioRecord: AudioRecord) {
+        val audioBuffer = ShortArray(bufferSize / 2)
+        val floatBuffer = FloatArray(bufferSize / 2)
+
+        try {
+            while (currentCoroutineContext().isActive) {
+                val samplesRead = audioRecord.read(audioBuffer, 0, audioBuffer.size)
+                if (samplesRead <= 0) continue
+
+                for (i in 0 until samplesRead) {
+                    floatBuffer[i] = audioBuffer[i].toFloat()
+                }
+
+                val event = trigger.evaluate(floatBuffer.copyOfRange(0, samplesRead), System.currentTimeMillis())
+                if (event != null) {
+                    withContext(Dispatchers.Main) { dispatcher(event) }
+                }
+            }
+        } finally {
+            releaseAudioRecord(audioRecord)
+        }
+    }
+
+    private fun releaseAudioRecord(audioRecord: AudioRecord) {
+        try {
+            audioRecord.stop()
+        } catch (_: Exception) {
+        } finally {
+            audioRecord.release()
+        }
     }
 
     companion object {
@@ -110,29 +109,26 @@ internal class SoundLevelDetector(
         private const val AUDIO_CHANNEL = AudioFormat.CHANNEL_IN_MONO
         private const val AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT
 
-        private fun getValidSampleRate(): Int {
-            for (rate in intArrayOf(8000, 11025, 16000, 22050, 44100, 48000)) {
+        private fun resolveSampleRate(): Int {
+            for (rate in SAMPLE_RATES) {
                 val bufferSize = AudioRecord.getMinBufferSize(rate, AUDIO_CHANNEL, AUDIO_ENCODING)
                 if (bufferSize > 0) return rate
             }
             return 0
         }
 
-        private fun getValidBufferSize(sampleRate: Int): Int {
-            for (bufferSize in intArrayOf(256, 512, 1024, 2048, 4096)) {
-                val tempRecord =
-                    AudioRecord(
-                        AUDIO_SOURCE,
-                        sampleRate,
-                        AUDIO_CHANNEL,
-                        AUDIO_ENCODING,
-                        bufferSize,
-                    )
-                if (tempRecord.state == AudioRecord.STATE_INITIALIZED) {
-                    return bufferSize
-                }
+        private fun resolveBufferSize(sampleRate: Int): Int {
+            for (size in BUFFER_SIZES) {
+                val record =
+                    AudioRecord(AUDIO_SOURCE, sampleRate, AUDIO_CHANNEL, AUDIO_ENCODING, size)
+                val initialized = record.state == AudioRecord.STATE_INITIALIZED
+                record.release()
+                if (initialized) return size
             }
             return 0
         }
+
+        private val SAMPLE_RATES = intArrayOf(8000, 11025, 16000, 22050, 44100, 48000)
+        private val BUFFER_SIZES = intArrayOf(256, 512, 1024, 2048)
     }
 }

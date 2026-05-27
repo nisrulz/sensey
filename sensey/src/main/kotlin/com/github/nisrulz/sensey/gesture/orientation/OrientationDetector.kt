@@ -28,24 +28,25 @@ internal class OrientationDetector(
     private var geomagneticValues: FloatArray? = null
 
     override fun onSensorEvent(event: SensorEvent) {
-        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            gravityValues = event.values
+        when (event.sensor.type) {
+            Sensor.TYPE_ACCELEROMETER -> gravityValues = event.values
+            Sensor.TYPE_MAGNETIC_FIELD -> geomagneticValues = event.values
         }
-        if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
-            geomagneticValues = event.values
-        }
+
         val gravity = gravityValues ?: return
         val geomagnetic = geomagneticValues ?: return
 
         val rotationMatrix = FloatArray(9)
         val inclinationMatrix = FloatArray(9)
-        if (SensorManager.getRotationMatrix(rotationMatrix, inclinationMatrix, gravity, geomagnetic)) {
-            val orientationData = FloatArray(3)
-            SensorManager.getOrientation(rotationMatrix, orientationData)
-            val pitch = Math.toDegrees(orientationData[1].toDouble()).toFloat()
-            val roll = Math.toDegrees(orientationData[2].toDouble()).toFloat()
-            val result = trigger.evaluate(floatArrayOf(pitch, roll), event.timestamp / 1_000_000)
-            result?.let(dispatcher)
-        }
+        if (!SensorManager.getRotationMatrix(rotationMatrix, inclinationMatrix, gravity, geomagnetic)) return
+
+        val orientationData = FloatArray(3)
+        SensorManager.getOrientation(rotationMatrix, orientationData)
+
+        val pitch = Math.toDegrees(orientationData[1].toDouble()).toFloat()
+        val roll = Math.toDegrees(orientationData[2].toDouble()).toFloat()
+
+        val result = trigger.evaluate(floatArrayOf(pitch, roll), event.timestamp / 1_000_000)
+        result?.let(dispatcher)
     }
 }

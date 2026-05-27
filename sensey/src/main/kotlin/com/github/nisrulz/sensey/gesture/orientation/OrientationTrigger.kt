@@ -22,13 +22,13 @@ internal class OrientationTrigger(
 ) : GestureTrigger<OrientationEvent> {
     private val windowSize = smoothness.coerceAtLeast(1)
     private var eventOccurred = 0
-    private var currentOrientation = ORIENTATION_PORTRAIT
-    private val pitches = FloatArray(windowSize)
-    private val rolls = FloatArray(windowSize)
+    private var currentOrientation = PORTRAIT
+    private val pitchBuffer = FloatArray(windowSize)
+    private val rollBuffer = FloatArray(windowSize)
     private var pitchSum = 0f
     private var rollSum = 0f
     private var bufferIndex = 0
-    private var bufferInitialized = false
+    private var isBufferInitialized = false
 
     override fun evaluate(
         values: FloatArray,
@@ -37,87 +37,91 @@ internal class OrientationTrigger(
         val pitch = values.getOrNull(0) ?: return null
         val roll = values.getOrNull(1) ?: return null
 
-        if (!bufferInitialized) {
-            pitches.fill(pitch)
-            rolls.fill(roll)
-            pitchSum = pitch * windowSize
-            rollSum = roll * windowSize
-            bufferInitialized = true
-        }
+        if (!isBufferInitialized) initializeBuffer(pitch, roll)
 
-        val oldPitch = pitches[bufferIndex]
-        pitches[bufferIndex] = pitch
+        val oldPitch = pitchBuffer[bufferIndex]
+        pitchBuffer[bufferIndex] = pitch
         pitchSum = pitchSum - oldPitch + pitch
         val averagePitch = pitchSum / windowSize
 
-        val oldRoll = rolls[bufferIndex]
-        rolls[bufferIndex] = roll
+        val oldRoll = rollBuffer[bufferIndex]
+        rollBuffer[bufferIndex] = roll
         rollSum = rollSum - oldRoll + roll
         val averageRoll = rollSum / windowSize
 
         bufferIndex = (bufferIndex + 1) % windowSize
 
-        currentOrientation = calculateOrientation(averagePitch, averageRoll, currentOrientation)
-
-        val result =
-            when (currentOrientation) {
-                ORIENTATION_PORTRAIT ->
-                    if (eventOccurred != 1) {
-                        eventOccurred = 1
-                        OrientationEvent.TopSideUp
-                    } else {
-                        null
-                    }
-                ORIENTATION_LANDSCAPE ->
-                    if (eventOccurred != 2) {
-                        eventOccurred = 2
-                        OrientationEvent.RightSideUp
-                    } else {
-                        null
-                    }
-                ORIENTATION_PORTRAIT_REVERSE ->
-                    if (eventOccurred != 3) {
-                        eventOccurred = 3
-                        OrientationEvent.BottomSideUp
-                    } else {
-                        null
-                    }
-                ORIENTATION_LANDSCAPE_REVERSE ->
-                    if (eventOccurred != 4) {
-                        eventOccurred = 4
-                        OrientationEvent.LeftSideUp
-                    } else {
-                        null
-                    }
-                else -> null
-            }
-        return result
+        currentOrientation = classifyOrientation(averagePitch, averageRoll, currentOrientation)
+        return toOrientationEvent(currentOrientation)
     }
 
-    private fun calculateOrientation(
-        averagePitch: Float,
-        averageRoll: Float,
-        previousOrientation: Int,
-    ): Int =
-        if ((
-                previousOrientation == ORIENTATION_PORTRAIT ||
-                    previousOrientation == ORIENTATION_PORTRAIT_REVERSE
-            ) &&
-            averageRoll in -30f..30f
-        ) {
-            if (averagePitch > 0) ORIENTATION_PORTRAIT_REVERSE else ORIENTATION_PORTRAIT
-        } else {
-            if (kotlin.math.abs(averagePitch) >= 30) {
-                if (averagePitch > 0) ORIENTATION_PORTRAIT_REVERSE else ORIENTATION_PORTRAIT
-            } else {
-                if (averageRoll > 0) ORIENTATION_LANDSCAPE_REVERSE else ORIENTATION_LANDSCAPE
+    private fun initializeBuffer(
+        pitch: Float,
+        roll: Float,
+    ) {
+        pitchBuffer.fill(pitch)
+        rollBuffer.fill(roll)
+        pitchSum = pitch * windowSize
+        rollSum = roll * windowSize
+        isBufferInitialized = true
+    }
+
+    private fun toOrientationEvent(orientation: Int): OrientationEvent? =
+        when (orientation) {
+            PORTRAIT -> {
+                if (eventOccurred != 1) {
+                    eventOccurred = 1
+                    OrientationEvent.TopSideUp
+                } else {
+                    null
+                }
             }
+            LANDSCAPE -> {
+                if (eventOccurred != 2) {
+                    eventOccurred = 2
+                    OrientationEvent.RightSideUp
+                } else {
+                    null
+                }
+            }
+            PORTRAIT_REVERSE -> {
+                if (eventOccurred != 3) {
+                    eventOccurred = 3
+                    OrientationEvent.BottomSideUp
+                } else {
+                    null
+                }
+            }
+            LANDSCAPE_REVERSE -> {
+                if (eventOccurred != 4) {
+                    eventOccurred = 4
+                    OrientationEvent.LeftSideUp
+                } else {
+                    null
+                }
+            }
+            else -> null
+        }
+
+    private fun classifyOrientation(
+        avgPitch: Float,
+        avgRoll: Float,
+        previous: Int,
+    ): Int =
+        if ((previous == PORTRAIT || previous == PORTRAIT_REVERSE) && avgRoll in -30f..30f) {
+            if (avgPitch > 0) PORTRAIT_REVERSE else PORTRAIT
+        } else if (kotlin.math.abs(avgPitch) >= 30) {
+            if (avgPitch > 0) PORTRAIT_REVERSE else PORTRAIT
+        } else if (avgRoll > 0) {
+            LANDSCAPE_REVERSE
+        } else {
+            LANDSCAPE
         }
 
     private companion object {
-        const val ORIENTATION_PORTRAIT = 1
-        const val ORIENTATION_LANDSCAPE = 2
-        const val ORIENTATION_PORTRAIT_REVERSE = 3
-        const val ORIENTATION_LANDSCAPE_REVERSE = 4
+        const val PORTRAIT = 1
+        const val LANDSCAPE = 2
+        const val PORTRAIT_REVERSE = 3
+        const val LANDSCAPE_REVERSE = 4
     }
 }
