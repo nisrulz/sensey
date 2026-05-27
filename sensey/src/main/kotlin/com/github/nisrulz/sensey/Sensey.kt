@@ -133,8 +133,11 @@ class Sensey private constructor() {
         startLibrarySensorDetection(LightDetector(LightTrigger(), dispatcher), dispatcher)
     }
 
-    fun startLightDetection(threshold: Float, dispatcher: (LightEvent) -> Unit) {
-        startLibrarySensorDetection(LightDetector(LightTrigger(threshold), dispatcher), dispatcher)
+    fun startLightDetection(darkThreshold: Float, dispatcher: (LightEvent) -> Unit) {
+        startLibrarySensorDetection(
+            LightDetector(LightTrigger(darkThreshold = darkThreshold), dispatcher),
+            dispatcher,
+        )
     }
 
     fun startMovementDetection(dispatcher: (MovementEvent) -> Unit) {
