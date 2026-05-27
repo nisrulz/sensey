@@ -20,7 +20,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorManager
-import android.os.Build
+import android.util.Log
 import android.view.MotionEvent
 import androidx.annotation.RequiresPermission
 import androidx.lifecycle.Lifecycle
@@ -62,7 +62,6 @@ import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelDetector
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelEvent
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelTrigger
 import com.github.nisrulz.sensey.gesture.step.StepDetectorPostKitKat
-import com.github.nisrulz.sensey.gesture.step.StepDetectorPreKitKat
 import com.github.nisrulz.sensey.gesture.step.StepDetectorUtil
 import com.github.nisrulz.sensey.gesture.step.StepEvent
 import com.github.nisrulz.sensey.gesture.step.StepTrigger
@@ -94,6 +93,7 @@ object Sensey {
     private var sensorManager: SensorManager? = null
     private var lifecycleObserver: LifecycleEventObserver? = null
     private var registeredLifecycle: Lifecycle? = null
+    private const val LOGTAG = "Sensey"
 
     fun init(context: Context) {
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -221,13 +221,7 @@ object Sensey {
 
     fun startStepDetection(context: Context, dispatcher: (StepEvent) -> Unit, gender: Int) {
         val trigger = StepTrigger(gender)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT &&
-            checkHardware(context, PackageManager.FEATURE_SENSOR_STEP_COUNTER)
-        ) {
-            startLibrarySensorDetection(StepDetectorPostKitKat(trigger, dispatcher), dispatcher)
-        } else {
-            startLibrarySensorDetection(StepDetectorPreKitKat(trigger, dispatcher), dispatcher)
-        }
+        startLibrarySensorDetection(StepDetectorPostKitKat(trigger, dispatcher), dispatcher)
     }
 
     fun startTiltDirectionDetection(dispatcher: (TiltDirectionEvent) -> Unit) {
@@ -379,11 +373,18 @@ object Sensey {
         val sensors = mutableListOf<Sensor>()
         sensorManager?.let { manager ->
             for (sensorType in sensorTypes) {
-                manager.getDefaultSensor(sensorType)?.let { sensors.add(it) }
+                val sensor = manager.getDefaultSensor(sensorType)
+                if (sensor != null) {
+                    sensors.add(sensor)
+                } else {
+                    Log.w(LOGTAG, "Sensor type $sensorType not available on this device")
+                }
             }
         }
         return sensors
     }
+
+
 
     private fun registerDetectorForAllSensors(detector: SensorDetector, sensors: Iterable<Sensor>) {
         for (sensor in sensors) {
