@@ -348,6 +348,7 @@ private class TouchTypePlugin(
                 }
             },
             onDragEnd = { dragStart = Offset.Zero },
+            onDragCancel = { dragStart = Offset.Zero },
         )
     }
 
