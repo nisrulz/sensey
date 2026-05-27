@@ -30,7 +30,7 @@ class TouchTypeDetectorTest {
     fun dispatchesNothingOnActionDown() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val events = mutableListOf<TouchTypeEvent>()
-        val detector = TouchTypeDetector(context, TouchTypeTrigger()) { events.add(it) }
+        val detector = TouchTypeDetector(context, TouchTypeTrigger(), { events.add(it) })
         detector.onTouchEvent(MotionEvent.obtain(10, 10, MotionEvent.ACTION_DOWN, 100f, 100f, 0))
         assertTrue(events.isEmpty())
     }
@@ -38,7 +38,7 @@ class TouchTypeDetectorTest {
     @Test
     fun initDoesNotCrash() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        val detector = TouchTypeDetector(context, TouchTypeTrigger()) { }
+        val detector = TouchTypeDetector(context, TouchTypeTrigger(), { })
         assertTrue(detector is TouchTypeDetector)
     }
 }
