@@ -75,7 +75,6 @@ fun shakePlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "ShakePlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
         detectorFactory = {
             TypedSensorDetector(
                 ShakeTrigger(threshold, timeBeforeDeclaringShakeStopped),
@@ -88,7 +87,6 @@ fun shakePlugin(
 fun flipPlugin(dispatcher: (FlipEvent) -> Unit): GesturePlugin =
     SensorGesturePlugin(
         key = "FlipPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
         detectorFactory = { TypedSensorDetector(FlipTrigger(), dispatcher, Sensor.TYPE_ACCELEROMETER) },
     )
 
@@ -98,7 +96,6 @@ fun lightPlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "LightPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_LIGHT),
         detectorFactory = {
             TypedSensorDetector(
                 LightTrigger(darkThreshold = darkThreshold),
@@ -114,7 +111,6 @@ fun proximityPlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "ProximityPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_PROXIMITY),
         detectorFactory = { ProximityDetector(ProximityTrigger(debounceMillis), dispatcher) },
     )
 
@@ -125,7 +121,6 @@ fun movementPlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "MovementPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
         detectorFactory = {
             TypedSensorDetector(
                 MovementTrigger(threshold, timeBeforeDeclaringStationary),
@@ -141,7 +136,6 @@ fun orientationPlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "OrientationPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_MAGNETIC_FIELD),
         detectorFactory = { OrientationDetector(OrientationTrigger(smoothness), dispatcher) },
     )
 
@@ -152,7 +146,6 @@ fun chopPlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "ChopPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
         detectorFactory = {
             TypedSensorDetector(ChopTrigger(threshold, timeForChopGesture), dispatcher, Sensor.TYPE_ACCELEROMETER)
         },
@@ -165,7 +158,6 @@ fun wristTwistPlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "WristTwistPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
         detectorFactory = {
             TypedSensorDetector(
                 WristTwistTrigger(threshold, timeForWristTwistGesture),
@@ -182,7 +174,6 @@ fun wavePlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "WavePlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_PROXIMITY),
         detectorFactory = {
             TypedSensorDetector(WaveTrigger(timeWindowMillis, debounceMillis), dispatcher, Sensor.TYPE_PROXIMITY)
         },
@@ -194,14 +185,12 @@ fun scoopPlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "ScoopPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
         detectorFactory = { TypedSensorDetector(ScoopTrigger(threshold), dispatcher, Sensor.TYPE_ACCELEROMETER) },
     )
 
 fun pickupDevicePlugin(dispatcher: (PickupDeviceEvent) -> Unit): GesturePlugin =
     SensorGesturePlugin(
         key = "PickupDevicePlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
         detectorFactory = { TypedSensorDetector(PickupDeviceTrigger(), dispatcher, Sensor.TYPE_ACCELEROMETER) },
     )
 
@@ -214,7 +203,6 @@ fun tapOnBackPlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "TapOnBackPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
         detectorFactory = {
             TypedSensorDetector(
                 TapOnBackTrigger(angleThreshold, minAngleJerk, tapDebounceMs, tapSequenceTimeoutMs),
@@ -230,7 +218,6 @@ fun tiltDirectionPlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "TiltDirectionPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_GYROSCOPE),
         detectorFactory = { TypedSensorDetector(TiltDirectionTrigger(threshold), dispatcher, Sensor.TYPE_GYROSCOPE) },
     )
 
@@ -240,7 +227,6 @@ fun rotationAnglePlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "RotationAnglePlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_ROTATION_VECTOR),
         detectorFactory = { RotationAngleDetector(RotationAngleTrigger(minAngleChange), dispatcher) },
     )
 
@@ -251,7 +237,6 @@ fun stepPlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "StepPlugin",
-        sensorTypes = intArrayOf(Sensor.TYPE_STEP_COUNTER),
         detectorFactory = { TypedSensorDetector(StepTrigger(gender, threshold), dispatcher, Sensor.TYPE_STEP_COUNTER) },
     )
 
@@ -272,7 +257,6 @@ fun soundLevelPlugin(
 
 private class SensorGesturePlugin(
     override val key: String,
-    private val sensorTypes: IntArray,
     private val detectorFactory: () -> SensorDetector,
 ) : GesturePlugin {
     private var detector: SensorDetector? = null
