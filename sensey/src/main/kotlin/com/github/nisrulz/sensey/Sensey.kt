@@ -85,7 +85,7 @@ object Sensey {
     const val SAMPLING_PERIOD_NORMAL = SensorManager.SENSOR_DELAY_NORMAL
     const val SAMPLING_PERIOD_UI = SensorManager.SENSOR_DELAY_UI
 
-    private val defaultSensorsMap = mutableMapOf<Any, SensorDetector>()
+    private val defaultSensorsMap = mutableMapOf<String, SensorDetector>()
     private var pinchScaleDetector: PinchScaleDetector? = null
     private var soundLevelDetector: SoundLevelDetector? = null
     private var touchTypeDetector: TouchTypeDetector? = null
@@ -120,57 +120,52 @@ object Sensey {
     }
 
     fun startChopDetection(dispatcher: (ChopEvent) -> Unit) {
-        startLibrarySensorDetection(ChopDetector(ChopTrigger(), dispatcher), dispatcher)
+        startLibrarySensorDetection(ChopDetector(ChopTrigger(), dispatcher))
     }
 
     fun startChopDetection(threshold: Float, timeForChopGesture: Long, dispatcher: (ChopEvent) -> Unit) {
         startLibrarySensorDetection(
             ChopDetector(ChopTrigger(threshold, timeForChopGesture), dispatcher),
-            dispatcher,
         )
     }
 
     fun startFlipDetection(dispatcher: (FlipEvent) -> Unit) {
-        startLibrarySensorDetection(FlipDetector(FlipTrigger(), dispatcher), dispatcher)
+        startLibrarySensorDetection(FlipDetector(FlipTrigger(), dispatcher))
     }
 
     fun startLightDetection(dispatcher: (LightEvent) -> Unit) {
-        startLibrarySensorDetection(LightDetector(LightTrigger(), dispatcher), dispatcher)
+        startLibrarySensorDetection(LightDetector(LightTrigger(), dispatcher))
     }
 
     fun startLightDetection(darkThreshold: Float, dispatcher: (LightEvent) -> Unit) {
         startLibrarySensorDetection(
             LightDetector(LightTrigger(darkThreshold = darkThreshold), dispatcher),
-            dispatcher,
         )
     }
 
     fun startMovementDetection(dispatcher: (MovementEvent) -> Unit) {
-        startLibrarySensorDetection(MovementDetector(MovementTrigger(), dispatcher), dispatcher)
+        startLibrarySensorDetection(MovementDetector(MovementTrigger(), dispatcher))
     }
 
     fun startMovementDetection(threshold: Float, timeBeforeDeclaringStationary: Long, dispatcher: (MovementEvent) -> Unit) {
         startLibrarySensorDetection(
             MovementDetector(MovementTrigger(threshold, timeBeforeDeclaringStationary), dispatcher),
-            dispatcher,
         )
     }
 
     fun startOrientationDetection(dispatcher: (OrientationEvent) -> Unit) {
-        startLibrarySensorDetection(OrientationDetector(OrientationTrigger(), dispatcher), dispatcher)
+        startLibrarySensorDetection(OrientationDetector(OrientationTrigger(), dispatcher))
     }
 
     fun startOrientationDetection(smoothness: Int, dispatcher: (OrientationEvent) -> Unit) {
         startLibrarySensorDetection(
             OrientationDetector(OrientationTrigger(smoothness), dispatcher),
-            dispatcher,
         )
     }
 
     fun startPickupDeviceDetection(dispatcher: (PickupDeviceEvent) -> Unit) {
         startLibrarySensorDetection(
             PickupDeviceDetector(PickupDeviceTrigger(), dispatcher),
-            dispatcher,
         )
     }
 
@@ -179,32 +174,30 @@ object Sensey {
     }
 
     fun startProximityDetection(dispatcher: (ProximityEvent) -> Unit) {
-        startLibrarySensorDetection(ProximityDetector(ProximityTrigger(), dispatcher), dispatcher)
+        startLibrarySensorDetection(ProximityDetector(ProximityTrigger(), dispatcher))
     }
 
     fun startRotationAngleDetection(dispatcher: (RotationAngleEvent) -> Unit) {
         startLibrarySensorDetection(
             RotationAngleDetector(RotationAngleTrigger(), dispatcher),
-            dispatcher,
         )
     }
 
     fun startScoopDetection(dispatcher: (ScoopEvent) -> Unit) {
-        startLibrarySensorDetection(ScoopDetector(ScoopTrigger(), dispatcher), dispatcher)
+        startLibrarySensorDetection(ScoopDetector(ScoopTrigger(), dispatcher))
     }
 
     fun startScoopDetection(threshold: Float, dispatcher: (ScoopEvent) -> Unit) {
-        startLibrarySensorDetection(ScoopDetector(ScoopTrigger(threshold), dispatcher), dispatcher)
+        startLibrarySensorDetection(ScoopDetector(ScoopTrigger(threshold), dispatcher))
     }
 
     fun startShakeDetection(dispatcher: (ShakeEvent) -> Unit) {
-        startLibrarySensorDetection(ShakeDetector(ShakeTrigger(), dispatcher), dispatcher)
+        startLibrarySensorDetection(ShakeDetector(ShakeTrigger(), dispatcher))
     }
 
     fun startShakeDetection(threshold: Float, timeBeforeDeclaringShakeStopped: Long, dispatcher: (ShakeEvent) -> Unit) {
         startLibrarySensorDetection(
             ShakeDetector(ShakeTrigger(threshold, timeBeforeDeclaringShakeStopped), dispatcher),
-            dispatcher,
         )
     }
 
@@ -221,13 +214,12 @@ object Sensey {
 
     fun startStepDetection(context: Context, dispatcher: (StepEvent) -> Unit, gender: Int) {
         val trigger = StepTrigger(gender)
-        startLibrarySensorDetection(StepDetectorPostKitKat(trigger, dispatcher), dispatcher)
+        startLibrarySensorDetection(StepDetectorPostKitKat(trigger, dispatcher))
     }
 
     fun startTiltDirectionDetection(dispatcher: (TiltDirectionEvent) -> Unit) {
         startLibrarySensorDetection(
             TiltDirectionDetector(TiltDirectionTrigger(), dispatcher),
-            dispatcher,
         )
     }
 
@@ -236,20 +228,18 @@ object Sensey {
     }
 
     fun startWaveDetection(dispatcher: (WaveEvent) -> Unit) {
-        startLibrarySensorDetection(WaveDetector(WaveTrigger(), dispatcher), dispatcher)
+        startLibrarySensorDetection(WaveDetector(WaveTrigger(), dispatcher))
     }
 
     fun startWaveDetection(timeWindowMillis: Float, dispatcher: (WaveEvent) -> Unit) {
         startLibrarySensorDetection(
             WaveDetector(WaveTrigger(timeWindowMillis = timeWindowMillis), dispatcher),
-            dispatcher,
         )
     }
 
     fun startWristTwistDetection(dispatcher: (WristTwistEvent) -> Unit) {
         startLibrarySensorDetection(
             WristTwistDetector(WristTwistTrigger(), dispatcher),
-            dispatcher,
         )
     }
 
@@ -259,7 +249,6 @@ object Sensey {
                 WristTwistTrigger(threshold, timeForWristTwistGesture),
                 dispatcher,
             ),
-            dispatcher,
         )
     }
 
@@ -274,48 +263,48 @@ object Sensey {
         sensorManager = null
     }
 
-    fun stopChopDetection(dispatcher: (ChopEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopChopDetection() {
+        stopLibrarySensorDetection("ChopDetector")
     }
 
-    fun stopFlipDetection(dispatcher: (FlipEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopFlipDetection() {
+        stopLibrarySensorDetection("FlipDetector")
     }
 
-    fun stopLightDetection(dispatcher: (LightEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopLightDetection() {
+        stopLibrarySensorDetection("LightDetector")
     }
 
-    fun stopMovementDetection(dispatcher: (MovementEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopMovementDetection() {
+        stopLibrarySensorDetection("MovementDetector")
     }
 
-    fun stopOrientationDetection(dispatcher: (OrientationEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopOrientationDetection() {
+        stopLibrarySensorDetection("OrientationDetector")
     }
 
-    fun stopPickupDeviceDetection(dispatcher: (PickupDeviceEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopPickupDeviceDetection() {
+        stopLibrarySensorDetection("PickupDeviceDetector")
     }
 
     fun stopPinchScaleDetection() {
         pinchScaleDetector = null
     }
 
-    fun stopProximityDetection(dispatcher: (ProximityEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopProximityDetection() {
+        stopLibrarySensorDetection("ProximityDetector")
     }
 
-    fun stopRotationAngleDetection(dispatcher: (RotationAngleEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopRotationAngleDetection() {
+        stopLibrarySensorDetection("RotationAngleDetector")
     }
 
-    fun stopScoopDetection(dispatcher: (ScoopEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopScoopDetection() {
+        stopLibrarySensorDetection("ScoopDetector")
     }
 
-    fun stopShakeDetection(dispatcher: (ShakeEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopShakeDetection() {
+        stopLibrarySensorDetection("ShakeDetector")
     }
 
     fun stopSoundLevelDetection() {
@@ -323,24 +312,24 @@ object Sensey {
         soundLevelDetector = null
     }
 
-    fun stopStepDetection(dispatcher: (StepEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopStepDetection() {
+        stopLibrarySensorDetection("StepDetectorPostKitKat")
     }
 
-    fun stopTiltDirectionDetection(dispatcher: (TiltDirectionEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopTiltDirectionDetection() {
+        stopLibrarySensorDetection("TiltDirectionDetector")
     }
 
     fun stopTouchTypeDetection() {
         touchTypeDetector = null
     }
 
-    fun stopWaveDetection(dispatcher: (WaveEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopWaveDetection() {
+        stopLibrarySensorDetection("WaveDetector")
     }
 
-    fun stopWristTwistDetection(dispatcher: (WristTwistEvent) -> Unit) {
-        stopLibrarySensorDetection(dispatcher)
+    fun stopWristTwistDetection() {
+        stopLibrarySensorDetection("WristTwistDetector")
     }
 
     fun checkHardware(context: Context, hardware: String): Boolean {
@@ -392,9 +381,10 @@ object Sensey {
         }
     }
 
-    private fun startLibrarySensorDetection(detector: SensorDetector, clientListener: Any) {
-        if (!defaultSensorsMap.containsKey(clientListener)) {
-            defaultSensorsMap[clientListener] = detector
+    private fun startLibrarySensorDetection(detector: SensorDetector) {
+        val key = detector::class.simpleName ?: return
+        if (!defaultSensorsMap.containsKey(key)) {
+            defaultSensorsMap[key] = detector
             startSensorDetection(detector)
         }
     }
@@ -404,8 +394,8 @@ object Sensey {
         registerDetectorForAllSensors(detector, sensors)
     }
 
-    private fun stopLibrarySensorDetection(clientListener: Any) {
-        val detector = defaultSensorsMap.remove(clientListener)
+    private fun stopLibrarySensorDetection(key: String) {
+        val detector = defaultSensorsMap.remove(key)
         stopSensorDetection(detector)
     }
 

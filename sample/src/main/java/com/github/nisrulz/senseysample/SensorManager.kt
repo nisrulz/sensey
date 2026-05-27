@@ -197,21 +197,21 @@ internal class SensorManager(
     private fun handleStartDetector(sensor: String, start: Boolean) {
         if (!start) {
             when (sensor) {
-                SHAKE -> Sensey.stopShakeDetection(shakeDispatcher)
-                FLIP -> Sensey.stopFlipDetection(flipDispatcher)
-                ORIENTATION -> Sensey.stopOrientationDetection(orientationDispatcher)
-                PROXIMITY -> Sensey.stopProximityDetection(proximityDispatcher)
-                LIGHT -> Sensey.stopLightDetection(lightDispatcher)
-                WAVE -> Sensey.stopWaveDetection(waveDispatcher)
+                SHAKE -> Sensey.stopShakeDetection()
+                FLIP -> Sensey.stopFlipDetection()
+                ORIENTATION -> Sensey.stopOrientationDetection()
+                PROXIMITY -> Sensey.stopProximityDetection()
+                LIGHT -> Sensey.stopLightDetection()
+                WAVE -> Sensey.stopWaveDetection()
                 SOUND_LEVEL -> Sensey.stopSoundLevelDetection()
-                MOVEMENT -> Sensey.stopMovementDetection(movementDispatcher)
-                CHOP -> Sensey.stopChopDetection(chopDispatcher)
-                WRIST_TWIST -> Sensey.stopWristTwistDetection(wristTwistDispatcher)
-                ROTATION_ANGLE -> Sensey.stopRotationAngleDetection(rotationAngleDispatcher)
-                TILT_DIRECTION -> Sensey.stopTiltDirectionDetection(tiltDirectionDispatcher)
-                STEP -> Sensey.stopStepDetection(stepDispatcher)
-                PICKUP_DEVICE -> Sensey.stopPickupDeviceDetection(pickupDeviceDispatcher)
-                SCOOP -> Sensey.stopScoopDetection(scoopDispatcher)
+                MOVEMENT -> Sensey.stopMovementDetection()
+                CHOP -> Sensey.stopChopDetection()
+                WRIST_TWIST -> Sensey.stopWristTwistDetection()
+                ROTATION_ANGLE -> Sensey.stopRotationAngleDetection()
+                TILT_DIRECTION -> Sensey.stopTiltDirectionDetection()
+                STEP -> Sensey.stopStepDetection()
+                PICKUP_DEVICE -> Sensey.stopPickupDeviceDetection()
+                SCOOP -> Sensey.stopScoopDetection()
             }
             return
         }
