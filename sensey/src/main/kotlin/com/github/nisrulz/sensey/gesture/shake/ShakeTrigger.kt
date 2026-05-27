@@ -53,7 +53,7 @@ internal class ShakeTrigger(
         return null
     }
 
-    private fun initializeBaseline(magnitude: Float): Nothing? {
+    private fun initializeBaseline(magnitude: Float): ShakeEvent? {
         accelCurrent = magnitude
         accelDelta = 0f
         hasBaseline = true
