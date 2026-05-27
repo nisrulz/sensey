@@ -50,10 +50,16 @@ class SenseyPluginRegistry {
         )
     }
 
-    fun flipPlugin(dispatcher: (FlipEvent) -> Unit) {
+    fun flipPlugin(
+        faceUpLowerBound: Float = 8f,
+        faceUpUpperBound: Float = 10.5f,
+        faceDownLowerBound: Float = -10.5f,
+        faceDownUpperBound: Float = -8f,
+        dispatcher: (FlipEvent) -> Unit,
+    ) {
         plugins.add(
             com.github.nisrulz.sensey.gesture
-                .flipPlugin(dispatcher),
+                .flipPlugin(faceUpLowerBound, faceUpUpperBound, faceDownLowerBound, faceDownUpperBound, dispatcher),
         )
     }
 
