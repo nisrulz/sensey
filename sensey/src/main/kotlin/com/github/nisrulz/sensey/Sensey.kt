@@ -77,21 +77,12 @@ import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistDetector
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistTrigger
 
-class Sensey private constructor() {
+object Sensey {
 
-    companion object {
-        const val SAMPLING_PERIOD_FASTEST = SensorManager.SENSOR_DELAY_FASTEST
-        const val SAMPLING_PERIOD_GAME = SensorManager.SENSOR_DELAY_GAME
-        const val SAMPLING_PERIOD_NORMAL = SensorManager.SENSOR_DELAY_NORMAL
-        const val SAMPLING_PERIOD_UI = SensorManager.SENSOR_DELAY_UI
-
-        @JvmStatic
-        fun getInstance(): Sensey = LazyHolder.INSTANCE
-    }
-
-    private object LazyHolder {
-        val INSTANCE = Sensey()
-    }
+    const val SAMPLING_PERIOD_FASTEST = SensorManager.SENSOR_DELAY_FASTEST
+    const val SAMPLING_PERIOD_GAME = SensorManager.SENSOR_DELAY_GAME
+    const val SAMPLING_PERIOD_NORMAL = SensorManager.SENSOR_DELAY_NORMAL
+    const val SAMPLING_PERIOD_UI = SensorManager.SENSOR_DELAY_UI
 
     private val defaultSensorsMap = mutableMapOf<Any, SensorDetector>()
     private var pinchScaleDetector: PinchScaleDetector? = null

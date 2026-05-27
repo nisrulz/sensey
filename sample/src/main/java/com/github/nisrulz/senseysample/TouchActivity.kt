@@ -88,15 +88,15 @@ class TouchActivity : ComponentActivity() {
 
     private fun startDetector(sensor: String) {
         when (sensor) {
-            "touch" -> Sensey.getInstance().startTouchTypeDetection(this, touchDispatcher)
-            "pinch" -> Sensey.getInstance().startPinchScaleDetection(this, pinchDispatcher)
+            "touch" -> Sensey.startTouchTypeDetection(this, touchDispatcher)
+            "pinch" -> Sensey.startPinchScaleDetection(this, pinchDispatcher)
         }
     }
 
     private fun stopDetector(sensor: String) {
         when (sensor) {
-            "touch" -> Sensey.getInstance().stopTouchTypeDetection()
-            "pinch" -> Sensey.getInstance().stopPinchScaleDetection()
+            "touch" -> Sensey.stopTouchTypeDetection()
+            "pinch" -> Sensey.stopPinchScaleDetection()
         }
     }
 
@@ -104,16 +104,16 @@ class TouchActivity : ComponentActivity() {
         super.onPause()
         selectedSensor?.let { stopDetector(it) }
         selectedSensor = null
-        Sensey.getInstance().stop()
+        Sensey.stop()
     }
 
     override fun onResume() {
         super.onResume()
-        Sensey.getInstance().init(this)
+        Sensey.init(this)
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        Sensey.getInstance().setupDispatchTouchEvent(event)
+        Sensey.setupDispatchTouchEvent(event)
         return super.dispatchTouchEvent(event)
     }
 

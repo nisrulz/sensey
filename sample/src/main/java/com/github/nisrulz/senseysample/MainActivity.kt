@@ -157,12 +157,12 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         stopSelectedDetector()
-        Sensey.getInstance().stop()
+        Sensey.stop()
     }
 
     override fun onResume() {
         super.onResume()
-        Sensey.getInstance().init(this)
+        Sensey.init(this)
     }
 
     private fun stopSelectedDetector() {
@@ -191,7 +191,7 @@ class MainActivity : ComponentActivity() {
 
     private fun handleStartDetector(sensor: String, start: Boolean) {
         if (!start) {
-            Sensey.getInstance().let {
+            Sensey.let {
                 when (sensor) {
                     "Shake Gesture" -> it.stopShakeDetection(shakeDispatcher)
                     "Flip Gesture" -> it.stopFlipDetection(flipDispatcher)
@@ -212,7 +212,7 @@ class MainActivity : ComponentActivity() {
             }
             return
         }
-        Sensey.getInstance().let {
+        Sensey.let {
             when (sensor) {
                 "Shake Gesture" -> it.startShakeDetection(10f, 2000, shakeDispatcher)
                 "Flip Gesture" -> it.startFlipDetection(flipDispatcher)

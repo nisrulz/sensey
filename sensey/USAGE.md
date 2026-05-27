@@ -12,13 +12,13 @@ implementation("com.github.nisrulz:sensey:{latest-version}")
 Initialize in your `Application` or `Activity`:
 
 ```kotlin
-Sensey.getInstance().init(this)
+Sensey.init(this)
 ```
 
 Release in `onDestroy` or `onPause`:
 
 ```kotlin
-Sensey.getInstance().stop()
+Sensey.stop()
 ```
 
 ---
@@ -38,7 +38,7 @@ You can either use the **Sensey facade** (recommended) or create **standalone tr
 **Using the Sensey facade:**
 
 ```kotlin
-Sensey.getInstance().startShakeDetection { event ->
+Sensey.startShakeDetection { event ->
     when (event) {
         ShakeEvent.Detected -> // handle
         ShakeEvent.Stopped   -> // handle
@@ -49,8 +49,8 @@ Sensey.getInstance().startShakeDetection { event ->
 > Store the lambda reference if you need to stop detection later:
 > ```kotlin
 > private val shakeDispatcher: (ShakeEvent) -> Unit = { event -> ... }
-> Sensey.getInstance().startShakeDetection(shakeDispatcher)
-> Sensey.getInstance().stopShakeDetection(shakeDispatcher)
+> Sensey.startShakeDetection(shakeDispatcher)
+> Sensey.stopShakeDetection(shakeDispatcher)
 > ```
 
 ---
@@ -63,7 +63,7 @@ Sensey.getInstance().startShakeDetection { event ->
 | `ShakeEvent.Stopped` | Shaking has stopped |
 
 ```kotlin
-Sensey.getInstance().startShakeDetection { event ->
+Sensey.startShakeDetection { event ->
     when (event) {
         ShakeEvent.Detected -> println("Shake detected!")
         ShakeEvent.Stopped  -> println("Shake stopped")
@@ -74,7 +74,7 @@ Sensey.getInstance().startShakeDetection { event ->
 With custom parameters:
 
 ```kotlin
-Sensey.getInstance().startShakeDetection(
+Sensey.startShakeDetection(
     threshold = 10f,
     timeBeforeDeclaringShakeStopped = 2000L,
 ) { event -> /* ... */ }
@@ -97,7 +97,7 @@ val detector = ShakeDetector(trigger) { event -> /* ... */ }
 | `FlipEvent.FaceDown` | Device is face-down (screen down) |
 
 ```kotlin
-Sensey.getInstance().startFlipDetection { event ->
+Sensey.startFlipDetection { event ->
     when (event) {
         FlipEvent.FaceUp   -> println("Face up")
         FlipEvent.FaceDown -> println("Face down")
@@ -117,7 +117,7 @@ Sensey.getInstance().startFlipDetection { event ->
 Hysteresis prevents oscillation at boundaries.
 
 ```kotlin
-Sensey.getInstance().startLightDetection { event ->
+Sensey.startLightDetection { event ->
     when (event) {
         LightEvent.Dark  -> println("Dark")
         LightEvent.Light -> println("Light")
@@ -128,7 +128,7 @@ Sensey.getInstance().startLightDetection { event ->
 With custom thresholds:
 
 ```kotlin
-Sensey.getInstance().startLightDetection(darkThreshold = 5f) { event -> /* ... */ }
+Sensey.startLightDetection(darkThreshold = 5f) { event -> /* ... */ }
 ```
 
 ---
@@ -141,7 +141,7 @@ Sensey.getInstance().startLightDetection(darkThreshold = 5f) { event -> /* ... *
 | `ProximityEvent.Far` | Object moved away |
 
 ```kotlin
-Sensey.getInstance().startProximityDetection { event ->
+Sensey.startProximityDetection { event ->
     when (event) {
         ProximityEvent.Near -> println("Near")
         ProximityEvent.Far  -> println("Far")
@@ -159,7 +159,7 @@ Sensey.getInstance().startProximityDetection { event ->
 | `MovementEvent.Stationary` | Device has been still for the timeout period |
 
 ```kotlin
-Sensey.getInstance().startMovementDetection { event ->
+Sensey.startMovementDetection { event ->
     when (event) {
         MovementEvent.Moved      -> println("Moving")
         MovementEvent.Stationary -> println("Stationary")
@@ -170,7 +170,7 @@ Sensey.getInstance().startMovementDetection { event ->
 With custom parameters:
 
 ```kotlin
-Sensey.getInstance().startMovementDetection(
+Sensey.startMovementDetection(
     threshold = 0.5f,
     timeBeforeDeclaringStationary = 3000L,
 ) { event -> /* ... */ }
@@ -185,7 +185,7 @@ Sensey.getInstance().startMovementDetection(
 | `ChopEvent.Chopped` | Chop gesture detected |
 
 ```kotlin
-Sensey.getInstance().startChopDetection { event ->
+Sensey.startChopDetection { event ->
     println("Chop detected!")
 }
 ```
@@ -193,7 +193,7 @@ Sensey.getInstance().startChopDetection { event ->
 With custom parameters:
 
 ```kotlin
-Sensey.getInstance().startChopDetection(threshold = 30f, timeForChopGesture = 500L) { event -> /* ... */ }
+Sensey.startChopDetection(threshold = 30f, timeForChopGesture = 500L) { event -> /* ... */ }
 ```
 
 ---
@@ -205,7 +205,7 @@ Sensey.getInstance().startChopDetection(threshold = 30f, timeForChopGesture = 50
 | `WristTwistEvent.Twisted` | Wrist twist gesture detected |
 
 ```kotlin
-Sensey.getInstance().startWristTwistDetection { event ->
+Sensey.startWristTwistDetection { event ->
     println("Wrist twist detected!")
 }
 ```
@@ -219,7 +219,7 @@ Sensey.getInstance().startWristTwistDetection { event ->
 | `WaveEvent.Waved` | Hand wave over proximity sensor detected |
 
 ```kotlin
-Sensey.getInstance().startWaveDetection { event ->
+Sensey.startWaveDetection { event ->
     println("Wave detected!")
 }
 ```
@@ -227,7 +227,7 @@ Sensey.getInstance().startWaveDetection { event ->
 With custom time window:
 
 ```kotlin
-Sensey.getInstance().startWaveDetection(timeWindowMillis = 500f) { event -> /* ... */ }
+Sensey.startWaveDetection(timeWindowMillis = 500f) { event -> /* ... */ }
 ```
 
 A debounce of 1 second prevents rapid successive waves.
@@ -241,7 +241,7 @@ A debounce of 1 second prevents rapid successive waves.
 | `ScoopEvent.Scooped` | Scoop gesture detected |
 
 ```kotlin
-Sensey.getInstance().startScoopDetection { event ->
+Sensey.startScoopDetection { event ->
     println("Scoop detected!")
 }
 ```
@@ -256,7 +256,7 @@ Sensey.getInstance().startScoopDetection { event ->
 | `PickupDeviceEvent.PutDown` | Device was put down |
 
 ```kotlin
-Sensey.getInstance().startPickupDeviceDetection { event ->
+Sensey.startPickupDeviceDetection { event ->
     when (event) {
         PickupDeviceEvent.PickedUp -> println("Picked up")
         PickupDeviceEvent.PutDown  -> println("Put down")
@@ -276,7 +276,7 @@ Sensey.getInstance().startPickupDeviceDetection { event ->
 | `OrientationEvent.RightSideUp` | Right edge pointing up |
 
 ```kotlin
-Sensey.getInstance().startOrientationDetection { event ->
+Sensey.startOrientationDetection { event ->
     when (event) {
         OrientationEvent.TopSideUp    -> println("Top up")
         OrientationEvent.BottomSideUp -> println("Bottom up")
@@ -289,7 +289,7 @@ Sensey.getInstance().startOrientationDetection { event ->
 With smoothness:
 
 ```kotlin
-Sensey.getInstance().startOrientationDetection(smoothness = 3) { event -> /* ... */ }
+Sensey.startOrientationDetection(smoothness = 3) { event -> /* ... */ }
 ```
 
 ---
@@ -307,7 +307,7 @@ Directions: `TiltDirectionTrigger.DIRECTION_CLOCKWISE` (0) or `TiltDirectionTrig
 The dominant axis (highest magnitude) is reported.
 
 ```kotlin
-Sensey.getInstance().startTiltDirectionDetection { event ->
+Sensey.startTiltDirectionDetection { event ->
     when (event) {
         is TiltDirectionEvent.AxisXTilt -> println("X: ${event.direction}")
         is TiltDirectionEvent.AxisYTilt -> println("Y: ${event.direction}")
@@ -327,7 +327,7 @@ Sensey.getInstance().startTiltDirectionDetection { event ->
 Fires only when at least one angle changes by more than 1 degree from the previous reading.
 
 ```kotlin
-Sensey.getInstance().startRotationAngleDetection { event ->
+Sensey.startRotationAngleDetection { event ->
     println("X: ${event.angleInAxisX}, Y: ${event.angleInAxisY}, Z: ${event.angleInAxisZ}")
 }
 ```
@@ -343,7 +343,7 @@ Sensey.getInstance().startRotationAngleDetection { event ->
 Requires `RECORD_AUDIO` permission.
 
 ```kotlin
-Sensey.getInstance().startSoundLevelDetection(context) { event ->
+Sensey.startSoundLevelDetection(context) { event ->
     println("Sound level: ${event.level} dB")
 }
 ```
@@ -361,7 +361,7 @@ Activity type: `StepDetectorUtil.ACTIVITY_STILL` (0), `ACTIVITY_WALKING` (1), `A
 Auto-selects `StepDetectorPostKitKat` (if step counter sensor available) or `StepDetectorPreKitKat` (accelerometer-based).
 
 ```kotlin
-Sensey.getInstance().startStepDetection(context, StepDetectorUtil.MALE) { event ->
+Sensey.startStepDetection(context, StepDetectorUtil.MALE) { event ->
     println("Steps: ${event.steps}, Distance: ${event.distanceInMeters}m")
 }
 ```
@@ -379,12 +379,12 @@ Requires touch events dispatched to Sensey via `setupDispatchTouchEvent`.
 ```kotlin
 // Override dispatchTouchEvent in Activity
 override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-    Sensey.getInstance().setupDispatchTouchEvent(event)
+    Sensey.setupDispatchTouchEvent(event)
     return super.dispatchTouchEvent(event)
 }
 
 // Start detection
-Sensey.getInstance().startPinchScaleDetection(context) { event ->
+Sensey.startPinchScaleDetection(context) { event ->
     if (event.isScalingOut) println("Scaling out: ${event.scaleFactor}")
     else println("Scaling in: ${event.scaleFactor}")
 }
@@ -412,12 +412,12 @@ Scroll directions: `SCROLL_DIR_UP`, `SCROLL_DIR_DOWN`, `SCROLL_DIR_LEFT`, `SCROL
 ```kotlin
 // Override dispatchTouchEvent in Activity
 override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-    Sensey.getInstance().setupDispatchTouchEvent(event)
+    Sensey.setupDispatchTouchEvent(event)
     return super.dispatchTouchEvent(event)
 }
 
 // Start detection
-Sensey.getInstance().startTouchTypeDetection(context) { event ->
+Sensey.startTouchTypeDetection(context) { event ->
     when (event) {
         TouchTypeEvent.DoubleTap -> println("Double tap")
         TouchTypeEvent.LongPress -> println("Long press")
