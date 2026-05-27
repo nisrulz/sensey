@@ -32,12 +32,10 @@ internal object RuntimePermissionUtil {
         rpResultListener: RPResultListener,
     ) {
         if (grantResults.isNotEmpty()) {
-            for (grantResult in grantResults) {
-                if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                    rpResultListener.onPermissionGranted()
-                } else {
-                    rpResultListener.onPermissionDenied()
-                }
+            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                rpResultListener.onPermissionGranted()
+            } else {
+                rpResultListener.onPermissionDenied()
             }
         }
     }
