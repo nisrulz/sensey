@@ -62,7 +62,7 @@ android {
     testOptions.unitTests.isIncludeAndroidResources = true
 
     lint {
-        abortOnError = false
+        abortOnError = true
     }
 }
 
