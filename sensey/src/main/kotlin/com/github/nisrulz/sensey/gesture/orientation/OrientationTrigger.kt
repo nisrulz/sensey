@@ -21,10 +21,14 @@ class OrientationTrigger(
     private val smoothness: Int = 1,
 ) : GestureTrigger<OrientationEvent> {
 
+    private val windowSize = smoothness.coerceAtLeast(1)
     private var eventOccurred = 0
     private var currentOrientation = ORIENTATION_PORTRAIT
-    private val pitches = FloatArray(smoothness)
-    private val rolls = FloatArray(smoothness)
+    private val pitches = FloatArray(windowSize)
+    private val rolls = FloatArray(windowSize)
+    private var pitchSum = 0f
+    private var rollSum = 0f
+    private var bufferIndex = 0
     private var bufferInitialized = false
 
     override fun evaluate(values: FloatArray, timestamp: Long): OrientationEvent? {
@@ -34,11 +38,22 @@ class OrientationTrigger(
         if (!bufferInitialized) {
             pitches.fill(pitch)
             rolls.fill(roll)
+            pitchSum = pitch * windowSize
+            rollSum = roll * windowSize
             bufferInitialized = true
         }
 
-        val averagePitch = addSmoothValue(pitch, pitches)
-        val averageRoll = addSmoothValue(roll, rolls)
+        val oldPitch = pitches[bufferIndex]
+        pitches[bufferIndex] = pitch
+        pitchSum = pitchSum - oldPitch + pitch
+        val averagePitch = pitchSum / windowSize
+
+        val oldRoll = rolls[bufferIndex]
+        rolls[bufferIndex] = roll
+        rollSum = rollSum - oldRoll + roll
+        val averageRoll = rollSum / windowSize
+
+        bufferIndex = (bufferIndex + 1) % windowSize
 
         currentOrientation = calculateOrientation(averagePitch, averageRoll, currentOrientation)
 
@@ -58,17 +73,6 @@ class OrientationTrigger(
             else -> null
         }
         return result
-    }
-
-    private fun addSmoothValue(value: Float, values: FloatArray): Float {
-        var average = 0f
-        for (i in 1 until smoothness) {
-            values[i - 1] = values[i]
-            average += values[i]
-        }
-        values[smoothness - 1] = value
-        average = (average + value) / smoothness
-        return average
     }
 
     private fun calculateOrientation(
