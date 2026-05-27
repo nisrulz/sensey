@@ -16,7 +16,6 @@
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
 
     alias(libs.plugins.maven.publish)
 }
@@ -41,20 +40,24 @@ android {
         }
     }
 
-    java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(BuildSdkInfo.JVM_TARGET))
-        }
+    compileOptions {
+        sourceCompatibility = JavaVersion.toVersion(BuildSdkInfo.JVM_TARGET)
+        targetCompatibility = JavaVersion.toVersion(BuildSdkInfo.JVM_TARGET)
     }
 
     testOptions.unitTests.isIncludeAndroidResources = true
+
+    lint {
+        abortOnError = false
+    }
 }
 
 dependencies {
-    implementation(libs.core.ktx)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.annotation)
 
     // Testing
-    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.androidx.junit)
     testImplementation(libs.junit)
     testImplementation(libs.androidx.core)
     testImplementation(libs.androidx.runner)

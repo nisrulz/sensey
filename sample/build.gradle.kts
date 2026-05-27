@@ -16,7 +16,6 @@
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -50,10 +49,9 @@ android {
         }
     }
 
-    java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(BuildSdkInfo.JVM_TARGET))
-        }
+    compileOptions {
+        sourceCompatibility = JavaVersion.toVersion(BuildSdkInfo.JVM_TARGET)
+        targetCompatibility = JavaVersion.toVersion(BuildSdkInfo.JVM_TARGET)
     }
 
     buildFeatures {
@@ -64,7 +62,7 @@ android {
 
 dependencies {
     // Support
-    implementation(libs.appcompat)
+    implementation(libs.androidx.appcompat)
 
     // Module Dependency
     implementation(projects.sensey)
