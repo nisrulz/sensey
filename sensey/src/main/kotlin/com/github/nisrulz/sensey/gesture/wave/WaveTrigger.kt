@@ -18,21 +18,25 @@ package com.github.nisrulz.sensey.gesture.wave
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
 class WaveTrigger(
-    private val threshold: Float = 1000f,
+    private val timeWindowMillis: Float = 1000f,
+    private val debounceMillis: Long = 1000L,
 ) : GestureTrigger<WaveEvent> {
 
     private var lastProximityEventTime = 0L
     private var lastProximityState = FAR
+    private var lastWaveTime = 0L
 
     override fun evaluate(values: FloatArray, timestamp: Long): WaveEvent? {
         val distance = values[0]
         val proximityState = if (distance == 0f) NEAR else FAR
 
         val eventDeltaMillis = timestamp - lastProximityEventTime
-        val result = if (eventDeltaMillis < threshold
+        val result = if ((lastWaveTime == 0L || timestamp - lastWaveTime > debounceMillis)
+            && eventDeltaMillis < timeWindowMillis
             && NEAR == lastProximityState
             && FAR == proximityState
         ) {
+            lastWaveTime = timestamp
             WaveEvent.Waved
         } else {
             null

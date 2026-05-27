@@ -237,8 +237,11 @@ class Sensey private constructor() {
         startLibrarySensorDetection(WaveDetector(WaveTrigger(), dispatcher), dispatcher)
     }
 
-    fun startWaveDetection(threshold: Float, dispatcher: (WaveEvent) -> Unit) {
-        startLibrarySensorDetection(WaveDetector(WaveTrigger(threshold), dispatcher), dispatcher)
+    fun startWaveDetection(timeWindowMillis: Float, dispatcher: (WaveEvent) -> Unit) {
+        startLibrarySensorDetection(
+            WaveDetector(WaveTrigger(timeWindowMillis = timeWindowMillis), dispatcher),
+            dispatcher,
+        )
     }
 
     fun startWristTwistDetection(dispatcher: (WristTwistEvent) -> Unit) {
