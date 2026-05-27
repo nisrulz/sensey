@@ -42,6 +42,7 @@ class SoundLevelDetector(
         }
 
         val audioBuffer = ShortArray(bufferSize / 2)
+        val floats = FloatArray(bufferSize / 2)
         val audioRecord = AudioRecord(
             AUDIO_SOURCE,
             sampleRate,
@@ -60,11 +61,10 @@ class SoundLevelDetector(
 
         while (shouldContinueProcessing) {
             val numberOfShorts = audioRecord.read(audioBuffer, 0, audioBuffer.size)
-            val floats = FloatArray(numberOfShorts)
             for (i in 0 until numberOfShorts) {
                 floats[i] = audioBuffer[i].toFloat()
             }
-            val event = trigger.evaluate(floats, System.currentTimeMillis())
+            val event = trigger.evaluate(floats.copyOfRange(0, numberOfShorts), System.currentTimeMillis())
             event?.let(dispatcher)
         }
 
