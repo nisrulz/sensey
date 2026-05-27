@@ -26,18 +26,18 @@ internal class RotationAngleTrigger(
         values: FloatArray,
         timestamp: Long,
     ): RotationAngleEvent? {
-        val (ax, ay, az) = values
-        val event = RotationAngleEvent(ax, ay, az)
+        val event = RotationAngleEvent(values[0], values[1], values[2])
+        val previous = lastEvent
+        lastEvent = event
 
-        return if (lastEvent == null ||
-            kotlin.math.abs(ax - lastEvent!!.angleInAxisX) > minAngleChange ||
-            kotlin.math.abs(ay - lastEvent!!.angleInAxisY) > minAngleChange ||
-            kotlin.math.abs(az - lastEvent!!.angleInAxisZ) > minAngleChange
-        ) {
-            lastEvent = event
-            event
-        } else {
-            null
-        }
+        return if (previous == null || hasSignificantChange(event, previous)) event else null
     }
+
+    private fun hasSignificantChange(
+        current: RotationAngleEvent,
+        previous: RotationAngleEvent,
+    ): Boolean =
+        kotlin.math.abs(current.angleInAxisX - previous.angleInAxisX) > minAngleChange ||
+            kotlin.math.abs(current.angleInAxisY - previous.angleInAxisY) > minAngleChange ||
+            kotlin.math.abs(current.angleInAxisZ - previous.angleInAxisZ) > minAngleChange
 }

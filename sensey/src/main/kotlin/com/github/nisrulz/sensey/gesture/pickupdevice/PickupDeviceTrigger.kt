@@ -34,27 +34,21 @@ internal class PickupDeviceTrigger(
         values: FloatArray,
         timestamp: Long,
     ): PickupDeviceEvent? {
-        val vm =
-            sqrt(
-                (values[0] * values[0] + values[1] * values[1] + values[2] * values[2]).toDouble(),
-            ).toFloat()
-
-        buffer.addLast(vm)
+        val magnitude = computeMagnitude(values)
+        buffer.addLast(magnitude)
         if (buffer.size > windowSize) buffer.removeFirst()
-
         if (buffer.size < 3) return null
 
         val range = buffer.max() - buffer.min()
-        val meanVm = buffer.sum() / buffer.size
+        val mean = buffer.sum() / buffer.size
 
         return when {
-            !isHeld && range > movingRange -> {
+            isPickedUp(range) -> {
                 isHeld = true
                 settleCount = 0
                 PickupDeviceEvent.PickedUp
             }
-
-            isHeld && meanVm in gravityLower..gravityUpper && range <= stableRange -> {
+            isPutDown(mean, range) -> {
                 settleCount++
                 if (settleCount >= settleReadings) {
                     isHeld = false
@@ -63,11 +57,20 @@ internal class PickupDeviceTrigger(
                     null
                 }
             }
-
             else -> {
                 if (isHeld) settleCount = 0
                 null
             }
         }
     }
+
+    private fun computeMagnitude(values: FloatArray): Float =
+        sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2])
+
+    private fun isPickedUp(range: Float): Boolean = !isHeld && range > movingRange
+
+    private fun isPutDown(
+        mean: Float,
+        range: Float,
+    ): Boolean = isHeld && mean in gravityLower..gravityUpper && range <= stableRange
 }

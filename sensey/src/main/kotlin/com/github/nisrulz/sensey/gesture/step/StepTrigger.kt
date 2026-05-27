@@ -42,16 +42,9 @@ internal class StepTrigger(
         sensorValue: Float,
         timestamp: Long,
     ): StepEvent? {
-        if (baseStepCount < 1) {
-            baseStepCount = sensorValue.toInt()
-        }
-        val currentSteps = sensorValue.toInt() - baseStepCount
-        steps = currentSteps
-        val distance = StepDetectorUtil.getDistanceCovered(steps, gender)
-        val timeDelta = timestamp - startTime
-        startTime = timestamp
-        val activityType = StepDetectorUtil.getStepActivityType(distance, timeDelta)
-        return StepEvent(steps, distance, activityType)
+        if (baseStepCount < 1) baseStepCount = sensorValue.toInt()
+        steps = sensorValue.toInt() - baseStepCount
+        return buildStepEvent(timestamp)
     }
 
     private fun evaluateAccelerometer(
@@ -59,11 +52,12 @@ internal class StepTrigger(
         timestamp: Long,
     ): StepEvent? {
         val magnitude = sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2])
-        if (abs(magnitude - previousMagnitude) > threshold) {
-            steps++
-        }
+        if (abs(magnitude - previousMagnitude) > threshold) steps++
         previousMagnitude = magnitude
+        return buildStepEvent(timestamp)
+    }
 
+    private fun buildStepEvent(timestamp: Long): StepEvent {
         val distance = StepDetectorUtil.getDistanceCovered(steps, gender)
         val timeDelta = timestamp - startTime
         startTime = timestamp

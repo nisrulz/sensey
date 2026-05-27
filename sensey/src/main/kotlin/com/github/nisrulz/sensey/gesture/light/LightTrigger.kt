@@ -21,27 +21,31 @@ internal class LightTrigger(
     private val darkThreshold: Float = 8f,
     private val lightThreshold: Float = 12f,
 ) : GestureTrigger<LightEvent> {
-    private var lastWasDark = true
-    private var ready = false
+    private var wasDark = true
+    private var hasBaseline = false
 
     override fun evaluate(
         values: FloatArray,
         timestamp: Long,
     ): LightEvent? {
         val lux = values[0]
-        if (!ready) {
-            ready = true
-            lastWasDark = lux < lightThreshold
-            return if (lux < darkThreshold) LightEvent.Dark else LightEvent.Light
+        if (!hasBaseline) return initializeBaseline(lux)
+        return when {
+            lux < darkThreshold && !wasDark -> {
+                wasDark = true
+                LightEvent.Dark
+            }
+            lux > lightThreshold && wasDark -> {
+                wasDark = false
+                LightEvent.Light
+            }
+            else -> null
         }
-        return if (lux < darkThreshold && !lastWasDark) {
-            lastWasDark = true
-            LightEvent.Dark
-        } else if (lux > lightThreshold && lastWasDark) {
-            lastWasDark = false
-            LightEvent.Light
-        } else {
-            null
-        }
+    }
+
+    private fun initializeBaseline(lux: Float): LightEvent {
+        wasDark = lux < lightThreshold
+        hasBaseline = true
+        return if (lux < darkThreshold) LightEvent.Dark else LightEvent.Light
     }
 }

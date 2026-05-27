@@ -22,43 +22,53 @@ internal class ShakeTrigger(
     private val threshold: Float = 3f,
     private val timeBeforeDeclaringShakeStopped: Long = 1000L,
 ) : GestureTrigger<ShakeEvent> {
-    private var mAccel = 0f
-    private var mAccelCurrent = 0f
+    private var accelCurrent = 0f
+    private var accelDelta = 0f
     private var isShaking = false
-    private var lastTimeShakeDetected = 0L
-    private var ready = false
+    private var lastShakeTime = 0L
+    private var hasBaseline = false
 
     override fun evaluate(
         values: FloatArray,
         timestamp: Long,
     ): ShakeEvent? {
-        val (x, y, z) = values
-        val newMag = sqrt(x * x + y * y + z * z)
+        val magnitude = computeMagnitude(values)
+        if (!hasBaseline) return initializeBaseline(magnitude)
 
-        if (!ready) {
-            mAccelCurrent = newMag
-            mAccel = 0f
-            ready = true
-            return null
+        val delta = magnitude - accelCurrent
+        accelCurrent = magnitude
+        accelDelta = accelDelta * SMOOTHING_FACTOR + delta
+
+        if (isShakingStopped(timestamp)) {
+            isShaking = false
+            return ShakeEvent.Stopped
         }
 
-        val mAccelLast = mAccelCurrent
-        mAccelCurrent = newMag
-        val delta = mAccelCurrent - mAccelLast
-        mAccel = mAccel * 0.9f + delta
-
-        return if (mAccel > threshold) {
-            lastTimeShakeDetected = timestamp
+        if (accelDelta > threshold) {
+            lastShakeTime = timestamp
             isShaking = true
-            ShakeEvent.Detected
-        } else {
-            val timeDelta = timestamp - lastTimeShakeDetected
-            if (timeDelta > timeBeforeDeclaringShakeStopped && isShaking) {
-                isShaking = false
-                ShakeEvent.Stopped
-            } else {
-                null
-            }
+            return ShakeEvent.Detected
         }
+
+        return null
+    }
+
+    private fun initializeBaseline(magnitude: Float): Nothing? {
+        accelCurrent = magnitude
+        accelDelta = 0f
+        hasBaseline = true
+        return null
+    }
+
+    private fun computeMagnitude(values: FloatArray): Float =
+        sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2])
+
+    private fun isShakingStopped(timestamp: Long): Boolean {
+        val timeSinceLastShake = timestamp - lastShakeTime
+        return timeSinceLastShake > timeBeforeDeclaringShakeStopped && isShaking
+    }
+
+    companion object {
+        private const val SMOOTHING_FACTOR = 0.9f
     }
 }

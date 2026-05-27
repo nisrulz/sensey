@@ -31,15 +31,19 @@ internal class FlipTrigger(
     ): FlipEvent? {
         val z = values[2]
         return when {
-            z > faceUpLowerBound && z < faceUpUpperBound && eventOccurred != 1 -> {
+            isFaceUp(z) && eventOccurred != 1 -> {
                 eventOccurred = 1
                 FlipEvent.FaceUp
             }
-            z > faceDownLowerBound && z < faceDownUpperBound && eventOccurred != 2 -> {
+            isFaceDown(z) && eventOccurred != 2 -> {
                 eventOccurred = 2
                 FlipEvent.FaceDown
             }
             else -> null
         }
     }
+
+    private fun isFaceUp(z: Float): Boolean = z in faceUpLowerBound..faceUpUpperBound
+
+    private fun isFaceDown(z: Float): Boolean = z in faceDownLowerBound..faceDownUpperBound
 }

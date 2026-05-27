@@ -24,24 +24,20 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputScope
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.SensorDetector
+import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GesturePlugin
-import com.github.nisrulz.sensey.gesture.chop.ChopDetector
 import com.github.nisrulz.sensey.gesture.chop.ChopEvent
 import com.github.nisrulz.sensey.gesture.chop.ChopTrigger
 import com.github.nisrulz.sensey.gesture.compose.ComposeGestureProvider
-import com.github.nisrulz.sensey.gesture.flip.FlipDetector
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipTrigger
-import com.github.nisrulz.sensey.gesture.light.LightDetector
 import com.github.nisrulz.sensey.gesture.light.LightEvent
 import com.github.nisrulz.sensey.gesture.light.LightTrigger
-import com.github.nisrulz.sensey.gesture.movement.MovementDetector
 import com.github.nisrulz.sensey.gesture.movement.MovementEvent
 import com.github.nisrulz.sensey.gesture.movement.MovementTrigger
 import com.github.nisrulz.sensey.gesture.orientation.OrientationDetector
 import com.github.nisrulz.sensey.gesture.orientation.OrientationEvent
 import com.github.nisrulz.sensey.gesture.orientation.OrientationTrigger
-import com.github.nisrulz.sensey.gesture.pickupdevice.PickupDeviceDetector
 import com.github.nisrulz.sensey.gesture.pickupdevice.PickupDeviceEvent
 import com.github.nisrulz.sensey.gesture.pickupdevice.PickupDeviceTrigger
 import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleEvent
@@ -52,30 +48,23 @@ import com.github.nisrulz.sensey.gesture.proximity.ProximityTrigger
 import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleDetector
 import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleEvent
 import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleTrigger
-import com.github.nisrulz.sensey.gesture.scoop.ScoopDetector
 import com.github.nisrulz.sensey.gesture.scoop.ScoopEvent
 import com.github.nisrulz.sensey.gesture.scoop.ScoopTrigger
-import com.github.nisrulz.sensey.gesture.shake.ShakeDetector
 import com.github.nisrulz.sensey.gesture.shake.ShakeEvent
 import com.github.nisrulz.sensey.gesture.shake.ShakeTrigger
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelDetector
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelEvent
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelTrigger
-import com.github.nisrulz.sensey.gesture.step.StepDetectorPostKitKat
 import com.github.nisrulz.sensey.gesture.step.StepEvent
 import com.github.nisrulz.sensey.gesture.step.StepTrigger
-import com.github.nisrulz.sensey.gesture.taponback.TapOnBackDetector
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackTrigger
-import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionDetector
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionTrigger
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeTrigger
-import com.github.nisrulz.sensey.gesture.wave.WaveDetector
 import com.github.nisrulz.sensey.gesture.wave.WaveEvent
 import com.github.nisrulz.sensey.gesture.wave.WaveTrigger
-import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistDetector
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistTrigger
 
@@ -87,14 +76,20 @@ fun shakePlugin(
     SensorGesturePlugin(
         key = "ShakePlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
-        detectorFactory = { ShakeDetector(ShakeTrigger(threshold, timeBeforeDeclaringShakeStopped), dispatcher) },
+        detectorFactory = {
+            TypedSensorDetector(
+                ShakeTrigger(threshold, timeBeforeDeclaringShakeStopped),
+                dispatcher,
+                Sensor.TYPE_ACCELEROMETER,
+            )
+        },
     )
 
 fun flipPlugin(dispatcher: (FlipEvent) -> Unit): GesturePlugin =
     SensorGesturePlugin(
         key = "FlipPlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
-        detectorFactory = { FlipDetector(FlipTrigger(), dispatcher) },
+        detectorFactory = { TypedSensorDetector(FlipTrigger(), dispatcher, Sensor.TYPE_ACCELEROMETER) },
     )
 
 fun lightPlugin(
@@ -104,7 +99,13 @@ fun lightPlugin(
     SensorGesturePlugin(
         key = "LightPlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_LIGHT),
-        detectorFactory = { LightDetector(LightTrigger(darkThreshold = darkThreshold), dispatcher) },
+        detectorFactory = {
+            TypedSensorDetector(
+                LightTrigger(darkThreshold = darkThreshold),
+                dispatcher,
+                Sensor.TYPE_LIGHT,
+            )
+        },
     )
 
 fun proximityPlugin(dispatcher: (ProximityEvent) -> Unit): GesturePlugin =
@@ -122,7 +123,13 @@ fun movementPlugin(
     SensorGesturePlugin(
         key = "MovementPlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
-        detectorFactory = { MovementDetector(MovementTrigger(threshold, timeBeforeDeclaringStationary), dispatcher) },
+        detectorFactory = {
+            TypedSensorDetector(
+                MovementTrigger(threshold, timeBeforeDeclaringStationary),
+                dispatcher,
+                Sensor.TYPE_ACCELEROMETER,
+            )
+        },
     )
 
 fun orientationPlugin(
@@ -143,7 +150,9 @@ fun chopPlugin(
     SensorGesturePlugin(
         key = "ChopPlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
-        detectorFactory = { ChopDetector(ChopTrigger(threshold, timeForChopGesture), dispatcher) },
+        detectorFactory = {
+            TypedSensorDetector(ChopTrigger(threshold, timeForChopGesture), dispatcher, Sensor.TYPE_ACCELEROMETER)
+        },
     )
 
 fun wristTwistPlugin(
@@ -154,7 +163,13 @@ fun wristTwistPlugin(
     SensorGesturePlugin(
         key = "WristTwistPlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
-        detectorFactory = { WristTwistDetector(WristTwistTrigger(threshold, timeForWristTwistGesture), dispatcher) },
+        detectorFactory = {
+            TypedSensorDetector(
+                WristTwistTrigger(threshold, timeForWristTwistGesture),
+                dispatcher,
+                Sensor.TYPE_ACCELEROMETER,
+            )
+        },
     )
 
 fun wavePlugin(
@@ -165,7 +180,9 @@ fun wavePlugin(
     SensorGesturePlugin(
         key = "WavePlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_PROXIMITY),
-        detectorFactory = { WaveDetector(WaveTrigger(timeWindowMillis, debounceMillis), dispatcher) },
+        detectorFactory = {
+            TypedSensorDetector(WaveTrigger(timeWindowMillis, debounceMillis), dispatcher, Sensor.TYPE_PROXIMITY)
+        },
     )
 
 fun scoopPlugin(
@@ -175,14 +192,14 @@ fun scoopPlugin(
     SensorGesturePlugin(
         key = "ScoopPlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
-        detectorFactory = { ScoopDetector(ScoopTrigger(threshold), dispatcher) },
+        detectorFactory = { TypedSensorDetector(ScoopTrigger(threshold), dispatcher, Sensor.TYPE_ACCELEROMETER) },
     )
 
 fun pickupDevicePlugin(dispatcher: (PickupDeviceEvent) -> Unit): GesturePlugin =
     SensorGesturePlugin(
         key = "PickupDevicePlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
-        detectorFactory = { PickupDeviceDetector(PickupDeviceTrigger(), dispatcher) },
+        detectorFactory = { TypedSensorDetector(PickupDeviceTrigger(), dispatcher, Sensor.TYPE_ACCELEROMETER) },
     )
 
 fun tapOnBackPlugin(
@@ -196,9 +213,10 @@ fun tapOnBackPlugin(
         key = "TapOnBackPlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_ACCELEROMETER),
         detectorFactory = {
-            TapOnBackDetector(
+            TypedSensorDetector(
                 TapOnBackTrigger(angleThreshold, minAngleJerk, tapDebounceMs, tapSequenceTimeoutMs),
                 dispatcher,
+                Sensor.TYPE_ACCELEROMETER,
             )
         },
     )
@@ -210,7 +228,7 @@ fun tiltDirectionPlugin(
     SensorGesturePlugin(
         key = "TiltDirectionPlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_GYROSCOPE),
-        detectorFactory = { TiltDirectionDetector(TiltDirectionTrigger(threshold), dispatcher) },
+        detectorFactory = { TypedSensorDetector(TiltDirectionTrigger(threshold), dispatcher, Sensor.TYPE_GYROSCOPE) },
     )
 
 fun rotationAnglePlugin(
@@ -231,7 +249,7 @@ fun stepPlugin(
     SensorGesturePlugin(
         key = "StepPlugin",
         sensorTypes = intArrayOf(Sensor.TYPE_STEP_COUNTER),
-        detectorFactory = { StepDetectorPostKitKat(StepTrigger(gender, threshold), dispatcher) },
+        detectorFactory = { TypedSensorDetector(StepTrigger(gender, threshold), dispatcher, Sensor.TYPE_STEP_COUNTER) },
     )
 
 fun pinchScalePlugin(
@@ -277,7 +295,7 @@ private class PinchScalePlugin(
         sensey.registerComposeGestureProvider(ComposeGestureProvider { installPinchScale() })
     }
 
-    override fun onUnregister(sensey: Sensey) {}
+    override fun onUnregister(sensey: Sensey) = Unit
 
     private suspend fun PointerInputScope.installPinchScale() {
         detectTransformGestures { _, _, zoom, _ ->
@@ -297,17 +315,17 @@ private class TouchTypePlugin(
     private var dragStart = Offset.Zero
 
     override fun onRegister(sensey: Sensey) {
-        sensey.registerComposeGestureProvider(ComposeGestureProvider { installTouchType() })
-        sensey.registerComposeGestureProvider(ComposeGestureProvider { installDragType() })
+        sensey.registerComposeGestureProvider(ComposeGestureProvider { installTapGestures() })
+        sensey.registerComposeGestureProvider(ComposeGestureProvider { installDragGestures() })
     }
 
-    override fun onUnregister(sensey: Sensey) {}
+    override fun onUnregister(sensey: Sensey) = Unit
 
-    private suspend fun PointerInputScope.installTouchType() {
+    private suspend fun PointerInputScope.installTapGestures() {
         detectTapGestures(
             onTap = {
                 val now = System.currentTimeMillis()
-                tapCount = if (now - lastTapTime <= 400L) tapCount + 1 else 1
+                tapCount = if (now - lastTapTime <= TAP_GAP_MS) tapCount + 1 else 1
                 lastTapTime = now
                 if (tapCount >= 3) {
                     tapCount = 0
@@ -316,41 +334,38 @@ private class TouchTypePlugin(
                     dispatcher(TouchTypeEvent.SingleTap)
                 }
             },
-            onDoubleTap = {
-                dispatcher(TouchTypeEvent.DoubleTap)
-            },
-            onLongPress = {
-                dispatcher(TouchTypeEvent.LongPress)
-            },
+            onDoubleTap = { dispatcher(TouchTypeEvent.DoubleTap) },
+            onLongPress = { dispatcher(TouchTypeEvent.LongPress) },
         )
     }
 
-    private suspend fun PointerInputScope.installDragType() {
+    private suspend fun PointerInputScope.installDragGestures() {
         detectDragGestures(
-            onDragStart = { startOffset ->
-                dragStart = startOffset
-            },
+            onDragStart = { dragStart = it },
             onDrag = { change, dragAmount ->
                 change.consume()
-                val totalDelta = change.position - dragStart
-                val isSwipe = kotlin.math.abs(dragAmount.x) > 200f || kotlin.math.abs(dragAmount.y) > 200f
                 val event =
                     trigger.evaluate(
-                        floatArrayOf(totalDelta.x, totalDelta.y, dragAmount.x, dragAmount.y),
+                        floatArrayOf(
+                            (change.position - dragStart).x,
+                            (change.position - dragStart).y,
+                            dragAmount.x,
+                            dragAmount.y,
+                        ),
                         System.currentTimeMillis(),
                     )
-                event?.let { e ->
-                    when (e) {
-                        is TouchTypeEvent.Swipe -> dispatcher(e)
-                        is TouchTypeEvent.Scroll -> dispatcher(e)
-                        else -> {}
-                    }
+                when (event) {
+                    is TouchTypeEvent.Swipe -> dispatcher(event)
+                    is TouchTypeEvent.Scroll -> dispatcher(event)
+                    else -> {}
                 }
             },
-            onDragEnd = {
-                dragStart = Offset.Zero
-            },
+            onDragEnd = { dragStart = Offset.Zero },
         )
+    }
+
+    companion object {
+        private const val TAP_GAP_MS = 400L
     }
 }
 

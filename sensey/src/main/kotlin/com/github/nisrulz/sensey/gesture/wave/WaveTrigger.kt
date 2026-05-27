@@ -29,16 +29,10 @@ internal class WaveTrigger(
         values: FloatArray,
         timestamp: Long,
     ): WaveEvent? {
-        val distance = values[0]
-        val proximityState = if (distance == 0f) NEAR else FAR
+        val proximityState = if (values[0] == 0f) NEAR else FAR
 
-        val eventDeltaMillis = timestamp - lastProximityEventTime
         val result =
-            if ((lastWaveTime == 0L || timestamp - lastWaveTime > debounceMillis) &&
-                eventDeltaMillis < timeWindowMillis &&
-                NEAR == lastProximityState &&
-                FAR == proximityState
-            ) {
+            if (isWaveDetected(timestamp, proximityState)) {
                 lastWaveTime = timestamp
                 WaveEvent.Waved
             } else {
@@ -48,6 +42,16 @@ internal class WaveTrigger(
         lastProximityEventTime = timestamp
         lastProximityState = proximityState
         return result
+    }
+
+    private fun isWaveDetected(
+        timestamp: Long,
+        proximityState: Int,
+    ): Boolean {
+        val isPastDebounce = lastWaveTime == 0L || timestamp - lastWaveTime > debounceMillis
+        val isWithinTimeWindow = timestamp - lastProximityEventTime < timeWindowMillis
+        val isFarTransition = lastProximityState == NEAR && proximityState == FAR
+        return isPastDebounce && isWithinTimeWindow && isFarTransition
     }
 
     private companion object {

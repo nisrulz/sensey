@@ -24,29 +24,34 @@ internal class ChopTrigger(
     private val timeForChopGesture: Long = 700L,
 ) : GestureTrigger<ChopEvent> {
     private var isGestureInProgress = false
-    private var lastTimeChopDetected = 0L
+    private var lastChopTime = 0L
 
     override fun evaluate(
         values: FloatArray,
         timestamp: Long,
     ): ChopEvent? {
-        val (x, y, z) = values
-        val magnitude = sqrt(x * x + y * y + z * z)
-        val linearMagnitude = abs(magnitude - GRAVITY_EARTH)
-
-        if (linearMagnitude > threshold) {
-            lastTimeChopDetected = timestamp
+        val linearAccel = computeLinearAcceleration(values)
+        if (linearAccel > threshold) {
+            lastChopTime = timestamp
             isGestureInProgress = true
             return null
         }
-
-        val timeDelta = timestamp - lastTimeChopDetected
-        return if (timeDelta > timeForChopGesture && isGestureInProgress) {
+        return if (hasGestureCompleted(timestamp)) {
             isGestureInProgress = false
             ChopEvent.Chopped
         } else {
             null
         }
+    }
+
+    private fun computeLinearAcceleration(values: FloatArray): Float {
+        val magnitude = sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2])
+        return abs(magnitude - GRAVITY_EARTH)
+    }
+
+    private fun hasGestureCompleted(timestamp: Long): Boolean {
+        val timeSinceLastMotion = timestamp - lastChopTime
+        return timeSinceLastMotion > timeForChopGesture && isGestureInProgress
     }
 
     companion object {

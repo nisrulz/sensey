@@ -24,29 +24,34 @@ internal class WristTwistTrigger(
     private val timeForWristTwistGesture: Long = 1000L,
 ) : GestureTrigger<WristTwistEvent> {
     private var isGestureInProgress = false
-    private var lastTimeWristTwistDetected = 0L
+    private var lastTwistTime = 0L
 
     override fun evaluate(
         values: FloatArray,
         timestamp: Long,
     ): WristTwistEvent? {
-        val (x, y, z) = values
-        val magnitude = sqrt(x * x + y * y + z * z)
-        val linearMagnitude = abs(magnitude - GRAVITY_EARTH)
-
-        if (linearMagnitude > threshold) {
-            lastTimeWristTwistDetected = timestamp
+        val linearAccel = computeLinearAcceleration(values)
+        if (linearAccel > threshold) {
+            lastTwistTime = timestamp
             isGestureInProgress = true
             return null
         }
-
-        val timeDelta = timestamp - lastTimeWristTwistDetected
-        return if (timeDelta > timeForWristTwistGesture && isGestureInProgress) {
+        return if (hasGestureCompleted(timestamp)) {
             isGestureInProgress = false
             WristTwistEvent.Twisted
         } else {
             null
         }
+    }
+
+    private fun computeLinearAcceleration(values: FloatArray): Float {
+        val magnitude = sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2])
+        return abs(magnitude - GRAVITY_EARTH)
+    }
+
+    private fun hasGestureCompleted(timestamp: Long): Boolean {
+        val timeSinceLastMotion = timestamp - lastTwistTime
+        return timeSinceLastMotion > timeForWristTwistGesture && isGestureInProgress
     }
 
     companion object {

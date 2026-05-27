@@ -26,11 +26,11 @@ internal class TapOnBackTrigger(
     private val tapDebounceMs: Long = 250L,
     private val tapSequenceTimeoutMs: Long = 500L,
 ) : GestureTrigger<TapOnBackEvent> {
-    private var axBaseline = 0f
-    private var ayBaseline = 0f
-    private var azBaseline = 9.8f
+    private var baselineX = 0f
+    private var baselineY = 0f
+    private var baselineZ = GRAVITY_EARTH
     private var hasBaseline = false
-    private var prevAngleDeg = 0f
+    private var previousAngleDeg = 0f
     private var lastTapTime = 0L
     private var tapCount = 0
 
@@ -39,40 +39,68 @@ internal class TapOnBackTrigger(
         timestamp: Long,
     ): TapOnBackEvent? {
         val (ax, ay, az) = values
-
         val accelMag = sqrt(ax * ax + ay * ay + az * az)
+        updateBaseline(ax, ay, az)
 
-        if (hasBaseline) {
-            axBaseline = axBaseline * 0.95f + ax * 0.05f
-            ayBaseline = ayBaseline * 0.95f + ay * 0.05f
-            azBaseline = azBaseline * 0.95f + az * 0.05f
-        } else {
-            axBaseline = ax
-            ayBaseline = ay
-            azBaseline = az
-            hasBaseline = true
-        }
+        val angleDeg = computeAngleFromBaseline(ax, ay, az, accelMag)
+        val angleJerk = abs(angleDeg - previousAngleDeg)
+        previousAngleDeg = angleDeg
 
-        val baseMag = sqrt(axBaseline * axBaseline + ayBaseline * ayBaseline + azBaseline * azBaseline)
-        val dot = ax * axBaseline + ay * ayBaseline + az * azBaseline
-        val cosAngle = (dot / (accelMag * baseMag)).coerceIn(-1f, 1f)
-        val angleDeg = Math.toDegrees(acos(cosAngle.toDouble())).toFloat()
-
-        val angleJerk = abs(angleDeg - prevAngleDeg)
-        prevAngleDeg = angleDeg
-
-        if (angleDeg > angleThreshold && timestamp - lastTapTime > tapDebounceMs && angleJerk > minAngleJerk) {
+        if (isValidTap(angleDeg, angleJerk, timestamp)) {
             tapCount++
             lastTapTime = timestamp
             return null
         }
 
-        if (tapCount > 0 && timestamp - lastTapTime > tapSequenceTimeoutMs) {
+        return if (tapCount > 0 && timestamp - lastTapTime > tapSequenceTimeoutMs) {
             val event = if (tapCount >= 2) TapOnBackEvent else null
             tapCount = 0
-            return event
+            event
+        } else {
+            null
         }
+    }
 
-        return null
+    private fun updateBaseline(
+        ax: Float,
+        ay: Float,
+        az: Float,
+    ) {
+        if (hasBaseline) {
+            baselineX = baselineX * SMOOTHING_ALPHA + ax * (1f - SMOOTHING_ALPHA)
+            baselineY = baselineY * SMOOTHING_ALPHA + ay * (1f - SMOOTHING_ALPHA)
+            baselineZ = baselineZ * SMOOTHING_ALPHA + az * (1f - SMOOTHING_ALPHA)
+        } else {
+            baselineX = ax
+            baselineY = ay
+            baselineZ = az
+            hasBaseline = true
+        }
+    }
+
+    private fun computeAngleFromBaseline(
+        ax: Float,
+        ay: Float,
+        az: Float,
+        accelMag: Float,
+    ): Float {
+        val baseMag = sqrt(baselineX * baselineX + baselineY * baselineY + baselineZ * baselineZ)
+        val dotProduct = ax * baselineX + ay * baselineY + az * baselineZ
+        val cosAngle = (dotProduct / (accelMag * baseMag)).coerceIn(-1f, 1f)
+        return Math.toDegrees(acos(cosAngle.toDouble())).toFloat()
+    }
+
+    private fun isValidTap(
+        angleDeg: Float,
+        angleJerk: Float,
+        timestamp: Long,
+    ): Boolean =
+        angleDeg > angleThreshold &&
+            timestamp - lastTapTime > tapDebounceMs &&
+            angleJerk > minAngleJerk
+
+    companion object {
+        private const val GRAVITY_EARTH = 9.8f
+        private const val SMOOTHING_ALPHA = 0.95f
     }
 }
