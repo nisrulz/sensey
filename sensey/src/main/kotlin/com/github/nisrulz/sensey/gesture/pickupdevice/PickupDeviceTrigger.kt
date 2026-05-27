@@ -19,24 +19,52 @@ import com.github.nisrulz.sensey.contract.GestureTrigger
 import kotlin.math.sqrt
 
 class PickupDeviceTrigger(
-    private val vectorSumThreshold: Double = 11.0,
-    private val settledThreshold: Double = 10.2,
+    private val stableRange: Float = 0.5f,
+    private val movingRange: Float = 1.5f,
+    private val gravityLower: Float = 9.0f,
+    private val gravityUpper: Float = 10.5f,
+    private val windowSize: Int = 8,
+    private val settleReadings: Int = 6,
 ) : GestureTrigger<PickupDeviceEvent> {
 
-    private var wasPickedUp = false
+    private val buffer = mutableListOf<Float>()
+    private var isHeld = false
+    private var settleCount = 0
 
     override fun evaluate(values: FloatArray, timestamp: Long): PickupDeviceEvent? {
-        val (x, y, z) = values
-        val vectorSum = sqrt(x * x + y * y + z * z)
+        val vm = sqrt(
+            (values[0] * values[0] + values[1] * values[1] + values[2] * values[2]).toDouble(),
+        ).toFloat()
 
-        return if (vectorSum > vectorSumThreshold) {
-            wasPickedUp = true
-            PickupDeviceEvent.PickedUp
-        } else if (wasPickedUp && vectorSum < settledThreshold) {
-            wasPickedUp = false
-            PickupDeviceEvent.PutDown
-        } else {
-            null
+        buffer.add(vm)
+        if (buffer.size > windowSize) buffer.removeAt(0)
+
+        if (buffer.size < 3) return null
+
+        val range = buffer.max() - buffer.min()
+        val meanVm = buffer.sum() / buffer.size
+
+        return when {
+            !isHeld && range > movingRange -> {
+                isHeld = true
+                settleCount = 0
+                PickupDeviceEvent.PickedUp
+            }
+
+            isHeld && meanVm in gravityLower..gravityUpper && range <= stableRange -> {
+                settleCount++
+                if (settleCount >= settleReadings) {
+                    isHeld = false
+                    PickupDeviceEvent.PutDown
+                } else {
+                    null
+                }
+            }
+
+            else -> {
+                if (isHeld) settleCount = 0
+                null
+            }
         }
     }
 }
