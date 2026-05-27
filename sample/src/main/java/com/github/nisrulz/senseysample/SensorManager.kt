@@ -141,8 +141,8 @@ internal class SensorManager(
     private val movementDispatcher: (MovementEvent) -> Unit =
         withHaptic { event: MovementEvent ->
             when (event) {
-                MovementEvent.Moved -> setResultText("Movement Detected!", false)
-                MovementEvent.Stationary -> setResultText("Device Stationary!", false)
+                is MovementEvent.Moved -> setResultText("Movement Detected!", false)
+                is MovementEvent.Stationary -> setResultText("Device Stationary!", false)
             }
         }
 

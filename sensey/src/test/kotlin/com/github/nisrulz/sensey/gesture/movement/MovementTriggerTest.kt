@@ -20,12 +20,7 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class MovementTriggerTest {
-    private val trigger =
-        MovementTrigger(
-            threshold = 0.3f,
-            timeBeforeDeclaringStationary = 5000L,
-            gravityEarth = 9.81f,
-        )
+    private val trigger = MovementTrigger(threshold = 0.3f, timeBeforeDeclaringStationary = 5000L)
 
     @Test
     fun noEventWithStableGravityValues() {
@@ -34,7 +29,7 @@ class MovementTriggerTest {
 
     @Test
     fun movementDetectedWhenDeltaExceedsThreshold() {
-        assertEquals(MovementEvent.Moved, trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L))
+        assertEquals(MovementEvent.Moved(MovementEvent.Direction.Z_NEG), trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L))
     }
 
     @Test
@@ -53,6 +48,9 @@ class MovementTriggerTest {
     fun movingAgainAfterStationary() {
         trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L)
         trigger.evaluate(floatArrayOf(0f, 0f, 0f), 6000L)
-        assertEquals(MovementEvent.Moved, trigger.evaluate(floatArrayOf(0f, 0f, 10f), 7000L))
+        assertEquals(
+            MovementEvent.Moved(MovementEvent.Direction.Z_POS),
+            trigger.evaluate(floatArrayOf(0f, 0f, 10f), 7000L),
+        )
     }
 }
