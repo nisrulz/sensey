@@ -21,11 +21,11 @@ hugo --gc --minify # output → public/ (gitignored)
 
 Auto-deployed via [`.github/workflows/hugo.yml`](https://github.com/nisrulz/sensey/blob/master/.github/workflows/hugo.yml):
 
-- **Trigger**: push to `master` or manual dispatch
-- **Build**: `hugo --gc --minify`
-- **Deploy**: output published to `gh-pages` branch
+- **Push to `master`**: deploys to site root → latest docs
+- **Tag push (`v*`)**: deploys to `/vX.Y.Z/` → versioned snapshot
+- **Manual**: workflow dispatch from GitHub UI
 
-Site: `https://nisrulz.github.io/sensey/`.
+Built with `hugo --gc --minify`, published to `gh-pages` branch.
 
 ## Project structure
 
