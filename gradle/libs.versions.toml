@@ -18,8 +18,6 @@ mavenPublish = "0.36.0"
 
 ktlint = "14.2.0"
 
-dokka = "2.2.0"
-
 activityCompose = "1.13.0"
 composeBom = "2026.05.01"
 
@@ -50,9 +48,6 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 
-dokka-plugin-versioning = { module = "org.jetbrains.dokka:versioning-plugin", version.ref = "dokka" }
-dokka-plugin-kotlin-as-java = { module = "org.jetbrains.dokka:kotlin-as-java-plugin", version.ref = "dokka" }
-dokka-plugin-android-documentation = { module = "org.jetbrains.dokka:android-documentation-plugin", version.ref = "dokka" }
 
 [plugins]
 
@@ -64,8 +59,6 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
-
-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 
 [bundles]
 

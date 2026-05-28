@@ -10,9 +10,7 @@
 
 ### ktlint
 
-This project uses [ktlint](https://github.com/pinterest/ktlint) via the
-[ktlint-gradle plugin](https://github.com/JLLeitschuh/ktlint-gradle) to enforce
-consistent Kotlin code style.
+This project uses [ktlint](https://github.com/pinterest/ktlint) via the [ktlint-gradle plugin](https://github.com/JLLeitschuh/ktlint-gradle) to enforce consistent Kotlin code style.
 
 ```sh
 # Check for violations
@@ -23,35 +21,6 @@ consistent Kotlin code style.
 ```
 
 Configuration is in `.editorconfig` at the project root.
-
-## Documentation
-
-API reference documentation is generated with
-[Dokka 2.2.0](https://kotlinlang.org/docs/dokka-get-started.html) and deployed
-to GitHub Pages.
-
-### Generate locally
-
-```sh
-./gradlew :sensey:dokkaGeneratePublicationHtml
-```
-
-Open `sensey/build/dokka/html/index.html` in a browser.
-
-### Versioned docs (local)
-
-```sh
-./gradlew publishDocs
-```
-
-Output goes to `build/dokka/{version}/` with a `latest/` symlink.
-
-### CI Deployment
-
-The [docs workflow](.github/workflows/docs.yml) runs on pushes to `master`/
-`develop` and version tags (`v*`). It generates docs with the Dokka versioning
-plugin, organizes output into versioned directories, and deploys to GitHub
-Pages at [nisrulz.github.io/sensey](https://nisrulz.github.io/sensey/latest/index.html).
 
 ## Publishing
 
