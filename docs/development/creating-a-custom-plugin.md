@@ -1,88 +1,15 @@
-# Dev Documentation
+---
+title: "Creating a Custom Plugin"
+weight: 4
+---
 
-## Building
-
-```sh
-./gradlew assembleDebug
-```
-
-## Code Quality
-
-### ktlint
-
-This project uses [ktlint](https://github.com/pinterest/ktlint) via the [ktlint-gradle plugin](https://github.com/JLLeitschuh/ktlint-gradle) to enforce consistent Kotlin code style.
-
-```sh
-# Check for violations
-./gradlew ktlintCheck
-
-# Auto-format all Kotlin files
-./gradlew ktlintFormat
-```
-
-Configuration is in `.editorconfig` at the project root.
-
-## Publishing
-
-- To release library to MavenLocal (~/.m2/):
-
-  ```sh
-  ./gradlew releaseToMavenLocal
-  ```
-
-- To release library
-  to [MavenCentral](https://search.maven.org/artifact/com.github.nisrulz/sensey):
-
-  ```sh
-  ./gradlew releaseToMavenCentral
-  ```
-
-## Build Environment
-
-- AGP 9.2.1
-- Gradle 9.5.1
-- Kotlin 2.3.21
-- Java 21
-- compileSdk 36 / minSdk 23 / targetSdk 35
-- Configuration cache enabled
-
-## Creating a Custom Plugin
+# Creating a Custom Plugin
 
 Sensey's plugin system lets you define custom gesture detection by implementing
 the `GesturePlugin` interface. Plugins are registered via `Sensey.register()`
 inside a `senseyRegister {}` or `SenseyGestureEffect {}` block.
 
-### Basic Plugin (no sensor)
-
-```kotlin
-import com.github.nisrulz.sensey.Sensey
-import com.github.nisrulz.sensey.contract.GesturePlugin
-
-class MyAppPlugin(
-    private val dispatcher: (String) -> Unit,
-) : GesturePlugin {
-    override val key = "MyAppPlugin"
-
-    override fun onRegister(sensey: Sensey) {
-        dispatcher("Plugin registered")
-    }
-
-    override fun onUnregister(sensey: Sensey) {
-        // cleanup
-    }
-}
-```
-
-Register:
-
-```kotlin
-senseyRegister(lifecycle) {
-    shakePlugin { ... }
-    Sensey.register(MyAppPlugin { msg -> println(msg) })
-}
-```
-
-### Sensor-Based Plugin
+## Sensor-Based Plugin
 
 For custom sensor processing, implement `GesturePlugin` and manage the sensor
 listener directly using Android's `SensorManager`:
@@ -122,7 +49,7 @@ class PressurePlugin(
 }
 ```
 
-### Compose Touch Plugin
+## Compose Touch Plugin
 
 For custom touch gesture handling in Compose, provide a `ComposeGestureProvider`
 that gets attached via `Modifier.senseyGestures()`:
