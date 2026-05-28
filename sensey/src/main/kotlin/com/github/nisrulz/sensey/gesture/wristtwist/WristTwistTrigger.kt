@@ -2,6 +2,7 @@
 package com.github.nisrulz.sensey.gesture.wristtwist
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
+import com.github.nisrulz.sensey.internal.GRAVITY_EARTH
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -38,9 +39,5 @@ internal class WristTwistTrigger(
     private fun hasGestureCompleted(timestamp: Long): Boolean {
         val timeSinceLastMotion = timestamp - lastTwistTime
         return timeSinceLastMotion > timeForWristTwistGesture && isGestureInProgress
-    }
-
-    companion object {
-        private const val GRAVITY_EARTH = 9.8f
     }
 }

@@ -2,6 +2,7 @@
 package com.github.nisrulz.sensey.gesture.chop
 
 import com.github.nisrulz.sensey.contract.GestureTrigger
+import com.github.nisrulz.sensey.internal.GRAVITY_EARTH
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -40,7 +41,5 @@ internal class ChopTrigger(
         return timeSinceLastMotion > timeForChopGesture && isGestureInProgress
     }
 
-    companion object {
-        private const val GRAVITY_EARTH = 9.81f
-    }
+
 }
