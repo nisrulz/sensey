@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.github.nisrulz.sensey.contract.GesturePlugin
 import com.github.nisrulz.sensey.gesture.compose.ComposeGestureProvider
+import com.github.nisrulz.sensey.SensorDetector
 
 class Sensey(
     context: Context,
@@ -78,21 +79,21 @@ class Sensey(
         permission: String,
     ): Boolean = context.checkCallingOrSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
 
-    internal fun registerSensorDetector(detector: SensorDetector) {
+    fun registerSensorDetector(detector: SensorDetector) {
         detector.sensorDataLoggingEnabled = this.sensorDataLoggingEnabled
         val sensors = resolveSensors(*detector.sensorTypes)
         sensors.forEach { sensorManager?.registerListener(detector, it, samplingPeriodActual) }
     }
 
-    internal fun unregisterSensorDetector(detector: SensorDetector) {
+    fun unregisterSensorDetector(detector: SensorDetector) {
         sensorManager?.unregisterListener(detector)
     }
 
-    internal fun registerComposeGestureProvider(provider: ComposeGestureProvider) {
+    fun registerComposeGestureProvider(provider: ComposeGestureProvider) {
         composeGestureProviders.add(provider)
     }
 
-    internal fun unregisterComposeGestureProvider(provider: ComposeGestureProvider) {
+    fun unregisterComposeGestureProvider(provider: ComposeGestureProvider) {
         composeGestureProviders.remove(provider)
     }
 

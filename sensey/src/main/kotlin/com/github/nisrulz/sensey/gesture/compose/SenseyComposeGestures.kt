@@ -14,7 +14,7 @@ import com.github.nisrulz.sensey.defaultSensey
 import com.github.nisrulz.sensey.senseyRegister
 import com.github.nisrulz.sensey.senseyStop
 
-internal fun interface ComposeGestureProvider {
+fun interface ComposeGestureProvider {
     suspend fun PointerInputScope.installGestures()
 }
 

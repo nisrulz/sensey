@@ -7,11 +7,11 @@ import android.hardware.SensorEventListener
 import android.util.Log
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
-internal abstract class SensorDetector(
+abstract class SensorDetector(
     vararg sensorTypes: Int,
 ) : SensorEventListener {
     val sensorTypes: IntArray = sensorTypes
-    internal var sensorDataLoggingEnabled: Boolean = false
+    var sensorDataLoggingEnabled: Boolean = false
 
     override fun onAccuracyChanged(
         sensor: Sensor,
@@ -49,7 +49,7 @@ internal abstract class SensorDetector(
     }
 }
 
-internal open class TypedSensorDetector<T>(
+open class TypedSensorDetector<T>(
     val trigger: GestureTrigger<T>,
     val dispatcher: (T) -> Unit,
     vararg sensorTypes: Int,
