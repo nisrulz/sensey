@@ -25,7 +25,10 @@ Detects when the device is moving or stationary. Register with `movementPlugin`.
 
 ```kotlin
 senseyRegister(lifecycle) {
-    movementPlugin(threshold = 0.5f, timeBeforeDeclaringStationary = 3000L) { event ->
+    movementPlugin(
+        threshold = 0.5f,                // accel magnitude to count as movement
+        timeBeforeDeclaringStationary = 3000L, // ms of stillness → Stationary
+    ) { event ->
         when (event) {
             MovementEvent.Moved      -> println("Moving")
             MovementEvent.Stationary -> println("Stationary")

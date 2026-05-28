@@ -19,7 +19,11 @@ Detects double-taps on the device back or side using gravity vector angle analys
 
 ```kotlin
 senseyRegister(lifecycle) {
-    tapOnBackPlugin(angleThreshold = 1.5f, tapDebounceMs = 250L, tapSequenceTimeoutMs = 500L) {
+    tapOnBackPlugin(
+        angleThreshold = 1.5f,       // min gravity vector angle change
+        tapDebounceMs = 250L,        // debounce between taps
+        tapSequenceTimeoutMs = 500L, // max time for a double-tap sequence
+    ) {
         println("Tap on back detected!")
     }
 }

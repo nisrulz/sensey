@@ -27,7 +27,9 @@ Uses `StepDetectorPostKitKat` (step counter sensor, API 19+).
 
 ```kotlin
 senseyRegister(lifecycle) {
-    stepPlugin(gender = StepDetectorUtil.MALE) { event ->
+    stepPlugin(
+        gender = StepDetectorUtil.MALE, // or FEMALE — adjusts stride estimation
+    ) { event ->
         println("Steps: ${event.steps}, Distance: ${event.distanceInMeters}m")
     }
 }

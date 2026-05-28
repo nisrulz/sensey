@@ -5,36 +5,26 @@ weight: 2
 
 # Setup
 
-## Add the dependency
+## Add dependency
 
 Latest version on [Maven Central](https://search.maven.org/artifact/com.github.nisrulz/sensey).
 
-### Direct dependency
-
 ```kotlin
-// build.gradle.kts (module)
+// build.gradle.kts
 implementation("com.github.nisrulz:sensey:{latest-version}")
 ```
 
-### Via version catalog
+Or via version catalog:
 
 ```toml
 # gradle/libs.versions.toml
-[versions]
-sensey = "{latest-version}"
-
 [libraries]
 sensey = { module = "com.github.nisrulz:sensey", version.ref = "sensey" }
 ```
 
-```kotlin
-// build.gradle.kts (module)
-implementation(libs.sensey)
-```
-
 ## Initialize
 
-### Activity
+### Activity (auto lifecycle)
 
 ```kotlin
 import com.github.nisrulz.sensey.senseyRegister
@@ -42,10 +32,10 @@ import com.github.nisrulz.sensey.senseyRegister
 override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     senseyRegister(lifecycle) {
-        // register sensor plugins here
+        shakePlugin { /* handle events */ }
     }
+    // Auto-stops on ON_DESTROY
 }
-// Auto-stops on ON_DESTROY
 ```
 
 ### Compose
@@ -57,30 +47,29 @@ import com.github.nisrulz.sensey.gesture.compose.senseyGestures
 @Composable
 fun MyScreen(lifecycle: Lifecycle) {
     SenseyGestureEffect(lifecycle) {
-        // register sensor and touch plugins here
+        shakePlugin { /* handle events */ }
     }
+    // Attach touch gestures to your composable
     Box(modifier = Modifier.fillMaxSize().senseyGestures())
 }
 ```
 
-### Service or any Context
+### Any Context (manual lifecycle)
 
 ```kotlin
 import com.github.nisrulz.sensey.senseyRegister
 
 context.senseyRegister {
-    // register plugins here
+    shakePlugin { /* handle events */ }
 }
 ```
 
 ## Stop
 
-Stop all plugins and release the sensor manager:
-
 ```kotlin
 import com.github.nisrulz.sensey.senseyStop
 
-senseyStop()
+senseyStop() // releases sensor manager
 ```
 
-Lifecycle-aware registration (`senseyRegister(lifecycle)`) and `SenseyGestureEffect` handle this automatically on destroy. Manual stop is only needed when using `context.senseyRegister {}` without a lifecycle.
+Lifecycle-aware `senseyRegister(lifecycle)` and `SenseyGestureEffect` auto-stop on destroy. Manual stop only needed with `context.senseyRegister {}`.

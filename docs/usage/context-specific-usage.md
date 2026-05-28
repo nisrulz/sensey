@@ -5,79 +5,70 @@ weight: 5
 
 # Context-specific usage
 
-## Activity
+## Activity (auto lifecycle)
 
 ```kotlin
 import com.github.nisrulz.sensey.senseyRegister
-import com.github.nisrulz.sensey.senseyStop
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         senseyRegister(lifecycle) {
-            shakePlugin { ... }
-            flipPlugin { ... }
+            shakePlugin { /* handle */ }
         }
+        // Auto-cleanup on ON_DESTROY
     }
-    // Auto-stops on lifecycle ON_DESTROY
-    // Manual: senseyStop()
 }
 ```
 
-## Service
+## Service (manual lifecycle)
 
 ```kotlin
 class SensorService : Service() {
     override fun onCreate() {
         super.onCreate()
         senseyRegister {
-            shakePlugin { ... }
+            shakePlugin { /* handle */ }
         }
     }
     override fun onDestroy() {
         super.onDestroy()
-        senseyStop()
+        senseyStop() // must call manually
     }
 }
 ```
 
 ## WorkManager Worker
 
-> **Note:** Android 8+ background execution limits prevent sensor delivery to background workers.
-> Use a [ForegroundService](#foreground-service) instead. The `applicationContext` extension works for the rare
-> case where sensor data is available:
+> Android 8+ limits background work. Use a ForegroundService instead.
+> `applicationContext.senseyRegister {}` works only when sensor data is available.
 
 ```kotlin
 class SensorWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
     override fun doWork(): Result {
         applicationContext.senseyRegister {
-            shakePlugin { ... }
+            shakePlugin { /* handle */ }
         }
-        // ...
+        return Result.success()
     }
 }
 ```
 
 ## Foreground Service
 
-For reliable sensor delivery on Android 8+, use a `ForegroundService` with a visible notification. This keeps the process alive and allows sensor events to be delivered consistently.
+Keeps the process alive for reliable sensor delivery.
 
 ```kotlin
 import com.github.nisrulz.sensey.senseyRegister
 import com.github.nisrulz.sensey.senseyStop
 
 class SensorForegroundService : Service() {
-
     override fun onCreate() {
         super.onCreate()
         startForeground(NOTIFICATION_ID, createNotification())
         senseyRegister {
-            shakePlugin { event ->
-                // handle shake
-            }
-            lightPlugin { event ->
-                // handle light changes
-            }
+            shakePlugin { /* handle */ }
+            lightPlugin { /* handle */ }
         }
     }
 
@@ -89,13 +80,12 @@ class SensorForegroundService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    private fun createNotification(): Notification {
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+    private fun createNotification(): Notification =
+        NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Sensor Detection")
-            .setContentText("Monitoring sensors in the background")
+            .setContentText("Monitoring sensors")
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .build()
-    }
 
     companion object {
         private const val NOTIFICATION_ID = 1001
@@ -114,22 +104,18 @@ import com.github.nisrulz.sensey.gesture.compose.senseyGestures
 fun MyScreen(lifecycle: Lifecycle) {
     SenseyGestureEffect(lifecycle) {
         shakePlugin { event ->
-            when (event) {
-                ShakeEvent.Detected -> println("Shake detected!")
-                ShakeEvent.Stopped  -> println("Shake stopped")
-            }
+            println(if (event is ShakeEvent.Detected) "Shake!" else "Stopped")
         }
         touchTypePlugin(context) { event ->
             when (event) {
-                is TouchTypeEvent.SingleTap -> println("Single tap")
+                is TouchTypeEvent.SingleTap -> println("Tap")
                 is TouchTypeEvent.Swipe     -> println("Swipe ${event.direction}")
                 is TouchTypeEvent.NTap      -> println("${event.count}-tap")
                 else -> {}
             }
         }
     }
-
-    // Apply to the composable that should receive touch input:
+    // Attach touch input to a composable
     Box(modifier = Modifier.fillMaxSize().senseyGestures())
 }
 ```

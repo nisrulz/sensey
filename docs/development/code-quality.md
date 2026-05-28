@@ -5,24 +5,19 @@ weight: 2
 
 # Building and Code Quality
 
-## Building
+## Build
 
 ```sh
 ./gradlew assembleDebug
 ```
 
-## Code Quality
+## Lint
 
-### ktlint
-
-This project uses [ktlint](https://github.com/pinterest/ktlint) via the [ktlint-gradle plugin](https://github.com/JLLeitschuh/ktlint-gradle) to enforce consistent Kotlin code style.
+Uses [ktlint](https://github.com/pinterest/ktlint) via [ktlint-gradle](https://github.com/JLLeitschuh/ktlint-gradle).
 
 ```sh
-# Check for violations
-./gradlew ktlintCheck
-
-# Auto-format all Kotlin files
-./gradlew ktlintFormat
+./gradlew ktlintCheck   # check formatting
+./gradlew ktlintFormat  # auto-fix
 ```
 
-Configuration is in `.editorconfig` at the project root.
+Config: `.editorconfig` at project root.

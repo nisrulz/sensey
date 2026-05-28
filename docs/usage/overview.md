@@ -5,9 +5,9 @@ weight: 3
 
 # Overview
 
-Sensey uses a **plugin-based architecture**. Each gesture is a `GesturePlugin` that can be registered and unregistered independently.
+Plugins register independently. Use the DSL inside `senseyRegister {}` or `SenseyGestureEffect {}`.
 
-## Register individual plugins
+## Single plugin
 
 ```kotlin
 import com.github.nisrulz.sensey.Sensey
@@ -21,7 +21,7 @@ Sensey.register(shakePlugin { event ->
 })
 ```
 
-## Register multiple plugins at once
+## Multiple plugins
 
 ```kotlin
 senseyRegister(lifecycle) {
@@ -38,20 +38,14 @@ senseyRegister(lifecycle) {
         }
     }
 }
-
 ```
 
 ## Unregister
 
 ```kotlin
-// individual
-Sensey.unregister(plugin)
-
-// all
-Sensey.unregisterAll()
-
-// stop entirely (clears all + releases sensor manager)
-senseyStop()
+Sensey.unregister(plugin)   // one plugin
+Sensey.unregisterAll()      // all plugins
+senseyStop()                // all + release sensor manager
 ```
 
-With lifecycle-aware `senseyRegister(lifecycle)`, all plugins auto-unregister on `ON_DESTROY`.
+With `senseyRegister(lifecycle)`, cleanup is automatic on `ON_DESTROY`.

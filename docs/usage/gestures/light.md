@@ -26,7 +26,9 @@ Hysteresis prevents oscillation at boundaries.
 
 ```kotlin
 senseyRegister(lifecycle) {
-    lightPlugin(darkThreshold = 5f) { event ->
+    lightPlugin(
+        darkThreshold = 5f, // lux below this = Dark event
+    ) { event ->
         when (event) {
             LightEvent.Dark  -> println("Dark")
             LightEvent.Light -> println("Light")

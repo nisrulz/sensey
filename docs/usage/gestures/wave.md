@@ -25,7 +25,9 @@ A debounce of 1 second prevents rapid successive waves.
 
 ```kotlin
 senseyRegister(lifecycle) {
-    wavePlugin(timeWindowMillis = 500f) {
+    wavePlugin(
+        timeWindowMillis = 500f, // ms window for the wave motion
+    ) {
         println("Wave detected!")
     }
 }

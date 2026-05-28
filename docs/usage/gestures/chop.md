@@ -24,7 +24,10 @@ Detects a chopping motion gesture. Register with `chopPlugin`.
 
 ```kotlin
 senseyRegister(lifecycle) {
-    chopPlugin(threshold = 30f, timeForChopGesture = 500L) {
+    chopPlugin(
+        threshold = 30f,           // accel magnitude to trigger
+        timeForChopGesture = 500L, // max duration of the chop motion
+    ) {
         println("Chop detected!")
     }
 }

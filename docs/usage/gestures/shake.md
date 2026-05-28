@@ -25,7 +25,10 @@ Detects when the device is being shaken. Register with `shakePlugin`.
 
 ```kotlin
 senseyRegister(lifecycle) {
-    shakePlugin(threshold = 10f, timeBeforeDeclaringShakeStopped = 2000L) { event ->
+    shakePlugin(
+        threshold = 10f,                      // accel magnitude to trigger
+        timeBeforeDeclaringShakeStopped = 2000L, // ms of stillness → Stopped
+    ) { event ->
         when (event) {
             ShakeEvent.Detected -> println("Shake detected!")
             ShakeEvent.Stopped  -> println("Shake stopped")

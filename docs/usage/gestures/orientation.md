@@ -26,7 +26,9 @@ Detects the device orientation based on which edge is pointing up. Register with
 
 ```kotlin
 senseyRegister(lifecycle) {
-    orientationPlugin(smoothness = 3) { event ->
+    orientationPlugin(
+        smoothness = 3, // higher = less jitter, slower response
+    ) { event ->
         when (event) {
             OrientationEvent.TopSideUp    -> println("Top up")
             OrientationEvent.BottomSideUp -> println("Bottom up")

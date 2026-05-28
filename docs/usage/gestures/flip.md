@@ -20,8 +20,8 @@ Detects when the device flips face-up or face-down. Register with `flipPlugin`.
 senseyRegister(lifecycle) {
     flipPlugin { event ->
         when (event) {
-            FlipEvent.FaceUp   -> println("Face up")
-            FlipEvent.FaceDown -> println("Face down")
+            FlipEvent.FaceUp   -> println("Face up")   // screen facing up
+            FlipEvent.FaceDown -> println("Face down") // screen facing down
         }
     }
 }
