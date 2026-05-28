@@ -388,5 +388,10 @@ Thumbs.db
 # Fastlane
 vendor
 
+# Graph analysis output
+graphify-out/
+
+
 **/.idea/*
 data-tool/*
+.opencode/
