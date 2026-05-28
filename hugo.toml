@@ -1,0 +1,30 @@
+baseURL = "https://nisrulz.github.io/sensey/"
+title = "Sensey"
+contentDir = "docs"
+disableKinds = ["rss", "sitemap"]
+disablePathToLower = true
+enableGitInfo = true
+
+[params]
+  BookTheme = "auto"
+  BookSection = "*"
+  BookRepo = "https://github.com/nisrulz/sensey"
+  BookEditLink = "{{ .Site.Params.BookRepo }}/edit/master/{{ .Path }}"
+  BookToC = true
+  BookSearch = true
+  BookComments = false
+  BookPortableLinks = "warning"
+
+[languages]
+  [languages.en]
+    label = "English"
+    weight = 1
+
+[markup]
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+
+[module]
+  [[module.imports]]
+    path = "github.com/alex-shpak/hugo-book"
