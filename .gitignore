@@ -391,6 +391,12 @@ vendor
 # Graph analysis output
 graphify-out/
 
+# Hugo build output
+public/
+_hugo_cache/
+.hugo_build.lock
+resources/
+
 
 **/.idea/*
 data-tool/*

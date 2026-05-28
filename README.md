@@ -17,10 +17,10 @@
         <img src="https://img.shields.io/maven-central/v/com.github.nisrulz/sensey"/>
     </a>
     <!-- Docs -->
-    <a href="docs/usage.md">
+    <a href="docs/usage/">
         <img src="https://img.shields.io/badge/docs-usage-blue"/>
     </a>
-    <a href="docs/development.md">
+    <a href="docs/development/">
         <img src="https://img.shields.io/badge/docs-development-blue"/>
     </a>
     <!-- ktlint -->
@@ -204,9 +204,9 @@ fun MyScreen(lifecycle: Lifecycle) {
 }
 ```
 
-See the **[full usage guide](docs/usage.md)** for every gesture with parameter options and common examples.
+See the **[full usage guide](docs/usage/)** for every gesture with parameter options and common examples.
 
-For development and contribution guidelines, see the **[development docs](docs/development.md)**.
+For development and contribution guidelines, see the **[development docs](docs/development/)**.
 
 # Including in your project
 
