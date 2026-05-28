@@ -95,29 +95,29 @@
     Also featured in [Awesome Android Newsletter
     <a href="https://android.libhunt.com/newsletter/5">
          #Issue 5
-    </a>, 
+    </a>,
     <a href="https://android.libhunt.com/newsletter/21">
          #Issue 21
     </a>],
     <a href="https://github.com/codepath/android_guides/wiki/Must-Have-libraries#convenience">
          Codepath's Must Have Libraries
-    </a>, 
+    </a>,
     <a href="https://medium.cobeisfresh.com/cobes-top-5-android-libraries-september-2016-883757e61bf0#.oe2lzaxyn">
          COBE's Top 5 Android Libraries — September 2016
-    </a>, 
+    </a>,
     <a href="https://cloudrail.com/best-android-libraries-for-developers/">
          Best Android Libraries for Developers
-    </a>, 
+    </a>,
     <a href="https://dzone.com/articles/this-week-in-mobile-may-15">
          DZone
-    </a>, 
+    </a>,
     <a href="http://email.changelog.com/t/t-310383437622D164">
         Changelog Weekly Issue #115
     </a>
 </div>
 
 <div align="center">
-    Blog Post: 
+    Blog Post:
     <a href="https://android.jlelse.eu/i-could-not-find-a-simple-gesture-detection-android-library-so-i-built-one-334c0a307c16#.1us4zgise">
          I could not find a simple Gesture Detection android library, so I built one
     </a>
