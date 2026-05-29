@@ -6,6 +6,18 @@ import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
+/**
+ * Classifies touch events as swipes or scrolls with directional information.
+ *
+ * Algorithm: Computes Euclidean distance and optional velocity from touch
+ * delta values. If distance is below a minimum threshold the event is ignored.
+ * Velocity above threshold marks the gesture as a swipe (vs scroll). Direction
+ * is determined by partitioning the atan2 angle into eight quadrants. Each
+ * quadrant maps to a different Direction for swipes (e.g. DOWN_RIGHT) vs
+ * scrolls (e.g. DOWN) to reflect the coarse-grained nature of scroll flings.
+ * Expected sensor: Touch input (via View.OnTouchListener or similar).
+ * State: None (stateless computation).
+ */
 internal class TouchTypeTrigger(
     private val swipeMinDistance: Float = 120f,
     private val swipeThresholdVelocity: Float = 200f,
@@ -14,37 +26,40 @@ internal class TouchTypeTrigger(
         values: FloatArray,
         timestamp: Long,
     ): TouchTypeEvent? {
-        if (values.size < 2) return null
+        if (values.size < 2) return null // Need at least deltaX and deltaY
 
-        val deltaX = values[0]
-        val deltaY = values[1]
-        val distance = sqrt(deltaX * deltaX + deltaY * deltaY)
-        if (distance < swipeMinDistance) return null
+        val deltaX = values[0] // Horizontal displacement
+        val deltaY = values[1] // Vertical displacement
+        val distance = sqrt(deltaX * deltaX + deltaY * deltaY) // Euclidean distance
+        if (distance < swipeMinDistance) return null // Too short to be a swipe or scroll
 
-        val velocityX = values.getOrNull(2) ?: 0f
-        val velocityY = values.getOrNull(3) ?: 0f
-        val isSwipe = isAboveVelocityThreshold(velocityX, velocityY)
+        val velocityX = values.getOrNull(2) ?: 0f // Horizontal velocity (optional input)
+        val velocityY = values.getOrNull(3) ?: 0f // Vertical velocity (optional input)
+        val isSwipe = isAboveVelocityThreshold(velocityX, velocityY) // Classify as swipe if velocity exceeds threshold
 
-        val direction = classifyDirection(deltaX, deltaY, isSwipe)
-        return if (isSwipe) TouchTypeEvent.Swipe(direction) else TouchTypeEvent.Scroll(direction)
+        val direction = classifyDirection(deltaX, deltaY, isSwipe) // Determine direction from displacement angle
+        return if (isSwipe) TouchTypeEvent.Swipe(direction) else TouchTypeEvent.Scroll(direction) // Emit swipe or scroll event
     }
 
     private fun isAboveVelocityThreshold(
         vx: Float,
         vy: Float,
     ): Boolean = abs(vx) > swipeThresholdVelocity || abs(vy) > swipeThresholdVelocity
+    // True if either velocity component exceeds the threshold
 
     private fun classifyDirection(
         deltaX: Float,
         deltaY: Float,
         isSwipe: Boolean,
     ): TouchTypeEvent.Direction {
+        // Map the displacement angle to a Direction via a quadrant lookup
         val degrees = Math.toDegrees(atan2(deltaY.toDouble(), deltaX.toDouble()))
         val quadrant = classifyQuadrant(degrees)
         return if (isSwipe) quadrant.swipeDirection else quadrant.scrollDirection
     }
 
     private fun classifyQuadrant(degrees: Double): Quadrant =
+        // Partition 360° into eight directional quadrants of 45° each
         when {
             degrees in -22.5..22.5 -> Quadrant.RIGHT
             degrees in 22.5..67.5 -> Quadrant.DOWN_RIGHT
@@ -61,6 +76,7 @@ internal class TouchTypeTrigger(
         val scrollDirection: TouchTypeEvent.Direction,
         val swipeDirection: TouchTypeEvent.Direction,
     ) {
+        // Each quadrant maps to a coarse scroll direction and a precise swipe direction
         RIGHT(TouchTypeEvent.Direction.RIGHT, TouchTypeEvent.Direction.RIGHT),
         DOWN_RIGHT(TouchTypeEvent.Direction.DOWN, TouchTypeEvent.Direction.DOWN_RIGHT),
         DOWN(TouchTypeEvent.Direction.DOWN, TouchTypeEvent.Direction.DOWN),
