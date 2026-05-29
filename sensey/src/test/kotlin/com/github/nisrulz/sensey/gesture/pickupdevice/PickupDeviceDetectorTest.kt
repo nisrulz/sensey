@@ -13,7 +13,7 @@ class PickupDeviceDetectorTest {
         val events = mutableListOf<PickupDeviceEvent>()
         val detector =
             TypedSensorDetector(
-                PickupDeviceTrigger(windowSize = 4, settleReadings = 3),
+                PickupDeviceTrigger(windowSize = 4, settleTimeMs = 0L),
                 dispatcher = { events.add(it) },
                 Sensor.TYPE_ACCELEROMETER,
             )

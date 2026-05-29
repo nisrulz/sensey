@@ -10,11 +10,11 @@ import kotlin.math.sqrt
  * Algorithm: Maintains a circular buffer of recent acceleration magnitudes.
  * The range (max - min) of the buffer indicates movement. A high range
  * above the moving threshold signals a pickup. When the mean acceleration
- * returns to the gravity range and the range is stable for a number of
- * consecutive readings, the device is declared put down.
+ * returns to the gravity range and the range is stable for a configurable
+ * duration, the device is declared put down.
  * Expected sensor: Accelerometer (TYPE_ACCELEROMETER).
  * State: buffer (circular), bufferIndex, bufferCount, bufferSum (running
- * mean), isHeld (held flag), settleCount (stable readings counter).
+ * mean), isHeld (held flag), settleStartTime (timestamp of first stable reading).
  */
 internal class PickupDeviceTrigger(
     private val stableRange: Float = 0.5f,
@@ -22,14 +22,14 @@ internal class PickupDeviceTrigger(
     private val gravityLower: Float = 9.0f,
     private val gravityUpper: Float = 10.5f,
     private val windowSize: Int = 8,
-    private val settleReadings: Int = 6,
+    private val settleTimeMs: Long = 1000L,
 ) : GestureTrigger<PickupDeviceEvent> {
     private val buffer = FloatArray(windowSize) // Circular buffer of recent acceleration magnitudes
     private var bufferIndex = 0 // Current write position in the circular buffer
     private var bufferCount = 0 // Number of valid entries in the buffer (grows until window is full)
     private var bufferSum = 0f // Running sum of buffer contents for mean computation
     private var isHeld = false // Whether the device is currently held (for put-down detection)
-    private var settleCount = 0 // Consecutive stable readings since the last movement
+    private var settleStartTime = 0L // Timestamp when stable conditions were first met
 
     override fun evaluate(
         values: FloatArray,
@@ -50,23 +50,24 @@ internal class PickupDeviceTrigger(
             isPickedUp(range) -> {
                 // Range exceeds the moving threshold: device was picked up
                 isHeld = true
-                settleCount = 0
+                settleStartTime = 0L
                 PickupDeviceEvent.PickedUp
             }
             isPutDown(mean, range) -> {
                 // Mean in gravity range and range stable: possible put-down
-                settleCount++
-                if (settleCount >= settleReadings) {
-                    // Sustained stable readings confirm the device was put down
+                if (settleStartTime == 0L) settleStartTime = timestamp
+                if (timestamp - settleStartTime >= settleTimeMs) {
+                    // Device stable for the full settle duration → put down
                     isHeld = false
+                    settleStartTime = 0L
                     PickupDeviceEvent.PutDown
                 } else {
-                    null // Not yet confirmed
+                    null // Not yet stable long enough
                 }
             }
             else -> {
-                // Idle: reset settle counter if held
-                if (isHeld) settleCount = 0
+                // Idle: reset settle timer if held
+                if (isHeld) settleStartTime = 0L
                 null
             }
         }
