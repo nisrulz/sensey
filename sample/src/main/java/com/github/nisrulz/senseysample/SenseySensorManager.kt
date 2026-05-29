@@ -3,6 +3,7 @@ package com.github.nisrulz.senseysample
 import android.app.Activity
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.github.nisrulz.sensey.Sensey
@@ -43,11 +44,8 @@ import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
 import com.github.nisrulz.senseysample.utils.HapticUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 internal class SenseySensorManager(
@@ -74,13 +72,12 @@ internal class SenseySensorManager(
     }
 
     var resultText by mutableStateOf("Results show here")
-    var isDetected by mutableStateOf(false)
+    var eventCount by mutableIntStateOf(0)
     var selectedSensor by mutableStateOf<String?>(null)
     var sensey: Sensey? = null
 
     private var currentPlugin: GesturePlugin? = null
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    private var resetJob: Job? = null
 
     private fun <T> withHaptic(dispatcher: (T) -> Unit): (T) -> Unit =
         { event ->
@@ -298,16 +295,7 @@ internal class SenseySensorManager(
         realtime: Boolean,
     ) {
         resultText = text
-        isDetected = true
-        if (!realtime) {
-            resetJob?.cancel()
-            resetJob =
-                scope.launch {
-                    delay(3000)
-                    resultText = "Results show here"
-                    isDetected = false
-                }
-        }
+        eventCount++
         if (BuildConfig.DEBUG) Log.d(logTag, text)
     }
 }
