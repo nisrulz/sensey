@@ -13,6 +13,7 @@ internal class StepTrigger(
     private var previousMagnitude = 0f
     private var startTime = 0L
     private var baseStepCount = 0
+    private var lastDispatchedSteps = -1
 
     override fun evaluate(
         values: FloatArray,
@@ -28,8 +29,14 @@ internal class StepTrigger(
         sensorValue: Float,
         timestamp: Long,
     ): StepEvent? {
-        if (baseStepCount < 1) baseStepCount = sensorValue.toInt()
-        steps = sensorValue.toInt() - baseStepCount
+        if (baseStepCount < 1) {
+            baseStepCount = sensorValue.toInt()
+            return null
+        }
+        val currentSteps = sensorValue.toInt() - baseStepCount
+        if (currentSteps == lastDispatchedSteps) return null
+        lastDispatchedSteps = currentSteps
+        steps = currentSteps
         return buildStepEvent(timestamp)
     }
 
@@ -38,8 +45,10 @@ internal class StepTrigger(
         timestamp: Long,
     ): StepEvent? {
         val magnitude = sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2])
-        if (abs(magnitude - previousMagnitude) > threshold) steps++
+        val stepDetected = abs(magnitude - previousMagnitude) > threshold
         previousMagnitude = magnitude
+        if (!stepDetected) return null
+        steps++
         return buildStepEvent(timestamp)
     }
 

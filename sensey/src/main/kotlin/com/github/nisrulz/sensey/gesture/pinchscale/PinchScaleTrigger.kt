@@ -19,6 +19,7 @@ internal class PinchScaleTrigger : GestureTrigger<PinchScaleEvent> {
                 scaleInCount++
                 if (eventOccurred != SCALE_IN && scaleInCount > CONFIRMATION_THRESHOLD) {
                     eventOccurred = SCALE_IN
+                    scaleOutCount = 0
                     PinchScaleEvent(scaleFactor, isScalingOut = false)
                 } else {
                     null
@@ -28,6 +29,7 @@ internal class PinchScaleTrigger : GestureTrigger<PinchScaleEvent> {
                 scaleOutCount++
                 if (eventOccurred != SCALE_OUT && scaleOutCount > CONFIRMATION_THRESHOLD) {
                     eventOccurred = SCALE_OUT
+                    scaleInCount = 0
                     PinchScaleEvent(scaleFactor, isScalingOut = true)
                 } else {
                     null
