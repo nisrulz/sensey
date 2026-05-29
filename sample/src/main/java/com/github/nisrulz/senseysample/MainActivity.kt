@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                 eventCount = sensorManager.eventCount,
+                resultText = sensorManager.resultText,
                 onTouchDetectorClick = {
                     startActivity(Intent(this@MainActivity, TouchActivity::class.java))
                 },

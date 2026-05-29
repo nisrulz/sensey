@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,6 +50,7 @@ private fun MainScreenPreview() {
                 SensorItem("Flip Detector", false, {}),
             ),
         eventCount = 5,
+        resultText = "",
         onTouchDetectorClick = {},
     )
 }
@@ -57,6 +59,7 @@ private fun MainScreenPreview() {
 fun MainScreen(
     sensors: List<SensorItem>,
     eventCount: Int,
+    resultText: String,
     onTouchDetectorClick: () -> Unit,
 ) {
     var detected by remember { mutableStateOf(false) }
@@ -100,7 +103,27 @@ fun MainScreen(
                         )
                     }
                 }
-
+                Row(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .background(color = White)
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = "Status",
+                        color = DividerGray,
+                        fontSize = 14.sp,
+                    )
+                    Text(
+                        text = resultText,
+                        color = if (detected) AccentOrange else DividerGray,
+                        fontSize = 14.sp,
+                        fontWeight = if (detected) FontWeight.Bold else FontWeight.Normal,
+                    )
+                }
                 Row(
                     modifier =
                         Modifier
