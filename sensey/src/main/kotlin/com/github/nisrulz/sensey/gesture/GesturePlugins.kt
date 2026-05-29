@@ -188,10 +188,13 @@ fun scoopPlugin(
         detectorFactory = { TypedSensorDetector(ScoopTrigger(threshold), dispatcher, Sensor.TYPE_ACCELEROMETER) },
     )
 
-fun pickupDevicePlugin(dispatcher: (PickupDeviceEvent) -> Unit): GesturePlugin =
+fun pickupDevicePlugin(
+    settleTimeMs: Long = 1000L,
+    dispatcher: (PickupDeviceEvent) -> Unit,
+): GesturePlugin =
     SensorGesturePlugin(
         key = "PickupDevicePlugin",
-        detectorFactory = { TypedSensorDetector(PickupDeviceTrigger(), dispatcher, Sensor.TYPE_ACCELEROMETER) },
+        detectorFactory = { TypedSensorDetector(PickupDeviceTrigger(settleTimeMs = settleTimeMs), dispatcher, Sensor.TYPE_ACCELEROMETER) },
     )
 
 fun tapOnBackPlugin(

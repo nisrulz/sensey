@@ -133,10 +133,13 @@ class SenseyPluginRegistry {
         )
     }
 
-    fun pickupDevicePlugin(dispatcher: (PickupDeviceEvent) -> Unit) {
+    fun pickupDevicePlugin(
+        settleTimeMs: Long = 1000L,
+        dispatcher: (PickupDeviceEvent) -> Unit,
+    ) {
         plugins.add(
             com.github.nisrulz.sensey.gesture
-                .pickupDevicePlugin(dispatcher),
+                .pickupDevicePlugin(settleTimeMs, dispatcher),
         )
     }
 
