@@ -30,8 +30,9 @@ internal class LightTrigger(
     }
 
     private fun initializeBaseline(lux: Float): LightEvent {
-        wasDark = lux < lightThreshold
+        val isDark = lux < darkThreshold
+        wasDark = isDark
         hasBaseline = true
-        return if (lux < darkThreshold) LightEvent.Dark else LightEvent.Light
+        return if (isDark) LightEvent.Dark else LightEvent.Light
     }
 }
