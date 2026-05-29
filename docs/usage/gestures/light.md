@@ -9,23 +9,20 @@ Detects ambient light transitions (dark ↔ light). Register with `lightPlugin`.
 
 ## Algorithm
 
-The algorithm compares ambient lux values against configurable dark and light thresholds with hysteresis. On first reading it establishes a baseline state. Subsequent readings trigger a transition event only when the value crosses the opposite threshold. Same-state readings are ignored to avoid repeated events.
+The algorithm compares ambient lux against a configurable dark threshold with a built-in hysteresis gap. On first reading it establishes a baseline state. Transition to dark fires when lux drops below the dark threshold. Transition to light fires when lux rises above a fixed internal threshold (`12f`). Same-state readings are ignored to avoid repeated events.
 
 ## Events
 
 | Event | Description |
 |-------|-------------|
-| `LightEvent.Dark` | Ambient light below `darkThreshold` |
-| `LightEvent.Light` | Ambient light above `lightThreshold` |
-
-Hysteresis (different thresholds for dark→light vs light→dark) prevents oscillation at boundaries.
+| `LightEvent.Dark` | Ambient light dropped below `darkThreshold` |
+| `LightEvent.Light` | Ambient light rose above the internal light threshold |
 
 ## Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `darkThreshold` | Lux value below which the environment is considered dark | `8f` |
-| `lightThreshold` | Lux value above which the environment is considered light (not exposed as a plugin parameter; defaults internally) | `12f` |
 
 ## Usage
 

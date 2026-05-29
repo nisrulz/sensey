@@ -9,7 +9,7 @@ Detects a scooping (lifting/pickup) motion. Register with `scoopPlugin`.
 
 ## Algorithm
 
-The algorithm maintains an EMA-smoothed acceleration baseline and computes the impulse (deviation from baseline) and jerk (change between consecutive samples). When the impulse exceeds the threshold, consecutive samples are counted. A scoop is emitted when the sustained-sample count and peak jerk within the window both exceed their respective minima, subject to a global debounce.
+The algorithm maintains an EMA-smoothed acceleration baseline and computes the impulse (deviation from baseline). When the impulse exceeds the threshold, consecutive samples are counted. A scoop is emitted when the sustained-sample count (3 consecutive) and peak jerk within the window both exceed their respective internal minima, subject to a global debounce.
 
 ## Events
 
@@ -22,21 +22,13 @@ The algorithm maintains an EMA-smoothed acceleration baseline and computes the i
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `threshold` | Impulse threshold — minimum deviation from the EMA baseline to count as a scoop motion | `10f` |
-| `minPeakJerk` | Minimum peak jerk (change in acceleration between consecutive samples) required within the impulse window | `3.0f` |
-| `minSustainedSamples` | Minimum number of consecutive samples above the impulse threshold required to confirm the gesture | `3` |
-| `debounceMs` | Global debounce time in milliseconds between successive scoop events | `1000L` |
-| `baselineSamples` | Number of initial sensor readings used to establish the EMA baseline before detection begins | `10` |
 
 ## Usage
 
 ```kotlin
 senseyRegister(lifecycle) {
     scoopPlugin(
-        threshold = 10f,          // impulse deviation from baseline (default: 10f)
-        minPeakJerk = 3.0f,       // minimum peak jerk within the window (default: 3.0f)
-        minSustainedSamples = 3,  // consecutive samples above threshold needed (default: 3)
-        debounceMs = 1000L,       // debounce between scoop events in ms (default: 1000L)
-        baselineSamples = 10,     // initial readings to establish baseline (default: 10)
+        threshold = 10f, // impulse deviation from baseline (default: 10f)
     ) {
         println("Scoop detected!") // a scooping/lifting motion was recognised
     }

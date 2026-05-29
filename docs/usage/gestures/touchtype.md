@@ -9,7 +9,7 @@ Detects various touch gestures (tap, double-tap, long-press, swipe, scroll, mult
 
 ## Algorithm
 
-The algorithm classifies drag gestures as swipes or scrolls based on velocity: if the velocity exceeds a threshold (200 px/s on either axis) the gesture is classified as a swipe; otherwise it is a scroll. Direction is determined by partitioning the atan2 angle into eight quadrants. For tap gestures, consecutive taps within 400 ms are accumulated and dispatched as `NTap(3)` when the count reaches three.
+The algorithm classifies drag gestures as swipes or scrolls based on velocity: high-velocity drags are swipes, low-velocity drags are scrolls. Direction is determined by the atan2 angle partitioned into eight quadrants. For tap gestures, consecutive taps within a fixed short window are accumulated and dispatched as `NTap(3)` when the count reaches three.
 
 ## Events
 

@@ -9,7 +9,7 @@ Detects the ambient sound level in decibels. Register with `soundLevelPlugin`.
 
 ## Algorithm
 
-The algorithm captures raw audio via `AudioRecord` with `VOICE_RECOGNITION` source. It computes the root-mean-square (RMS) of the audio sample buffer normalised by the maximum 16-bit PCM amplitude (32768). The RMS is converted to decibels using the formula 20 × log₁₀(RMS) with a configurable positive offset added to produce a human-friendly range (0–100 scale). No audio data is stored, transmitted, or persisted.
+The algorithm captures raw audio via `AudioRecord` with `VOICE_RECOGNITION` source. It computes the root-mean-square (RMS) of the audio sample buffer normalised by the maximum 16-bit PCM amplitude (32768). The RMS is converted to decibels using the formula 20 × log₁₀(RMS) with a fixed positive offset to produce a human-friendly range (0–100 scale). No audio data is stored, transmitted, or persisted.
 
 ## Events
 
