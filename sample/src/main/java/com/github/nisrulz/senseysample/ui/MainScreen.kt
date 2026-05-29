@@ -19,6 +19,11 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.nisrulz.senseysample.ui.DividerGray
+import kotlinx.coroutines.delay
 
 data class SensorItem(
     val label: String,
@@ -43,7 +48,7 @@ private fun MainScreenPreview() {
                 SensorItem("Shake Detector", true, {}),
                 SensorItem("Flip Detector", false, {}),
             ),
-        detected = true,
+        eventCount = 5,
         onTouchDetectorClick = {},
     )
 }
@@ -51,9 +56,17 @@ private fun MainScreenPreview() {
 @Composable
 fun MainScreen(
     sensors: List<SensorItem>,
-    detected: Boolean,
+    eventCount: Int,
     onTouchDetectorClick: () -> Unit,
 ) {
+    var detected by remember { mutableStateOf(false) }
+    LaunchedEffect(eventCount) {
+        if (eventCount > 0) {
+            detected = true
+            delay(3000)
+            detected = false
+        }
+    }
     Surface(
         modifier =
             Modifier
