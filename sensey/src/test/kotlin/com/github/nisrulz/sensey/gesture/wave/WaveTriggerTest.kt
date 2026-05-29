@@ -6,7 +6,7 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class WaveTriggerTest {
-    private val trigger = WaveTrigger(timeWindowMillis = 1000f, debounceMillis = 1000L)
+    private val trigger = WaveTrigger(timeWindowMillis = 1000L, debounceMillis = 1000L)
 
     @Test
     fun noEventOnFirstFarReading() {
@@ -33,7 +33,7 @@ class WaveTriggerTest {
 
     @Test
     fun waveDetectedWithCustomThreshold() {
-        val customTrigger = WaveTrigger(timeWindowMillis = 500f)
+        val customTrigger = WaveTrigger(timeWindowMillis = 500L)
         customTrigger.evaluate(floatArrayOf(0f), 0L)
         assertEquals(WaveEvent.Waved, customTrigger.evaluate(floatArrayOf(5f), 300L))
     }

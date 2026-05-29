@@ -113,7 +113,7 @@ class SenseyPluginRegistry {
     }
 
     fun wavePlugin(
-        timeWindowMillis: Float = 1000f,
+        timeWindowMillis: Long = 1000L,
         debounceMillis: Long = 1000L,
         dispatcher: (WaveEvent) -> Unit,
     ) {

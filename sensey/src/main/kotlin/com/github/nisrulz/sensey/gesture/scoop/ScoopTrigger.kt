@@ -11,18 +11,26 @@ internal class ScoopTrigger(
     private val minPeakJerk: Float = 3.0f,
     private val minSustainedSamples: Int = 3,
     private val debounceMs: Long = 1000L,
+    private val baselineSamples: Int = 10,
 ) : GestureTrigger<ScoopEvent> {
     private var accelBaseline = GRAVITY_EARTH
     private var previousAccelMag = GRAVITY_EARTH
     private var lastEventTime = 0L
     private var samplesAboveThreshold = 0
     private var peakJerkInWindow = 0f
+    private var baselineReadings = 0
 
     override fun evaluate(
         values: FloatArray,
         timestamp: Long,
     ): ScoopEvent? {
         val accelMag = computeMagnitude(values)
+        if (baselineReadings < baselineSamples) {
+            accelBaseline = accelBaseline * SMOOTHING_ALPHA + accelMag * (1f - SMOOTHING_ALPHA)
+            previousAccelMag = accelMag
+            baselineReadings++
+            return null
+        }
         updateBaseline(accelMag)
         val impulse = abs(accelMag - accelBaseline)
         val jerk = abs(accelMag - previousAccelMag)

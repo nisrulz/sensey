@@ -38,10 +38,6 @@ internal class PickupDeviceTrigger(
             isPickedUp(range) -> {
                 isHeld = true
                 settleCount = 0
-                buffer.fill(0f)
-                bufferIndex = 0
-                bufferCount = 0
-                bufferSum = 0f
                 PickupDeviceEvent.PickedUp
             }
             isPutDown(mean, range) -> {

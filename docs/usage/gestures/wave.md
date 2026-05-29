@@ -19,14 +19,14 @@ A debounce of 1 second prevents rapid successive waves.
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `timeWindowMillis` | Max time (ms) for the wave motion | `500f` |
+| `timeWindowMillis` | Max time (ms) for the wave motion | `500L` |
 
 ## Usage
 
 ```kotlin
 senseyRegister(lifecycle) {
     wavePlugin(
-        timeWindowMillis = 500f, // ms window for the wave motion
+        timeWindowMillis = 500L, // ms window for the wave motion
     ) {
         println("Wave detected!")
     }

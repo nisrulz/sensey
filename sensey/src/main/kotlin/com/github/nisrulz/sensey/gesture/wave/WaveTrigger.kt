@@ -4,7 +4,7 @@ package com.github.nisrulz.sensey.gesture.wave
 import com.github.nisrulz.sensey.contract.GestureTrigger
 
 internal class WaveTrigger(
-    private val timeWindowMillis: Float = 2000f,
+    private val timeWindowMillis: Long = 2000L,
     private val debounceMillis: Long = 1000L,
     private val minNearDurationMs: Long = 300L,
 ) : GestureTrigger<WaveEvent> {
@@ -18,8 +18,10 @@ internal class WaveTrigger(
         timestamp: Long,
     ): WaveEvent? {
         val proximityState = if (values[0] == 0f) NEAR else FAR
+        val stateChanged = proximityState != lastProximityState
 
-        if (proximityState == NEAR && lastProximityState == FAR) {
+        if (stateChanged && proximityState == NEAR) {
+            lastProximityEventTime = timestamp
             nearStateStartTime = timestamp
         }
 
@@ -31,7 +33,6 @@ internal class WaveTrigger(
                 null
             }
 
-        lastProximityEventTime = timestamp
         lastProximityState = proximityState
         return result
     }
