@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:background">#35518C</item>
+        <item name="android:background">#FF000000</item>
     </style>
 </resources>
