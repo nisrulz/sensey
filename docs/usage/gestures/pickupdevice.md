@@ -9,7 +9,7 @@ Detects when the device is picked up or put down. Register with `pickupDevicePlu
 
 ## Algorithm
 
-The algorithm maintains a circular buffer of recent acceleration magnitudes. The range (max − min) across the buffer indicates movement: a high range above a moving threshold signals a pickup. When the mean acceleration returns to the gravity range (~9–10.5 m/s²) and the buffer range is stable for a number of consecutive readings, the device is declared put down.
+The algorithm maintains a circular buffer of recent acceleration magnitudes. The range (max − min) across the buffer indicates movement: a high range above a moving threshold signals a pickup. When the mean acceleration returns to the gravity range (~9–10.5 m/s²) and the buffer range is stable for the configured settle duration, the device is declared put down.
 
 ## Events
 
@@ -20,13 +20,17 @@ The algorithm maintains a circular buffer of recent acceleration magnitudes. The
 
 ## Parameters
 
-This plugin has no configurable parameters.
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `settleTimeMs` | Duration in milliseconds the device must remain stable before emitting `PutDown` | `1000L` |
 
 ## Usage
 
 ```kotlin
 senseyRegister(lifecycle) {
-    pickupDevicePlugin { event ->
+    pickupDevicePlugin(
+        settleTimeMs = 1000L, // ms of stability before PutDown (default: 1000L)
+    ) { event ->
         when (event) {
             PickupDeviceEvent.PickedUp -> println("Picked up") // device was lifted from a surface
             PickupDeviceEvent.PutDown  -> println("Put down")  // device was set down on a surface
