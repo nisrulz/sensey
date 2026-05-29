@@ -5,7 +5,11 @@ weight: 3
 
 # Flip
 
-Detects when the device flips face-up or face-down using the accelerometer. The algorithm compares Z-axis acceleration against configurable bounds: a Z value between approximately 8 and 10.5 m/s² indicates face-up, while a Z value between approximately −10.5 and −8 m/s² indicates face-down. Events are emitted only once per orientation state change to avoid repeated dispatches.
+Detects when the device flips face-up or face-down. Register with `flipPlugin`.
+
+## Algorithm
+
+The algorithm compares Z-axis acceleration against configurable bounds: a Z value between approximately 8 and 10.5 m/s² indicates face-up, while a Z value between approximately −10.5 and −8 m/s² indicates face-down. Events are emitted only once per orientation state change to avoid repeated dispatches.
 
 ## Events
 

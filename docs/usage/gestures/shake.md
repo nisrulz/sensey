@@ -5,7 +5,11 @@ weight: 2
 
 # Shake
 
-Detects when the device is being shaken using the accelerometer. The algorithm computes the Euclidean magnitude of raw acceleration and tracks it with a single-pole (EMA) smoothed delta. When the smoothed delta exceeds the threshold a shake is reported. If no new shake impulse occurs within the configured timeout, a stopped event is emitted.
+Detects when the device is being shaken. Register with `shakePlugin`.
+
+## Algorithm
+
+The algorithm computes the Euclidean magnitude of raw acceleration and tracks it with a single-pole (EMA) smoothed delta. When the smoothed delta exceeds the threshold a shake is reported. If no new shake impulse occurs within the configured timeout, a stopped event is emitted.
 
 ## Events
 

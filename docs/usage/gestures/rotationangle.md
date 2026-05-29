@@ -5,7 +5,11 @@ weight: 14
 
 # RotationAngle
 
-Reports the device rotation angles (Euler angles) using the rotation vector sensor. The algorithm wraps raw Euler-angle readings (axis X, Y, Z) into a `RotationAngleEvent`. It compares each axis value against the previously emitted event; if any axis has changed by more than the minimum angle threshold a new event is emitted. The first reading is always emitted.
+Reports the device rotation angles (Euler angles). Register with `rotationAnglePlugin`.
+
+## Algorithm
+
+The algorithm wraps raw Euler-angle readings (axis X, Y, Z) into a `RotationAngleEvent`. It compares each axis value against the previously emitted event; if any axis has changed by more than the minimum angle threshold a new event is emitted. The first reading is always emitted.
 
 ## Events
 

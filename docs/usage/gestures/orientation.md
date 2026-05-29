@@ -5,7 +5,11 @@ weight: 12
 
 # Orientation
 
-Detects the device orientation (which edge is pointing up) using the accelerometer and magnetometer. The algorithm computes pitch and roll via `SensorManager.getRotationMatrix` and `getOrientation`. It smoothes these angles with a configurable moving-average window and classifies the orientation using the averaged pitch and roll with hysteresis from the previous orientation. An event is emitted only when the orientation actually changes from the last reported state.
+Detects the device orientation (which edge is pointing up). Register with `orientationPlugin`.
+
+## Algorithm
+
+The algorithm computes pitch and roll via `SensorManager.getRotationMatrix` and `getOrientation`. It smoothes these angles with a configurable moving-average window and classifies the orientation using the averaged pitch and roll with hysteresis from the previous orientation. An event is emitted only when the orientation actually changes from the last reported state.
 
 ## Events
 

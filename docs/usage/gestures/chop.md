@@ -5,7 +5,11 @@ weight: 7
 
 # Chop
 
-Detects a chopping motion gesture using the accelerometer. The algorithm monitors linear acceleration (total magnitude minus gravity, approximately 9.81 m/s²). When a single impulse exceeds the threshold the gesture window starts. The gesture is considered complete when no further impulses occur within the configured timeout.
+Detects a chopping motion gesture. Register with `chopPlugin`.
+
+## Algorithm
+
+The algorithm monitors linear acceleration (total magnitude minus gravity, approximately 9.81 m/s²). When a single impulse exceeds the threshold the gesture window starts. The gesture is considered complete when no further impulses occur within the configured timeout.
 
 ## Events
 

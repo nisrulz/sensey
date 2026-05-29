@@ -5,7 +5,11 @@ weight: 4
 
 # Light
 
-Detects ambient light transitions (dark ↔ light) using the light sensor. The algorithm compares ambient lux values against configurable dark and light thresholds with hysteresis. On first reading it establishes a baseline state. Subsequent readings trigger a transition event only when the value crosses the opposite threshold. Same-state readings are ignored to avoid repeated events.
+Detects ambient light transitions (dark ↔ light). Register with `lightPlugin`.
+
+## Algorithm
+
+The algorithm compares ambient lux values against configurable dark and light thresholds with hysteresis. On first reading it establishes a baseline state. Subsequent readings trigger a transition event only when the value crosses the opposite threshold. Same-state readings are ignored to avoid repeated events.
 
 ## Events
 

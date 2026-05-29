@@ -5,7 +5,11 @@ weight: 8
 
 # WristTwist
 
-Detects a wrist-twisting motion using the accelerometer. The algorithm monitors linear acceleration (total magnitude minus gravity). When a single impulse exceeds the threshold the gesture window starts. The gesture is considered complete when no further impulses occur within the configured timeout — similar in structure to chop detection but tuned with different defaults for the wrist-twist motion profile.
+Detects a wrist-twisting motion. Register with `wristTwistPlugin`.
+
+## Algorithm
+
+The algorithm monitors linear acceleration (total magnitude minus gravity). When a single impulse exceeds the threshold the gesture window starts. The gesture is considered complete when no further impulses occur within the configured timeout — similar in structure to chop detection but tuned with different defaults for the wrist-twist motion profile.
 
 ## Events
 

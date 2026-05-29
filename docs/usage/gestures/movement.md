@@ -5,7 +5,11 @@ weight: 6
 
 # Movement
 
-Detects when the device is moving or stationary using the accelerometer. The algorithm computes the Euclidean magnitude of the acceleration vector and compares the absolute delta between consecutive readings against a threshold. If the delta exceeds the threshold the device is considered moving (with the dominant spatial direction reported). If no movement occurs within a configurable timeout the device is declared stationary.
+Detects when the device is moving or stationary. Register with `movementPlugin`.
+
+## Algorithm
+
+The algorithm computes the Euclidean magnitude of the acceleration vector and compares the absolute delta between consecutive readings against a threshold. If the delta exceeds the threshold the device is considered moving (with the dominant spatial direction reported). If no movement occurs within a configurable timeout the device is declared stationary.
 
 ## Events
 

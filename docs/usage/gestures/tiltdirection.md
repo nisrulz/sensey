@@ -5,7 +5,11 @@ weight: 13
 
 # TiltDirection
 
-Detects the dominant tilt axis and its direction using the gyroscope. The algorithm compares the absolute values of the three gyroscope components (X, Y, Z). The axis with the largest magnitude above the threshold is considered the dominant tilt axis. A positive value on that axis maps to ANTICLOCKWISE tilt; a negative value maps to CLOCKWISE.
+Detects the dominant tilt axis and its direction. Register with `tiltDirectionPlugin`.
+
+## Algorithm
+
+The algorithm compares the absolute values of the three gyroscope components (X, Y, Z). The axis with the largest magnitude above the threshold is considered the dominant tilt axis. A positive value on that axis maps to ANTICLOCKWISE tilt; a negative value maps to CLOCKWISE.
 
 ## Events
 

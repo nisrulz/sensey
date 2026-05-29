@@ -5,7 +5,11 @@ weight: 10
 
 # Scoop
 
-Detects a scooping (lifting/pickup) motion using the accelerometer. The algorithm maintains an EMA-smoothed acceleration baseline and computes the impulse (deviation from baseline) and jerk (change between consecutive samples). When the impulse exceeds the threshold, consecutive samples are counted. A scoop is emitted when the sustained-sample count and peak jerk within the window both exceed their respective minima, subject to a global debounce.
+Detects a scooping (lifting/pickup) motion. Register with `scoopPlugin`.
+
+## Algorithm
+
+The algorithm maintains an EMA-smoothed acceleration baseline and computes the impulse (deviation from baseline) and jerk (change between consecutive samples). When the impulse exceeds the threshold, consecutive samples are counted. A scoop is emitted when the sustained-sample count and peak jerk within the window both exceed their respective minima, subject to a global debounce.
 
 ## Events
 

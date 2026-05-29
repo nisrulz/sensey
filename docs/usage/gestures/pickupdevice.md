@@ -5,7 +5,11 @@ weight: 11
 
 # PickupDevice
 
-Detects when the device is picked up or put down using the accelerometer. The algorithm maintains a circular buffer of recent acceleration magnitudes. The range (max − min) across the buffer indicates movement: a high range above a moving threshold signals a pickup. When the mean acceleration returns to the gravity range (~9–10.5 m/s²) and the buffer range is stable for a number of consecutive readings, the device is declared put down.
+Detects when the device is picked up or put down. Register with `pickupDevicePlugin`.
+
+## Algorithm
+
+The algorithm maintains a circular buffer of recent acceleration magnitudes. The range (max − min) across the buffer indicates movement: a high range above a moving threshold signals a pickup. When the mean acceleration returns to the gravity range (~9–10.5 m/s²) and the buffer range is stable for a number of consecutive readings, the device is declared put down.
 
 ## Events
 

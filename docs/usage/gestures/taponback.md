@@ -5,7 +5,11 @@ weight: 15
 
 # TapOnBack
 
-Detects double-taps on the device back or side using accelerometer gravity vector angle analysis. The algorithm maintains an EMA-smoothed gravity baseline from accelerometer readings. It computes the angular deviation from this baseline and the angular jerk (change in angle between consecutive samples). A valid tap requires sufficient angle deviation, minimum jerk, and debounce since the last tap. Taps are accumulated within a sequence timeout; the event is emitted only when at least two taps occur within that window. Single taps are ignored.
+Detects double-taps on the device back or side. Register with `tapOnBackPlugin`.
+
+## Algorithm
+
+The algorithm maintains an EMA-smoothed gravity baseline from accelerometer readings. It computes the angular deviation from this baseline and the angular jerk (change in angle between consecutive samples). A valid tap requires sufficient angle deviation, minimum jerk, and debounce since the last tap. Taps are accumulated within a sequence timeout; the event is emitted only when at least two taps occur within that window. Single taps are ignored.
 
 ## Events
 

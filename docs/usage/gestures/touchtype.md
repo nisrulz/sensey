@@ -5,9 +5,11 @@ weight: 19
 
 # TouchType
 
-Detects various touch gestures (tap, double-tap, long-press, swipe, scroll, multi-finger tap) in Compose using `detectTapGestures` and `detectDragGestures`. The algorithm classifies drag gestures as swipes or scrolls based on velocity: if the velocity exceeds a threshold (200 px/s on either axis) the gesture is classified as a swipe; otherwise it is a scroll. Direction is determined by partitioning the atan2 angle into eight quadrants. For tap gestures, consecutive taps within 400 ms are accumulated and dispatched as `NTap(3)` when the count reaches three.
+Detects various touch gestures (tap, double-tap, long-press, swipe, scroll, multi-finger tap) in Compose. Register with `touchTypePlugin`.
 
-Requires `Modifier.senseyGestures()` on the composable that receives touch input.
+## Algorithm
+
+The algorithm classifies drag gestures as swipes or scrolls based on velocity: if the velocity exceeds a threshold (200 px/s on either axis) the gesture is classified as a swipe; otherwise it is a scroll. Direction is determined by partitioning the atan2 angle into eight quadrants. For tap gestures, consecutive taps within 400 ms are accumulated and dispatched as `NTap(3)` when the count reaches three.
 
 ## Events
 

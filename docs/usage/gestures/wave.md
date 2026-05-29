@@ -5,7 +5,11 @@ weight: 9
 
 # Wave
 
-Detects a hand wave over the proximity sensor. The algorithm tracks near→far state transitions of the proximity sensor. A wave is recognised when the device transitions from NEAR to FAR, the near state was held for a minimum duration (300 ms), the entire gesture occurs within a configurable time window, and sufficient debounce time has passed since the last detected wave.
+Detects a hand wave over the proximity sensor. Register with `wavePlugin`.
+
+## Algorithm
+
+The algorithm tracks near→far state transitions of the proximity sensor. A wave is recognised when the device transitions from NEAR to FAR, the near state was held for a minimum duration (300 ms), the entire gesture occurs within a configurable time window, and sufficient debounce time has passed since the last detected wave.
 
 ## Events
 

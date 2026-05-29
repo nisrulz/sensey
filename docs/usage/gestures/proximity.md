@@ -5,7 +5,11 @@ weight: 5
 
 # Proximity
 
-Detects when an object is near to or far from the proximity sensor. The algorithm compares the raw distance value against the sensor's max range to classify near vs far. It filters out repeated events that match the last dispatched state, guarding against continuous-sensor duplicate firings while remaining compatible with on-change sensors that fire only once per transition.
+Detects when an object is near to or far from the proximity sensor. Register with `proximityPlugin`.
+
+## Algorithm
+
+The algorithm compares the raw distance value against the sensor's max range to classify near vs far. It filters out repeated events that match the last dispatched state, guarding against continuous-sensor duplicate firings while remaining compatible with on-change sensors that fire only once per transition.
 
 ## Events
 
