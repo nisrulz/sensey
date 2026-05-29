@@ -5,7 +5,7 @@ weight: 9
 
 # Wave
 
-Detects a hand wave over the proximity sensor. Register with `wavePlugin`.
+Detects a hand wave over the proximity sensor. The algorithm tracks near→far state transitions of the proximity sensor. A wave is recognised when the device transitions from NEAR to FAR, the near state was held for a minimum duration (300 ms), the entire gesture occurs within a configurable time window, and sufficient debounce time has passed since the last detected wave.
 
 ## Events
 
@@ -13,22 +13,22 @@ Detects a hand wave over the proximity sensor. Register with `wavePlugin`.
 |-------|-------------|
 | `WaveEvent.Waved` | Hand wave over proximity sensor detected |
 
-A debounce of 1 second prevents rapid successive waves.
-
 ## Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `timeWindowMillis` | Max time (ms) for the wave motion | `500L` |
+| `timeWindowMillis` | Maximum time in milliseconds for the complete near→far wave motion | `1000L` |
+| `debounceMillis` | Minimum time in milliseconds between successive wave events to prevent repeated triggers | `1000L` |
 
 ## Usage
 
 ```kotlin
 senseyRegister(lifecycle) {
     wavePlugin(
-        timeWindowMillis = 500L, // ms window for the wave motion
+        timeWindowMillis = 1000L, // max time for the wave motion (default: 1000L)
+        debounceMillis = 1000L,   // debounce between successive wave events (default: 1000L)
     ) {
-        println("Wave detected!")
+        println("Wave detected!") // a hand wave over the proximity sensor was recognised
     }
 }
 ```

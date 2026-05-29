@@ -5,35 +5,35 @@ weight: 12
 
 # Orientation
 
-Detects the device orientation based on which edge is pointing up. Register with `orientationPlugin`.
+Detects the device orientation (which edge is pointing up) using the accelerometer and magnetometer. The algorithm computes pitch and roll via `SensorManager.getRotationMatrix` and `getOrientation`. It smoothes these angles with a configurable moving-average window and classifies the orientation using the averaged pitch and roll with hysteresis from the previous orientation. An event is emitted only when the orientation actually changes from the last reported state.
 
 ## Events
 
 | Event | Description |
 |-------|-------------|
-| `OrientationEvent.TopSideUp` | Top edge pointing up |
-| `OrientationEvent.BottomSideUp` | Bottom edge pointing up |
-| `OrientationEvent.LeftSideUp` | Left edge pointing up |
-| `OrientationEvent.RightSideUp` | Right edge pointing up |
+| `OrientationEvent.TopSideUp` | Top edge of the device pointing up (portrait) |
+| `OrientationEvent.BottomSideUp` | Bottom edge pointing up (reverse portrait) |
+| `OrientationEvent.LeftSideUp` | Left edge pointing up (reverse landscape) |
+| `OrientationEvent.RightSideUp` | Right edge pointing up (landscape) |
 
 ## Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `smoothness` | Smoothing factor for orientation detection | `3` |
+| `smoothness` | Moving-average window size for pitch/roll smoothing; higher values reduce jitter but slow response to orientation changes | `1` |
 
 ## Usage
 
 ```kotlin
 senseyRegister(lifecycle) {
     orientationPlugin(
-        smoothness = 3, // higher = less jitter, slower response
+        smoothness = 1, // moving-average window for smoothing (default: 1 = no smoothing)
     ) { event ->
         when (event) {
-            OrientationEvent.TopSideUp    -> println("Top up")
-            OrientationEvent.BottomSideUp -> println("Bottom up")
-            OrientationEvent.LeftSideUp   -> println("Left up")
-            OrientationEvent.RightSideUp  -> println("Right up")
+            OrientationEvent.TopSideUp    -> println("Top up")    // portrait orientation
+            OrientationEvent.BottomSideUp -> println("Bottom up") // reverse portrait
+            OrientationEvent.LeftSideUp   -> println("Left up")   // reverse landscape
+            OrientationEvent.RightSideUp  -> println("Right up")  // landscape orientation
         }
     }
 }

@@ -5,25 +5,30 @@ weight: 19
 
 # TouchType
 
-Detects various touch gestures in Compose. Register with `touchTypePlugin`.
+Detects various touch gestures (tap, double-tap, long-press, swipe, scroll, multi-finger tap) in Compose using `detectTapGestures` and `detectDragGestures`. The algorithm classifies drag gestures as swipes or scrolls based on velocity: if the velocity exceeds a threshold (200 px/s on either axis) the gesture is classified as a swipe; otherwise it is a scroll. Direction is determined by partitioning the atan2 angle into eight quadrants. For tap gestures, consecutive taps within 400 ms are accumulated and dispatched as `NTap(3)` when the count reaches three.
+
+Requires `Modifier.senseyGestures()` on the composable that receives touch input.
 
 ## Events
 
 | Event | Description |
 |-------|-------------|
-| `TouchTypeEvent.NTap(count)` | N consecutive taps within the time window (default `count=3`, 400ms window) |
+| `TouchTypeEvent.NTap(count)` | N consecutive taps within the time window (default `count=3`, 400 ms window) |
 | `TouchTypeEvent.DoubleTap` | Double tap |
 | `TouchTypeEvent.LongPress` | Long press |
 | `TouchTypeEvent.SingleTap` | Single tap |
-| `TouchTypeEvent.Swipe(direction)` | Swipe in any of 8 directions |
-| `TouchTypeEvent.Scroll(direction)` | Scroll (tap-and-move) |
+| `TouchTypeEvent.Swipe(direction)` | Swipe in any of 8 directions (high velocity) |
+| `TouchTypeEvent.Scroll(direction)` | Scroll (tap-and-move, low velocity) |
 | `TouchTypeEvent.ThreeFingerSingleTap` | Three finger tap |
 | `TouchTypeEvent.TwoFingerSingleTap` | Two finger tap |
 
-Directions: `TouchTypeEvent.Direction` enum with `UP`, `DOWN`, `LEFT`, `RIGHT`,
-`UP_RIGHT`, `UP_LEFT`, `DOWN_RIGHT`, `DOWN_LEFT`.
+Directions: `TouchTypeEvent.Direction` enum with `UP`, `DOWN`, `LEFT`, `RIGHT`, `UP_RIGHT`, `UP_LEFT`, `DOWN_RIGHT`, `DOWN_LEFT`.
 
-Requires `Modifier.senseyGestures()` on the composable that receives touch input.
+Swipe directions are reported with precise 8-direction names (e.g. `DOWN_RIGHT`), while scroll directions use coarse 4-direction names (e.g. `DOWN`) to reflect the typical granularity of scroll flings.
+
+## Parameters
+
+This plugin has no configurable parameters.
 
 ## Usage
 
@@ -34,20 +39,20 @@ import com.github.nisrulz.sensey.gesture.compose.senseyGestures
 SenseyGestureEffect(lifecycle) {
     touchTypePlugin(context) { event ->
         when (event) {
-            is TouchTypeEvent.NTap    -> println("${event.count}-tap detected")
-            TouchTypeEvent.DoubleTap -> println("Double tap")
-            TouchTypeEvent.LongPress -> println("Long press")
-            TouchTypeEvent.SingleTap -> println("Single tap")
-            is TouchTypeEvent.Swipe  -> println("Swipe direction: ${event.direction}")
-            is TouchTypeEvent.Scroll -> println("Scroll direction: ${event.direction}")
-            TouchTypeEvent.ThreeFingerSingleTap -> println("Three finger tap")
-            TouchTypeEvent.TwoFingerSingleTap   -> println("Two finger tap")
+            is TouchTypeEvent.NTap    -> println("${event.count}-tap detected") // 3 consecutive quick taps
+            TouchTypeEvent.DoubleTap -> println("Double tap")  // two rapid taps
+            TouchTypeEvent.LongPress -> println("Long press")  // sustained touch
+            TouchTypeEvent.SingleTap -> println("Single tap")  // single tap
+            is TouchTypeEvent.Swipe  -> println("Swipe direction: ${event.direction}") // high-velocity drag
+            is TouchTypeEvent.Scroll -> println("Scroll direction: ${event.direction}") // low-velocity drag
+            TouchTypeEvent.ThreeFingerSingleTap -> println("Three finger tap")  // three-finger tap
+            TouchTypeEvent.TwoFingerSingleTap   -> println("Two finger tap")    // two-finger tap
         }
     }
 }
 
 Box(modifier = Modifier.fillMaxSize().senseyGestures()) {
-    // content
+    // content that receives touch gestures
 }
 ```
 

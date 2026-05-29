@@ -5,7 +5,7 @@ weight: 2
 
 # Shake
 
-Detects when the device is being shaken. Register with `shakePlugin`.
+Detects when the device is being shaken using the accelerometer. The algorithm computes the Euclidean magnitude of raw acceleration and tracks it with a single-pole (EMA) smoothed delta. When the smoothed delta exceeds the threshold a shake is reported. If no new shake impulse occurs within the configured timeout, a stopped event is emitted.
 
 ## Events
 
@@ -18,20 +18,20 @@ Detects when the device is being shaken. Register with `shakePlugin`.
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `threshold` | Acceleration threshold for shake detection | `10f` |
-| `timeBeforeDeclaringShakeStopped` | Time (ms) of stillness before declaring stopped | `2000L` |
+| `threshold` | EMA-smoothed acceleration delta magnitude that triggers shake detection; higher values require more vigorous shaking | `3f` |
+| `timeBeforeDeclaringShakeStopped` | Time in milliseconds of stillness before `ShakeEvent.Stopped` is emitted | `1000L` |
 
 ## Usage
 
 ```kotlin
 senseyRegister(lifecycle) {
     shakePlugin(
-        threshold = 10f,                      // accel magnitude to trigger
-        timeBeforeDeclaringShakeStopped = 2000L, // ms of stillness → Stopped
+        threshold = 3f,                         // accel delta magnitude to trigger (default: 3f)
+        timeBeforeDeclaringShakeStopped = 1000L,  // ms of stillness before Stopped event (default: 1000L)
     ) { event ->
         when (event) {
-            ShakeEvent.Detected -> println("Shake detected!")
-            ShakeEvent.Stopped  -> println("Shake stopped")
+            ShakeEvent.Detected -> println("Shake detected!") // device is being shaken
+            ShakeEvent.Stopped  -> println("Shake stopped")   // shaking has ceased
         }
     }
 }

@@ -5,15 +5,19 @@ weight: 18
 
 # PinchScale
 
-Detects pinch-to-zoom gestures in Compose. Register with `pinchScalePlugin`.
+Detects pinch-to-zoom gestures (scale in/out) in Compose. The algorithm monitors the scale factor from `detectTransformGestures`. When the factor exceeds 1.01 (pinch-in) or falls below 0.99 (pinch-out), consecutive readings are counted. The event is only emitted after a confirmation count (2 consecutive readings) is reached, providing debounce against jittery touch input. Tracks the last emitted direction so opposite-direction events can be reported.
+
+Requires `Modifier.senseyGestures()` on the composable that receives touch input.
 
 ## Events
 
 | Event | Properties |
 |-------|------------|
-| `PinchScaleEvent` | `scaleFactor`, `isScalingOut` |
+| `PinchScaleEvent` | `scaleFactor` — current pinch zoom factor; `isScalingOut` — `true` for pinch-out (zoom out), `false` for pinch-in (zoom in) |
 
-Requires `Modifier.senseyGestures()` on the composable that receives touch input.
+## Parameters
+
+This plugin has no configurable parameters.
 
 ## Usage
 
@@ -23,13 +27,13 @@ import com.github.nisrulz.sensey.gesture.compose.senseyGestures
 
 SenseyGestureEffect(lifecycle) {
     pinchScalePlugin(context) { event ->
-        if (event.isScalingOut) println("Scaling out: ${event.scaleFactor}")
-        else println("Scaling in: ${event.scaleFactor}")
+        if (event.isScalingOut) println("Scaling out: ${event.scaleFactor}") // pinch-out (zoom out)
+        else println("Scaling in: ${event.scaleFactor}") // pinch-in (zoom in)
     }
 }
 
 Box(modifier = Modifier.fillMaxSize().senseyGestures()) {
-    // content
+    // content that receives pinch gestures
 }
 ```
 

@@ -5,23 +5,37 @@ weight: 3
 
 # Flip
 
-Detects when the device flips face-up or face-down. Register with `flipPlugin`.
+Detects when the device flips face-up or face-down using the accelerometer. The algorithm compares Z-axis acceleration against configurable bounds: a Z value between approximately 8 and 10.5 m/s² indicates face-up, while a Z value between approximately −10.5 and −8 m/s² indicates face-down. Events are emitted only once per orientation state change to avoid repeated dispatches.
 
 ## Events
 
 | Event | Description |
 |-------|-------------|
-| `FlipEvent.FaceUp` | Device is face-up (screen up) |
-| `FlipEvent.FaceDown` | Device is face-down (screen down) |
+| `FlipEvent.FaceUp` | Device is face-up (screen pointing upward) |
+| `FlipEvent.FaceDown` | Device is face-down (screen pointing downward) |
+
+## Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `faceUpLowerBound` | Minimum Z-axis acceleration (m/s²) for face-up detection | `8f` |
+| `faceUpUpperBound` | Maximum Z-axis acceleration (m/s²) for face-up detection | `10.5f` |
+| `faceDownLowerBound` | Minimum Z-axis acceleration (m/s²) for face-down detection (negative) | `-10.5f` |
+| `faceDownUpperBound` | Maximum Z-axis acceleration (m/s²) for face-down detection (negative) | `-8f` |
 
 ## Usage
 
 ```kotlin
 senseyRegister(lifecycle) {
-    flipPlugin { event ->
+    flipPlugin(
+        faceUpLowerBound = 8f,     // lower Z bound for face-up (default: 8f)
+        faceUpUpperBound = 10.5f,  // upper Z bound for face-up (default: 10.5f)
+        faceDownLowerBound = -10.5f, // lower Z bound for face-down (default: -10.5f)
+        faceDownUpperBound = -8f,  // upper Z bound for face-down (default: -8f)
+    ) { event ->
         when (event) {
-            FlipEvent.FaceUp   -> println("Face up")   // screen facing up
-            FlipEvent.FaceDown -> println("Face down") // screen facing down
+            FlipEvent.FaceUp   -> println("Face up")   // screen is pointing upward
+            FlipEvent.FaceDown -> println("Face down") // screen is pointing downward
         }
     }
 }

@@ -5,7 +5,7 @@ weight: 7
 
 # Chop
 
-Detects a chopping motion gesture. Register with `chopPlugin`.
+Detects a chopping motion gesture using the accelerometer. The algorithm monitors linear acceleration (total magnitude minus gravity, approximately 9.81 m/s²). When a single impulse exceeds the threshold the gesture window starts. The gesture is considered complete when no further impulses occur within the configured timeout.
 
 ## Events
 
@@ -17,18 +17,18 @@ Detects a chopping motion gesture. Register with `chopPlugin`.
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `threshold` | Acceleration threshold for chop detection | `30f` |
-| `timeForChopGesture` | Max time (ms) for the chop gesture | `500L` |
+| `threshold` | Linear acceleration magnitude threshold to trigger the gesture window | `25f` |
+| `timeForChopGesture` | Time window in milliseconds during which chop impulses are accumulated | `700L` |
 
 ## Usage
 
 ```kotlin
 senseyRegister(lifecycle) {
     chopPlugin(
-        threshold = 30f,           // accel magnitude to trigger
-        timeForChopGesture = 500L, // max duration of the chop motion
+        threshold = 25f,           // linear accel magnitude to trigger (default: 25f)
+        timeForChopGesture = 700L, // max duration of the chop motion window (default: 700L)
     ) {
-        println("Chop detected!")
+        println("Chop detected!") // a chopping motion was recognised
     }
 }
 ```

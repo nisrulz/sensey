@@ -5,7 +5,9 @@ weight: 17
 
 # Step
 
-Tracks step count, distance, and activity type. Register with `stepPlugin`.
+Tracks step count, distance, and activity type using the step counter sensor (API 19+). The algorithm supports two input modes: (1) hardware step-counter sensor (single cumulative value) — subtracts the initial baseline and dispatches the incremental step count, deduplicating against the last dispatched value; (2) accelerometer fallback (3-axis values) — detects steps by monitoring acceleration magnitude peaks above a threshold. Each event includes distance (via stride estimation) and activity type (still/walking/running) computed through `StepDetectorUtil`.
+
+Activity types: `StepDetectorUtil.ACTIVITY_STILL` (0), `ACTIVITY_WALKING` (1), `ACTIVITY_RUNNING` (2).
 
 ## Events
 
@@ -13,24 +15,22 @@ Tracks step count, distance, and activity type. Register with `stepPlugin`.
 |-------|------------|
 | `StepEvent` | `steps`, `distanceInMeters`, `activityType` |
 
-Activity type: `StepDetectorUtil.ACTIVITY_STILL` (0), `ACTIVITY_WALKING` (1), `ACTIVITY_RUNNING` (2).
-
-Uses `StepDetectorPostKitKat` (step counter sensor, API 19+).
-
 ## Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `gender` | `StepDetectorUtil.MALE` or `StepDetectorUtil.FEMALE` | — |
+| `gender` | Gender used for stride length estimation in distance calculation; `StepDetectorUtil.MALE` or `StepDetectorUtil.FEMALE` | `StepDetectorUtil.MALE` |
+| `threshold` | Acceleration magnitude delta threshold for step detection in accelerometer fallback mode | `3f` |
 
 ## Usage
 
 ```kotlin
 senseyRegister(lifecycle) {
     stepPlugin(
-        gender = StepDetectorUtil.MALE, // or FEMALE — adjusts stride estimation
+        gender = StepDetectorUtil.MALE, // adjusts stride estimation for distance (default: MALE)
+        threshold = 3f,                 // accel delta threshold for step detection (default: 3f)
     ) { event ->
-        println("Steps: ${event.steps}, Distance: ${event.distanceInMeters}m")
+        println("Steps: ${event.steps}, Distance: ${event.distanceInMeters}m, Activity: ${event.activityType}")
     }
 }
 ```
