@@ -56,6 +56,4 @@ internal class MovementTrigger(
         val timeSinceLastMovement = timestamp - lastMovementTime
         return timeSinceLastMovement > timeBeforeDeclaringStationary && isMoving
     }
-
-
 }

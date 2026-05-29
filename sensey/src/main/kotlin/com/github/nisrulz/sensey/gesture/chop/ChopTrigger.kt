@@ -40,6 +40,4 @@ internal class ChopTrigger(
         val timeSinceLastMotion = timestamp - lastChopTime
         return timeSinceLastMotion > timeForChopGesture && isGestureInProgress
     }
-
-
 }

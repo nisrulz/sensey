@@ -8,9 +8,9 @@ import android.hardware.SensorManager
 import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.github.nisrulz.sensey.SensorDetector
 import com.github.nisrulz.sensey.contract.GesturePlugin
 import com.github.nisrulz.sensey.gesture.compose.ComposeGestureProvider
-import com.github.nisrulz.sensey.SensorDetector
 
 class Sensey(
     context: Context,

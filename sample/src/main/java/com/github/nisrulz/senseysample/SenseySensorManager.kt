@@ -74,6 +74,7 @@ internal class SenseySensorManager(
     }
 
     var resultText by mutableStateOf("Results show here")
+    var isDetected by mutableStateOf(false)
     var selectedSensor by mutableStateOf<String?>(null)
     var sensey: Sensey? = null
 
@@ -297,12 +298,14 @@ internal class SenseySensorManager(
         realtime: Boolean,
     ) {
         resultText = text
+        isDetected = true
         if (!realtime) {
             resetJob?.cancel()
             resetJob =
                 scope.launch {
                     delay(3000)
                     resultText = "Results show here"
+                    isDetected = false
                 }
         }
         if (BuildConfig.DEBUG) Log.d(logTag, text)

@@ -1,6 +1,9 @@
 package com.github.nisrulz.senseysample.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,15 +15,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.github.nisrulz.senseysample.ui.DividerGray
 
 data class SensorItem(
     val label: String,
@@ -37,7 +43,7 @@ private fun MainScreenPreview() {
                 SensorItem("Shake Detector", true, {}),
                 SensorItem("Flip Detector", false, {}),
             ),
-        resultText = "No gesture detected",
+        detected = true,
         onTouchDetectorClick = {},
     )
 }
@@ -45,7 +51,7 @@ private fun MainScreenPreview() {
 @Composable
 fun MainScreen(
     sensors: List<SensorItem>,
-    resultText: String,
+    detected: Boolean,
     onTouchDetectorClick: () -> Unit,
 ) {
     Surface(
@@ -55,59 +61,66 @@ fun MainScreen(
                 .systemBarsPadding(),
         color = PrimaryBlue,
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 16.dp),
-            ) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Select a gesture detector",
-                    color = Color(0xFF5D9CEC),
-                    fontSize = 20.sp,
-                    modifier = Modifier.padding(vertical = 8.dp),
-                )
-                sensors.forEach { sensor ->
-                    SenseyRadioButton(
-                        label = sensor.label,
-                        selected = sensor.isSelected,
-                        onSelect = sensor.onSelect,
-                    )
-                }
-            }
-
-            ResultArea(
-                text = resultText,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(0.8f)
-                        .padding(horizontal = 16.dp),
+        Column {
+            Text(
+                text = "Sensey",
+                color = Color(0xFFFF9800),
+                fontSize = 40.sp,
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
             )
+            Spacer(modifier = Modifier.height(8.dp))
+            HorizontalDivider()
+            Column(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .verticalScroll(rememberScrollState()),
+                ) {
+                    sensors.forEach { sensor ->
+                        SenseyRadioButton(
+                            label = sensor.label,
+                            selected = sensor.isSelected,
+                            onSelect = sensor.onSelect,
+                        )
+                    }
+                }
 
-            Button(
-                onClick = onTouchDetectorClick,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                        .height(48.dp),
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = AccentOrange,
-                        contentColor = White,
-                    ),
-                shape = RoundedCornerShape(0.dp),
-            ) {
-                Text(
-                    text = "Touch Detector",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                )
+                Row(
+                    modifier =
+                        Modifier
+                            .background(color = White)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 16.dp),
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    DetectionIndicator(
+                        detected = detected,
+                    )
+
+                    Button(
+                        onClick = onTouchDetectorClick,
+                        modifier =
+                            Modifier
+                                .weight(1f)
+                                .height(48.dp),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = NavigationCyan,
+                                contentColor = White,
+                            ),
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Text(
+                            text = "Touch Detector",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium,
+                        )
+                    }
+                }
             }
         }
     }
