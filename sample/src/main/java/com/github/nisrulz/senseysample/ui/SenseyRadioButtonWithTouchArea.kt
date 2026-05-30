@@ -15,12 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.github.nisrulz.sensey.gesture.compose.senseyGestures
 
 @Composable
-internal fun SenseyRadioButton(
+internal fun SenseyRadioButtonWithTouchArea(
     label: String,
     result: String = "Hello",
+    helperText: String = "",
     selected: Boolean,
+    showHitArea: Boolean = false,
     onSelect: () -> Unit,
 ) {
     Column {
@@ -53,15 +56,15 @@ internal fun SenseyRadioButton(
             )
         }
 
-        if (result.isNotBlank()) {
-            Text(
-                text = result,
+        Text(text = helperText, color = DividerGray, modifier = Modifier.padding(bottom = 8.dp))
+
+        if (showHitArea || result.isNotBlank()) {
+            ResultArea(
+                text = result.ifBlank { "[ Hit Area ]" },
                 modifier =
                     Modifier
-                        .fillMaxWidth()
+                        .senseyGestures()
                         .padding(bottom = 16.dp),
-                color = Pink,
-                fontSize = 20.sp,
             )
         }
     }
@@ -70,5 +73,10 @@ internal fun SenseyRadioButton(
 @Preview
 @Composable
 private fun SenseyRadioButtonPreview() {
-    SenseyRadioButton(label = "Shake Detector", selected = true, onSelect = {})
+    SenseyRadioButtonWithTouchArea(
+        label = "Shake Detector",
+        selected = true,
+        onSelect = {},
+        helperText = "Some Helper Text",
+    )
 }
