@@ -18,7 +18,10 @@ fun MainScreen(
     sensors: List<SensorItem>,
 ) {
     Surface(
-        modifier = Modifier.fillMaxSize().systemBarsPadding(),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .systemBarsPadding(),
         color = MaterialTheme.colorScheme.background,
     ) {
         Column(
@@ -37,7 +40,6 @@ fun MainScreen(
                 SensorList(
                     sensors = sensors,
                     selectedSensor = selectedSensor,
-                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
         }

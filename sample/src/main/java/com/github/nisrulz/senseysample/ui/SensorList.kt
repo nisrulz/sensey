@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 
 data class SensorItem(
     val label: String,
@@ -38,18 +38,11 @@ internal fun SensorList(
                     sensor.label == "Diagonal Swipe"
             if (isTouch) {
                 key(selectedSensor) {
-                    val helper =
-                        when (sensor.label) {
-                            "Touch Detection" -> "Single Tap, Double Tap, Long Press, Swipe, Scroll, N-Tap"
-                            "Pinch Scale Detection" -> "Pinch In / Pinch Out"
-                            "Edge Swipe" -> "Swipe from composable edge"
-                            else -> "Swipe diagonally"
-                        }
                     SenseyRadioButtonWithTouchArea(
                         label = sensor.label,
                         selected = sensor.isSelected,
                         result = sensor.result,
-                        helperText = helper,
+                        helperText = helperTextForLabel(sensor.label),
                         showHitArea = sensor.isSelected,
                         onSelect = sensor.onSelect,
                     )
@@ -66,13 +59,23 @@ internal fun SensorList(
     }
 }
 
-@Preview
+private fun helperTextForLabel(label: String): String =
+    when (label) {
+        "Touch Detection" -> "Single Tap, Double Tap, Long Press, Swipe, Scroll, N-Tap"
+        "Pinch Scale Detection" -> "Pinch In / Pinch Out"
+        "Edge Swipe" -> "Swipe from composable edge"
+        else -> "Swipe diagonally"
+    }
+
+@PreviewLightDark
 @Composable
 private fun SensorListPreview() {
-    SensorList(
-        listOf(
-            SensorItem("Shake Detector", true, "", {}),
-            SensorItem("Flip Detector", false, "", {}),
-        ),
-    )
+    PreviewTheme {
+        SensorList(
+            listOf(
+                SensorItem("Shake Detector", true, "", {}),
+                SensorItem("Flip Detector", false, "", {}),
+            ),
+        )
+    }
 }
