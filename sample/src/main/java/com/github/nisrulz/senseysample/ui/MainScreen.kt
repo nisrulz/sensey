@@ -6,12 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -21,11 +18,8 @@ fun MainScreen(
     sensors: List<SensorItem>,
 ) {
     Surface(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .systemBarsPadding(),
-        color = PrimaryBlue,
+        modifier = Modifier.fillMaxSize().systemBarsPadding(),
+        color = MaterialTheme.colorScheme.background,
     ) {
         Column(
             modifier =
@@ -40,48 +34,11 @@ fun MainScreen(
                         .weight(1f)
                         .fillMaxWidth(),
             ) {
-                Column(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp)
-                            .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    sensors.forEach { sensor ->
-                        val isTouch =
-                            sensor.label == "Touch Detection" ||
-                                sensor.label == "Pinch Scale Detection" ||
-                                sensor.label == "Edge Swipe" ||
-                                sensor.label == "Diagonal Swipe"
-                        if (isTouch) {
-                            key(selectedSensor) {
-                                val helper =
-                                    when (sensor.label) {
-                                        "Touch Detection" -> "Single Tap, Double Tap, Long Press, Swipe, Scroll, N-Tap"
-                                        "Pinch Scale Detection" -> "Pinch In / Pinch Out"
-                                        "Edge Swipe" -> "Swipe from composable edge"
-                                        else -> "Swipe diagonally"
-                                    }
-                                SenseyRadioButtonWithTouchArea(
-                                    label = sensor.label,
-                                    selected = sensor.isSelected,
-                                    result = sensor.result,
-                                    helperText = helper,
-                                    showHitArea = sensor.isSelected,
-                                    onSelect = sensor.onSelect,
-                                )
-                            }
-                        } else {
-                            SenseyRadioButton(
-                                label = sensor.label,
-                                result = sensor.result,
-                                selected = sensor.isSelected,
-                                onSelect = sensor.onSelect,
-                            )
-                        }
-                    }
-                }
+                SensorList(
+                    sensors = sensors,
+                    selectedSensor = selectedSensor,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
             }
         }
     }

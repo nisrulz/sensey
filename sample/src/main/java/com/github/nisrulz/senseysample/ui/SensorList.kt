@@ -2,14 +2,13 @@ package com.github.nisrulz.senseysample.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
 data class SensorItem(
     val label: String,
@@ -21,23 +20,48 @@ data class SensorItem(
 @Composable
 internal fun SensorList(
     sensors: List<SensorItem>,
+    selectedSensor: String? = null,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier =
             modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         sensors.forEach { sensor ->
-            SenseyRadioButton(
-                label = sensor.label,
-                result = sensor.result,
-                selected = sensor.isSelected,
-                onSelect = sensor.onSelect,
-            )
+            val isTouch =
+                sensor.label == "Touch Detection" ||
+                    sensor.label == "Pinch Scale Detection" ||
+                    sensor.label == "Edge Swipe" ||
+                    sensor.label == "Diagonal Swipe"
+            if (isTouch) {
+                key(selectedSensor) {
+                    val helper =
+                        when (sensor.label) {
+                            "Touch Detection" -> "Single Tap, Double Tap, Long Press, Swipe, Scroll, N-Tap"
+                            "Pinch Scale Detection" -> "Pinch In / Pinch Out"
+                            "Edge Swipe" -> "Swipe from composable edge"
+                            else -> "Swipe diagonally"
+                        }
+                    SenseyRadioButtonWithTouchArea(
+                        label = sensor.label,
+                        selected = sensor.isSelected,
+                        result = sensor.result,
+                        helperText = helper,
+                        showHitArea = sensor.isSelected,
+                        onSelect = sensor.onSelect,
+                    )
+                }
+            } else {
+                SenseyRadioButton(
+                    label = sensor.label,
+                    result = sensor.result,
+                    selected = sensor.isSelected,
+                    onSelect = sensor.onSelect,
+                )
+            }
         }
     }
 }
