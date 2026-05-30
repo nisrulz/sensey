@@ -40,10 +40,16 @@ class PickupDeviceTriggerTest {
             )
 
         var ts = 0L
-        repeat(4) { trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), ts); ts += 100L }
+        repeat(4) {
+            trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), ts)
+            ts += 100L
+        }
         trigger.evaluate(floatArrayOf(5f, 0f, 5f), ts) // PickedUp
         ts += 100L
-        repeat(4) { trigger.evaluate(floatArrayOf(5f, 0f, 5.1f), ts); ts += 100L } // held
+        repeat(4) {
+            trigger.evaluate(floatArrayOf(5f, 0f, 5.1f), ts)
+            ts += 100L
+        } // held
 
         // Return to table: fill buffer with gravity values
         val putDownFired =
@@ -74,10 +80,16 @@ class PickupDeviceTriggerTest {
             )
 
         var ts = 0L
-        repeat(4) { trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), ts); ts += 100L }
+        repeat(4) {
+            trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), ts)
+            ts += 100L
+        }
         trigger.evaluate(floatArrayOf(5f, 0f, 5f), ts) // PickedUp
         ts += 100L
-        repeat(4) { trigger.evaluate(floatArrayOf(5f, 0f, 5.1f), ts); ts += 100L }
+        repeat(4) {
+            trigger.evaluate(floatArrayOf(5f, 0f, 5.1f), ts)
+            ts += 100L
+        }
 
         // One stable reading early isn't enough
         trigger.evaluate(floatArrayOf(0f, 0f, 9.81f), ts)

@@ -13,16 +13,20 @@ class ChopDetectorTest {
     @Test
     fun dispatchesNothingOnStableValues() {
         val events = mutableListOf<ChopEvent>()
-        val detector = TypedSensorDetector(ChopTrigger(), dispatcher = { events.add(it) }, Sensor.TYPE_ACCELEROMETER)
-        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 0f)))
+        val detector =
+            TypedSensorDetector(ChopTrigger(), dispatcher = { events.add(it) }, Sensor.TYPE_LINEAR_ACCELERATION)
+        detector.onSensorChanged(SensorUtils.testSensorEvent(floatArrayOf(0f, 0f, 0f), Sensor.TYPE_LINEAR_ACCELERATION))
         assertTrue(events.isEmpty())
     }
 
     @Test
     fun dispatchesNothingOnPartialCondition() {
         val events = mutableListOf<ChopEvent>()
-        val detector = TypedSensorDetector(ChopTrigger(), dispatcher = { events.add(it) }, Sensor.TYPE_ACCELEROMETER)
-        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(40f, -5f, 40f)))
+        val detector =
+            TypedSensorDetector(ChopTrigger(), dispatcher = { events.add(it) }, Sensor.TYPE_LINEAR_ACCELERATION)
+        detector.onSensorChanged(
+            SensorUtils.testSensorEvent(floatArrayOf(40f, -5f, 40f), Sensor.TYPE_LINEAR_ACCELERATION),
+        )
         assertTrue(events.isEmpty())
     }
 
@@ -36,8 +40,9 @@ class ChopDetectorTest {
                     timestamp: Long,
                 ) = ChopEvent.Chopped
             }
-        val detector = TypedSensorDetector(alwaysTrigger, dispatcher = { events.add(it) }, Sensor.TYPE_ACCELEROMETER)
-        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 0f)))
+        val detector =
+            TypedSensorDetector(alwaysTrigger, dispatcher = { events.add(it) }, Sensor.TYPE_LINEAR_ACCELERATION)
+        detector.onSensorChanged(SensorUtils.testSensorEvent(floatArrayOf(0f, 0f, 0f), Sensor.TYPE_LINEAR_ACCELERATION))
         assertEquals(listOf(ChopEvent.Chopped), events)
     }
 }

@@ -14,8 +14,8 @@ class WristTwistDetectorTest {
     fun dispatchesNothingOnStableValues() {
         val events = mutableListOf<WristTwistEvent>()
         val detector =
-            TypedSensorDetector(WristTwistTrigger(), dispatcher = { events.add(it) }, Sensor.TYPE_ACCELEROMETER)
-        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 0f)))
+            TypedSensorDetector(WristTwistTrigger(), dispatcher = { events.add(it) }, Sensor.TYPE_LINEAR_ACCELERATION)
+        detector.onSensorChanged(SensorUtils.testSensorEvent(floatArrayOf(0f, 0f, 0f), Sensor.TYPE_LINEAR_ACCELERATION))
         assertTrue(events.isEmpty())
     }
 
@@ -23,8 +23,10 @@ class WristTwistDetectorTest {
     fun dispatchesNothingOnPartialCondition() {
         val events = mutableListOf<WristTwistEvent>()
         val detector =
-            TypedSensorDetector(WristTwistTrigger(), dispatcher = { events.add(it) }, Sensor.TYPE_ACCELEROMETER)
-        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(-5f, -2f, -20f)))
+            TypedSensorDetector(WristTwistTrigger(), dispatcher = { events.add(it) }, Sensor.TYPE_LINEAR_ACCELERATION)
+        detector.onSensorChanged(
+            SensorUtils.testSensorEvent(floatArrayOf(-5f, -2f, -20f), Sensor.TYPE_LINEAR_ACCELERATION),
+        )
         assertTrue(events.isEmpty())
     }
 
@@ -38,8 +40,9 @@ class WristTwistDetectorTest {
                     timestamp: Long,
                 ) = WristTwistEvent.Twisted
             }
-        val detector = TypedSensorDetector(alwaysTrigger, dispatcher = { events.add(it) }, Sensor.TYPE_ACCELEROMETER)
-        detector.onSensorChanged(SensorUtils.testAccelerometerEvent(floatArrayOf(0f, 0f, 0f)))
+        val detector =
+            TypedSensorDetector(alwaysTrigger, dispatcher = { events.add(it) }, Sensor.TYPE_LINEAR_ACCELERATION)
+        detector.onSensorChanged(SensorUtils.testSensorEvent(floatArrayOf(0f, 0f, 0f), Sensor.TYPE_LINEAR_ACCELERATION))
         assertEquals(listOf(WristTwistEvent.Twisted), events)
     }
 }
