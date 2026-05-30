@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
 ## Gestures
 
-Shake, Flip, Light, Proximity, Movement, Orientation, Chop, TapOnBack, WristTwist, Wave, Scoop, PickupDevice, TiltDirection, RotationAngle, PinchScale, TouchType, SoundLevel, Step, TurnOver, DeviceSpin, RaiseToEar, Clap.
+Shake, Flip, Light, Proximity, Movement, Orientation, Chop, TapOnBack, WristTwist, Wave, Scoop, PickupDevice, TiltDirection, RotationAngle, PinchScale, TouchType, EdgeSwipe, SoundLevel, Step, TurnOver, DeviceSpin, RaiseToEar, Clap.
 
 See the **[usage guide](docs/usage/)** for events, parameters, and examples.
 

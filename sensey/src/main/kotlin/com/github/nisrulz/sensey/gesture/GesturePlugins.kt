@@ -10,6 +10,8 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputScope
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.SensorDetector
 import com.github.nisrulz.sensey.TypedSensorDetector
@@ -58,6 +60,9 @@ import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackTrigger
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionTrigger
+import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
+import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
+import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeTrigger
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeTrigger
 import com.github.nisrulz.sensey.gesture.turnover.TurnOverEvent
@@ -359,6 +364,14 @@ fun touchTypePlugin(
     dispatcher: (TouchTypeEvent) -> Unit,
 ): GesturePlugin = TouchTypePlugin(TouchTypeTrigger(), dispatcher)
 
+fun edgeSwipePlugin(
+    context: Context,
+    edgeThresholdDp: Dp = 48.dp,
+    enabledEdges: Set<Edge> = setOf(Edge.LEFT, Edge.RIGHT, Edge.TOP, Edge.BOTTOM),
+    dispatcher: (EdgeSwipeEvent) -> Unit,
+): GesturePlugin =
+    EdgeSwipePlugin(edgeThresholdDp, enabledEdges, dispatcher)
+
 /**
  * Creates a sound level detection plugin.
  *
@@ -482,6 +495,57 @@ private class TouchTypePlugin(
 
     companion object {
         private const val TAP_GAP_MS = 400L
+    }
+}
+
+private class EdgeSwipePlugin(
+    private val edgeThresholdDp: Dp,
+    private val enabledEdges: Set<Edge>,
+    private val dispatcher: (EdgeSwipeEvent) -> Unit,
+) : GesturePlugin {
+    override val key = EdgeSwipePlugin::class.java.name
+    private var dragStart = Offset.Zero
+    private val provider = ComposeGestureProvider { installEdgeSwipe() }
+
+    override fun onRegister(sensey: Sensey) {
+        sensey.registerComposeGestureProvider(provider)
+    }
+
+    override fun onUnregister(sensey: Sensey) {
+        sensey.unregisterComposeGestureProvider(provider)
+    }
+
+    private suspend fun PointerInputScope.installEdgeSwipe() {
+        val edgeThresholdPx = with(density) { edgeThresholdDp.toPx() }
+        val trigger = EdgeSwipeTrigger(edgeThreshold = edgeThresholdPx, enabledEdges = enabledEdges)
+        val w = size.width.toFloat()
+        val h = size.height.toFloat()
+        var dragEnd = Offset.Zero
+        detectDragGestures(
+            onDragStart = { dragStart = it; dragEnd = it },
+            onDrag = { change, _ ->
+                change.consume()
+                dragEnd = change.position
+            },
+            onDragEnd = {
+                val event =
+                    trigger.evaluate(
+                        floatArrayOf(
+                            dragStart.x, dragStart.y,
+                            dragEnd.x, dragEnd.y,
+                            w, h,
+                        ),
+                        System.currentTimeMillis(),
+                    )
+                event?.let(dispatcher)
+                dragStart = Offset.Zero
+                dragEnd = Offset.Zero
+            },
+            onDragCancel = {
+                dragStart = Offset.Zero
+                dragEnd = Offset.Zero
+            },
+        )
     }
 }
 

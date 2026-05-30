@@ -14,6 +14,10 @@ import com.github.nisrulz.sensey.gesture.chopPlugin
 import com.github.nisrulz.sensey.gesture.clapPlugin
 import com.github.nisrulz.sensey.gesture.deviceSpinPlugin
 import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinEvent
+import androidx.compose.ui.unit.dp
+import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
+import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
+import com.github.nisrulz.sensey.gesture.edgeSwipePlugin
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.flipPlugin
 import com.github.nisrulz.sensey.gesture.light.LightEvent
@@ -89,6 +93,7 @@ internal class SenseySensorManager(
         const val CLAP = "Clap Detection"
         const val TOUCH_DETECTION = "Touch Detection"
         const val PINCH_SCALE = "Pinch Scale Detection"
+        const val EDGE_SWIPE = "Edge Swipe"
     }
 
     var selectedSensor by mutableStateOf<String?>(null)
@@ -221,6 +226,11 @@ internal class SenseySensorManager(
     private val tapOnBackDispatcher: (TapOnBackEvent) -> Unit =
         withHaptic { setResultText("Tap On Back Detected!", false) }
 
+    private val edgeSwipeDispatcher: (EdgeSwipeEvent) -> Unit =
+        withHaptic { event ->
+            setResultText("Edge Swipe: ${event.edge}", false)
+        }
+
     private val turnOverDispatcher: (TurnOverEvent) -> Unit =
         withHaptic { setResultText("Turn Over Detected!", false) }
 
@@ -313,6 +323,7 @@ internal class SenseySensorManager(
             CLAP,
             TOUCH_DETECTION,
             PINCH_SCALE,
+            EDGE_SWIPE,
         )
 
     fun onSensorSelected(
@@ -396,6 +407,12 @@ internal class SenseySensorManager(
             CLAP -> clapPlugin(activity, dispatcher = clapDispatcher)
             TOUCH_DETECTION -> touchTypePlugin(activity, dispatcher = touchTypeDispatcher)
             PINCH_SCALE -> pinchScalePlugin(activity, dispatcher = pinchScaleDispatcher)
+            EDGE_SWIPE -> edgeSwipePlugin(
+                activity,
+                edgeThresholdDp = 48.dp,
+                enabledEdges = setOf(Edge.LEFT, Edge.RIGHT, Edge.TOP, Edge.BOTTOM),
+                dispatcher = edgeSwipeDispatcher,
+            )
             else -> error("Unknown sensor: $sensor")
         }
 

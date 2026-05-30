@@ -11,7 +11,7 @@ Android library which makes playing with sensor events and detecting gestures a 
 
 ## Supported gestures
 
-Shake, Flip, Light, Proximity, Movement, Orientation, Chop, TapOnBack, WristTwist, Wave, Scoop, PickupDevice, TiltDirection, RotationAngle, PinchScale, TouchType, SoundLevel, Step, TurnOver, DeviceSpin, RaiseToEar, Clap
+Shake, Flip, Light, Proximity, Movement, Orientation, Chop, TapOnBack, WristTwist, Wave, Scoop, PickupDevice, TiltDirection, RotationAngle, PinchScale, TouchType, EdgeSwipe, SoundLevel, Step, TurnOver, DeviceSpin, RaiseToEar, Clap
 
 See the [usage guide](usage/) for events, parameters, and examples.
 

@@ -29,6 +29,7 @@ weight: 1
 - [Step](gestures/step.md)
 - [PinchScale](gestures/pinchscale.md)
 - [TouchType](gestures/touchtype.md)
+- [EdgeSwipe](gestures/edgeswipe.md)
 - [TurnOver](gestures/turnover.md)
 - [DeviceSpin](gestures/devicespin.md)
 - [RaiseToEar](gestures/raisetoear.md)
