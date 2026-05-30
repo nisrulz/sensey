@@ -9,7 +9,7 @@ Detects double-taps on the device back or side. Register with `tapOnBackPlugin`.
 
 ## Algorithm
 
-The algorithm maintains an EMA-smoothed gravity baseline from accelerometer readings. It computes the angular deviation from this baseline and the angular jerk (change in angle between consecutive samples). A valid tap requires sufficient angle deviation, minimum jerk, and debounce since the last tap. Taps are accumulated within a sequence timeout; the event is emitted only when at least two taps occur within that window. Single taps are ignored.
+Computes the linear acceleration magnitude (`|accel - gravity|`) which spikes during any tap regardless of device orientation or whether it is held or on a table. Tracks this magnitude with an EMA smoother so gradual movements (tilts) produce low jerk while sharp impulses (taps) produce high jerk. Emits immediately when two valid taps occur within `tapIntervalMs`. A single tap is always ignored.
 
 ## Events
 
@@ -21,22 +21,24 @@ The algorithm maintains an EMA-smoothed gravity baseline from accelerometer read
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `angleThreshold` | Minimum angle deviation in degrees from the gravity baseline to register a tap | `1.5f` |
-| `minAngleJerk` | Minimum angular jerk (change in angle between consecutive samples) in degrees to qualify as a tap impulse | `1.5f` |
+| `accelThreshold` | Minimum linear acceleration magnitude (m/s²) to register a tap | `2f` |
+| `minJerk` | Minimum jerk between raw magnitude and EMA-smoothed magnitude (higher = less sensitive to gradual movements) | `2f` |
 | `tapDebounceMs` | Debounce timeout in milliseconds between individual taps within a sequence | `250L` |
-| `tapSequenceTimeoutMs` | Maximum time window in milliseconds for accumulating a double-tap sequence; if the window expires with fewer than 2 taps the sequence is discarded | `500L` |
+| `tapIntervalMs` | Maximum allowed gap in milliseconds between the two taps of a double-tap sequence | `500L` |
+| `cooldownMs` | Post-detection cooldown in milliseconds during which all input is ignored | `1000L` |
 
 ## Usage
 
 ```kotlin
 senseyRegister(lifecycle) {
     tapOnBackPlugin(
-        angleThreshold = 1.5f,       // min angle deviation from gravity baseline (default: 1.5f)
-        minAngleJerk = 1.5f,         // min angular jerk between samples (default: 1.5f)
-        tapDebounceMs = 250L,        // debounce between individual taps (default: 250L)
-        tapSequenceTimeoutMs = 500L, // max time for a double-tap sequence (default: 500L)
+        accelThreshold = 2f,   // min linear acceleration to register tap (default: 2f)
+        minJerk = 5f,          // min jerk from EMA smoother (default: 5f)
+        tapDebounceMs = 250L,  // debounce between individual taps (default: 250L)
+        tapIntervalMs = 500L,  // max gap between two taps (default: 500L)
+        cooldownMs = 1000L,    // post-detection cooldown (default: 1000L)
     ) {
-        println("Tap on back detected!") // a double-tap on the back/side was recognised
+        println("Tap on back detected!")
     }
 }
 ```

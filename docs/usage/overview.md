@@ -10,15 +10,14 @@ Plugins register independently. Use the DSL inside `senseyRegister {}` or `Sense
 ## Single plugin
 
 ```kotlin
-import com.github.nisrulz.sensey.Sensey
-import com.github.nisrulz.sensey.gesture.shakePlugin
-
-Sensey.register(shakePlugin { event ->
-    when (event) {
-        ShakeEvent.Detected -> // handle
-        ShakeEvent.Stopped  -> // handle
+senseyRegister(lifecycle) {
+    shakePlugin { event ->
+        when (event) {
+            ShakeEvent.Detected -> // handle
+            ShakeEvent.Stopped  -> // handle
+        }
     }
-})
+}
 ```
 
 ## Multiple plugins
@@ -43,8 +42,8 @@ senseyRegister(lifecycle) {
 ## Unregister
 
 ```kotlin
-Sensey.unregister(plugin)   // one plugin
-Sensey.unregisterAll()      // all plugins
+sensey.unregister(plugin)   // one plugin (Sensey instance)
+sensey.unregisterAll()      // all plugins
 senseyStop()                // all + release sensor manager
 ```
 

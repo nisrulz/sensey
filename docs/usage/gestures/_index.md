@@ -22,3 +22,7 @@ title: "Gestures"
 - [Step](step.md)
 - [PinchScale](pinchscale.md)
 - [TouchType](touchtype.md)
+- [TurnOver](turnover.md)
+- [DeviceSpin](devicespin.md)
+- [RaiseToEar](raisetoear.md)
+- [Clap](clap.md)
