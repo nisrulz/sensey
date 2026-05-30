@@ -11,16 +11,18 @@ import kotlin.math.sqrt
  *
  * Algorithm: Computes the Euclidean norm (magnitude) of the raw acceleration vector.
  * Tracks the magnitude change between consecutive readings; if the absolute delta
- * exceeds a threshold the device is considered moving. If no movement occurs within
- * a configurable timeout the device is declared stationary. Also reports the
- * dominant spatial direction of the movement.
+ * exceeds a threshold the device is considered moving. Fires `Moved` once per
+ * motion cycle (on the stationary→moving transition only, not continuously).
+ * If no movement occurs within a configurable timeout the device is declared
+ * stationary (`Stationary` fires once per cycle). Also reports the dominant
+ * spatial direction of the movement.
  * Expected sensor: Accelerometer (TYPE_ACCELEROMETER).
  * State: currentAccel (current magnitude), isMoving (motion flag), lastMovementTime
  * (timestamp of last motion), hasBaseline (first-read guard).
  */
 internal class MovementTrigger(
     private val threshold: Float = 0.3f,
-    private val timeBeforeDeclaringStationary: Long = 5000L,
+    private val timeBeforeDeclaringStationary: Long = 1500L,
 ) : GestureTrigger<MovementEvent> {
     private var currentAccel = GRAVITY_EARTH // Current filtered acceleration magnitude
     private var isMoving = false // Whether the device is currently in motion
@@ -41,8 +43,12 @@ internal class MovementTrigger(
 
         return if (delta > threshold) {
             lastMovementTime = timestamp
-            isMoving = true
-            MovementEvent.Moved(dominantDirection(values)) // Movement detected, emit with dominant direction
+            if (!isMoving) {
+                isMoving = true
+                MovementEvent.Moved(dominantDirection(values)) // First movement → emit
+            } else {
+                null // Still moving → no event (only fire once per motion cycle)
+            }
         } else if (hasBecomeStationary(timestamp)) {
             isMoving = false
             MovementEvent.Stationary // No movement for timeout → emit stationary

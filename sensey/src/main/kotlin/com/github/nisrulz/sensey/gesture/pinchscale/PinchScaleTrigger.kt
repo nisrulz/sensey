@@ -61,6 +61,7 @@ internal class PinchScaleTrigger : GestureTrigger<PinchScaleEvent> {
     }
 
     private fun isScalingIn(scaleFactor: Float): Boolean = scaleFactor > SCALE_IN_THRESHOLD
+
     private fun isScalingOut(scaleFactor: Float): Boolean = scaleFactor < SCALE_OUT_THRESHOLD
 
     companion object {
