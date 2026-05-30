@@ -3,13 +3,17 @@ package com.github.nisrulz.senseysample
 import android.app.Activity
 import android.util.Log
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.contract.GesturePlugin
+import com.github.nisrulz.sensey.gesture.audio.clap.ClapEvent
 import com.github.nisrulz.sensey.gesture.chop.ChopEvent
 import com.github.nisrulz.sensey.gesture.chopPlugin
+import com.github.nisrulz.sensey.gesture.clapPlugin
+import com.github.nisrulz.sensey.gesture.deviceSpinPlugin
+import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.flipPlugin
 import com.github.nisrulz.sensey.gesture.light.LightEvent
@@ -20,8 +24,12 @@ import com.github.nisrulz.sensey.gesture.orientation.OrientationEvent
 import com.github.nisrulz.sensey.gesture.orientationPlugin
 import com.github.nisrulz.sensey.gesture.pickupDevicePlugin
 import com.github.nisrulz.sensey.gesture.pickupdevice.PickupDeviceEvent
+import com.github.nisrulz.sensey.gesture.pinchScalePlugin
+import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleEvent
 import com.github.nisrulz.sensey.gesture.proximity.ProximityEvent
 import com.github.nisrulz.sensey.gesture.proximityPlugin
+import com.github.nisrulz.sensey.gesture.raiseToEarPlugin
+import com.github.nisrulz.sensey.gesture.raisetoear.RaiseToEarEvent
 import com.github.nisrulz.sensey.gesture.rotationAnglePlugin
 import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleEvent
 import com.github.nisrulz.sensey.gesture.scoop.ScoopEvent
@@ -37,6 +45,10 @@ import com.github.nisrulz.sensey.gesture.tapOnBackPlugin
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
 import com.github.nisrulz.sensey.gesture.tiltDirectionPlugin
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
+import com.github.nisrulz.sensey.gesture.touchTypePlugin
+import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
+import com.github.nisrulz.sensey.gesture.turnOverPlugin
+import com.github.nisrulz.sensey.gesture.turnover.TurnOverEvent
 import com.github.nisrulz.sensey.gesture.wave.WaveEvent
 import com.github.nisrulz.sensey.gesture.wavePlugin
 import com.github.nisrulz.sensey.gesture.wristTwistPlugin
@@ -46,6 +58,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 internal class SenseySensorManager(
@@ -69,15 +83,23 @@ internal class SenseySensorManager(
         const val PICKUP_DEVICE = "Pickup Device Detector"
         const val SCOOP = "Scoop Detector"
         const val TAP_ON_BACK = "Tap On Back"
+        const val TURN_OVER = "Turn Over"
+        const val DEVICE_SPIN = "Device Spin"
+        const val RAISE_TO_EAR = "Raise To Ear"
+        const val CLAP = "Clap Detection"
+        const val TOUCH_DETECTION = "Touch Detection"
+        const val PINCH_SCALE = "Pinch Scale Detection"
     }
 
-    var resultText by mutableStateOf("Results show here")
-    var eventCount by mutableIntStateOf(0)
     var selectedSensor by mutableStateOf<String?>(null)
+    private val resultsMap = mutableStateMapOf<String, String>()
     var sensey: Sensey? = null
 
     private var currentPlugin: GesturePlugin? = null
+    private var pendingSensor: String? = null
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
+    fun getResult(sensor: String): String = resultsMap[sensor] ?: ""
 
     private fun <T> withHaptic(dispatcher: (T) -> Unit): (T) -> Unit =
         { event ->
@@ -86,9 +108,12 @@ internal class SenseySensorManager(
         }
 
     private val soundLevelDispatcher: (SoundLevelEvent) -> Unit =
-        withHaptic { event: SoundLevelEvent ->
+        { event: SoundLevelEvent ->
             setResultText("${DecimalFormat("##.##").format(event.level.toDouble())} dB", true)
         }
+
+    private val clapDispatcher: (ClapEvent) -> Unit =
+        withHaptic { setResultText("Clap Detected!", false) }
 
     private val shakeDispatcher: (ShakeEvent) -> Unit =
         withHaptic { event: ShakeEvent ->
@@ -194,28 +219,100 @@ internal class SenseySensorManager(
     private val scoopDispatcher: (ScoopEvent) -> Unit = withHaptic { setResultText("Scoop Gesture Detected!", false) }
 
     private val tapOnBackDispatcher: (TapOnBackEvent) -> Unit =
-        withHaptic {
-            setResultText("Tap On Back Detected!", false)
+        withHaptic { setResultText("Tap On Back Detected!", false) }
+
+    private val turnOverDispatcher: (TurnOverEvent) -> Unit =
+        withHaptic { setResultText("Turn Over Detected!", false) }
+
+    private val deviceSpinDispatcher: (DeviceSpinEvent) -> Unit =
+        withHaptic { setResultText("Device Spin Detected!", false) }
+
+    private val raiseToEarDispatcher: (RaiseToEarEvent) -> Unit =
+        withHaptic { setResultText("Raised To Ear!", false) }
+
+    private val touchTypeDispatcher: (TouchTypeEvent) -> Unit =
+        { event ->
+            val text =
+                when (event) {
+                    is TouchTypeEvent.NTap -> "${event.count}-Tap"
+                    TouchTypeEvent.DoubleTap -> "Double Tap"
+                    TouchTypeEvent.LongPress -> "Long press"
+                    TouchTypeEvent.SingleTap -> "Single Tap"
+                    is TouchTypeEvent.Swipe -> swipeDirText(event.direction)
+                    is TouchTypeEvent.Scroll -> scrollDirText(event.direction)
+                    TouchTypeEvent.ThreeFingerSingleTap -> "Three Finger Tap"
+                    TouchTypeEvent.TwoFingerSingleTap -> "Two Finger Tap"
+                }
+            setTouchResult(text)
         }
+
+    private val pinchScaleDispatcher: (PinchScaleEvent) -> Unit =
+        { event ->
+            setTouchResult(if (event.isScalingOut) "Scaling Out" else "Scaling In")
+        }
+
+    private fun swipeDirText(dir: TouchTypeEvent.Direction): String =
+        when (dir) {
+            TouchTypeEvent.Direction.UP -> "Swipe Up"
+            TouchTypeEvent.Direction.DOWN -> "Swipe Down"
+            TouchTypeEvent.Direction.LEFT -> "Swipe Left"
+            TouchTypeEvent.Direction.RIGHT -> "Swipe Right"
+            TouchTypeEvent.Direction.UP_RIGHT -> "Swipe Up-Right"
+            TouchTypeEvent.Direction.UP_LEFT -> "Swipe Up-Left"
+            TouchTypeEvent.Direction.DOWN_RIGHT -> "Swipe Down-Right"
+            TouchTypeEvent.Direction.DOWN_LEFT -> "Swipe Down-Left"
+        }
+
+    private fun scrollDirText(dir: TouchTypeEvent.Direction): String =
+        when (dir) {
+            TouchTypeEvent.Direction.UP -> "Scrolling Up"
+            TouchTypeEvent.Direction.DOWN -> "Scrolling Down"
+            TouchTypeEvent.Direction.LEFT -> "Scrolling Left"
+            TouchTypeEvent.Direction.RIGHT -> "Scrolling Right"
+            TouchTypeEvent.Direction.UP_RIGHT -> "Scrolling Up-Right"
+            TouchTypeEvent.Direction.UP_LEFT -> "Scrolling Up-Left"
+            TouchTypeEvent.Direction.DOWN_RIGHT -> "Scrolling Down-Right"
+            TouchTypeEvent.Direction.DOWN_LEFT -> "Scrolling Down-Left"
+        }
+
+    private fun setTouchResult(text: String) {
+        val active = selectedSensor
+        if (active == TOUCH_DETECTION || active == PINCH_SCALE) {
+            resultsMap[active] = text
+            clearJobs[active]?.cancel()
+            clearJobs[active] =
+                scope.launch {
+                    delay(3000)
+                    resultsMap.remove(active)
+                    clearJobs.remove(active)
+                }
+        }
+    }
 
     val sensors =
         listOf(
             SHAKE,
             FLIP,
+            ROTATION_ANGLE,
+            TILT_DIRECTION,
             ORIENTATION,
             PROXIMITY,
-            LIGHT,
             WAVE,
-            SOUND_LEVEL,
+            LIGHT,
             MOVEMENT,
             CHOP,
             WRIST_TWIST,
-            ROTATION_ANGLE,
-            TILT_DIRECTION,
             STEP,
             PICKUP_DEVICE,
             SCOOP,
             TAP_ON_BACK,
+            TURN_OVER,
+            DEVICE_SPIN,
+            RAISE_TO_EAR,
+            SOUND_LEVEL,
+            CLAP,
+            TOUCH_DETECTION,
+            PINCH_SCALE,
         )
 
     fun onSensorSelected(
@@ -232,17 +329,26 @@ internal class SenseySensorManager(
         if (previous != null) {
             handleStartDetector(previous, start = false)
         }
-        if (sensor == SOUND_LEVEL && !hasRecordAudioPermission) {
+        if ((sensor == SOUND_LEVEL || sensor == CLAP) && !hasRecordAudioPermission) {
+            pendingSensor = sensor
             onPermissionNeeded()
             return
         }
-        handleStartDetector(sensor, start = true)
         selectedSensor = sensor
+        handleStartDetector(sensor, start = true)
     }
 
     fun startAfterPermissionGranted() {
-        selectedSensor = SOUND_LEVEL
-        handleStartDetector(SOUND_LEVEL, start = true)
+        val sensor = pendingSensor ?: return
+        if (sensey == null) return
+        pendingSensor = null
+        selectedSensor = sensor
+        handleStartDetector(sensor, start = true)
+    }
+
+    fun clearPendingPermission() {
+        pendingSensor = null
+        selectedSensor = null
     }
 
     fun stopSelectedDetector() {
@@ -258,6 +364,7 @@ internal class SenseySensorManager(
         if (!start) {
             currentPlugin?.let { sensey?.unregister(it) }
             currentPlugin = null
+            resultsMap.remove(sensor)
             return
         }
         val plugin: GesturePlugin = createPlugin(sensor)
@@ -283,6 +390,12 @@ internal class SenseySensorManager(
             PICKUP_DEVICE -> pickupDevicePlugin(dispatcher = pickupDeviceDispatcher)
             SCOOP -> scoopPlugin(dispatcher = scoopDispatcher)
             TAP_ON_BACK -> tapOnBackPlugin(dispatcher = tapOnBackDispatcher)
+            TURN_OVER -> turnOverPlugin(dispatcher = turnOverDispatcher)
+            DEVICE_SPIN -> deviceSpinPlugin(dispatcher = deviceSpinDispatcher)
+            RAISE_TO_EAR -> raiseToEarPlugin(dispatcher = raiseToEarDispatcher)
+            CLAP -> clapPlugin(activity, dispatcher = clapDispatcher)
+            TOUCH_DETECTION -> touchTypePlugin(activity, dispatcher = touchTypeDispatcher)
+            PINCH_SCALE -> pinchScalePlugin(activity, dispatcher = pinchScaleDispatcher)
             else -> error("Unknown sensor: $sensor")
         }
 
@@ -290,12 +403,21 @@ internal class SenseySensorManager(
         scope.cancel()
     }
 
+    private val clearJobs = mutableMapOf<String, kotlinx.coroutines.Job>()
+
     private fun setResultText(
         text: String,
         realtime: Boolean,
     ) {
-        resultText = text
-        eventCount++
+        val sensor = selectedSensor ?: return
+        resultsMap[sensor] = text
         if (BuildConfig.DEBUG) Log.d(logTag, text)
+        clearJobs[sensor]?.cancel()
+        clearJobs[sensor] =
+            scope.launch {
+                kotlinx.coroutines.delay(2000L)
+                resultsMap.remove(sensor)
+                clearJobs.remove(sensor)
+            }
     }
 }
