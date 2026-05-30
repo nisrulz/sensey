@@ -24,6 +24,11 @@ import com.github.nisrulz.sensey.gesture.chop.ChopTrigger
 import com.github.nisrulz.sensey.gesture.compose.ComposeGestureProvider
 import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinEvent
 import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinTrigger
+import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeEvent
+import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeTrigger
+import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
+import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
+import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeTrigger
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipTrigger
 import com.github.nisrulz.sensey.gesture.light.LightEvent
@@ -60,9 +65,6 @@ import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackTrigger
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionTrigger
-import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
-import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
-import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeTrigger
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeTrigger
 import com.github.nisrulz.sensey.gesture.turnover.TurnOverEvent
@@ -369,8 +371,14 @@ fun edgeSwipePlugin(
     edgeThresholdDp: Dp = 48.dp,
     enabledEdges: Set<Edge> = setOf(Edge.LEFT, Edge.RIGHT, Edge.TOP, Edge.BOTTOM),
     dispatcher: (EdgeSwipeEvent) -> Unit,
-): GesturePlugin =
-    EdgeSwipePlugin(edgeThresholdDp, enabledEdges, dispatcher)
+): GesturePlugin = EdgeSwipePlugin(edgeThresholdDp, enabledEdges, dispatcher)
+
+fun diagonalSwipePlugin(
+    context: Context,
+    minDragDistance: Float = 80f,
+    angleToleranceDeg: Float = 22.5f,
+    dispatcher: (DiagonalSwipeEvent) -> Unit,
+): GesturePlugin = DiagonalSwipePlugin(DiagonalSwipeTrigger(minDragDistance, angleToleranceDeg), dispatcher)
 
 /**
  * Creates a sound level detection plugin.
@@ -522,7 +530,10 @@ private class EdgeSwipePlugin(
         val h = size.height.toFloat()
         var dragEnd = Offset.Zero
         detectDragGestures(
-            onDragStart = { dragStart = it; dragEnd = it },
+            onDragStart = {
+                dragStart = it
+                dragEnd = it
+            },
             onDrag = { change, _ ->
                 change.consume()
                 dragEnd = change.position
@@ -531,9 +542,62 @@ private class EdgeSwipePlugin(
                 val event =
                     trigger.evaluate(
                         floatArrayOf(
-                            dragStart.x, dragStart.y,
-                            dragEnd.x, dragEnd.y,
-                            w, h,
+                            dragStart.x,
+                            dragStart.y,
+                            dragEnd.x,
+                            dragEnd.y,
+                            w,
+                            h,
+                        ),
+                        System.currentTimeMillis(),
+                    )
+                event?.let(dispatcher)
+                dragStart = Offset.Zero
+                dragEnd = Offset.Zero
+            },
+            onDragCancel = {
+                dragStart = Offset.Zero
+                dragEnd = Offset.Zero
+            },
+        )
+    }
+}
+
+private class DiagonalSwipePlugin(
+    private val trigger: DiagonalSwipeTrigger,
+    private val dispatcher: (DiagonalSwipeEvent) -> Unit,
+) : GesturePlugin {
+    override val key = DiagonalSwipePlugin::class.java.name
+    private var dragStart = Offset.Zero
+    private val provider = ComposeGestureProvider { installDiagonalSwipe() }
+
+    override fun onRegister(sensey: Sensey) {
+        sensey.registerComposeGestureProvider(provider)
+    }
+
+    override fun onUnregister(sensey: Sensey) {
+        sensey.unregisterComposeGestureProvider(provider)
+    }
+
+    private suspend fun PointerInputScope.installDiagonalSwipe() {
+        var dragEnd = Offset.Zero
+        detectDragGestures(
+            onDragStart = {
+                dragStart = it
+                dragEnd = it
+            },
+            onDrag = { change, _ ->
+                change.consume()
+                dragEnd = change.position
+            },
+            onDragEnd = {
+                val event =
+                    trigger.evaluate(
+                        floatArrayOf(
+                            dragStart.x,
+                            dragStart.y,
+                            dragEnd.x,
+                            dragEnd.y,
                         ),
                         System.currentTimeMillis(),
                     )

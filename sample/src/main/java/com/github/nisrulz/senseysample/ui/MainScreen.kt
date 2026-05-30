@@ -49,14 +49,19 @@ fun MainScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     sensors.forEach { sensor ->
-                        val isTouch = sensor.label == "Touch Detection" || sensor.label == "Pinch Scale Detection" || sensor.label == "Edge Swipe"
+                        val isTouch =
+                            sensor.label == "Touch Detection" ||
+                                sensor.label == "Pinch Scale Detection" ||
+                                sensor.label == "Edge Swipe" ||
+                                sensor.label == "Diagonal Swipe"
                         if (isTouch) {
                             key(selectedSensor) {
                                 val helper =
                                     when (sensor.label) {
                                         "Touch Detection" -> "Single Tap, Double Tap, Long Press, Swipe, Scroll, N-Tap"
                                         "Pinch Scale Detection" -> "Pinch In / Pinch Out"
-                                        else -> "Swipe from screen edge"
+                                        "Edge Swipe" -> "Swipe from composable edge"
+                                        else -> "Swipe diagonally"
                                     }
                                 SenseyRadioButtonWithTouchArea(
                                     label = sensor.label,

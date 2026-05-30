@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.dp
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.contract.GesturePlugin
 import com.github.nisrulz.sensey.gesture.audio.clap.ClapEvent
@@ -14,10 +15,11 @@ import com.github.nisrulz.sensey.gesture.chopPlugin
 import com.github.nisrulz.sensey.gesture.clapPlugin
 import com.github.nisrulz.sensey.gesture.deviceSpinPlugin
 import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinEvent
-import androidx.compose.ui.unit.dp
+import com.github.nisrulz.sensey.gesture.diagonalSwipePlugin
+import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeEvent
+import com.github.nisrulz.sensey.gesture.edgeSwipePlugin
 import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
 import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
-import com.github.nisrulz.sensey.gesture.edgeSwipePlugin
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.flipPlugin
 import com.github.nisrulz.sensey.gesture.light.LightEvent
@@ -94,6 +96,7 @@ internal class SenseySensorManager(
         const val TOUCH_DETECTION = "Touch Detection"
         const val PINCH_SCALE = "Pinch Scale Detection"
         const val EDGE_SWIPE = "Edge Swipe"
+        const val DIAGONAL_SWIPE = "Diagonal Swipe"
     }
 
     var selectedSensor by mutableStateOf<String?>(null)
@@ -231,6 +234,11 @@ internal class SenseySensorManager(
             setResultText("Edge Swipe: ${event.edge}", false)
         }
 
+    private val diagonalSwipeDispatcher: (DiagonalSwipeEvent) -> Unit =
+        withHaptic { event ->
+            setResultText("Diagonal Swipe: ${event.direction}", false)
+        }
+
     private val turnOverDispatcher: (TurnOverEvent) -> Unit =
         withHaptic { setResultText("Turn Over Detected!", false) }
 
@@ -324,6 +332,7 @@ internal class SenseySensorManager(
             TOUCH_DETECTION,
             PINCH_SCALE,
             EDGE_SWIPE,
+            DIAGONAL_SWIPE,
         )
 
     fun onSensorSelected(
@@ -407,12 +416,14 @@ internal class SenseySensorManager(
             CLAP -> clapPlugin(activity, dispatcher = clapDispatcher)
             TOUCH_DETECTION -> touchTypePlugin(activity, dispatcher = touchTypeDispatcher)
             PINCH_SCALE -> pinchScalePlugin(activity, dispatcher = pinchScaleDispatcher)
-            EDGE_SWIPE -> edgeSwipePlugin(
-                activity,
-                edgeThresholdDp = 48.dp,
-                enabledEdges = setOf(Edge.LEFT, Edge.RIGHT, Edge.TOP, Edge.BOTTOM),
-                dispatcher = edgeSwipeDispatcher,
-            )
+            DIAGONAL_SWIPE -> diagonalSwipePlugin(activity, dispatcher = diagonalSwipeDispatcher)
+            EDGE_SWIPE ->
+                edgeSwipePlugin(
+                    activity,
+                    edgeThresholdDp = 48.dp,
+                    enabledEdges = setOf(Edge.LEFT, Edge.RIGHT, Edge.TOP, Edge.BOTTOM),
+                    dispatcher = edgeSwipeDispatcher,
+                )
             else -> error("Unknown sensor: $sensor")
         }
 

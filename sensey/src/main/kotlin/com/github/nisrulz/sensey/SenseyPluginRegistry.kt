@@ -2,8 +2,13 @@
 package com.github.nisrulz.sensey
 
 import android.content.Context
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.github.nisrulz.sensey.contract.GesturePlugin
 import com.github.nisrulz.sensey.gesture.chop.ChopEvent
+import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeEvent
+import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
+import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.light.LightEvent
 import com.github.nisrulz.sensey.gesture.movement.MovementEvent
@@ -18,10 +23,6 @@ import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelEvent
 import com.github.nisrulz.sensey.gesture.step.StepEvent
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
-import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
 import com.github.nisrulz.sensey.gesture.wave.WaveEvent
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
@@ -227,6 +228,18 @@ class SenseyPluginRegistry {
         plugins.add(
             com.github.nisrulz.sensey.gesture
                 .edgeSwipePlugin(context, edgeThresholdDp, enabledEdges, dispatcher),
+        )
+    }
+
+    fun diagonalSwipePlugin(
+        context: Context,
+        minDragDistance: Float = 80f,
+        angleToleranceDeg: Float = 22.5f,
+        dispatcher: (DiagonalSwipeEvent) -> Unit,
+    ) {
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .diagonalSwipePlugin(context, minDragDistance, angleToleranceDeg, dispatcher),
         )
     }
 
