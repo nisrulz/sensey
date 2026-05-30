@@ -38,7 +38,28 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-### Compose
+### Compose — Eager initialization
+
+Initialize before `setContent` so `senseyGestures()` picks up the Sensey instance:
+
+```kotlin
+import com.github.nisrulz.sensey.senseyRegister
+import com.github.nisrulz.sensey.gesture.compose.senseyGestures
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        senseyRegister { /* register plugins */ }
+        setContent {
+            Box(modifier = Modifier.fillMaxSize().senseyGestures())
+        }
+    }
+}
+```
+
+### Compose — Lifecycle-bound
+
+Use `SenseyGestureEffect` inside the composable tree for lifecycle-aware setup:
 
 ```kotlin
 import com.github.nisrulz.sensey.gesture.compose.SenseyGestureEffect
@@ -49,7 +70,6 @@ fun MyScreen(lifecycle: Lifecycle) {
     SenseyGestureEffect(lifecycle) {
         shakePlugin { /* handle events */ }
     }
-    // Attach touch gestures to your composable
     Box(modifier = Modifier.fillMaxSize().senseyGestures())
 }
 ```

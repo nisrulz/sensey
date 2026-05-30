@@ -53,15 +53,39 @@ com.github.nisrulz.sensey/
 ├── SenseyExtensions.kt        # senseyRegister() / senseyStop()
 ├── SenseyPluginRegistry.kt    # Builder DSL
 ├── SensorDetector.kt          # TypedSensorDetector bridge
+├── internal/
+│   ├── AudioCapture.kt        # Shared AudioRecord coroutine wrapper
+│   ├── EmaSmoother.kt         # Single-pole EMA filter
+│   ├── GyroIntegrator.kt      # Gyroscope integration
+│   └── Util.kt                # Math helpers (magnitude, angle, etc.)
 ├── contract/
 │   ├── GesturePlugin.kt       # Plugin interface
 │   └── GestureTrigger.kt      # Trigger interface
 └── gesture/
     ├── GesturePlugins.kt      # DSL builder functions
+    ├── compose/               # Compose touch integration (senseyGestures)
+    ├── audio/clap/            # Clap detection (AudioRecord)
     ├── shake/                 # Shake detection
     ├── flip/                  # Flip detection
-    ├── compose/               # Compose touch integration
-    └── ...                    # Other gestures
+    ├── chop/                  # Chop gesture
+    ├── wristtwist/            # Wrist twist gesture
+    ├── wave/                  # Proximity wave gesture
+    ├── scoop/                 # Scoop/lift gesture
+    ├── pickupdevice/          # Pickup / put-down detection
+    ├── orientation/           # Screen orientation detection
+    ├── tiltdirection/         # Gyro tilt axis detection
+    ├── rotationangle/         # Euler angle reporting
+    ├── taponback/             # Back-tap double-tap detection
+    ├── movement/              # Device movement / stationary
+    ├── light/                 # Ambient light transitions
+    ├── proximity/             # Near / far proximity
+    ├── soundlevel/            # Mic-based dB level
+    ├── step/                  # Step counter / activity
+    ├── turnover/              # Gyro-based 180° flip
+    ├── devicespin/            # Rapid spin detection
+    ├── raisetoear/            # Proximity + gravity ear detection
+    ├── pinchscale/            # Compose pinch-to-zoom
+    └── touchtype/             # Compose tap/swipe/scroll
 ```
 
 Each gesture directory:
