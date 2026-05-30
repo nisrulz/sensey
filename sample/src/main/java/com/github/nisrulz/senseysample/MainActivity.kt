@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.github.nisrulz.sensey.senseyRegister
 import com.github.nisrulz.senseysample.ui.MainScreen
+import com.github.nisrulz.senseysample.ui.SenseyTheme
 import com.github.nisrulz.senseysample.ui.SensorItem
 import com.github.nisrulz.senseysample.utils.isAudioPermissionGranted
 import com.github.nisrulz.senseysample.utils.registerAudioPermission
@@ -27,18 +28,20 @@ class MainActivity : ComponentActivity() {
         sensorManager.sensey = senseyRegister(sensorDataLoggingEnabled = true) { }
 
         setContent {
-            MainScreen(
-                selectedSensor = sensorManager.selectedSensor,
-                sensors =
-                    sensorManager.sensors.map { label ->
-                        SensorItem(
-                            label = label,
-                            isSelected = label == sensorManager.selectedSensor,
-                            result = sensorManager.getResult(label),
-                            onSelect = { onSensorSelected(label) },
-                        )
-                    },
-            )
+            SenseyTheme {
+                MainScreen(
+                    selectedSensor = sensorManager.selectedSensor,
+                    sensors =
+                        sensorManager.sensors.map { label ->
+                            SensorItem(
+                                label = label,
+                                isSelected = label == sensorManager.selectedSensor,
+                                result = sensorManager.getResult(label),
+                                onSelect = { onSensorSelected(label) },
+                            )
+                        },
+                )
+            }
         }
     }
 
