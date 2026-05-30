@@ -71,7 +71,7 @@ class SenseyPluginRegistry {
 
     fun movementPlugin(
         threshold: Float = 0.3f,
-        timeBeforeDeclaringStationary: Long = 5000L,
+        timeBeforeDeclaringStationary: Long = 1500L,
         dispatcher: (MovementEvent) -> Unit,
     ) {
         plugins.add(
@@ -144,19 +144,21 @@ class SenseyPluginRegistry {
     }
 
     fun tapOnBackPlugin(
-        angleThreshold: Float = 1.5f,
-        minAngleJerk: Float = 1.5f,
+        accelThreshold: Float = 2f,
+        minJerk: Float = 5f,
         tapDebounceMs: Long = 250L,
-        tapSequenceTimeoutMs: Long = 500L,
+        tapIntervalMs: Long = 500L,
+        cooldownMs: Long = 1000L,
         dispatcher: (TapOnBackEvent) -> Unit,
     ) {
         plugins.add(
             com.github.nisrulz.sensey.gesture.tapOnBackPlugin(
-                angleThreshold,
-                minAngleJerk,
-                tapDebounceMs,
-                tapSequenceTimeoutMs,
-                dispatcher,
+                accelThreshold = accelThreshold,
+                minJerk = minJerk,
+                tapDebounceMs = tapDebounceMs,
+                tapIntervalMs = tapIntervalMs,
+                cooldownMs = cooldownMs,
+                dispatcher = dispatcher,
             ),
         )
     }

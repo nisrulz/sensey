@@ -14,9 +14,14 @@ import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.SensorDetector
 import com.github.nisrulz.sensey.TypedSensorDetector
 import com.github.nisrulz.sensey.contract.GesturePlugin
+import com.github.nisrulz.sensey.gesture.audio.clap.ClapDetector
+import com.github.nisrulz.sensey.gesture.audio.clap.ClapEvent
+import com.github.nisrulz.sensey.gesture.audio.clap.ClapTrigger
 import com.github.nisrulz.sensey.gesture.chop.ChopEvent
 import com.github.nisrulz.sensey.gesture.chop.ChopTrigger
 import com.github.nisrulz.sensey.gesture.compose.ComposeGestureProvider
+import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinEvent
+import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinTrigger
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipTrigger
 import com.github.nisrulz.sensey.gesture.light.LightEvent
@@ -33,6 +38,9 @@ import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleTrigger
 import com.github.nisrulz.sensey.gesture.proximity.ProximityDetector
 import com.github.nisrulz.sensey.gesture.proximity.ProximityEvent
 import com.github.nisrulz.sensey.gesture.proximity.ProximityTrigger
+import com.github.nisrulz.sensey.gesture.raisetoear.RaiseToEarDetector
+import com.github.nisrulz.sensey.gesture.raisetoear.RaiseToEarEvent
+import com.github.nisrulz.sensey.gesture.raisetoear.RaiseToEarTrigger
 import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleDetector
 import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleEvent
 import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleTrigger
@@ -45,12 +53,15 @@ import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelEvent
 import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelTrigger
 import com.github.nisrulz.sensey.gesture.step.StepEvent
 import com.github.nisrulz.sensey.gesture.step.StepTrigger
+import com.github.nisrulz.sensey.gesture.taponback.TapOnBackDetector
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackTrigger
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionTrigger
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
 import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeTrigger
+import com.github.nisrulz.sensey.gesture.turnover.TurnOverEvent
+import com.github.nisrulz.sensey.gesture.turnover.TurnOverTrigger
 import com.github.nisrulz.sensey.gesture.wave.WaveEvent
 import com.github.nisrulz.sensey.gesture.wave.WaveTrigger
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
@@ -116,7 +127,7 @@ fun proximityPlugin(
 
 fun movementPlugin(
     threshold: Float = 0.3f,
-    timeBeforeDeclaringStationary: Long = 5000L,
+    timeBeforeDeclaringStationary: Long = 1500L,
     dispatcher: (MovementEvent) -> Unit,
 ): GesturePlugin =
     SensorGesturePlugin(
@@ -147,7 +158,7 @@ fun chopPlugin(
     SensorGesturePlugin(
         key = "ChopPlugin",
         detectorFactory = {
-            TypedSensorDetector(ChopTrigger(threshold, timeForChopGesture), dispatcher, Sensor.TYPE_ACCELEROMETER)
+            TypedSensorDetector(ChopTrigger(threshold, timeForChopGesture), dispatcher, Sensor.TYPE_LINEAR_ACCELERATION)
         },
     )
 
@@ -162,10 +173,96 @@ fun wristTwistPlugin(
             TypedSensorDetector(
                 WristTwistTrigger(threshold, timeForWristTwistGesture),
                 dispatcher,
-                Sensor.TYPE_ACCELEROMETER,
+                Sensor.TYPE_LINEAR_ACCELERATION,
             )
         },
     )
+
+/**
+ * Creates a turnover (gyro-based flip) detection plugin.
+ *
+ * More precise than the accelerometer-based [flipPlugin] since it directly
+ * measures angular motion via the gyroscope rather than inferring orientation
+ * from the gravity vector.
+ */
+fun turnOverPlugin(
+    angleThreshold: Float = 150f,
+    dispatcher: (TurnOverEvent) -> Unit,
+): GesturePlugin =
+    SensorGesturePlugin(
+        key = "TurnOverPlugin",
+        detectorFactory = {
+            TypedSensorDetector(
+                TurnOverTrigger(angleThreshold = angleThreshold),
+                dispatcher,
+                Sensor.TYPE_GYROSCOPE,
+            )
+        },
+    )
+
+/**
+ * Creates a device spin detection plugin.
+ *
+ * Detects rapid rotation on any axis exceeding [angleThreshold] within
+ * a [timeWindowMs] window. Useful for "spin to shuffle" or similar features.
+ */
+fun deviceSpinPlugin(
+    angleThreshold: Float = 270f,
+    timeWindowMs: Long = 2000L,
+    dispatcher: (DeviceSpinEvent) -> Unit,
+): GesturePlugin =
+    SensorGesturePlugin(
+        key = "DeviceSpinPlugin",
+        detectorFactory = {
+            TypedSensorDetector(
+                DeviceSpinTrigger(angleThreshold = angleThreshold, timeWindowMs = timeWindowMs),
+                dispatcher,
+                Sensor.TYPE_GYROSCOPE,
+            )
+        },
+    )
+
+/**
+ * Creates a raise-to-ear detection plugin.
+ *
+ * Fuses proximity and gravity sensor data. Fires when the device is held
+ * near the ear (proximity near) and in an upright orientation (gravity
+ * aligned with the Z-axis). Useful for call screen-off or audio routing.
+ */
+fun raiseToEarPlugin(
+    maxProximityCm: Float = 5f,
+    minGzRatio: Float = 0.3f,
+    debounceMs: Long = 500L,
+    dispatcher: (RaiseToEarEvent) -> Unit,
+): GesturePlugin =
+    SensorGesturePlugin(
+        key = "RaiseToEarPlugin",
+        detectorFactory = {
+            RaiseToEarDetector(
+                trigger =
+                    RaiseToEarTrigger(
+                        maxProximityCm = maxProximityCm,
+                        minGzRatio = minGzRatio,
+                        debounceMs = debounceMs,
+                    ),
+                dispatcher = dispatcher,
+            )
+        },
+    )
+
+/**
+ * Creates a clap detection plugin.
+ *
+ * Requires `RECORD_AUDIO` permission at runtime. Uses AudioRecord to
+ * capture audio and detects clap sounds by monitoring RMS energy rise
+ * between consecutive buffers. No audio data is stored or transmitted.
+ */
+fun clapPlugin(
+    context: Context,
+    thresholdDb: Float = -10f,
+    riseDb: Float = 10f,
+    dispatcher: (ClapEvent) -> Unit,
+): GesturePlugin = ClapPlugin(context, ClapTrigger(thresholdDb = thresholdDb, riseDb = riseDb), dispatcher)
 
 fun wavePlugin(
     timeWindowMillis: Long = 1000L,
@@ -194,23 +291,32 @@ fun pickupDevicePlugin(
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "PickupDevicePlugin",
-        detectorFactory = { TypedSensorDetector(PickupDeviceTrigger(settleTimeMs = settleTimeMs), dispatcher, Sensor.TYPE_ACCELEROMETER) },
+        detectorFactory = {
+            TypedSensorDetector(PickupDeviceTrigger(settleTimeMs = settleTimeMs), dispatcher, Sensor.TYPE_ACCELEROMETER)
+        },
     )
 
 fun tapOnBackPlugin(
-    angleThreshold: Float = 1.5f,
-    minAngleJerk: Float = 1.5f,
+    accelThreshold: Float = 2f,
+    minJerk: Float = 2f,
     tapDebounceMs: Long = 250L,
-    tapSequenceTimeoutMs: Long = 500L,
+    tapIntervalMs: Long = 500L,
+    cooldownMs: Long = 1000L,
     dispatcher: (TapOnBackEvent) -> Unit,
 ): GesturePlugin =
     SensorGesturePlugin(
         key = "TapOnBackPlugin",
         detectorFactory = {
-            TypedSensorDetector(
-                TapOnBackTrigger(angleThreshold, minAngleJerk, tapDebounceMs, tapSequenceTimeoutMs),
-                dispatcher,
-                Sensor.TYPE_ACCELEROMETER,
+            TapOnBackDetector(
+                trigger =
+                    TapOnBackTrigger(
+                        accelThreshold = accelThreshold,
+                        minJerk = minJerk,
+                        tapDebounceMs = tapDebounceMs,
+                        tapIntervalMs = tapIntervalMs,
+                        cooldownMs = cooldownMs,
+                    ),
+                dispatcher = dispatcher,
             )
         },
     )
@@ -395,6 +501,31 @@ private class SoundLevelPlugin(
             return
         }
         detector = SoundLevelDetector(trigger, dispatcher)
+        detector?.start()
+    }
+
+    override fun onUnregister(sensey: Sensey) {
+        detector?.stop()
+        detector = null
+    }
+}
+
+private class ClapPlugin(
+    private val context: Context,
+    private val trigger: ClapTrigger,
+    private val dispatcher: (ClapEvent) -> Unit,
+) : GesturePlugin {
+    override val key = ClapPlugin::class.java.name
+    private var detector: ClapDetector? = null
+
+    override fun onRegister(sensey: Sensey) {
+        if (context.checkCallingOrSelfPermission(Manifest.permission.RECORD_AUDIO) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            android.util.Log.w("Sensey", "RECORD_AUDIO permission not granted — ClapPlugin disabled")
+            return
+        }
+        detector = ClapDetector(trigger, dispatcher)
         detector?.start()
     }
 
