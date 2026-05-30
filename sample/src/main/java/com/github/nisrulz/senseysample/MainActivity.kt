@@ -1,55 +1,43 @@
 package com.github.nisrulz.senseysample
 
-import android.Manifest.permission
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import com.github.nisrulz.sensey.senseyRegister
-import com.github.nisrulz.sensey.senseyStop
 import com.github.nisrulz.senseysample.ui.MainScreen
 import com.github.nisrulz.senseysample.ui.SensorItem
-import com.github.nisrulz.senseysample.utils.RuntimePermissionUtil
+import com.github.nisrulz.senseysample.utils.isAudioPermissionGranted
+import com.github.nisrulz.senseysample.utils.registerAudioPermission
+import com.github.nisrulz.senseysample.utils.requestAudioIfNeeded
 
 class MainActivity : ComponentActivity() {
-    private var hasRecordAudioPermission = false
-    private val recordAudioPermission = permission.RECORD_AUDIO
-    private val logTag = javaClass.name
-
-    private val sensorManager = SenseySensorManager(this, logTag)
+    private val sensorManager = SenseySensorManager(this, javaClass.name)
 
     private val audioPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            if (granted) {
-                hasRecordAudioPermission = true
-                sensorManager.startAfterPermissionGranted()
-            }
-        }
+        registerAudioPermission(
+            onGranted = { sensorManager.startAfterPermissionGranted() },
+            onDenied = { sensorManager.clearPendingPermission() },
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        hasRecordAudioPermission =
-            RuntimePermissionUtil.checkPermissonGranted(this, recordAudioPermission)
+        sensorManager.sensey = senseyRegister(sensorDataLoggingEnabled = true) { }
 
         setContent {
             MainScreen(
+                selectedSensor = sensorManager.selectedSensor,
                 sensors =
                     sensorManager.sensors.map { label ->
                         SensorItem(
                             label = label,
                             isSelected = label == sensorManager.selectedSensor,
+                            result = sensorManager.getResult(label),
                             onSelect = { onSensorSelected(label) },
                         )
                     },
-                eventCount = sensorManager.eventCount,
-                resultText = sensorManager.resultText,
-                onTouchDetectorClick = {
-                    startActivity(Intent(this@MainActivity, TouchActivity::class.java))
-                },
             )
         }
     }
@@ -57,7 +45,6 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         sensorManager.stopSelectedDetector()
-        senseyStop()
     }
 
     override fun onDestroy() {
@@ -67,15 +54,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        sensorManager.sensey =
-            senseyRegister(sensorDataLoggingEnabled = true) {
-                // plugin registration happens in SenseySensorManager
-            }
+        sensorManager.startAfterPermissionGranted()
     }
 
     private fun onSensorSelected(sensor: String) {
-        sensorManager.onSensorSelected(sensor, hasRecordAudioPermission) {
-            audioPermissionLauncher.launch(recordAudioPermission)
+        val hasPermission = isAudioPermissionGranted()
+        sensorManager.onSensorSelected(sensor, hasPermission) {
+            audioPermissionLauncher.requestAudioIfNeeded(this)
         }
     }
 }
