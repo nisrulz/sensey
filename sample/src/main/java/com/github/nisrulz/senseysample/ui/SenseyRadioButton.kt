@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +30,7 @@ internal fun SenseyRadioButton(
     Column(
         modifier = Modifier
             .padding(8.dp)
-            .border(width = 1.dp, color = MaterialTheme.colorScheme.onSurface, shape = RoundedCornerShape(8.dp))
+            .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(8.dp))
     ) {
         Row(
             modifier =
@@ -55,7 +56,7 @@ internal fun SenseyRadioButton(
                 colors =
                     RadioButtonDefaults.colors(
                         selectedColor = MaterialTheme.colorScheme.primary,
-                        unselectedColor = MaterialTheme.colorScheme.onBackground,
+                        unselectedColor = Color.LightGray,
                     ),
             )
         }
