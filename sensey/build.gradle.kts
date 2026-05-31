@@ -53,20 +53,28 @@ android {
 val libraryVersion by extra(LibraryInfo.POM_VERSION)
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.annotation)
-    implementation(libs.androidx.lifecycle.common)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
+    // ── Lifecycle (compileOnly: consumer provides it) ──────────────────────────
+    compileOnly(libs.androidx.lifecycle.common)
 
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.compose.foundation)
+    // ── Coroutines (compileOnly: consumer provides if using Flow/SenseyFlow) ──
+    compileOnly(libs.kotlinx.coroutines.core)
+    compileOnly(libs.kotlinx.coroutines.android)
 
+    // ── Compose (compileOnly: consumer provides if using touch-based plugins) ──
+    compileOnly(platform(libs.androidx.compose.bom))
+    compileOnly(libs.androidx.ui)
+    compileOnly(libs.androidx.compose.foundation)
+
+    // ── Test ───────────────────────────────────────────────────────────────────
     testImplementation(libs.bundles.testing)
     testImplementation(libs.mockk)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.lifecycle.common)
+    testImplementation(libs.androidx.lifecycle.runtime)
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.ui)
+    testImplementation(libs.androidx.compose.foundation)
 }
 
 //region Maven Publishing
