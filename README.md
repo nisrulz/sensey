@@ -94,7 +94,7 @@ add the required deps:
 | Feature | Required dependency |
 |---|---|
 | Lifecycle-aware registration | `androidx.lifecycle:lifecycle-common` |
-| Flow-based API (SenseyFlow) | `kotlinx-coroutines-core`, `kotlinx-coroutines-android` |
+| Flow-based API (SenseyFlow) | `kotlinx-coroutines-core` |
 | Touch gesture plugins | `androidx.compose.ui`, `androidx.compose.foundation` |
 
 Sensor-only plugins (shake, flip, light, proximity, etc.) work with just `sensey` alone.
