@@ -29,10 +29,22 @@ transitively into your app. You most likely already have them set up in your app
 
 - **Lifecycle** — needed for lifecycle-aware auto-registration.
   Most Android apps using Jetpack already include it.
+  ```kotlin
+  implementation("androidx.lifecycle:lifecycle-common:2.8.7")
+  ```
 - **Coroutines** — needed for `SenseyFlow` / Flow-based API.
   Standard in nearly all modern Android projects.
+  ```kotlin
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.0")
+  ```
 - **Compose** — needed for touch-based gesture plugins (pinch, swipe, touch type, edge swipe).
   Only required if you use those plugins.
+  ```kotlin
+  implementation(platform("androidx.compose:compose-bom:2026.05.01"))
+  implementation("androidx.compose.ui:ui")
+  implementation("androidx.compose.foundation:foundation")
+  ```
 
 ## Initialize
 
