@@ -88,6 +88,17 @@ implementation 'com.github.nisrulz:sensey:{latest version}'
 
 *Latest version on [Maven Central](https://search.maven.org/artifact/com.github.nisrulz/sensey).*
 
+Sensey declares its dependencies as `compileOnly`. Depending on which features you use,
+add the required deps:
+
+| Feature | Required dependency |
+|---|---|
+| Lifecycle-aware registration | `androidx.lifecycle:lifecycle-common` |
+| Flow-based API (SenseyFlow) | `kotlinx-coroutines-core`, `kotlinx-coroutines-android` |
+| Touch gesture plugins | `androidx.compose.ui`, `androidx.compose.foundation` |
+
+Sensor-only plugins (shake, flip, light, proximity, etc.) work with just `sensey` alone.
+
 ## License
 
 Licensed under the [Apache License, Version 2.0](LICENSE.txt).

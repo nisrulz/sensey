@@ -22,6 +22,18 @@ Or via version catalog:
 sensey = { module = "com.github.nisrulz:sensey", version.ref = "sensey" }
 ```
 
+## Required dependencies
+
+Sensey declares all its dependencies as `compileOnly` — they are **not** bundled
+transitively into your app. You most likely already have them set up in your app:
+
+- **Lifecycle** — needed for lifecycle-aware auto-registration.
+  Most Android apps using Jetpack already include it.
+- **Coroutines** — needed for `SenseyFlow` / Flow-based API.
+  Standard in nearly all modern Android projects.
+- **Compose** — needed for touch-based gesture plugins (pinch, swipe, touch type, edge swipe).
+  Only required if you use those plugins.
+
 ## Initialize
 
 ### Activity (auto lifecycle)
