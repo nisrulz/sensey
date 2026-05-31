@@ -59,7 +59,14 @@ dependencies {
     // Support
     implementation(libs.androidx.appcompat)
 
-    // Compose
+    // Lifecycle (compileOnly in sensey — must be provided by the consumer)
+    implementation(libs.androidx.lifecycle.common)
+
+    // Coroutines (compileOnly in sensey — must be provided by the consumer)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Compose (compileOnly in sensey — must be provided by the consumer)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
 
