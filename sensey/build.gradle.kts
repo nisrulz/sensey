@@ -58,7 +58,6 @@ dependencies {
 
     // ── Coroutines (compileOnly: consumer provides if using Flow/SenseyFlow) ──
     compileOnly(libs.kotlinx.coroutines.core)
-    compileOnly(libs.kotlinx.coroutines.android)
 
     // ── Compose (compileOnly: consumer provides if using touch-based plugins) ──
     compileOnly(platform(libs.androidx.compose.bom))

@@ -16,7 +16,7 @@ import com.github.nisrulz.sensey.contract.GestureTrigger
 internal class ProximityTrigger(
     @Suppress("UNUSED_PARAMETER") private val debounceMillis: Long = 200L,
 ) : GestureTrigger<ProximityEvent> {
-    private var lastDispatchedState: ProximityEvent? = null // Tracks the last emitted event to avoid duplicate dispatches
+    private var lastDispatchedState: ProximityEvent? = null
 
     override fun evaluate(
         values: FloatArray,
@@ -26,15 +26,11 @@ internal class ProximityTrigger(
         val maxRange = values.getOrNull(1) ?: return null // Extract max-range; abort if unavailable
         val currentState = if (distance < maxRange) ProximityEvent.Near else ProximityEvent.Far // Classify near/far
 
-        // Same as last dispatched → no change (filters repeated events from continuous sensors)
-        if (currentState == lastDispatchedState) return null
+        if (isDuplicateOfLastDispatched(currentState)) return null
 
-        // State transition detected → dispatch immediately.
-        // Previous debounce-based algorithm required 2 events in the new state to dispatch,
-        // which permanently stalled with on-change proximity sensors (they fire only once
-        // per transition). The lastDispatchedState compare above is sufficient to prevent
-        // same-state re-dispatches from continuous sensors.
         lastDispatchedState = currentState
         return currentState
     }
+
+    private fun isDuplicateOfLastDispatched(state: ProximityEvent): Boolean = state == lastDispatchedState
 }

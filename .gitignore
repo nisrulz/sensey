@@ -401,3 +401,4 @@ resources/
 **/.idea/*
 data-tool/*
 .opencode/
+token-optimizer

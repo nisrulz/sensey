@@ -104,7 +104,7 @@ internal class AudioCapture<T>(
                 }
                 val event = trigger.evaluate(floatBuffer.copyOfRange(0, samplesRead), System.currentTimeMillis())
                 if (event != null) {
-                    withContext(Dispatchers.Main) { dispatcher(event) }
+                    withContext(Dispatchers.Default) { dispatcher(event) }
                 }
             }
         } finally {

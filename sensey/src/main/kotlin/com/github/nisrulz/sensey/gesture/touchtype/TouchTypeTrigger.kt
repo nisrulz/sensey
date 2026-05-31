@@ -37,15 +37,19 @@ internal class TouchTypeTrigger(
         val velocityY = values.getOrNull(3) ?: 0f // Vertical velocity (optional input)
         val isSwipe = isAboveVelocityThreshold(velocityX, velocityY) // Classify as swipe if velocity exceeds threshold
 
-        val direction = classifyDirection(deltaX, deltaY, isSwipe) // Determine direction from displacement angle
-        return if (isSwipe) TouchTypeEvent.Swipe(direction) else TouchTypeEvent.Scroll(direction) // Emit swipe or scroll event
+        val direction = classifyDirection(deltaX, deltaY, isSwipe)
+        return toGestureEvent(isSwipe, direction)
     }
 
     private fun isAboveVelocityThreshold(
         vx: Float,
         vy: Float,
     ): Boolean = abs(vx) > swipeThresholdVelocity || abs(vy) > swipeThresholdVelocity
-    // True if either velocity component exceeds the threshold
+
+    private fun toGestureEvent(
+        isSwipe: Boolean,
+        direction: TouchTypeEvent.Direction,
+    ): TouchTypeEvent = if (isSwipe) TouchTypeEvent.Swipe(direction) else TouchTypeEvent.Scroll(direction)
 
     private fun classifyDirection(
         deltaX: Float,

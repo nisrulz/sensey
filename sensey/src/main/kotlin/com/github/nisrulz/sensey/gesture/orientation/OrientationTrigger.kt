@@ -51,7 +51,9 @@ internal class OrientationTrigger(
 
         bufferIndex = (bufferIndex + 1) % windowSize // Advance the write index
 
-        currentOrientation = classifyOrientation(averagePitch, averageRoll, currentOrientation) // Classify based on averaged pitch/roll
+        // Classify orientation based on averaged pitch and roll
+        currentOrientation =
+            classifyOrientation(averagePitch, averageRoll, currentOrientation)
         return toOrientationEvent(currentOrientation) // Emit if orientation changed
     }
 

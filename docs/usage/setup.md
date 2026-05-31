@@ -36,7 +36,6 @@ transitively into your app. You most likely already have them set up in your app
   Standard in nearly all modern Android projects.
   ```kotlin
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.0")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.0")
   ```
 - **Compose** — needed for touch-based gesture plugins (pinch, swipe, touch type, edge swipe).
   Only required if you use those plugins.

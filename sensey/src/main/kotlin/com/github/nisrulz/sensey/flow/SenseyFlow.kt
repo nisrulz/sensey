@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.contract.GesturePlugin
+import com.github.nisrulz.sensey.gesture.audio.clap.ClapEvent
 import com.github.nisrulz.sensey.gesture.chop.ChopEvent
 import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinEvent
 import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeEvent
@@ -32,7 +33,6 @@ import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
 import com.github.nisrulz.sensey.gesture.turnover.TurnOverEvent
 import com.github.nisrulz.sensey.gesture.wave.WaveEvent
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
-import com.github.nisrulz.sensey.gesture.audio.clap.ClapEvent
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +52,7 @@ class SenseyFlowScope internal constructor(
     sensorDataLoggingEnabled: Boolean = false,
 ) {
     private val sensey = Sensey(context, lifecycle, samplingPeriod, sensorDataLoggingEnabled)
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main + CoroutineName("SenseyFlow"))
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default + CoroutineName("SenseyFlow"))
     private val flowEntries = mutableListOf<FlowEntry<*>>()
     private var collectJob: Job? = null
 
@@ -61,14 +61,15 @@ class SenseyFlowScope internal constructor(
         val dispatcher: suspend (T) -> Unit,
     )
 
-    private val lifecycleObserver = LifecycleEventObserver { _, event ->
-        when (event) {
-            Lifecycle.Event.ON_START -> startCollection()
-            Lifecycle.Event.ON_STOP -> stopCollection()
-            Lifecycle.Event.ON_DESTROY -> destroy()
-            else -> {}
+    private val lifecycleObserver =
+        LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_START -> startCollection()
+                Lifecycle.Event.ON_STOP -> stopCollection()
+                Lifecycle.Event.ON_DESTROY -> destroy()
+                else -> {}
+            }
         }
-    }
 
     init {
         lifecycle.addObserver(lifecycleObserver)
@@ -79,18 +80,19 @@ class SenseyFlowScope internal constructor(
 
     private fun startCollection() {
         if (collectJob?.isActive == true) return
-        collectJob = scope.launch {
-            coroutineScope {
-                flowEntries.map { entry ->
-                    launch {
-                        entry.flow.collect { value ->
-                            @Suppress("UNCHECKED_CAST")
-                            (entry.dispatcher as suspend (Any?) -> Unit)(value)
+        collectJob =
+            scope.launch {
+                coroutineScope {
+                    flowEntries.map { entry ->
+                        launch {
+                            entry.flow.collect { value ->
+                                @Suppress("UNCHECKED_CAST")
+                                (entry.dispatcher as suspend (Any?) -> Unit)(value)
+                            }
                         }
                     }
                 }
             }
-        }
     }
 
     private fun stopCollection() {
@@ -113,11 +115,12 @@ class SenseyFlowScope internal constructor(
         createPlugin: ((T) -> Unit) -> GesturePlugin,
         dispatcher: (T) -> Unit,
     ) {
-        val flow = callbackFlow<T> {
-            val plugin = createPlugin { trySend(it) }
-            sensey.register(plugin)
-            awaitClose { sensey.unregister(plugin) }
-        }
+        val flow =
+            callbackFlow<T> {
+                val plugin = createPlugin { trySend(it) }
+                sensey.register(plugin)
+                awaitClose { sensey.unregister(plugin) }
+            }
         flowEntries.add(FlowEntry(flow) { dispatcher(it) })
     }
 
@@ -127,7 +130,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (ShakeEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.shakePlugin(threshold, timeBeforeDeclaringShakeStopped, send)
+            com.github.nisrulz.sensey.gesture
+                .shakePlugin(threshold, timeBeforeDeclaringShakeStopped, send)
         }, dispatcher)
     }
 
@@ -140,7 +144,11 @@ class SenseyFlowScope internal constructor(
     ) {
         registerFlow({ send ->
             com.github.nisrulz.sensey.gesture.flipPlugin(
-                faceUpLowerBound, faceUpUpperBound, faceDownLowerBound, faceDownUpperBound, send,
+                faceUpLowerBound,
+                faceUpUpperBound,
+                faceDownLowerBound,
+                faceDownUpperBound,
+                send,
             )
         }, dispatcher)
     }
@@ -150,7 +158,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (LightEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.lightPlugin(darkThreshold, send)
+            com.github.nisrulz.sensey.gesture
+                .lightPlugin(darkThreshold, send)
         }, dispatcher)
     }
 
@@ -159,7 +168,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (ProximityEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.proximityPlugin(debounceMillis, send)
+            com.github.nisrulz.sensey.gesture
+                .proximityPlugin(debounceMillis, send)
         }, dispatcher)
     }
 
@@ -169,7 +179,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (MovementEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.movementPlugin(threshold, timeBeforeDeclaringStationary, send)
+            com.github.nisrulz.sensey.gesture
+                .movementPlugin(threshold, timeBeforeDeclaringStationary, send)
         }, dispatcher)
     }
 
@@ -178,7 +189,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (OrientationEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.orientationPlugin(smoothness, send)
+            com.github.nisrulz.sensey.gesture
+                .orientationPlugin(smoothness, send)
         }, dispatcher)
     }
 
@@ -188,7 +200,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (ChopEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.chopPlugin(threshold, timeForChopGesture, send)
+            com.github.nisrulz.sensey.gesture
+                .chopPlugin(threshold, timeForChopGesture, send)
         }, dispatcher)
     }
 
@@ -198,7 +211,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (WristTwistEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.wristTwistPlugin(threshold, timeForWristTwistGesture, send)
+            com.github.nisrulz.sensey.gesture
+                .wristTwistPlugin(threshold, timeForWristTwistGesture, send)
         }, dispatcher)
     }
 
@@ -207,7 +221,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (TurnOverEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.turnOverPlugin(angleThreshold, send)
+            com.github.nisrulz.sensey.gesture
+                .turnOverPlugin(angleThreshold, send)
         }, dispatcher)
     }
 
@@ -217,7 +232,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (DeviceSpinEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.deviceSpinPlugin(angleThreshold, timeWindowMs, send)
+            com.github.nisrulz.sensey.gesture
+                .deviceSpinPlugin(angleThreshold, timeWindowMs, send)
         }, dispatcher)
     }
 
@@ -228,7 +244,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (RaiseToEarEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.raiseToEarPlugin(maxProximityCm, minGzRatio, debounceMs, send)
+            com.github.nisrulz.sensey.gesture
+                .raiseToEarPlugin(maxProximityCm, minGzRatio, debounceMs, send)
         }, dispatcher)
     }
 
@@ -238,7 +255,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (ClapEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.clapPlugin(context, thresholdDb, riseDb, send)
+            com.github.nisrulz.sensey.gesture
+                .clapPlugin(context, thresholdDb, riseDb, send)
         }, dispatcher)
     }
 
@@ -248,7 +266,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (WaveEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.wavePlugin(timeWindowMillis, debounceMillis, send)
+            com.github.nisrulz.sensey.gesture
+                .wavePlugin(timeWindowMillis, debounceMillis, send)
         }, dispatcher)
     }
 
@@ -257,7 +276,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (ScoopEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.scoopPlugin(threshold, send)
+            com.github.nisrulz.sensey.gesture
+                .scoopPlugin(threshold, send)
         }, dispatcher)
     }
 
@@ -266,7 +286,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (PickupDeviceEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.pickupDevicePlugin(settleTimeMs, send)
+            com.github.nisrulz.sensey.gesture
+                .pickupDevicePlugin(settleTimeMs, send)
         }, dispatcher)
     }
 
@@ -295,7 +316,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (TiltDirectionEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.tiltDirectionPlugin(threshold, send)
+            com.github.nisrulz.sensey.gesture
+                .tiltDirectionPlugin(threshold, send)
         }, dispatcher)
     }
 
@@ -304,7 +326,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (RotationAngleEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.rotationAnglePlugin(minAngleChange, send)
+            com.github.nisrulz.sensey.gesture
+                .rotationAnglePlugin(minAngleChange, send)
         }, dispatcher)
     }
 
@@ -314,23 +337,22 @@ class SenseyFlowScope internal constructor(
         dispatcher: (StepEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.stepPlugin(gender, threshold, send)
+            com.github.nisrulz.sensey.gesture
+                .stepPlugin(gender, threshold, send)
         }, dispatcher)
     }
 
-    fun pinchScalePlugin(
-        dispatcher: (PinchScaleEvent) -> Unit,
-    ) {
+    fun pinchScalePlugin(dispatcher: (PinchScaleEvent) -> Unit) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.pinchScalePlugin(context, send)
+            com.github.nisrulz.sensey.gesture
+                .pinchScalePlugin(context, send)
         }, dispatcher)
     }
 
-    fun touchTypePlugin(
-        dispatcher: (TouchTypeEvent) -> Unit,
-    ) {
+    fun touchTypePlugin(dispatcher: (TouchTypeEvent) -> Unit) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.touchTypePlugin(context, send)
+            com.github.nisrulz.sensey.gesture
+                .touchTypePlugin(context, send)
         }, dispatcher)
     }
 
@@ -340,7 +362,8 @@ class SenseyFlowScope internal constructor(
         dispatcher: (EdgeSwipeEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.edgeSwipePlugin(context, edgeThresholdDp, enabledEdges, send)
+            com.github.nisrulz.sensey.gesture
+                .edgeSwipePlugin(context, edgeThresholdDp, enabledEdges, send)
         }, dispatcher)
     }
 
@@ -350,15 +373,15 @@ class SenseyFlowScope internal constructor(
         dispatcher: (DiagonalSwipeEvent) -> Unit,
     ) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.diagonalSwipePlugin(context, minDragDistance, angleToleranceDeg, send)
+            com.github.nisrulz.sensey.gesture
+                .diagonalSwipePlugin(context, minDragDistance, angleToleranceDeg, send)
         }, dispatcher)
     }
 
-    fun soundLevelPlugin(
-        dispatcher: (SoundLevelEvent) -> Unit,
-    ) {
+    fun soundLevelPlugin(dispatcher: (SoundLevelEvent) -> Unit) {
         registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture.soundLevelPlugin(context, send)
+            com.github.nisrulz.sensey.gesture
+                .soundLevelPlugin(context, send)
         }, dispatcher)
     }
 }

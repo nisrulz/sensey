@@ -1,11 +1,11 @@
 
 package com.github.nisrulz.sensey.flow
 
-import app.cash.turbine.test
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import app.cash.turbine.test
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
@@ -25,13 +25,11 @@ import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.withTimeout
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SenseyFlowScopeTest {
-
     @Before
     fun setUp() {
         Dispatchers.setMain(Dispatchers.Unconfined)
@@ -90,9 +88,10 @@ class SenseyFlowScopeTest {
         val lifecycle = LifecycleRegistry.createUnsafe(owner)
 
         var started = false
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_START) started = true
-        }
+        val observer =
+            LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_START) started = true
+            }
         lifecycle.addObserver(observer)
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
@@ -109,9 +108,10 @@ class SenseyFlowScopeTest {
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
         var stopped = false
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP) stopped = true
-        }
+        val observer =
+            LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_STOP) stopped = true
+            }
         lifecycle.addObserver(observer)
 
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
@@ -120,99 +120,112 @@ class SenseyFlowScopeTest {
     }
 
     @Test
-    fun callbackFlowEmitsViaDispatcher() = runBlocking {
-        val flow = callbackFlow<Int> {
-            val dispatcher: (Int) -> Unit = { trySend(it) }
-            dispatcher(1)
-            dispatcher(2)
-            awaitClose { }
+    fun callbackFlowEmitsViaDispatcher() =
+        runBlocking {
+            val flow =
+                callbackFlow<Int> {
+                    val dispatcher: (Int) -> Unit = { trySend(it) }
+                    dispatcher(1)
+                    dispatcher(2)
+                    awaitClose { }
+                }
+
+            val items = mutableListOf<Int>()
+            val job = launch { flow.collect { items.add(it) } }
+            delay(10)
+            job.cancel()
+            job.join()
+
+            assertEquals(listOf(1, 2), items)
         }
-
-        val items = mutableListOf<Int>()
-        val job = launch { flow.collect { items.add(it) } }
-        delay(10)
-        job.cancel()
-        job.join()
-
-        assertEquals(listOf(1, 2), items)
-    }
 
     @Test
-    fun callbackFlowAllowsLateCollector() = runBlocking {
-        val flow = callbackFlow<Int> {
-            val dispatcher: (Int) -> Unit = { trySend(it) }
-            dispatcher(42)
-            awaitClose { }
-        }
+    fun callbackFlowAllowsLateCollector() =
+        runBlocking {
+            val flow =
+                callbackFlow<Int> {
+                    val dispatcher: (Int) -> Unit = { trySend(it) }
+                    dispatcher(42)
+                    awaitClose { }
+                }
 
-        val result = withTimeout(100) {
-            flow.firstOrNull()
+            val result =
+                withTimeout(100) {
+                    flow.firstOrNull()
+                }
+            assertEquals(42, result)
         }
-        assertEquals(42, result)
-    }
 
     @Test
-    fun multipleDispatchersEmitInOrder() = runBlocking {
-        val flow = callbackFlow<Int> {
-            val dispatcher: (Int) -> Unit = { trySend(it) }
-            dispatcher(10)
-            dispatcher(20)
-            dispatcher(30)
-            close()
-        }
+    fun multipleDispatchersEmitInOrder() =
+        runBlocking {
+            val flow =
+                callbackFlow<Int> {
+                    val dispatcher: (Int) -> Unit = { trySend(it) }
+                    dispatcher(10)
+                    dispatcher(20)
+                    dispatcher(30)
+                    close()
+                }
 
-        val items = mutableListOf<Int>()
-        flow.collect { items.add(it) }
-        assertEquals(listOf(10, 20, 30), items)
-    }
+            val items = mutableListOf<Int>()
+            flow.collect { items.add(it) }
+            assertEquals(listOf(10, 20, 30), items)
+        }
 
     @Test
-    fun callbackFlowUnregistersOnCancellation() = runBlocking {
-        var unregistered = false
+    fun callbackFlowUnregistersOnCancellation() =
+        runBlocking {
+            var unregistered = false
 
-        val flow = callbackFlow<String> {
-            val dispatcher: (String) -> Unit = { trySend(it) }
-            dispatcher("hello")
-            awaitClose { unregistered = true }
+            val flow =
+                callbackFlow<String> {
+                    val dispatcher: (String) -> Unit = { trySend(it) }
+                    dispatcher("hello")
+                    awaitClose { unregistered = true }
+                }
+
+            val job = launch { flow.collect { } }
+            delay(10)
+            job.cancel()
+            job.join()
+
+            assertEquals(true, unregistered)
         }
-
-        val job = launch { flow.collect { } }
-        delay(10)
-        job.cancel()
-        job.join()
-
-        assertEquals(true, unregistered)
-    }
 
     @Test
-    fun callbackFlowCancellationPreventsFurtherEmissions() = runBlocking {
-        val flow = callbackFlow<Int> {
-            val dispatcher: (Int) -> Unit = { trySend(it) }
-            dispatcher(1)
-            dispatcher(2)
-            awaitClose { }
+    fun callbackFlowCancellationPreventsFurtherEmissions() =
+        runBlocking {
+            val flow =
+                callbackFlow<Int> {
+                    val dispatcher: (Int) -> Unit = { trySend(it) }
+                    dispatcher(1)
+                    dispatcher(2)
+                    awaitClose { }
+                }
+
+            val items = mutableListOf<Int>()
+            val job = launch { flow.collect { items.add(it) } }
+            delay(10)
+            job.cancel()
+            job.join()
+
+            assertEquals(listOf(1, 2), items)
         }
-
-        val items = mutableListOf<Int>()
-        val job = launch { flow.collect { items.add(it) } }
-        delay(10)
-        job.cancel()
-        job.join()
-
-        assertEquals(listOf(1, 2), items)
-    }
 
     @Test
-    fun turbineTestBlockWorksWithClosedFlow() = runBlocking {
-        val flow = callbackFlow<Int> {
-            val dispatcher: (Int) -> Unit = { trySend(it) }
-            dispatcher(100)
-            close()
-        }
+    fun turbineTestBlockWorksWithClosedFlow() =
+        runBlocking {
+            val flow =
+                callbackFlow<Int> {
+                    val dispatcher: (Int) -> Unit = { trySend(it) }
+                    dispatcher(100)
+                    close()
+                }
 
-        flow.test {
-            assertEquals(100, awaitItem())
-            awaitComplete()
+            flow.test {
+                assertEquals(100, awaitItem())
+                awaitComplete()
+            }
         }
-    }
 }

@@ -64,7 +64,6 @@ dependencies {
 
     // Coroutines (compileOnly in sensey — must be provided by the consumer)
     implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
 
     // Compose (compileOnly in sensey — must be provided by the consumer)
     implementation(platform(libs.androidx.compose.bom))
