@@ -36,6 +36,34 @@ class MainActivity : ComponentActivity() {
 }
 ```
 
+## Coroutines / Flow
+
+Events as `Flow<T>` with lifecycle-aware collection:
+
+```kt
+import com.github.nisrulz.sensey.flow.senseyFlow
+
+context.senseyFlow(lifecycle) {
+    shakePlugin { event ->
+        when (event) {
+            ShakeEvent.Detected -> println("Shake detected!")
+            ShakeEvent.Stopped  -> println("Shake stopped")
+        }
+    }
+}
+```
+
+Auto-collects on `STARTED`, pauses on `STOP`, cleans up on `DESTROY`. All 24 gestures supported.
+
+```kt
+// Compose
+SenseyFlowEffect(lifecycle) {
+    shakePlugin { /* events */ }
+}
+```
+
+See the **[coroutines/flow guide](docs/usage/coroutines-flow.md)** for details.
+
 ## Gestures
 
 Shake, Flip, Light, Proximity, Movement, Orientation, Chop, TapOnBack, WristTwist, Wave, Scoop, PickupDevice, TiltDirection, RotationAngle, PinchScale, TouchType, EdgeSwipe, DiagonalSwipe, SoundLevel, Step, TurnOver, DeviceSpin, RaiseToEar, Clap.
@@ -46,6 +74,7 @@ See the **[usage guide](docs/usage/)** for events, parameters, and examples.
 
 - 📖 [Full usage guide](docs/usage/)
 - 💡 [Overview](docs/usage/overview.md)
+- 🌊 [Coroutines / Flow](docs/usage/coroutines-flow.md)
 - 🔧 [Context-specific usage](docs/usage/context-specific-usage.md) (Compose, Service, WorkManager)
 - 📐 [Architecture](docs/development/architecture.md)
 - 🛠 [Development guide](docs/development/)

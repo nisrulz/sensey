@@ -5,7 +5,7 @@ weight: 3
 
 # Overview
 
-Plugins register independently. Use the DSL inside `senseyRegister {}` or `SenseyGestureEffect {}`.
+Plugins register independently. Use the DSL inside `senseyRegister {}` or `senseyFlow {}`.
 
 ## Single plugin
 
@@ -19,6 +19,21 @@ senseyRegister(lifecycle) {
     }
 }
 ```
+
+## Flow-based collection
+
+```kotlin
+context.senseyFlow(lifecycle) {
+    shakePlugin { event ->
+        when (event) {
+            ShakeEvent.Detected -> // handle
+            ShakeEvent.Stopped  -> // handle
+        }
+    }
+}
+```
+
+See [Coroutines / Flow](coroutines-flow.md) for details.
 
 ## Multiple plugins
 
@@ -48,3 +63,4 @@ senseyStop()                // all + release sensor manager
 ```
 
 With `senseyRegister(lifecycle)`, cleanup is automatic on `ON_DESTROY`.
+With `senseyFlow`, collection pauses on `STOP` and cleans up on `DESTROY`.

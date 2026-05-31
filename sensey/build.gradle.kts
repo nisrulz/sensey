@@ -64,6 +64,9 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
 
     testImplementation(libs.bundles.testing)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
 
 //region Maven Publishing

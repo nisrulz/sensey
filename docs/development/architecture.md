@@ -17,6 +17,8 @@ Sensor data → GestureTrigger<T> → Event
 
 Testable on JVM — no device or emulator needed.
 
+`observe()` returns `Flow<T>` — default is `emptyFlow()`. Override to expose a persistent event stream (e.g. orientation changes, sound level).
+
 ## Layer 2: GesturePlugin
 
 Bridge between trigger and Android. Implements `onRegister` / `onUnregister`.
@@ -31,11 +33,21 @@ Plugins register via `Sensey.register(plugin)`.
 Plugin registry + lifecycle manager.
 
 - `senseyRegister(lifecycle) {}` — lifecycle-bound DSL
-- `SenseyGestureEffect {}` — Compose integration
+- `SenseyGestureEffect {}` — Compose touch integration
 - Auto-cleanup on `ON_DESTROY`
 - Manual: `senseyStop()`
 
+## Layer 4: SenseyFlowScope (coroutines)
+
+Flow-based lifecycle-aware plugin collection.
+
+- `context.senseyFlow(lifecycle) {}` — creates a `SenseyFlowScope` that collects plugin flows while lifecycle is `STARTED`.
+- `SenseyFlowEffect {}` — Compose wrapper using `DisposableEffect`.
+- Internally uses `callbackFlow` to bridge plugin dispatchers into Kotlin `Flow<T>`.
+
 ## Data flow
+
+### Callback path
 
 ```
 GesturePlugin
@@ -43,6 +55,16 @@ GesturePlugin
 SensorManager → GestureTrigger<T>
      ↓ (gesture events)
 User callback
+```
+
+### Flow path
+
+```
+GesturePlugin
+     ↓ (registers with system)
+SensorManager → GestureTrigger<T>
+     ↓ (callbackFlow bridge)
+Flow<T> → SenseyFlowScope → User collector
 ```
 
 ## Project structure
@@ -60,32 +82,35 @@ com.github.nisrulz.sensey/
 │   └── Util.kt                # Math helpers (magnitude, angle, etc.)
 ├── contract/
 │   ├── GesturePlugin.kt       # Plugin interface
-│   └── GestureTrigger.kt      # Trigger interface
-└── gesture/
-    ├── GesturePlugins.kt      # DSL builder functions
-    ├── compose/               # Compose touch integration (senseyGestures)
-    ├── audio/clap/            # Clap detection (AudioRecord)
-    ├── shake/                 # Shake detection
-    ├── flip/                  # Flip detection
-    ├── chop/                  # Chop gesture
-    ├── wristtwist/            # Wrist twist gesture
-    ├── wave/                  # Proximity wave gesture
-    ├── scoop/                 # Scoop/lift gesture
-    ├── pickupdevice/          # Pickup / put-down detection
-    ├── orientation/           # Screen orientation detection
-    ├── tiltdirection/         # Gyro tilt axis detection
-    ├── rotationangle/         # Euler angle reporting
-    ├── taponback/             # Back-tap double-tap detection
-    ├── movement/              # Device movement / stationary
-    ├── light/                 # Ambient light transitions
-    ├── proximity/             # Near / far proximity
-    ├── soundlevel/            # Mic-based dB level
-    ├── step/                  # Step counter / activity
-    ├── turnover/              # Gyro-based 180° flip
-    ├── devicespin/            # Rapid spin detection
-    ├── raisetoear/            # Proximity + gravity ear detection
-    ├── pinchscale/            # Compose pinch-to-zoom
-    └── touchtype/             # Compose tap/swipe/scroll
+│   └── GestureTrigger.kt      # Trigger interface (+ observe() flow)
+├── flow/
+│   └── SenseyFlow.kt          # SenseyFlowScope + senseyFlow()
+├── gesture/
+│   ├── GesturePlugins.kt      # DSL builder functions
+│   ├── compose/               # Compose touch integration (senseyGestures)
+│   │   └── SenseyComposeFlow.kt  # SenseyFlowEffect composable
+│   ├── audio/clap/            # Clap detection (AudioRecord)
+│   ├── shake/                 # Shake detection
+│   ├── flip/                  # Flip detection
+│   ├── chop/                  # Chop gesture
+│   ├── wristtwist/            # Wrist twist gesture
+│   ├── wave/                  # Proximity wave gesture
+│   ├── scoop/                 # Scoop/lift gesture
+│   ├── pickupdevice/          # Pickup / put-down detection
+│   ├── orientation/           # Screen orientation detection
+│   ├── tiltdirection/         # Gyro tilt axis detection
+│   ├── rotationangle/         # Euler angle reporting
+│   ├── taponback/             # Back-tap double-tap detection
+│   ├── movement/              # Device movement / stationary
+│   ├── light/                 # Ambient light transitions
+│   ├── proximity/             # Near / far proximity
+│   ├── soundlevel/            # Mic-based dB level
+│   ├── step/                  # Step counter / activity
+│   ├── turnover/              # Gyro-based 180° flip
+│   ├── devicespin/            # Rapid spin detection
+│   ├── raisetoear/            # Proximity + gravity ear detection
+│   ├── pinchscale/            # Compose pinch-to-zoom
+│   └── touchtype/             # Compose tap/swipe/scroll
 ```
 
 Each gesture directory:

@@ -96,6 +96,8 @@ class SensorForegroundService : Service() {
 
 ## Jetpack Compose
 
+### Gesture effect (touch-based)
+
 ```kotlin
 import com.github.nisrulz.sensey.gesture.compose.SenseyGestureEffect
 import com.github.nisrulz.sensey.gesture.compose.senseyGestures
@@ -119,4 +121,24 @@ fun MyScreen(lifecycle: Lifecycle) {
     Box(modifier = Modifier.fillMaxSize().senseyGestures())
 }
 ```
+
+### Flow-based (sensor-based)
+
+```kotlin
+import com.github.nisrulz.sensey.gesture.compose.SenseyFlowEffect
+
+@Composable
+fun MyScreen(lifecycle: Lifecycle) {
+    SenseyFlowEffect(lifecycle) {
+        shakePlugin { event ->
+            println(if (event is ShakeEvent.Detected) "Shake!" else "Stopped")
+        }
+        flipPlugin { event ->
+            println(if (event is FlipEvent.FaceUp) "Face up" else "Face down")
+        }
+    }
+}
+```
+
+`SenseyFlowEffect` wraps `senseyFlow` in a `DisposableEffect` — collection starts on `START`, stops on `STOP`, cleans up on dispose.
 
