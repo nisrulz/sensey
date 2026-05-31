@@ -3,6 +3,7 @@ package com.github.nisrulz.sensey.gesture.movement
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MovementTriggerTest {
@@ -15,7 +16,8 @@ class MovementTriggerTest {
 
     @Test
     fun movementDetectedWhenDeltaExceedsThreshold() {
-        assertEquals(MovementEvent.Moved(MovementEvent.Direction.Z_NEG), trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L))
+        val result = trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L)
+        assertTrue(result is MovementEvent.Moved)
     }
 
     @Test

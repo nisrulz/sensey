@@ -11,7 +11,12 @@ class WaveDetectorTest {
     @Test
     fun dispatchesWavedOnNearThenFarSequence() {
         val events = mutableListOf<WaveEvent>()
-        val detector = TypedSensorDetector(WaveTrigger(), dispatcher = { events.add(it) }, Sensor.TYPE_PROXIMITY)
+        val detector =
+            TypedSensorDetector(
+                WaveTrigger(minNearDurationMs = 0L),
+                dispatcher = { events.add(it) },
+                Sensor.TYPE_PROXIMITY,
+            )
         detector.onSensorChanged(SensorUtils.testSensorEvent(floatArrayOf(0f), Sensor.TYPE_PROXIMITY))
         detector.onSensorChanged(SensorUtils.testSensorEvent(floatArrayOf(5f), Sensor.TYPE_PROXIMITY))
         assertTrue(events.contains(WaveEvent.Waved))

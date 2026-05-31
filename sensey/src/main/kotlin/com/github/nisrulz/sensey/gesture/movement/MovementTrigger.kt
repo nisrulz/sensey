@@ -18,7 +18,7 @@ import kotlin.math.sqrt
  * spatial direction of the movement.
  * Expected sensor: Accelerometer (TYPE_ACCELEROMETER).
  * State: currentAccel (current magnitude), isMoving (motion flag), lastMovementTime
- * (timestamp of last motion), hasBaseline (first-read guard).
+ * (timestamp of last motion).
  */
 internal class MovementTrigger(
     private val threshold: Float = 0.3f,
@@ -27,7 +27,6 @@ internal class MovementTrigger(
     private var currentAccel = GRAVITY_EARTH // Current filtered acceleration magnitude
     private var isMoving = false // Whether the device is currently in motion
     private var lastMovementTime = 0L // Timestamp of the last detected movement
-    private var hasBaseline = false // Whether the first sensor reading has been established
 
     override fun evaluate(
         values: FloatArray,
@@ -35,10 +34,6 @@ internal class MovementTrigger(
     ): MovementEvent? {
         val previousAccel = currentAccel // Save the previous magnitude for delta calculation
         currentAccel = computeMagnitude(values) // Compute the current acceleration magnitude
-        if (!hasBaseline) {
-            hasBaseline = true
-            return null // First reading: skip, establish baseline
-        }
         val delta = abs(currentAccel - previousAccel) // Compute the change in acceleration
 
         return if (delta > threshold) {

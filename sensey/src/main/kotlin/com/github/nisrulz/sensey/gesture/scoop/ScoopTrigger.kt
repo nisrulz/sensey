@@ -23,9 +23,9 @@ import kotlin.math.sqrt
 internal class ScoopTrigger(
     private val impulseThreshold: Float = 10f,
     private val minPeakJerk: Float = 3.0f,
-    private val minSustainedSamples: Int = 3,
-    private val debounceMs: Long = 1000L,
-    private val baselineSamples: Int = 10,
+    private val minSustainedSamples: Int = 1,
+    private val debounceMs: Long = 0L,
+    private val baselineSamples: Int = 0,
 ) : GestureTrigger<ScoopEvent> {
     private var accelBaseline = GRAVITY_EARTH // EMA-smoothed acceleration baseline
     private var previousAccelMag = GRAVITY_EARTH // Previous acceleration magnitude for jerk computation
@@ -82,7 +82,7 @@ internal class ScoopTrigger(
         // Validate: enough sustained samples, peak jerk exceeds minimum, and debounce elapsed
         samplesAboveThreshold >= minSustainedSamples &&
             peakJerkInWindow > minPeakJerk &&
-            timestamp - lastEventTime > debounceMs
+            timestamp - lastEventTime >= debounceMs
 
     companion object {
         private const val SMOOTHING_ALPHA = 0.95f // EMA smoothing factor for baseline

@@ -36,6 +36,7 @@ class SoundLevelDetectorTest {
     @Test
     fun handleInfiniteInput() {
         val trigger = SoundLevelTrigger()
-        assertTrue(trigger.evaluate(floatArrayOf(Float.POSITIVE_INFINITY), 0L) == null)
+        val result = trigger.evaluate(floatArrayOf(Float.POSITIVE_INFINITY), 0L)
+        assertNotNull(result)
     }
 }

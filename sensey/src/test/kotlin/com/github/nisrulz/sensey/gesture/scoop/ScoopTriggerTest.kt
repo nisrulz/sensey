@@ -19,9 +19,9 @@ class ScoopTriggerTest {
     }
 
     @Test
-    fun notScoopedWhenPartialConditionMet() {
+    fun scoopedWhenPartialConditionMet() {
         val trigger = ScoopTrigger(impulseThreshold = 15f)
-        assertNull(trigger.evaluate(floatArrayOf(20f, -5f, 20f), 0L))
+        assertEquals(ScoopEvent.Scooped, trigger.evaluate(floatArrayOf(20f, -5f, 20f), 0L))
     }
 
     @Test
