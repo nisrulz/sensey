@@ -13,7 +13,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun MainScreen(
@@ -36,7 +35,7 @@ fun MainScreen(
                 modifier =
                     Modifier
                         .fillMaxSize()
-                        .padding(bottom = 16.dp),
+                        .padding(bottom = Paddings.lg),
             ) {
                 AppHeader()
                 Box(

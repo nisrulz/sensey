@@ -25,8 +25,8 @@ internal fun ResultArea(
             modifier
                 .fillMaxWidth()
                 .height(300.dp)
-                .background(MaterialTheme.colorScheme.inverseOnSurface, RoundedCornerShape(8.dp))
-                .padding(20.dp),
+                .background(MaterialTheme.colorScheme.inverseOnSurface, RoundedCornerShape(Paddings.md))
+                .padding(Paddings.xl),
         contentAlignment = Alignment.Center,
     ) {
         Text(

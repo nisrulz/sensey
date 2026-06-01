@@ -13,9 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.nisrulz.sensey.gesture.compose.senseyGestures
 
@@ -31,14 +29,14 @@ internal fun SenseyRadioButtonWithTouchArea(
     Column(
         modifier =
             Modifier
-                .padding(8.dp),
+                .padding(Paddings.md),
     ) {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
                     .clickable { onSelect() }
-                    .padding(8.dp),
+                    .padding(Paddings.md),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -49,7 +47,7 @@ internal fun SenseyRadioButtonWithTouchArea(
                 modifier =
                     Modifier
                         .weight(1f)
-                        .padding(vertical = 8.dp),
+                        .padding(vertical = Paddings.md),
             )
             RadioButton(
                 selected = selected,
@@ -57,15 +55,21 @@ internal fun SenseyRadioButtonWithTouchArea(
                 colors =
                     RadioButtonDefaults.colors(
                         selectedColor = MaterialTheme.colorScheme.primary,
-                        unselectedColor = Color.LightGray,
+                        unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
                     ),
             )
         }
 
         Text(
             text = helperText,
-            color = Color.LightGray,
-            modifier = Modifier.padding(8.dp),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier =
+                Modifier.padding(
+                    start = Paddings.md,
+                    top = Paddings.none,
+                    end = Paddings.md,
+                    bottom = Paddings.sm,
+                ),
         )
 
         if (showHitArea || result.isNotBlank()) {
@@ -74,7 +78,7 @@ internal fun SenseyRadioButtonWithTouchArea(
                 modifier =
                     Modifier
                         .senseyGestures()
-                        .padding(8.dp),
+                        .padding(Paddings.md),
             )
         }
     }
