@@ -3,16 +3,20 @@ package com.github.nisrulz.senseysample.ui.nav
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.github.nisrulz.senseysample.navigation.GestureGroup
+import com.github.nisrulz.senseysample.navigation.TouchGroup
 import com.github.nisrulz.senseysample.navigation.allGroups
 import com.github.nisrulz.senseysample.navigation.gestureGroupInfo
+import com.github.nisrulz.senseysample.ui.core.PreviewTheme
 
 @Composable
 internal fun GestureNavRailHeader(modifier: Modifier = Modifier) {
@@ -42,5 +46,19 @@ internal fun GestureNavRailItems(
             icon = { Text(text = info.emoji) },
             label = { Text(info.label) },
         )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun GestureNavRailPreview() {
+    PreviewTheme {
+        Column(Modifier.width(80.dp)) {
+            GestureNavRailHeader()
+            GestureNavRailItems(
+                selectedGroup = TouchGroup,
+                onGroupSelected = {},
+            )
+        }
     }
 }
