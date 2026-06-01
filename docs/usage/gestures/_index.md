@@ -28,3 +28,5 @@ title: "Gestures"
 - [DeviceSpin](devicespin.md)
 - [RaiseToEar](raisetoear.md)
 - [Clap](clap.md)
+- [NodGesture](nodgesture.md)
+- [HeadShake](headshake.md)
