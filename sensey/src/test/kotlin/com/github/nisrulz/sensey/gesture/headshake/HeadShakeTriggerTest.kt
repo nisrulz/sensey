@@ -26,6 +26,26 @@ class HeadShakeTriggerTest {
     }
 
     @Test
+    fun firesOnYAxisRotation() {
+        val trigger = HeadShakeTrigger(angleThreshold = 30f, timeWindowMs = 500L)
+        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L))
+        assertNull(trigger.evaluate(floatArrayOf(0f, 15f, 0f), 50L))
+        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 0f), 100L))
+        assertNull(trigger.evaluate(floatArrayOf(0f, -15f, 0f), 150L))
+        assertEquals(HeadShakeEvent, trigger.evaluate(floatArrayOf(0f, 0f, 0f), 200L))
+    }
+
+    @Test
+    fun firesOnCombinedYZRotationTiltedDevice() {
+        val trigger = HeadShakeTrigger(angleThreshold = 30f, timeWindowMs = 500L)
+        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L))
+        assertNull(trigger.evaluate(floatArrayOf(0f, 8f, 8f), 50L))
+        assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 0f), 100L))
+        assertNull(trigger.evaluate(floatArrayOf(0f, -8f, -8f), 150L))
+        assertEquals(HeadShakeEvent, trigger.evaluate(floatArrayOf(0f, 0f, 0f), 200L))
+    }
+
+    @Test
     fun noEventOnSmallRotation() {
         val trigger = HeadShakeTrigger(angleThreshold = 30f, timeWindowMs = 500L)
         assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L))
@@ -55,11 +75,11 @@ class HeadShakeTriggerTest {
     }
 
     @Test
-    fun ignoresXAndYAxisRotation() {
+    fun ignoresXAxisRotation() {
         val trigger = HeadShakeTrigger(angleThreshold = 30f, timeWindowMs = 500L)
         assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 0f), 0L))
         assertNull(trigger.evaluate(floatArrayOf(15f, 0f, 0f), 50L))
-        assertNull(trigger.evaluate(floatArrayOf(0f, 15f, 0f), 100L))
+        assertNull(trigger.evaluate(floatArrayOf(30f, 0f, 0f), 100L))
         assertNull(trigger.evaluate(floatArrayOf(0f, 0f, 0f), 500L))
     }
 }
