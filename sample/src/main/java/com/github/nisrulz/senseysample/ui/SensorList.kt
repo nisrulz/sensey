@@ -1,5 +1,6 @@
 package com.github.nisrulz.senseysample.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
@@ -23,43 +24,50 @@ internal fun SensorList(
     selectedSensor: String? = null,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    val scrollState = rememberScrollState()
+
+    Box(
+        modifier = modifier.fillMaxWidth(),
     ) {
-        sensors.forEach { sensor ->
-            val isTouch =
-                sensor.label == "Touch Detection" ||
-                    sensor.label == "Pinch Scale Detection" ||
-                    sensor.label == "Edge Swipe" ||
-                    sensor.label == "Diagonal Swipe" ||
-                    sensor.label == "Long Press Drag" ||
-                    sensor.label == "Two Finger Swipe" ||
-                    sensor.label == "Corner Swipe"
-            if (isTouch) {
-                key(selectedSensor) {
-                    SenseyRadioButtonWithTouchArea(
+        Column(
+            modifier = Modifier.fillMaxWidth().verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            sensors.forEach { sensor ->
+                val isTouch =
+                    sensor.label == "Touch Detection" ||
+                        sensor.label == "Pinch Scale Detection" ||
+                        sensor.label == "Edge Swipe" ||
+                        sensor.label == "Diagonal Swipe" ||
+                        sensor.label == "Long Press Drag" ||
+                        sensor.label == "Two Finger Swipe" ||
+                        sensor.label == "Corner Swipe"
+                if (isTouch) {
+                    key(selectedSensor) {
+                        SenseyRadioButtonWithTouchArea(
+                            label = sensor.label,
+                            selected = sensor.isSelected,
+                            result = sensor.result,
+                            helperText = helperTextForLabel(sensor.label),
+                            showHitArea = sensor.isSelected,
+                            onSelect = sensor.onSelect,
+                        )
+                    }
+                } else {
+                    SenseyRadioButton(
                         label = sensor.label,
-                        selected = sensor.isSelected,
-                        result = sensor.result,
                         helperText = helperTextForLabel(sensor.label),
-                        showHitArea = sensor.isSelected,
+                        result = sensor.result,
+                        selected = sensor.isSelected,
                         onSelect = sensor.onSelect,
                     )
                 }
-            } else {
-                SenseyRadioButton(
-                    label = sensor.label,
-                    helperText = helperTextForLabel(sensor.label),
-                    result = sensor.result,
-                    selected = sensor.isSelected,
-                    onSelect = sensor.onSelect,
-                )
             }
         }
+        ScrollbarThumb(
+            scrollState = scrollState,
+            modifier = Modifier.align(Alignment.CenterEnd),
+        )
     }
 }
 
