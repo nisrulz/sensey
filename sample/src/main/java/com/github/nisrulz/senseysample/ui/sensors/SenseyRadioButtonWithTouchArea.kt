@@ -54,12 +54,13 @@ internal fun SenseyRadioButtonWithTouchArea(
         Text(
             text = helperText,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(
-                start = Paddings.md,
-                top = Paddings.none,
-                end = Paddings.md,
-                bottom = Paddings.sm,
-            ),
+            modifier =
+                Modifier.padding(
+                    start = Paddings.md,
+                    top = Paddings.none,
+                    end = Paddings.md,
+                    bottom = Paddings.sm,
+                ),
         )
 
         if (showHitArea || result.isNotBlank()) {
