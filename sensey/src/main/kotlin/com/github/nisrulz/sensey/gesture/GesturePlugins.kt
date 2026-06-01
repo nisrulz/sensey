@@ -31,10 +31,14 @@ import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
 import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeTrigger
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipTrigger
+import com.github.nisrulz.sensey.gesture.headshake.HeadShakeEvent
+import com.github.nisrulz.sensey.gesture.headshake.HeadShakeTrigger
 import com.github.nisrulz.sensey.gesture.light.LightEvent
 import com.github.nisrulz.sensey.gesture.light.LightTrigger
 import com.github.nisrulz.sensey.gesture.movement.MovementEvent
 import com.github.nisrulz.sensey.gesture.movement.MovementTrigger
+import com.github.nisrulz.sensey.gesture.nodgesture.NodGestureEvent
+import com.github.nisrulz.sensey.gesture.nodgesture.NodGestureTrigger
 import com.github.nisrulz.sensey.gesture.orientation.OrientationDetector
 import com.github.nisrulz.sensey.gesture.orientation.OrientationEvent
 import com.github.nisrulz.sensey.gesture.orientation.OrientationTrigger
@@ -260,16 +264,32 @@ fun raiseToEarPlugin(
 /**
  * Creates a clap detection plugin.
  *
- * Requires `RECORD_AUDIO` permission at runtime. Uses AudioRecord to
- * capture audio and detects clap sounds by monitoring RMS energy rise
- * between consecutive buffers. No audio data is stored or transmitted.
+ * Detects hand claps via the microphone using a multi‑stage pipeline:
+ * RMS + ZCR weighting + adaptive noise floor + multi‑clap counting.
+ * Requires `RECORD_AUDIO` permission at runtime. No audio data is
+ * stored or transmitted.
+ *
+ * @param thresholdDb  absolute minimum dBFS a buffer must reach (default -45f)
+ * @param requiredClaps  number of distinct claps needed to fire (default 2)
+ * @param clapTimeframeMs  rolling window for multi‑clap counting (default 800ms)
+ * @param dispatchEvents  callback receiving [ClapEvent.Clapped]
  */
 fun clapPlugin(
     context: Context,
-    thresholdDb: Float = -10f,
-    riseDb: Float = 10f,
-    dispatcher: (ClapEvent) -> Unit,
-): GesturePlugin = ClapPlugin(context, ClapTrigger(thresholdDb = thresholdDb, riseDb = riseDb), dispatcher)
+    thresholdDb: Float = -45f,
+    requiredClaps: Int = 2,
+    clapTimeframeMs: Long = 800L,
+    dispatchEvents: (ClapEvent) -> Unit,
+): GesturePlugin =
+    ClapPlugin(
+        context,
+        ClapTrigger(
+            thresholdDb = thresholdDb,
+            requiredClaps = requiredClaps,
+            clapTimeframeMs = clapTimeframeMs,
+        ),
+        dispatchEvents,
+    )
 
 fun wavePlugin(
     timeWindowMillis: Long = 1000L,
@@ -324,6 +344,58 @@ fun tapOnBackPlugin(
                         cooldownMs = cooldownMs,
                     ),
                 dispatcher = dispatcher,
+            )
+        },
+    )
+
+/**
+ * Creates a nod gesture detection plugin.
+ *
+ * Detects a rapid pitch oscillation (nodding "yes"): tilting the device
+ * top-forward (~30° down) then back past level, within 800ms.
+ * Uses the gyroscope X-axis via [GyroIntegrator].
+ */
+fun nodGesturePlugin(
+    angleThreshold: Float = 30f,
+    timeWindowMs: Long = 800L,
+    cooldownMs: Long = 1500L,
+    dispatcher: (NodGestureEvent) -> Unit,
+): GesturePlugin =
+    SensorGesturePlugin(
+        key = "NodGesturePlugin",
+        detectorFactory = {
+            TypedSensorDetector(
+                NodGestureTrigger(
+                    angleThreshold = angleThreshold,
+                    timeWindowMs = timeWindowMs,
+                    cooldownMs = cooldownMs,
+                ),
+                dispatcher,
+                Sensor.TYPE_GYROSCOPE,
+            )
+        },
+    )
+
+/**
+ * Creates a head shake detection plugin.
+ *
+ * Detects a rapid yaw oscillation (shaking "no"): rotating the device
+ * left then right past level (~30° each way), within 800ms.
+ * Uses the gyroscope Z-axis via [GyroIntegrator].
+ */
+fun headShakePlugin(
+    angleThreshold: Float = 30f,
+    timeWindowMs: Long = 800L,
+    cooldownMs: Long = 1500L,
+    dispatcher: (HeadShakeEvent) -> Unit,
+): GesturePlugin =
+    SensorGesturePlugin(
+        key = "HeadShakePlugin",
+        detectorFactory = {
+            TypedSensorDetector(
+                HeadShakeTrigger(angleThreshold = angleThreshold, timeWindowMs = timeWindowMs, cooldownMs = cooldownMs),
+                dispatcher,
+                Sensor.TYPE_GYROSCOPE,
             )
         },
     )
@@ -388,8 +460,9 @@ fun diagonalSwipePlugin(
  * to compute sound pressure levels (RMS → dB). No audio data is stored,
  * transmitted, or persisted — only the computed decibel level is exposed.
  *
- * On API 33+ the system grants `RECORD_AUDIO` at install time for apps
- * targeting the permission via manifest, so no runtime prompt is shown.
+ * `RECORD_AUDIO` is a runtime (dangerous) permission on all API levels 23+.
+ * A runtime permission request must be shown to the user before this plugin
+ * can start capturing audio.
  */
 fun soundLevelPlugin(
     context: Context,

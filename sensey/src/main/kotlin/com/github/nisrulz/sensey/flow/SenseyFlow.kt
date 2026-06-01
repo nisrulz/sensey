@@ -15,8 +15,10 @@ import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeEvent
 import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
 import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
+import com.github.nisrulz.sensey.gesture.headshake.HeadShakeEvent
 import com.github.nisrulz.sensey.gesture.light.LightEvent
 import com.github.nisrulz.sensey.gesture.movement.MovementEvent
+import com.github.nisrulz.sensey.gesture.nodgesture.NodGestureEvent
 import com.github.nisrulz.sensey.gesture.orientation.OrientationEvent
 import com.github.nisrulz.sensey.gesture.pickupdevice.PickupDeviceEvent
 import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleEvent
@@ -205,6 +207,30 @@ class SenseyFlowScope internal constructor(
         }, dispatcher)
     }
 
+    fun nodGesturePlugin(
+        angleThreshold: Float = 30f,
+        timeWindowMs: Long = 500L,
+        cooldownMs: Long = 1500L,
+        dispatcher: (NodGestureEvent) -> Unit,
+    ) {
+        registerFlow({ send ->
+            com.github.nisrulz.sensey.gesture
+                .nodGesturePlugin(angleThreshold, timeWindowMs, cooldownMs, send)
+        }, dispatcher)
+    }
+
+    fun headShakePlugin(
+        angleThreshold: Float = 30f,
+        timeWindowMs: Long = 500L,
+        cooldownMs: Long = 1500L,
+        dispatcher: (HeadShakeEvent) -> Unit,
+    ) {
+        registerFlow({ send ->
+            com.github.nisrulz.sensey.gesture
+                .headShakePlugin(angleThreshold, timeWindowMs, cooldownMs, send)
+        }, dispatcher)
+    }
+
     fun wristTwistPlugin(
         threshold: Float = 12f,
         timeForWristTwistGesture: Long = 1000L,
@@ -250,14 +276,21 @@ class SenseyFlowScope internal constructor(
     }
 
     fun clapPlugin(
-        thresholdDb: Float = -10f,
-        riseDb: Float = 10f,
-        dispatcher: (ClapEvent) -> Unit,
+        thresholdDb: Float = -35f,
+        requiredClaps: Int = 2,
+        clapTimeframeMs: Long = 800L,
+        dispatchEvents: (ClapEvent) -> Unit,
     ) {
         registerFlow({ send ->
             com.github.nisrulz.sensey.gesture
-                .clapPlugin(context, thresholdDb, riseDb, send)
-        }, dispatcher)
+                .clapPlugin(
+                    context,
+                    thresholdDb = thresholdDb,
+                    requiredClaps = requiredClaps,
+                    clapTimeframeMs = clapTimeframeMs,
+                    dispatchEvents = send,
+                )
+        }, dispatchEvents)
     }
 
     fun wavePlugin(

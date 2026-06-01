@@ -10,8 +10,10 @@ import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeEvent
 import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
 import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
+import com.github.nisrulz.sensey.gesture.headshake.HeadShakeEvent
 import com.github.nisrulz.sensey.gesture.light.LightEvent
 import com.github.nisrulz.sensey.gesture.movement.MovementEvent
+import com.github.nisrulz.sensey.gesture.nodgesture.NodGestureEvent
 import com.github.nisrulz.sensey.gesture.orientation.OrientationEvent
 import com.github.nisrulz.sensey.gesture.pickupdevice.PickupDeviceEvent
 import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleEvent
@@ -103,6 +105,30 @@ class SenseyPluginRegistry {
         plugins.add(
             com.github.nisrulz.sensey.gesture
                 .chopPlugin(threshold, timeForChopGesture, dispatcher),
+        )
+    }
+
+    fun nodGesturePlugin(
+        angleThreshold: Float = 30f,
+        timeWindowMs: Long = 500L,
+        cooldownMs: Long = 1500L,
+        dispatcher: (NodGestureEvent) -> Unit,
+    ) {
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .nodGesturePlugin(angleThreshold, timeWindowMs, cooldownMs, dispatcher),
+        )
+    }
+
+    fun headShakePlugin(
+        angleThreshold: Float = 30f,
+        timeWindowMs: Long = 500L,
+        cooldownMs: Long = 1500L,
+        dispatcher: (HeadShakeEvent) -> Unit,
+    ) {
+        plugins.add(
+            com.github.nisrulz.sensey.gesture
+                .headShakePlugin(angleThreshold, timeWindowMs, cooldownMs, dispatcher),
         )
     }
 
