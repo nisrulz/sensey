@@ -24,7 +24,7 @@ fun Modifier.senseyGestures(): Modifier {
     for (provider in sensey.composeGestureProviders) {
         combined =
             combined.then(
-                pointerInput(Unit) {
+                Modifier.pointerInput(Unit) {
                     with(provider) { installGestures() }
                 },
             )
