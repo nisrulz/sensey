@@ -4,29 +4,39 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation3.ui.NavDisplay
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
 import com.github.nisrulz.senseysample.navigation.GestureGroup
 import com.github.nisrulz.senseysample.ui.core.AppHeader
-import com.github.nisrulz.senseysample.ui.sensors.sensorEntryProvider
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 internal fun GestureNavRailLayout(
     selectedGroup: GestureGroup,
     onGroupSelected: (GestureGroup) -> Unit,
-    backStack: List<GestureGroup>,
     selectedSensor: String?,
     sensorResults: Map<String, String>,
     onSensorSelected: (String) -> Unit,
     snackbarHostState: SnackbarHostState,
+    content: @Composable () -> Unit,
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     Row(Modifier.fillMaxSize()) {
-        NavigationRail(header = { GestureNavRailHeader() }) {
+        NavigationRail(
+            modifier = Modifier.shadow(8.dp),
+            header = { GestureNavRailHeader() },
+            containerColor = MaterialTheme.colorScheme.background,
+        ) {
             GestureNavRailItems(
                 selectedGroup = selectedGroup,
                 onGroupSelected = onGroupSelected,
@@ -34,19 +44,15 @@ internal fun GestureNavRailLayout(
         }
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-            topBar = { AppHeader() },
+            topBar = { AppHeader(scrollBehavior = scrollBehavior) },
         ) { paddingValues ->
-            Box(Modifier.fillMaxSize().padding(paddingValues)) {
-                NavDisplay(
-                    backStack = backStack,
-                    onBack = {},
-                    entryProvider =
-                        sensorEntryProvider(
-                            selectedSensor = selectedSensor,
-                            sensorResults = sensorResults,
-                            onSensorSelected = onSensorSelected,
-                        ),
-                )
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .nestedScroll(scrollBehavior.nestedScrollConnection),
+            ) {
+                content()
             }
         }
     }

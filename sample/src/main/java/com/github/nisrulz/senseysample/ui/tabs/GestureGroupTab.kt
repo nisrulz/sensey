@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.github.nisrulz.senseysample.navigation.GestureGroup
+import com.github.nisrulz.senseysample.navigation.TouchGroup
 import com.github.nisrulz.senseysample.navigation.gestureGroupInfo
 import com.github.nisrulz.senseysample.navigation.groupSensors
 import com.github.nisrulz.senseysample.ui.core.Paddings
+import com.github.nisrulz.senseysample.ui.core.PreviewTheme
 import com.github.nisrulz.senseysample.ui.sensors.SensorItem
 import com.github.nisrulz.senseysample.ui.sensors.SensorList
 
@@ -25,7 +28,7 @@ fun GestureGroupTab(
     val sensorLabels = groupSensors[group] ?: return
 
     Box(
-        modifier = modifier.fillMaxSize().padding(horizontal = Paddings.lg),
+        modifier = modifier.fillMaxSize().padding(horizontal = Paddings.sm),
     ) {
         SensorList(
             sensors =
@@ -54,3 +57,16 @@ private val TOUCH_LIKE_SENSORS =
         "Two Finger Swipe",
         "Corner Swipe",
     )
+
+@PreviewLightDark
+@Composable
+private fun GestureGroupTabPreview() {
+    PreviewTheme {
+        GestureGroupTab(
+            group = TouchGroup,
+            selectedSensor = null,
+            sensorResults = emptyMap(),
+            onSensorSelect = {},
+        )
+    }
+}

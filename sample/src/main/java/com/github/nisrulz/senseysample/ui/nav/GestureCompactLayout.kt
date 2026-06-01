@@ -6,26 +6,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation3.ui.NavDisplay
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.github.nisrulz.senseysample.navigation.GestureGroup
 import com.github.nisrulz.senseysample.ui.core.AppHeader
-import com.github.nisrulz.senseysample.ui.sensors.sensorEntryProvider
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 internal fun GestureCompactLayout(
     selectedGroup: GestureGroup,
     onGroupSelected: (GestureGroup) -> Unit,
-    backStack: List<GestureGroup>,
     selectedSensor: String?,
     sensorResults: Map<String, String>,
     onSensorSelected: (String) -> Unit,
     snackbarHostState: SnackbarHostState,
+    content: @Composable () -> Unit,
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        topBar = { AppHeader() },
+        topBar = { AppHeader(scrollBehavior = scrollBehavior) },
         bottomBar = {
             GestureNavBar(
                 selectedGroup = selectedGroup,
@@ -33,17 +36,13 @@ internal fun GestureCompactLayout(
             )
         },
     ) { paddingValues ->
-        Box(Modifier.fillMaxSize().padding(paddingValues)) {
-            NavDisplay(
-                backStack = backStack,
-                onBack = {},
-                entryProvider =
-                    sensorEntryProvider(
-                        selectedSensor = selectedSensor,
-                        sensorResults = sensorResults,
-                        onSensorSelected = onSensorSelected,
-                    ),
-            )
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
+        ) {
+            content()
         }
     }
 }
