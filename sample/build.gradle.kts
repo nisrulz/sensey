@@ -5,6 +5,9 @@ plugins {
 
     // Compose
     alias(libs.plugins.compose.compiler)
+
+    // Kotlin Serialization (required by Navigation 3)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -68,6 +71,23 @@ dependencies {
     // Compose (compileOnly in sensey — must be provided by the consumer)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
+
+    // Material Icons Extended
+    implementation(libs.androidx.material.icons.extended)
+
+    // Navigation 3
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+
+    // Material3 Adaptive (for NavigationSuiteScaffold)
+    implementation(libs.androidx.adaptive)
+
+    // Kotlin Serialization (for Nav3 routes)
+    implementation(libs.kotlinx.serialization.json)
+
+    // Lifecycle ViewModel Compose
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     debugImplementation(libs.bundles.compose.debug)
 }

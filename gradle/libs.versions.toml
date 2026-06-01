@@ -23,6 +23,9 @@ ktlint = "14.2.0"
 activityCompose = "1.13.0"
 composeBom = "2026.05.01"
 
+navigation3 = "1.0.0"
+kotlinxSerialization = "1.8.0"
+
 [libraries]
 
 androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "lifecycleCommon" }
@@ -52,6 +55,15 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 
+androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
+androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
+androidx-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive" }
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleRuntime" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntime" }
+
 
 [plugins]
 
@@ -63,6 +75,8 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 [bundles]
 

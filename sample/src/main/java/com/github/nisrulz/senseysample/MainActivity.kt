@@ -5,54 +5,73 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.senseyRegister
+import com.github.nisrulz.senseysample.navigation.GestureGroup
 import com.github.nisrulz.senseysample.ui.MainScreen
 import com.github.nisrulz.senseysample.ui.SenseyTheme
-import com.github.nisrulz.senseysample.ui.SensorItem
 import com.github.nisrulz.senseysample.utils.isAudioPermissionGranted
 import com.github.nisrulz.senseysample.utils.registerAudioPermission
 import com.github.nisrulz.senseysample.utils.requestAudioIfNeeded
+import com.github.nisrulz.senseysample.viewmodel.SampleViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private val snackbarHostState = SnackbarHostState()
-    private val sensorManager =
-        SenseySensorManager(this, javaClass.name) { label ->
-            CoroutineScope(Dispatchers.Main).launch {
-                snackbarHostState.showSnackbar("$label requires a sensor not available on this device")
-            }
-        }
+    private lateinit var viewModel: SampleViewModel
 
-    private val audioPermissionLauncher =
+    private val sensorManager by lazy {
+        SenseySensorManager(
+            activity = this,
+            logTag = javaClass.name,
+            onSensorUnavailable = { label ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    snackbarHostState.showSnackbar(
+                        "$label requires a sensor not available on this device",
+                    )
+                }
+            },
+            onSensorResult = { sensor, result ->
+                viewModel.updateSensorResult(sensor, result)
+            },
+        )
+    }
+
+    private val audioPermissionLauncher by lazy {
         registerAudioPermission(
             onGranted = { sensorManager.startAfterPermissionGranted() },
             onDenied = { sensorManager.clearPendingPermission() },
         )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         sensorManager.sensey =
-            senseyRegister(samplingPeriod = Sensey.SAMPLING_PERIOD_GAME, sensorDataLoggingEnabled = true) { }
+            senseyRegister(
+                samplingPeriod = Sensey.SAMPLING_PERIOD_GAME,
+                sensorDataLoggingEnabled = true,
+            ) { }
 
         setContent {
+            viewModel = viewModel()
+
             SenseyTheme {
+                val state by viewModel.uiState.collectAsStateWithLifecycle()
+
                 MainScreen(
-                    selectedSensor = sensorManager.selectedSensor,
+                    selectedGroup = state.selectedGroup,
+                    selectedSensor = state.selectedSensor,
+                    sensorResults = state.sensorResults,
                     snackbarHostState = snackbarHostState,
-                    sensors =
-                        sensorManager.sensors.map { label ->
-                            SensorItem(
-                                label = label,
-                                isSelected = label == sensorManager.selectedSensor,
-                                result = sensorManager.getResult(label),
-                                onSelect = { onSensorSelected(label) },
-                            )
-                        },
+                    onGroupSelected = { onGroupSelected(it) },
+                    onSensorSelected = { onSensorSelected(it) },
                 )
             }
         }
@@ -73,10 +92,17 @@ class MainActivity : ComponentActivity() {
         sensorManager.startAfterPermissionGranted()
     }
 
+    private fun onGroupSelected(group: GestureGroup) {
+        viewModel.selectGroup(group)
+    }
+
     private fun onSensorSelected(sensor: String) {
-        val hasPermission = isAudioPermissionGranted()
-        sensorManager.onSensorSelected(sensor, hasPermission) {
-            audioPermissionLauncher.requestAudioIfNeeded(this)
-        }
+        val isSameSensor = sensorManager.selectedSensor == sensor
+        sensorManager.onSensorSelected(
+            sensor = sensor,
+            hasRecordAudioPermission = isAudioPermissionGranted(),
+            onPermissionNeeded = { audioPermissionLauncher.requestAudioIfNeeded(this) },
+        )
+        viewModel.selectSensor(if (isSameSensor) null else sensor)
     }
 }

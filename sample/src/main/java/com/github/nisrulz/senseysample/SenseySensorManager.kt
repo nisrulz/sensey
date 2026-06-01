@@ -85,6 +85,7 @@ internal class SenseySensorManager(
     private val activity: Activity,
     private val logTag: String,
     val onSensorUnavailable: (String) -> Unit = {},
+    private val onSensorResult: (sensor: String, result: String) -> Unit = { _, _ -> },
 ) {
     companion object {
         const val SHAKE = "Shake Gesture"
@@ -500,12 +501,14 @@ internal class SenseySensorManager(
     private fun setResultText(text: String) {
         val sensor = selectedSensor ?: return
         resultsMap[sensor] = text
+        onSensorResult(sensor, text)
         if (BuildConfig.DEBUG) Log.d(logTag, text)
         clearJobs[sensor]?.cancel()
         clearJobs[sensor] =
             scope.launch {
                 delay(2000L)
                 resultsMap.remove(sensor)
+                onSensorResult(sensor, "")
                 clearJobs.remove(sensor)
             }
     }
@@ -514,11 +517,13 @@ internal class SenseySensorManager(
         val active = selectedSensor
         if (active != TOUCH_DETECTION && active != PINCH_SCALE) return
         resultsMap[active] = text
+        onSensorResult(active, text)
         clearJobs[active]?.cancel()
         clearJobs[active] =
             scope.launch {
                 delay(3000L)
                 resultsMap.remove(active)
+                onSensorResult(active, "")
                 clearJobs.remove(active)
             }
     }

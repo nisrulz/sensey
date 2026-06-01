@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 internal fun SenseyRadioButton(
     label: String,
-    helperText: String = "",
-    result: String = "",
+    helperText: String,
+    result: String,
     selected: Boolean,
     onSelect: () -> Unit,
 ) {
@@ -90,6 +90,12 @@ internal fun SenseyRadioButton(
 @Composable
 private fun SenseyRadioButtonPreview() {
     PreviewTheme {
-        SenseyRadioButton(label = "Shake Detector", selected = true, onSelect = {})
+        SenseyRadioButton(
+            label = "Shake Detector",
+            result = "Result",
+            helperText = "Helper text",
+            selected = true,
+            onSelect = {},
+        )
     }
 }

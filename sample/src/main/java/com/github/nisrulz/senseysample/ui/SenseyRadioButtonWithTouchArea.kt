@@ -20,8 +20,8 @@ import com.github.nisrulz.sensey.gesture.compose.senseyGestures
 @Composable
 internal fun SenseyRadioButtonWithTouchArea(
     label: String,
-    result: String = "Hello",
-    helperText: String = "",
+    result: String = "",
+    helperText: String,
     selected: Boolean,
     showHitArea: Boolean = false,
     onSelect: () -> Unit,
@@ -90,6 +90,7 @@ private fun SenseyRadioButtonPreview() {
     PreviewTheme {
         SenseyRadioButtonWithTouchArea(
             label = "Shake Detector",
+            result = "",
             helperText = "Some text",
             selected = true,
             onSelect = {},
