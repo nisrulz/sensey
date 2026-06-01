@@ -7,6 +7,10 @@ weight: 11
 
 Detects when the device is picked up or put down. Register with `pickupDevicePlugin`.
 
+## How to perform
+
+Pick up the phone from a flat surface, or place it down on a flat surface.
+
 ## Algorithm
 
 The algorithm maintains a circular buffer of recent acceleration magnitudes. The range (max − min) across the buffer indicates movement: a high range above a moving threshold signals a pickup. When the mean acceleration returns to the gravity range (~9–10.5 m/s²) and the buffer range is stable for the configured settle duration, the device is declared put down.

@@ -7,6 +7,10 @@ weight: 22
 
 Detects when the device is raised to the ear (call position). Register with `raiseToEarPlugin`.
 
+## How to perform
+
+Hold the phone up to your ear as if taking a phone call.
+
 ## Algorithm
 
 Fuses proximity and gravity sensor data. The gesture fires when the device is near the ear (proximity distance below the threshold) AND NOT flat on a surface. Flatness is determined by `|gz|/gravMag ≤ minGzRatio` — when the phone is held upright at the ear, gravity is along the Y-axis (|gz| ≈ 0), not along Z as when flat on a table.

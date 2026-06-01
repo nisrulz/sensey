@@ -7,6 +7,10 @@ weight: 14
 
 Reports the device rotation angles (Euler angles). Register with `rotationAnglePlugin`.
 
+## How to perform
+
+Rotate the phone around any axis and observe the angle readings change in real time.
+
 ## Algorithm
 
 The algorithm wraps raw Euler-angle readings (axis X, Y, Z) into a `RotationAngleEvent`. It compares each axis value against the previously emitted event; if any axis has changed by more than the minimum angle threshold a new event is emitted. The first reading is always emitted.

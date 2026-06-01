@@ -7,6 +7,10 @@ weight: 18
 
 Detects pinch-to-zoom gestures (scale in/out) in Compose. Register with `pinchScalePlugin`.
 
+## How to perform
+
+Place two fingers on the screen and pinch them together or spread them apart.
+
 ## Algorithm
 
 The algorithm monitors the scale factor from `detectTransformGestures`. When the factor exceeds 1.01 (pinch-in) or falls below 0.99 (pinch-out), consecutive readings are counted. The event is only emitted after a confirmation count (2 consecutive readings) is reached, providing debounce against jittery touch input. Tracks the last emitted direction so opposite-direction events can be reported.

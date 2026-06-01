@@ -7,6 +7,10 @@ weight: 10
 
 Detects a scooping (lifting/pickup) motion. Register with `scoopPlugin`.
 
+## How to perform
+
+Hold the phone flat on a surface, then quickly lift it up in a scooping motion as if scooping something up.
+
 ## Algorithm
 
 The algorithm maintains an EMA-smoothed acceleration baseline and computes the impulse (deviation from baseline). When the impulse exceeds the threshold, consecutive samples are counted. A scoop is emitted when the sustained-sample count (3 consecutive) and peak jerk within the window both exceed their respective internal minima, subject to a global debounce.
