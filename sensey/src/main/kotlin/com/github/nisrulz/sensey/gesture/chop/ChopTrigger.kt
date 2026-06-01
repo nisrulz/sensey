@@ -16,27 +16,31 @@ import kotlin.math.sqrt
  * (timestamp of the last impulse that exceeded threshold).
  */
 internal class ChopTrigger(
-    private val threshold: Float = 25f,
+    private val threshold: Float = 35f,
     private val timeForChopGesture: Long = 700L,
 ) : GestureTrigger<ChopEvent> {
-    private var isGestureInProgress = false // Whether a chop gesture window is currently active
-    private var lastChopTime = 0L // Timestamp of the last impulse that exceeded the threshold
+    private var isGestureInProgress = false
+    private var lastChopTime = 0L
+    private var lastFireTime = -1L
 
     override fun evaluate(
         values: FloatArray,
         timestamp: Long,
     ): ChopEvent? {
-        val magnitude = computeMagnitude(values) // Euclidean norm of linear acceleration
+        if (lastFireTime != -1L && timestamp < lastFireTime + timeForChopGesture) return null
+
+        val magnitude = computeMagnitude(values)
         if (magnitude > threshold) {
             lastChopTime = timestamp
             isGestureInProgress = true
-            return null // Impulse detected, start/refresh the gesture window
+            return null
         }
         return if (hasGestureCompleted(timestamp)) {
             isGestureInProgress = false
-            ChopEvent.Chopped // No further impulses within timeout → emit chop
+            lastFireTime = timestamp
+            ChopEvent.Chopped
         } else {
-            null // Still within the gesture window or nothing detected
+            return null
         }
     }
 

@@ -7,6 +7,10 @@ weight: 7
 
 Detects a chopping motion gesture. Register with `chopPlugin`.
 
+## How to perform
+
+Hold the phone in one hand and make a quick chopping motion downward, like cutting with the edge of your hand.
+
 ## Algorithm
 
 The algorithm monitors linear acceleration (total magnitude minus gravity, approximately 9.81 m/s²). When a single impulse exceeds the threshold the gesture window starts. The gesture is considered complete when no further impulses occur within the configured timeout.
@@ -21,7 +25,7 @@ The algorithm monitors linear acceleration (total magnitude minus gravity, appro
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `threshold` | Linear acceleration magnitude threshold to trigger the gesture window | `25f` |
+| `threshold` | Linear acceleration magnitude threshold to trigger the gesture window | `35f` |
 | `timeForChopGesture` | Time window in milliseconds during which chop impulses are accumulated | `700L` |
 
 ## Usage
