@@ -11,9 +11,6 @@ import com.github.nisrulz.sensey.contract.GesturePlugin
 import com.github.nisrulz.sensey.gesture.audio.clap.ClapEvent
 import com.github.nisrulz.sensey.gesture.chop.ChopEvent
 import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinEvent
-import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeEvent
-import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
-import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.headshake.HeadShakeEvent
 import com.github.nisrulz.sensey.gesture.light.LightEvent
@@ -21,7 +18,6 @@ import com.github.nisrulz.sensey.gesture.movement.MovementEvent
 import com.github.nisrulz.sensey.gesture.nodgesture.NodGestureEvent
 import com.github.nisrulz.sensey.gesture.orientation.OrientationEvent
 import com.github.nisrulz.sensey.gesture.pickupdevice.PickupDeviceEvent
-import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleEvent
 import com.github.nisrulz.sensey.gesture.proximity.ProximityEvent
 import com.github.nisrulz.sensey.gesture.raisetoear.RaiseToEarEvent
 import com.github.nisrulz.sensey.gesture.rotationangle.RotationAngleEvent
@@ -31,7 +27,10 @@ import com.github.nisrulz.sensey.gesture.soundlevel.SoundLevelEvent
 import com.github.nisrulz.sensey.gesture.step.StepEvent
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
-import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
+import com.github.nisrulz.sensey.gesture.touch.TouchConfig
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent.CornerType
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent.EdgeType
 import com.github.nisrulz.sensey.gesture.turnover.TurnOverEvent
 import com.github.nisrulz.sensey.gesture.wave.WaveEvent
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
@@ -375,24 +374,20 @@ class SenseyFlowScope internal constructor(
         }, dispatcher)
     }
 
-    fun pinchScalePlugin(dispatcher: (PinchScaleEvent) -> Unit) {
+    fun touchPlugin(
+        config: TouchConfig = TouchConfig(),
+        dispatcher: (TouchEvent) -> Unit,
+    ) {
         registerFlow({ send ->
             com.github.nisrulz.sensey.gesture
-                .pinchScalePlugin(context, send)
-        }, dispatcher)
-    }
-
-    fun touchTypePlugin(dispatcher: (TouchTypeEvent) -> Unit) {
-        registerFlow({ send ->
-            com.github.nisrulz.sensey.gesture
-                .touchTypePlugin(context, send)
+                .touchPlugin(context, config, send)
         }, dispatcher)
     }
 
     fun edgeSwipePlugin(
         edgeThresholdDp: Dp = 48.dp,
-        enabledEdges: Set<Edge> = setOf(Edge.LEFT, Edge.RIGHT, Edge.TOP, Edge.BOTTOM),
-        dispatcher: (EdgeSwipeEvent) -> Unit,
+        enabledEdges: Set<EdgeType> = EdgeType.entries.toSet(),
+        dispatcher: (TouchEvent) -> Unit,
     ) {
         registerFlow({ send ->
             com.github.nisrulz.sensey.gesture
@@ -402,12 +397,49 @@ class SenseyFlowScope internal constructor(
 
     fun diagonalSwipePlugin(
         minDragDistance: Float = 80f,
-        angleToleranceDeg: Float = 22.5f,
-        dispatcher: (DiagonalSwipeEvent) -> Unit,
+        dispatcher: (TouchEvent) -> Unit,
     ) {
         registerFlow({ send ->
             com.github.nisrulz.sensey.gesture
-                .diagonalSwipePlugin(context, minDragDistance, angleToleranceDeg, send)
+                .diagonalSwipePlugin(context, minDragDistance, send)
+        }, dispatcher)
+    }
+
+    fun longPressDragPlugin(
+        minDragDistance: Float = 20f,
+        dispatcher: (TouchEvent) -> Unit,
+    ) {
+        registerFlow({ send ->
+            com.github.nisrulz.sensey.gesture
+                .longPressDragPlugin(context, minDragDistance, send)
+        }, dispatcher)
+    }
+
+    fun twoFingerSwipePlugin(
+        minDragDistance: Float = 80f,
+        dispatcher: (TouchEvent) -> Unit,
+    ) {
+        registerFlow({ send ->
+            com.github.nisrulz.sensey.gesture
+                .twoFingerSwipePlugin(context, minDragDistance, send)
+        }, dispatcher)
+    }
+
+    fun cornerSwipePlugin(
+        cornerRadiusDp: Dp = 48.dp,
+        enabledCorners: Set<CornerType> = CornerType.entries.toSet(),
+        dispatcher: (TouchEvent) -> Unit,
+    ) {
+        registerFlow({ send ->
+            com.github.nisrulz.sensey.gesture
+                .cornerSwipePlugin(context, cornerRadiusDp, enabledCorners, send)
+        }, dispatcher)
+    }
+
+    fun pinchScalePlugin(dispatcher: (TouchEvent) -> Unit) {
+        registerFlow({ send ->
+            com.github.nisrulz.sensey.gesture
+                .pinchScalePlugin(context, send)
         }, dispatcher)
     }
 

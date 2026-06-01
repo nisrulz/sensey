@@ -5,13 +5,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.nisrulz.sensey.Sensey
@@ -23,24 +16,14 @@ import com.github.nisrulz.sensey.gesture.audio.clap.ClapEvent
 import com.github.nisrulz.sensey.gesture.audio.clap.ClapTrigger
 import com.github.nisrulz.sensey.gesture.chop.ChopEvent
 import com.github.nisrulz.sensey.gesture.chop.ChopTrigger
-import com.github.nisrulz.sensey.gesture.compose.ComposeGestureProvider
-import com.github.nisrulz.sensey.gesture.cornerswipe.CornerSwipeEvent
-import com.github.nisrulz.sensey.gesture.cornerswipe.CornerSwipeTrigger
 import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinEvent
 import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinTrigger
-import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeEvent
-import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeTrigger
-import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
-import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
-import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeTrigger
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipTrigger
 import com.github.nisrulz.sensey.gesture.headshake.HeadShakeEvent
 import com.github.nisrulz.sensey.gesture.headshake.HeadShakeTrigger
 import com.github.nisrulz.sensey.gesture.light.LightEvent
 import com.github.nisrulz.sensey.gesture.light.LightTrigger
-import com.github.nisrulz.sensey.gesture.longpressdrag.LongPressDragEvent
-import com.github.nisrulz.sensey.gesture.longpressdrag.LongPressDragTrigger
 import com.github.nisrulz.sensey.gesture.movement.MovementEvent
 import com.github.nisrulz.sensey.gesture.movement.MovementTrigger
 import com.github.nisrulz.sensey.gesture.nodgesture.NodGestureEvent
@@ -50,8 +33,6 @@ import com.github.nisrulz.sensey.gesture.orientation.OrientationEvent
 import com.github.nisrulz.sensey.gesture.orientation.OrientationTrigger
 import com.github.nisrulz.sensey.gesture.pickupdevice.PickupDeviceEvent
 import com.github.nisrulz.sensey.gesture.pickupdevice.PickupDeviceTrigger
-import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleEvent
-import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleTrigger
 import com.github.nisrulz.sensey.gesture.proximity.ProximityDetector
 import com.github.nisrulz.sensey.gesture.proximity.ProximityEvent
 import com.github.nisrulz.sensey.gesture.proximity.ProximityTrigger
@@ -75,12 +56,19 @@ import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackTrigger
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionTrigger
-import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
-import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeTrigger
+import com.github.nisrulz.sensey.gesture.touch.CornerSwipeConfig
+import com.github.nisrulz.sensey.gesture.touch.EdgeSwipeConfig
+import com.github.nisrulz.sensey.gesture.touch.LongPressDragConfig
+import com.github.nisrulz.sensey.gesture.touch.PinchScaleConfig
+import com.github.nisrulz.sensey.gesture.touch.SwipeConfig
+import com.github.nisrulz.sensey.gesture.touch.TouchConfig
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent.CornerType
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent.EdgeType
+import com.github.nisrulz.sensey.gesture.touch.TouchPlugin
+import com.github.nisrulz.sensey.gesture.touch.TwoFingerSwipeConfig
 import com.github.nisrulz.sensey.gesture.turnover.TurnOverEvent
 import com.github.nisrulz.sensey.gesture.turnover.TurnOverTrigger
-import com.github.nisrulz.sensey.gesture.twofingerswipe.TwoFingerSwipeEvent
-import com.github.nisrulz.sensey.gesture.twofingerswipe.TwoFingerSwipeTrigger
 import com.github.nisrulz.sensey.gesture.wave.WaveEvent
 import com.github.nisrulz.sensey.gesture.wave.WaveTrigger
 import com.github.nisrulz.sensey.gesture.wristtwist.WristTwistEvent
@@ -436,48 +424,134 @@ fun stepPlugin(
         detectorFactory = { TypedSensorDetector(StepTrigger(gender, threshold), dispatcher, Sensor.TYPE_STEP_COUNTER) },
     )
 
-fun pinchScalePlugin(
+/**
+ * Generic touch gesture plugin.
+ *
+ * Detects all touch gesture types based on [config]. By default (no
+ * config) enables taps and basic swipe/scroll.
+ *
+ * Convenience wrappers ([edgeSwipePlugin], [cornerSwipePlugin], etc.)
+ * configure this plugin internally with a pre-configured [TouchConfig].
+ *
+ * Example:
+ * ```
+ * touchPlugin(context) { event ->
+ *     when (event) {
+ *         is TouchEvent.Tap.Single -> // ...
+ *         is TouchEvent.Swipe -> // ...
+ *         else -> {}
+ *     }
+ * }
+ * ```
+ */
+fun touchPlugin(
     context: Context,
-    dispatcher: (PinchScaleEvent) -> Unit,
-): GesturePlugin = PinchScalePlugin(PinchScaleTrigger(), dispatcher)
+    config: TouchConfig = TouchConfig(),
+    dispatcher: (TouchEvent) -> Unit,
+): GesturePlugin = TouchPlugin(config, dispatcher)
 
-fun touchTypePlugin(
-    context: Context,
-    dispatcher: (TouchTypeEvent) -> Unit,
-): GesturePlugin = TouchTypePlugin(TouchTypeTrigger(), dispatcher)
-
+/**
+ * Convenience wrapper configured for edge swipe detection only.
+ *
+ * Internally calls [touchPlugin] with [TouchConfig] setting
+ * [EdgeSwipeConfig.enabled] to true.
+ */
 fun edgeSwipePlugin(
     context: Context,
     edgeThresholdDp: Dp = 48.dp,
-    enabledEdges: Set<Edge> = setOf(Edge.LEFT, Edge.RIGHT, Edge.TOP, Edge.BOTTOM),
-    dispatcher: (EdgeSwipeEvent) -> Unit,
-): GesturePlugin = EdgeSwipePlugin(edgeThresholdDp, enabledEdges, dispatcher)
+    enabledEdges: Set<EdgeType> = EdgeType.entries.toSet(),
+    dispatcher: (TouchEvent) -> Unit,
+): GesturePlugin =
+    TouchPlugin(
+        TouchConfig(
+            edgeSwipe = EdgeSwipeConfig(enabled = true, edgeThresholdDp = edgeThresholdDp, enabledEdges = enabledEdges),
+        ),
+        dispatcher,
+    )
 
+/**
+ * Convenience wrapper configured for diagonal swipe detection only.
+ *
+ * Internally calls [touchPlugin] with [SwipeConfig.diagonalOnly] set to true.
+ *
+ * @param minDragDistance minimum distance in pixels for a swipe (default 80f)
+ */
 fun diagonalSwipePlugin(
     context: Context,
     minDragDistance: Float = 80f,
-    angleToleranceDeg: Float = 22.5f,
-    dispatcher: (DiagonalSwipeEvent) -> Unit,
-): GesturePlugin = DiagonalSwipePlugin(DiagonalSwipeTrigger(minDragDistance, angleToleranceDeg), dispatcher)
+    dispatcher: (TouchEvent) -> Unit,
+): GesturePlugin =
+    TouchPlugin(
+        TouchConfig(
+            swipe = SwipeConfig(enabled = true, minDistance = minDragDistance, diagonalOnly = true),
+        ),
+        dispatcher,
+    )
 
+/**
+ * Convenience wrapper configured for long-press-then-drag detection only.
+ */
 fun longPressDragPlugin(
     context: Context,
     minDragDistance: Float = 20f,
-    dispatcher: (LongPressDragEvent) -> Unit,
-): GesturePlugin = LongPressDragPlugin(LongPressDragTrigger(minDragDistance), dispatcher)
+    dispatcher: (TouchEvent) -> Unit,
+): GesturePlugin =
+    TouchPlugin(
+        TouchConfig(
+            longPressDrag = LongPressDragConfig(enabled = true, minDistance = minDragDistance),
+        ),
+        dispatcher,
+    )
 
+/**
+ * Convenience wrapper configured for two-finger swipe detection only.
+ */
 fun twoFingerSwipePlugin(
     context: Context,
     minDragDistance: Float = 80f,
-    dispatcher: (TwoFingerSwipeEvent) -> Unit,
-): GesturePlugin = TwoFingerSwipePlugin(TwoFingerSwipeTrigger(minDragDistance), dispatcher)
+    dispatcher: (TouchEvent) -> Unit,
+): GesturePlugin =
+    TouchPlugin(
+        TouchConfig(
+            twoFingerSwipe = TwoFingerSwipeConfig(enabled = true, minDistance = minDragDistance),
+        ),
+        dispatcher,
+    )
 
+/**
+ * Convenience wrapper configured for corner swipe detection only.
+ */
 fun cornerSwipePlugin(
     context: Context,
     cornerRadiusDp: Dp = 48.dp,
-    enabledCorners: Set<CornerSwipeEvent.Corner> = CornerSwipeEvent.Corner.entries.toSet(),
-    dispatcher: (CornerSwipeEvent) -> Unit,
-): GesturePlugin = CornerSwipePlugin(cornerRadiusDp, enabledCorners, dispatcher)
+    enabledCorners: Set<CornerType> = CornerType.entries.toSet(),
+    dispatcher: (TouchEvent) -> Unit,
+): GesturePlugin =
+    TouchPlugin(
+        TouchConfig(
+            cornerSwipe =
+                CornerSwipeConfig(
+                    enabled = true,
+                    cornerRadiusDp = cornerRadiusDp,
+                    enabledCorners = enabledCorners,
+                ),
+        ),
+        dispatcher,
+    )
+
+/**
+ * Convenience wrapper configured for pinch/scale detection only.
+ */
+fun pinchScalePlugin(
+    context: Context,
+    dispatcher: (TouchEvent) -> Unit,
+): GesturePlugin =
+    TouchPlugin(
+        TouchConfig(
+            pinchScale = PinchScaleConfig(enabled = true),
+        ),
+        dispatcher,
+    )
 
 /**
  * Creates a sound level detection plugin.
@@ -510,206 +584,6 @@ private class SensorGesturePlugin(
     override fun onUnregister(sensey: Sensey) {
         detector?.let { sensey.unregisterSensorDetector(it) }
         detector = null
-    }
-}
-
-private class PinchScalePlugin(
-    private val trigger: PinchScaleTrigger,
-    private val dispatcher: (PinchScaleEvent) -> Unit,
-) : GesturePlugin {
-    override val key = PinchScalePlugin::class.java.name
-    private val provider = ComposeGestureProvider { installPinchScale() }
-
-    override fun onRegister(sensey: Sensey) {
-        sensey.registerComposeGestureProvider(provider)
-    }
-
-    override fun onUnregister(sensey: Sensey) {
-        sensey.unregisterComposeGestureProvider(provider)
-    }
-
-    private suspend fun PointerInputScope.installPinchScale() {
-        detectTransformGestures { _, _, zoom, _ ->
-            val event = trigger.evaluate(floatArrayOf(zoom), System.currentTimeMillis())
-            event?.let(dispatcher)
-        }
-    }
-}
-
-private class TouchTypePlugin(
-    private val trigger: TouchTypeTrigger,
-    private val dispatcher: (TouchTypeEvent) -> Unit,
-) : GesturePlugin {
-    override val key = TouchTypePlugin::class.java.name
-    private var tapCount = 0
-    private var lastTapTime = 0L
-    private var dragStart = Offset.Zero
-    private val tapProvider = ComposeGestureProvider { installTapGestures() }
-    private val dragProvider = ComposeGestureProvider { installDragGestures() }
-
-    override fun onRegister(sensey: Sensey) {
-        sensey.registerComposeGestureProvider(tapProvider)
-        sensey.registerComposeGestureProvider(dragProvider)
-    }
-
-    override fun onUnregister(sensey: Sensey) {
-        sensey.unregisterComposeGestureProvider(tapProvider)
-        sensey.unregisterComposeGestureProvider(dragProvider)
-    }
-
-    private suspend fun PointerInputScope.installTapGestures() {
-        detectTapGestures(
-            onTap = {
-                val now = System.currentTimeMillis()
-                tapCount = if (now - lastTapTime <= TAP_GAP_MS) tapCount + 1 else 1
-                lastTapTime = now
-                if (tapCount >= 3) {
-                    tapCount = 0
-                    dispatcher(TouchTypeEvent.NTap(3))
-                } else {
-                    dispatcher(TouchTypeEvent.SingleTap)
-                }
-            },
-            onDoubleTap = { dispatcher(TouchTypeEvent.DoubleTap) },
-            onLongPress = { dispatcher(TouchTypeEvent.LongPress) },
-        )
-    }
-
-    private suspend fun PointerInputScope.installDragGestures() {
-        detectDragGestures(
-            onDragStart = { dragStart = it },
-            onDrag = { change, dragAmount ->
-                change.consume()
-                val event =
-                    trigger.evaluate(
-                        floatArrayOf(
-                            (change.position - dragStart).x,
-                            (change.position - dragStart).y,
-                            dragAmount.x,
-                            dragAmount.y,
-                        ),
-                        System.currentTimeMillis(),
-                    )
-                when (event) {
-                    is TouchTypeEvent.Swipe -> dispatcher(event)
-                    is TouchTypeEvent.Scroll -> dispatcher(event)
-                    else -> {}
-                }
-            },
-            onDragEnd = { dragStart = Offset.Zero },
-            onDragCancel = { dragStart = Offset.Zero },
-        )
-    }
-
-    companion object {
-        private const val TAP_GAP_MS = 400L
-    }
-}
-
-private class EdgeSwipePlugin(
-    private val edgeThresholdDp: Dp,
-    private val enabledEdges: Set<Edge>,
-    private val dispatcher: (EdgeSwipeEvent) -> Unit,
-) : GesturePlugin {
-    override val key = EdgeSwipePlugin::class.java.name
-    private var dragStart = Offset.Zero
-    private val provider = ComposeGestureProvider { installEdgeSwipe() }
-
-    override fun onRegister(sensey: Sensey) {
-        sensey.registerComposeGestureProvider(provider)
-    }
-
-    override fun onUnregister(sensey: Sensey) {
-        sensey.unregisterComposeGestureProvider(provider)
-    }
-
-    private suspend fun PointerInputScope.installEdgeSwipe() {
-        val edgeThresholdPx = with(density) { edgeThresholdDp.toPx() }
-        val trigger = EdgeSwipeTrigger(edgeThreshold = edgeThresholdPx, enabledEdges = enabledEdges)
-        val w = size.width.toFloat()
-        val h = size.height.toFloat()
-        var dragEnd = Offset.Zero
-        detectDragGestures(
-            onDragStart = {
-                dragStart = it
-                dragEnd = it
-            },
-            onDrag = { change, _ ->
-                change.consume()
-                dragEnd = change.position
-            },
-            onDragEnd = {
-                val event =
-                    trigger.evaluate(
-                        floatArrayOf(
-                            dragStart.x,
-                            dragStart.y,
-                            dragEnd.x,
-                            dragEnd.y,
-                            w,
-                            h,
-                        ),
-                        System.currentTimeMillis(),
-                    )
-                event?.let(dispatcher)
-                dragStart = Offset.Zero
-                dragEnd = Offset.Zero
-            },
-            onDragCancel = {
-                dragStart = Offset.Zero
-                dragEnd = Offset.Zero
-            },
-        )
-    }
-}
-
-private class DiagonalSwipePlugin(
-    private val trigger: DiagonalSwipeTrigger,
-    private val dispatcher: (DiagonalSwipeEvent) -> Unit,
-) : GesturePlugin {
-    override val key = DiagonalSwipePlugin::class.java.name
-    private var dragStart = Offset.Zero
-    private val provider = ComposeGestureProvider { installDiagonalSwipe() }
-
-    override fun onRegister(sensey: Sensey) {
-        sensey.registerComposeGestureProvider(provider)
-    }
-
-    override fun onUnregister(sensey: Sensey) {
-        sensey.unregisterComposeGestureProvider(provider)
-    }
-
-    private suspend fun PointerInputScope.installDiagonalSwipe() {
-        var dragEnd = Offset.Zero
-        detectDragGestures(
-            onDragStart = {
-                dragStart = it
-                dragEnd = it
-            },
-            onDrag = { change, _ ->
-                change.consume()
-                dragEnd = change.position
-            },
-            onDragEnd = {
-                val event =
-                    trigger.evaluate(
-                        floatArrayOf(
-                            dragStart.x,
-                            dragStart.y,
-                            dragEnd.x,
-                            dragEnd.y,
-                        ),
-                        System.currentTimeMillis(),
-                    )
-                event?.let(dispatcher)
-                dragStart = Offset.Zero
-                dragEnd = Offset.Zero
-            },
-            onDragCancel = {
-                dragStart = Offset.Zero
-                dragEnd = Offset.Zero
-            },
-        )
     }
 }
 
@@ -760,137 +634,5 @@ private class ClapPlugin(
     override fun onUnregister(sensey: Sensey) {
         detector?.stop()
         detector = null
-    }
-}
-
-private class LongPressDragPlugin(
-    private val trigger: LongPressDragTrigger,
-    private val dispatcher: (LongPressDragEvent) -> Unit,
-) : GesturePlugin {
-    override val key = LongPressDragPlugin::class.java.name
-    private val provider = ComposeGestureProvider { installLongPressDrag() }
-
-    override fun onRegister(sensey: Sensey) {
-        sensey.registerComposeGestureProvider(provider)
-    }
-
-    override fun onUnregister(sensey: Sensey) {
-        sensey.unregisterComposeGestureProvider(provider)
-    }
-
-    private suspend fun PointerInputScope.installLongPressDrag() {
-        var dragStart = Offset.Zero
-        detectDragGesturesAfterLongPress(
-            onDragStart = { dragStart = it },
-            onDrag = { change, _ ->
-                change.consume()
-                val delta = change.position - dragStart
-                val event = trigger.evaluate(floatArrayOf(delta.x, delta.y), System.currentTimeMillis())
-                event?.let(dispatcher)
-            },
-            onDragEnd = { dragStart = Offset.Zero },
-            onDragCancel = { dragStart = Offset.Zero },
-        )
-    }
-}
-
-private class TwoFingerSwipePlugin(
-    private val trigger: TwoFingerSwipeTrigger,
-    private val dispatcher: (TwoFingerSwipeEvent) -> Unit,
-) : GesturePlugin {
-    override val key = TwoFingerSwipePlugin::class.java.name
-    private val provider = ComposeGestureProvider { installTwoFingerSwipe() }
-
-    override fun onRegister(sensey: Sensey) {
-        sensey.registerComposeGestureProvider(provider)
-    }
-
-    override fun onUnregister(sensey: Sensey) {
-        sensey.unregisterComposeGestureProvider(provider)
-    }
-
-    private suspend fun PointerInputScope.installTwoFingerSwipe() {
-        awaitEachGesture {
-            var dragStart = Offset.Zero
-            var tracking = false
-            var event = awaitPointerEvent()
-            do {
-                val active = event.changes.filter { it.pressed }
-                if (active.size >= 2 && !tracking) {
-                    dragStart =
-                        Offset(
-                            active.map { it.position.x }.average().toFloat(),
-                            active.map { it.position.y }.average().toFloat(),
-                        )
-                    tracking = true
-                }
-                if (tracking && active.size >= 2) {
-                    val centroid =
-                        Offset(
-                            active.map { it.position.x }.average().toFloat(),
-                            active.map { it.position.y }.average().toFloat(),
-                        )
-                    val delta = centroid - dragStart
-                    trigger
-                        .evaluate(
-                            floatArrayOf(0f, 0f, centroid.x, centroid.y, delta.x, delta.y, 1f, 0f),
-                            System.currentTimeMillis(),
-                        )?.let(dispatcher)
-                    active.forEach { it.consume() }
-                }
-                if (active.size < 2) tracking = false
-                event = awaitPointerEvent()
-            } while (event.changes.any { it.pressed })
-        }
-    }
-}
-
-private class CornerSwipePlugin(
-    private val cornerRadiusDp: Dp,
-    private val enabledCorners: Set<CornerSwipeEvent.Corner>,
-    private val dispatcher: (CornerSwipeEvent) -> Unit,
-) : GesturePlugin {
-    override val key = CornerSwipePlugin::class.java.name
-    private var dragStart = Offset.Zero
-    private val provider = ComposeGestureProvider { installCornerSwipe() }
-
-    override fun onRegister(sensey: Sensey) {
-        sensey.registerComposeGestureProvider(provider)
-    }
-
-    override fun onUnregister(sensey: Sensey) {
-        sensey.unregisterComposeGestureProvider(provider)
-    }
-
-    private suspend fun PointerInputScope.installCornerSwipe() {
-        val cornerRadiusPx = with(density) { cornerRadiusDp.toPx() }
-        val trigger = CornerSwipeTrigger(cornerRadiusPx = cornerRadiusPx, enabledCorners = enabledCorners)
-        val w = size.width.toFloat()
-        val h = size.height.toFloat()
-        var dragEnd = Offset.Zero
-        detectDragGestures(
-            onDragStart = {
-                dragStart = it
-                dragEnd = it
-            },
-            onDrag = { change, _ ->
-                change.consume()
-                dragEnd = change.position
-            },
-            onDragEnd = {
-                val event =
-                    trigger.evaluate(
-                        floatArrayOf(dragStart.x, dragStart.y, dragEnd.x, dragEnd.y, w, h),
-                        System.currentTimeMillis(),
-                    )
-                event?.let(dispatcher)
-                dragStart = Offset.Zero
-                dragEnd = Offset.Zero
-            },
-            onDragCancel = {
-                dragStart = Offset.Zero
-                dragEnd = Offset.Zero
-            },
-        )
     }
 }
