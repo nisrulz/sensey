@@ -1,4 +1,4 @@
-package com.github.nisrulz.senseysample.ui
+package com.github.nisrulz.senseysample.ui.nav
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +15,7 @@ import com.github.nisrulz.senseysample.navigation.allGroups
 import com.github.nisrulz.senseysample.navigation.gestureGroupInfo
 
 @Composable
-fun GestureNavRailHeader(modifier: Modifier = Modifier) {
+internal fun GestureNavRailHeader(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -30,7 +30,7 @@ fun GestureNavRailHeader(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun GestureNavRailItems(
+internal fun GestureNavRailItems(
     selectedGroup: GestureGroup,
     onGroupSelected: (GestureGroup) -> Unit,
 ) {

@@ -11,8 +11,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.senseyRegister
 import com.github.nisrulz.senseysample.navigation.GestureGroup
-import com.github.nisrulz.senseysample.ui.MainScreen
-import com.github.nisrulz.senseysample.ui.SenseyTheme
+import com.github.nisrulz.senseysample.ui.core.SenseyTheme
+import com.github.nisrulz.senseysample.ui.nav.MainScreen
 import com.github.nisrulz.senseysample.utils.isAudioPermissionGranted
 import com.github.nisrulz.senseysample.utils.registerAudioPermission
 import com.github.nisrulz.senseysample.utils.requestAudioIfNeeded

@@ -1,4 +1,4 @@
-package com.github.nisrulz.senseysample.ui
+package com.github.nisrulz.senseysample.ui.sensors
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +10,7 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.github.nisrulz.senseysample.ui.core.PreviewTheme
 
 data class SensorItem(
     val label: String,
@@ -26,9 +27,7 @@ internal fun SensorList(
 ) {
     val scrollState = rememberScrollState()
 
-    Box(
-        modifier = modifier.fillMaxWidth(),
-    ) {
+    Box(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.fillMaxWidth().verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,

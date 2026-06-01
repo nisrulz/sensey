@@ -1,4 +1,4 @@
-package com.github.nisrulz.senseysample.ui
+package com.github.nisrulz.senseysample.ui.nav
 
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -10,7 +10,7 @@ import com.github.nisrulz.senseysample.navigation.allGroups
 import com.github.nisrulz.senseysample.navigation.gestureGroupInfo
 
 @Composable
-fun GestureNavBar(
+internal fun GestureNavBar(
     selectedGroup: GestureGroup,
     onGroupSelected: (GestureGroup) -> Unit,
     modifier: Modifier = Modifier,

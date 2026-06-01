@@ -1,4 +1,4 @@
-package com.github.nisrulz.senseysample.ui
+package com.github.nisrulz.senseysample.ui.nav
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.ui.NavDisplay
 import com.github.nisrulz.senseysample.navigation.GestureGroup
+import com.github.nisrulz.senseysample.ui.core.AppHeader
+import com.github.nisrulz.senseysample.ui.sensors.sensorEntryProvider
 
 @Composable
 internal fun GestureCompactLayout(

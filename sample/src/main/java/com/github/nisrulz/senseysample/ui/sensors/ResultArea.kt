@@ -1,4 +1,4 @@
-package com.github.nisrulz.senseysample.ui
+package com.github.nisrulz.senseysample.ui.sensors
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,9 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.github.nisrulz.senseysample.ui.core.Paddings
+import com.github.nisrulz.senseysample.ui.core.PreviewTheme
 
 @Composable
 internal fun ResultArea(
@@ -33,7 +36,7 @@ internal fun ResultArea(
             text = text,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 25.sp,
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            textAlign = TextAlign.Center,
         )
     }
 }

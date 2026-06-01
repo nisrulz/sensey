@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import com.github.nisrulz.senseysample.navigation.GestureGroup
 import com.github.nisrulz.senseysample.navigation.gestureGroupInfo
 import com.github.nisrulz.senseysample.navigation.groupSensors
-import com.github.nisrulz.senseysample.ui.Paddings
-import com.github.nisrulz.senseysample.ui.SensorItem
-import com.github.nisrulz.senseysample.ui.SensorList
+import com.github.nisrulz.senseysample.ui.core.Paddings
+import com.github.nisrulz.senseysample.ui.sensors.SensorItem
+import com.github.nisrulz.senseysample.ui.sensors.SensorList
 
 @Composable
 fun GestureGroupTab(

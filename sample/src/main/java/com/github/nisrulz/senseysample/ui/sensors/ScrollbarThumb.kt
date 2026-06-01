@@ -1,4 +1,4 @@
-package com.github.nisrulz.senseysample.ui
+package com.github.nisrulz.senseysample.ui.sensors
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn

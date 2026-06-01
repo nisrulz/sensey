@@ -1,4 +1,4 @@
-package com.github.nisrulz.senseysample.ui
+package com.github.nisrulz.senseysample.ui.sensors
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,21 +15,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.sp
-import com.github.nisrulz.sensey.gesture.compose.senseyGestures
+import com.github.nisrulz.senseysample.ui.core.Paddings
+import com.github.nisrulz.senseysample.ui.core.PreviewTheme
 
 @Composable
-internal fun SenseyRadioButtonWithTouchArea(
+internal fun SenseyRadioButton(
     label: String,
-    result: String = "",
     helperText: String,
+    result: String,
     selected: Boolean,
-    showHitArea: Boolean = false,
     onSelect: () -> Unit,
 ) {
     Column(
-        modifier =
-            Modifier
-                .padding(Paddings.md),
+        modifier = Modifier.padding(Paddings.md),
     ) {
         Row(
             modifier =
@@ -44,10 +42,7 @@ internal fun SenseyRadioButtonWithTouchArea(
                 text = label,
                 color = MaterialTheme.colorScheme.secondary,
                 fontSize = 16.sp,
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .padding(vertical = Paddings.md),
+                modifier = Modifier.weight(1f).padding(vertical = Paddings.md),
             )
             RadioButton(
                 selected = selected,
@@ -60,25 +55,26 @@ internal fun SenseyRadioButtonWithTouchArea(
             )
         }
 
-        Text(
-            text = helperText,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier =
-                Modifier.padding(
-                    start = Paddings.md,
-                    top = Paddings.none,
-                    end = Paddings.md,
-                    bottom = Paddings.sm,
-                ),
-        )
-
-        if (showHitArea || result.isNotBlank()) {
-            ResultArea(
-                text = result.ifBlank { "[ Hit Area ]" },
+        if (helperText.isNotBlank()) {
+            Text(
+                text = helperText,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier =
-                    Modifier
-                        .senseyGestures()
-                        .padding(Paddings.md),
+                    Modifier.padding(
+                        start = Paddings.md,
+                        top = Paddings.none,
+                        end = Paddings.md,
+                        bottom = Paddings.sm,
+                    ),
+            )
+        }
+
+        if (result.isNotBlank()) {
+            Text(
+                text = result,
+                modifier = Modifier.fillMaxWidth().padding(Paddings.md),
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 20.sp,
             )
         }
     }
@@ -88,10 +84,10 @@ internal fun SenseyRadioButtonWithTouchArea(
 @Composable
 private fun SenseyRadioButtonPreview() {
     PreviewTheme {
-        SenseyRadioButtonWithTouchArea(
+        SenseyRadioButton(
             label = "Shake Detector",
-            result = "",
-            helperText = "Some text",
+            result = "Result",
+            helperText = "Helper text",
             selected = true,
             onSelect = {},
         )
