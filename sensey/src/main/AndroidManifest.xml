@@ -17,5 +17,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Required for SoundLevelDetector which uses AudioRecord with VOICE_RECOGNITION source -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 </manifest>

@@ -7,6 +7,7 @@ import android.media.MediaRecorder
 import android.os.Process
 import android.util.Log
 import com.github.nisrulz.sensey.contract.GestureTrigger
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -54,6 +55,8 @@ internal class AudioCapture<T>(
                 return
             }
             processAudioStream(audioRecord)
+        } catch (e: CancellationException) {
+            // Normal cancellation when stop() is called — no error log needed
         } catch (e: Exception) {
             Log.e(logTag, "Audio capture failed", e)
         }
@@ -78,6 +81,9 @@ internal class AudioCapture<T>(
                 AudioRecord(source, sampleRate, AUDIO_CHANNEL, AUDIO_ENCODING, bufferSize)
             } catch (e: IllegalArgumentException) {
                 Log.w(logTag, "AudioRecord($source) constructor failed", e)
+                return null
+            } catch (e: SecurityException) {
+                Log.e(logTag, "RECORD_AUDIO permission denied in AudioRecord constructor", e)
                 return null
             }
         if (record.state != AudioRecord.STATE_INITIALIZED) {
