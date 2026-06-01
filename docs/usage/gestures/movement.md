@@ -7,6 +7,10 @@ weight: 6
 
 Detects when the device is moving or stationary. Register with `movementPlugin`.
 
+## How to perform
+
+Move the phone around in your hand, or place it still on a flat surface.
+
 ## Algorithm
 
 The algorithm computes the Euclidean magnitude of the acceleration vector and compares the absolute delta between consecutive readings against a threshold. If the delta exceeds the threshold the device is considered moving (with the dominant spatial direction reported). If no movement occurs within a configurable timeout the device is declared stationary.

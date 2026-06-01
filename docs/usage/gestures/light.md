@@ -7,6 +7,10 @@ weight: 4
 
 Detects ambient light transitions (dark ↔ light). Register with `lightPlugin`.
 
+## How to perform
+
+Cover the top of the phone with your hand to simulate darkness, or expose it to light.
+
 ## Algorithm
 
 The algorithm compares ambient lux against a configurable dark threshold with a built-in hysteresis gap. On first reading it establishes a baseline state. Transition to dark fires when lux drops below the dark threshold. Transition to light fires when lux rises above a fixed internal threshold (`12f`). Same-state readings are ignored to avoid repeated events.

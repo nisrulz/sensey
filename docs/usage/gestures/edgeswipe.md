@@ -7,6 +7,10 @@ weight: 24
 
 Detects swipes that originate near the edge of a composable. Register with `edgeSwipePlugin`.
 
+## How to perform
+
+Place your finger at the edge of the screen and swipe inward.
+
 ## Algorithm
 
 Tracks drag gestures via Compose's `detectDragGestures`. When a drag starts within `edgeThresholdDp` of any enabled composable edge and travels a sufficient distance, an `EdgeSwipeEvent` is emitted with the originating edge.

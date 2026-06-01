@@ -7,6 +7,10 @@ weight: 12
 
 Detects the device orientation (which edge is pointing up). Register with `orientationPlugin`.
 
+## How to perform
+
+Rotate the phone between portrait and landscape orientations — top-up, bottom-up, left-up, or right-up.
+
 ## Algorithm
 
 The algorithm computes pitch and roll via `SensorManager.getRotationMatrix` and `getOrientation`. It smoothes these angles with a configurable moving-average window and classifies the orientation using the averaged pitch and roll with hysteresis from the previous orientation. An event is emitted only when the orientation actually changes from the last reported state.

@@ -7,6 +7,10 @@ weight: 3
 
 Detects when the device flips face-up or face-down. Register with `flipPlugin`.
 
+## How to perform
+
+Hold the phone flat in your hand and quickly flip it over so the screen faces down, or flip it back face-up.
+
 ## Algorithm
 
 The algorithm compares Z-axis acceleration against configurable bounds: a Z value between approximately 8 and 10.5 m/s² indicates face-up, while a Z value between approximately −10.5 and −8 m/s² indicates face-down. Events are emitted only once per orientation state change to avoid repeated dispatches.

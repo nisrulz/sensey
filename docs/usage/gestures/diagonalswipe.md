@@ -7,6 +7,10 @@ weight: 25
 
 Detects diagonal swipe gestures inside a composable. Register with `diagonalSwipePlugin`.
 
+## How to perform
+
+Swipe diagonally across the screen — for example, from bottom-left toward top-right.
+
 ## Algorithm
 
 Computes the angle of a drag gesture via `atan2`. If the angle falls within `angleToleranceDeg` of a true diagonal (45°, 135°, -135°, -45°) and the total drag distance exceeds `minDragDistance`, a `DiagonalSwipeEvent` is emitted with the matched direction.
