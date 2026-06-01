@@ -53,7 +53,7 @@ context.senseyFlow(lifecycle) {
 }
 ```
 
-Auto-collects on `STARTED`, pauses on `STOP`, cleans up on `DESTROY`. All 24 gestures supported.
+Auto-collects on `STARTED`, pauses on `STOP`, cleans up on `DESTROY`. All gestures support it.
 
 ```kt
 // Compose
@@ -66,7 +66,7 @@ See the **[coroutines/flow guide](docs/usage/coroutines-flow.md)** for details.
 
 ## Gestures
 
-Shake, Flip, Light, Proximity, Movement, Orientation, Chop, TapOnBack, WristTwist, Wave, Scoop, PickupDevice, TiltDirection, RotationAngle, PinchScale, TouchType, EdgeSwipe, DiagonalSwipe, SoundLevel, Step, TurnOver, DeviceSpin, RaiseToEar, Clap.
+Shake, Flip, Light, Proximity, Movement, Orientation, Chop, TapOnBack, WristTwist, Wave, Scoop, PickupDevice, TiltDirection, RotationAngle, PinchScale, TouchType, EdgeSwipe, DiagonalSwipe, SoundLevel, Step, TurnOver, DeviceSpin, RaiseToEar, Clap, NodGesture, HeadShake.
 
 See the **[usage guide](docs/usage/)** for events, parameters, and examples.
 
