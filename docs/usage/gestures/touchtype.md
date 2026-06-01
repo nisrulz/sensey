@@ -7,6 +7,10 @@ weight: 19
 
 Detects various touch gestures (tap, double-tap, long-press, swipe, scroll, multi-finger tap) in Compose. Register with `touchTypePlugin`.
 
+## How to perform
+
+Tap, double-tap, long-press, swipe, or scroll on the screen to trigger different events.
+
 ## Algorithm
 
 The algorithm classifies drag gestures as swipes or scrolls based on velocity: high-velocity drags are swipes, low-velocity drags are scrolls. Direction is determined by the atan2 angle partitioned into eight quadrants. For tap gestures, consecutive taps within a fixed short window are accumulated and dispatched as `NTap(3)` when the count reaches three.

@@ -7,6 +7,10 @@ weight: 8
 
 Detects a wrist-twisting motion. Register with `wristTwistPlugin`.
 
+## How to perform
+
+Hold the phone in one hand and quickly twist your wrist as if turning a doorknob.
+
 ## Algorithm
 
 The algorithm monitors linear acceleration (total magnitude minus gravity). When a single impulse exceeds the threshold the gesture window starts. The gesture is considered complete when no further impulses occur within the configured timeout — similar in structure to chop detection but tuned with different defaults for the wrist-twist motion profile.

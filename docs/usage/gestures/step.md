@@ -7,6 +7,10 @@ weight: 17
 
 Tracks step count, distance, and activity type. Register with `stepPlugin`.
 
+## How to perform
+
+Walk or run while holding or carrying the phone to track your steps and activity type.
+
 ## Algorithm
 
 The algorithm supports two input modes: (1) hardware step-counter sensor (single cumulative value) — subtracts the initial baseline and dispatches the incremental step count, deduplicating against the last dispatched value; (2) accelerometer fallback (3-axis values) — detects steps by monitoring acceleration magnitude peaks above a threshold. Each event includes distance (via stride estimation) and activity type (still/walking/running) computed through `StepDetectorUtil`.

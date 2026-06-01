@@ -7,6 +7,10 @@ weight: 20
 
 Detects a full 180-degree flip of the device using the gyroscope. Register with `turnOverPlugin`.
 
+## How to perform
+
+Hold the phone in your hand and quickly flip it over 180 degrees as if turning it face-down on a table.
+
 ## Algorithm
 
 Uses a `GyroIntegrator` to track cumulative rotation across all axes. When the net rotation magnitude (sqrt of sum of squares) exceeds the configured threshold, the gesture fires and the integrator resets. This handles flips that involve rotation on multiple axes (e.g., wrist flicks) unlike a single-axis check. More precise than the accelerometer-based [Flip](flip.md) since it directly measures angular motion rather than inferring orientation from gravity.

@@ -7,6 +7,10 @@ weight: 13
 
 Detects the dominant tilt axis and its direction. Register with `tiltDirectionPlugin`.
 
+## How to perform
+
+Tilt the phone in any direction — left, right, forward, or back.
+
 ## Algorithm
 
 The algorithm compares the absolute values of the three gyroscope components (X, Y, Z). The axis with the largest magnitude above the threshold is considered the dominant tilt axis. A positive value on that axis maps to ANTICLOCKWISE tilt; a negative value maps to CLOCKWISE.

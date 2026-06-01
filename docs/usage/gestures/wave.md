@@ -7,6 +7,10 @@ weight: 9
 
 Detects a hand wave over the proximity sensor. Register with `wavePlugin`.
 
+## How to perform
+
+Wave your hand back and forth over the top of the phone where the proximity sensor is located.
+
 ## Algorithm
 
 The algorithm tracks near→far state transitions of the proximity sensor. A wave is recognised when the device transitions from NEAR to FAR, the near state was held for a fixed minimum duration, the entire gesture occurs within a configurable time window, and sufficient debounce time has passed since the last detected wave.

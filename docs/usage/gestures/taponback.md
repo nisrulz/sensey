@@ -7,6 +7,10 @@ weight: 15
 
 Detects double-taps on the device back or side. Register with `tapOnBackPlugin`.
 
+## How to perform
+
+Hold the phone in one hand and double-tap firmly on the back or side of the device with a finger.
+
 ## Algorithm
 
 Computes the linear acceleration magnitude (`|accel - gravity|`) which spikes during any tap regardless of device orientation or whether it is held or on a table. Tracks this magnitude with an EMA smoother so gradual movements (tilts) produce low jerk while sharp impulses (taps) produce high jerk. Emits immediately when two valid taps occur within `tapIntervalMs`. A single tap is always ignored.
