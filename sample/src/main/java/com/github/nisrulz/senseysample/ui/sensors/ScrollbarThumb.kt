@@ -1,32 +1,41 @@
 package com.github.nisrulz.senseysample.ui.sensors
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
 /**
- * An auto-hiding scrollbar thumb for any scrollable list.
+ * A scrollbar thumb that tracks a scrollable list's scroll position.
+ * Auto-hides after scrolling stops.
  *
  * Usage:
  * ```
@@ -42,9 +51,10 @@ import kotlinx.coroutines.delay
  * ```
  *
  * @param scrollState the ScrollState from [rememberScrollState]
+ * @param modifier optional [Modifier] applied to the scrollbar container
  * @param thumbColor color of the scrollbar thumb (default: onSurfaceVariant at 30%)
  * @param thumbWidth width in dp (default: 6dp)
- * @param hideDelayMs milliseconds of inactivity before fading out (default: 900ms)
+ * @param hideDelayMs delay in ms before hiding after scroll stops (default: 1500)
  */
 @Composable
 fun ScrollbarThumb(
@@ -52,52 +62,65 @@ fun ScrollbarThumb(
     modifier: Modifier = Modifier,
     thumbColor: Color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
     thumbWidth: Dp = 6.dp,
-    hideDelayMs: Long = 900L,
+    hideDelayMs: Long = 1500L,
 ) {
-    var visible by remember { mutableStateOf(false) }
+    var visible by remember { mutableStateOf(true) }
 
-    LaunchedEffect(Unit) {
-        snapshotFlow { scrollState.value }
-            .collect {
-                visible = true
-                delay(hideDelayMs)
-                visible = false
-            }
+    LaunchedEffect(scrollState.isScrollInProgress) {
+        if (scrollState.isScrollInProgress) {
+            visible = true
+        } else {
+            delay(hideDelayMs)
+            visible = false
+        }
     }
 
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn(),
-        exit = fadeOut(),
-        modifier = modifier,
+    val targetAlpha by animateFloatAsState(
+        targetValue = if (visible) 1f else 0f,
+        animationSpec = tween(durationMillis = 300),
+        label = "scrollbarAlpha",
+    )
+
+    Box(
+        modifier =
+            modifier
+                .fillMaxHeight()
+                .width(thumbWidth)
+                .padding(vertical = 4.dp)
+                .alpha(targetAlpha),
     ) {
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxHeight()
-                    .width(thumbWidth)
-                    .padding(vertical = 4.dp),
-        ) {
-            Canvas(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            if (scrollState.maxValue > 0) {
                 val contentHeight = scrollState.maxValue.toFloat() + size.height
                 val thumbHeight = (size.height / contentHeight) * size.height
                 val thumbOffset =
                     (scrollState.value.toFloat() / scrollState.maxValue.toFloat().coerceAtLeast(1f)) *
                         (size.height - thumbHeight)
 
-                if (scrollState.maxValue > 0) {
-                    drawRoundRect(
-                        color = thumbColor,
-                        topLeft = Offset(0f, thumbOffset),
-                        size =
-                            androidx.compose.ui.geometry
-                                .Size(size.width, thumbHeight),
-                        cornerRadius =
-                            androidx.compose.ui.geometry
-                                .CornerRadius(3.dp.toPx()),
-                    )
-                }
+                drawRoundRect(
+                    color = thumbColor,
+                    topLeft = Offset(0f, thumbOffset),
+                    size = Size(size.width, thumbHeight),
+                    cornerRadius = CornerRadius(3.dp.toPx()),
+                )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun ScrollbarThumbPreview() {
+    val scrollState = rememberScrollState()
+    Box(modifier = Modifier.height(200.dp)) {
+        Column(modifier = Modifier.verticalScroll(scrollState)) {
+            repeat(20) { index ->
+                Text("Item $index", modifier = Modifier.padding(16.dp))
+            }
+        }
+        ScrollbarThumb(
+            scrollState = scrollState,
+            modifier = Modifier.align(Alignment.CenterEnd),
+        )
     }
 }
