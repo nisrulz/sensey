@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,32 +18,38 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun MainScreen(
     selectedSensor: String?,
+    snackbarHostState: SnackbarHostState = SnackbarHostState(),
     sensors: List<SensorItem>,
 ) {
-    Surface(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .systemBarsPadding(),
-        color = MaterialTheme.colorScheme.background,
-    ) {
-        Column(
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    ) { paddingValues ->
+        Surface(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(bottom = 16.dp),
+                    .systemBarsPadding()
+                    .padding(paddingValues),
+            color = MaterialTheme.colorScheme.background,
         ) {
-            AppHeader()
-            Box(
+            Column(
                 modifier =
                     Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
+                        .fillMaxSize()
+                        .padding(bottom = 16.dp),
             ) {
-                SensorList(
-                    sensors = sensors,
-                    selectedSensor = selectedSensor,
-                )
+                AppHeader()
+                Box(
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                ) {
+                    SensorList(
+                        sensors = sensors,
+                        selectedSensor = selectedSensor,
+                    )
+                }
             }
         }
     }

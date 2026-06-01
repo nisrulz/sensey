@@ -1,6 +1,8 @@
 package com.github.nisrulz.senseysample
 
 import android.app.Activity
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
@@ -22,10 +24,14 @@ import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
 import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.flipPlugin
+import com.github.nisrulz.sensey.gesture.headShakePlugin
+import com.github.nisrulz.sensey.gesture.headshake.HeadShakeEvent
 import com.github.nisrulz.sensey.gesture.light.LightEvent
 import com.github.nisrulz.sensey.gesture.lightPlugin
 import com.github.nisrulz.sensey.gesture.movement.MovementEvent
 import com.github.nisrulz.sensey.gesture.movementPlugin
+import com.github.nisrulz.sensey.gesture.nodGesturePlugin
+import com.github.nisrulz.sensey.gesture.nodgesture.NodGestureEvent
 import com.github.nisrulz.sensey.gesture.orientation.OrientationEvent
 import com.github.nisrulz.sensey.gesture.orientationPlugin
 import com.github.nisrulz.sensey.gesture.pickupDevicePlugin
@@ -71,6 +77,7 @@ import java.text.DecimalFormat
 internal class SenseySensorManager(
     private val activity: Activity,
     private val logTag: String,
+    val onSensorUnavailable: (String) -> Unit = {},
 ) {
     companion object {
         const val SHAKE = "Shake Gesture"
@@ -93,6 +100,8 @@ internal class SenseySensorManager(
         const val DEVICE_SPIN = "Device Spin"
         const val RAISE_TO_EAR = "Raise To Ear"
         const val CLAP = "Clap Detection"
+        const val NOD_GESTURE = "Nod Gesture"
+        const val HEAD_SHAKE = "Head Shake"
         const val TOUCH_DETECTION = "Touch Detection"
         const val PINCH_SCALE = "Pinch Scale Detection"
         const val EDGE_SWIPE = "Edge Swipe"
@@ -242,6 +251,12 @@ internal class SenseySensorManager(
     private val turnOverDispatcher: (TurnOverEvent) -> Unit =
         withHaptic { setResultText("Turn Over Detected!", false) }
 
+    private val nodGestureDispatcher: (NodGestureEvent) -> Unit =
+        withHaptic { setResultText("Nod Detected!", false) }
+
+    private val headShakeDispatcher: (HeadShakeEvent) -> Unit =
+        withHaptic { setResultText("Head Shake Detected!", false) }
+
     private val deviceSpinDispatcher: (DeviceSpinEvent) -> Unit =
         withHaptic { setResultText("Device Spin Detected!", false) }
 
@@ -329,6 +344,8 @@ internal class SenseySensorManager(
             RAISE_TO_EAR,
             SOUND_LEVEL,
             CLAP,
+            NOD_GESTURE,
+            HEAD_SHAKE,
             TOUCH_DETECTION,
             PINCH_SCALE,
             EDGE_SWIPE,
@@ -387,10 +404,35 @@ internal class SenseySensorManager(
             resultsMap.remove(sensor)
             return
         }
+        if (!isSensorAvailable(sensor)) {
+            selectedSensor = null
+            onSensorUnavailable(sensor)
+            return
+        }
         val plugin: GesturePlugin = createPlugin(sensor)
         sensey?.register(plugin)
         currentPlugin = plugin
     }
+
+    private fun isSensorAvailable(sensor: String): Boolean {
+        val sensorType = sensorTypeFor(sensor) ?: return true
+        val manager = activity.getSystemService(SensorManager::class.java)
+        return manager?.getDefaultSensor(sensorType) != null
+    }
+
+    private fun sensorTypeFor(sensor: String): Int? =
+        when (sensor) {
+            SHAKE, FLIP, MOVEMENT, SCOOP, PICKUP_DEVICE, TAP_ON_BACK -> Sensor.TYPE_ACCELEROMETER
+            CHOP, WRIST_TWIST -> Sensor.TYPE_LINEAR_ACCELERATION
+            LIGHT -> Sensor.TYPE_LIGHT
+            PROXIMITY, WAVE -> Sensor.TYPE_PROXIMITY
+            TURN_OVER, DEVICE_SPIN, TILT_DIRECTION, NOD_GESTURE, HEAD_SHAKE -> Sensor.TYPE_GYROSCOPE
+            STEP -> Sensor.TYPE_STEP_COUNTER
+            ROTATION_ANGLE -> Sensor.TYPE_ROTATION_VECTOR
+            ORIENTATION -> Sensor.TYPE_ACCELEROMETER
+            RAISE_TO_EAR -> Sensor.TYPE_PROXIMITY
+            else -> null
+        }
 
     private fun createPlugin(sensor: String): GesturePlugin =
         when (sensor) {
@@ -413,7 +455,9 @@ internal class SenseySensorManager(
             TURN_OVER -> turnOverPlugin(dispatcher = turnOverDispatcher)
             DEVICE_SPIN -> deviceSpinPlugin(dispatcher = deviceSpinDispatcher)
             RAISE_TO_EAR -> raiseToEarPlugin(dispatcher = raiseToEarDispatcher)
-            CLAP -> clapPlugin(activity, dispatcher = clapDispatcher)
+            CLAP -> clapPlugin(activity, dispatchEvents = clapDispatcher, requiredClaps = 2)
+            NOD_GESTURE -> nodGesturePlugin(dispatcher = nodGestureDispatcher)
+            HEAD_SHAKE -> headShakePlugin(dispatcher = headShakeDispatcher)
             TOUCH_DETECTION -> touchTypePlugin(activity, dispatcher = touchTypeDispatcher)
             PINCH_SCALE -> pinchScalePlugin(activity, dispatcher = pinchScaleDispatcher)
             DIAGONAL_SWIPE -> diagonalSwipePlugin(activity, dispatcher = diagonalSwipeDispatcher)
@@ -424,6 +468,7 @@ internal class SenseySensorManager(
                     enabledEdges = setOf(Edge.LEFT, Edge.RIGHT, Edge.TOP, Edge.BOTTOM),
                     dispatcher = edgeSwipeDispatcher,
                 )
+
             else -> error("Unknown sensor: $sensor")
         }
 
@@ -443,7 +488,7 @@ internal class SenseySensorManager(
         clearJobs[sensor]?.cancel()
         clearJobs[sensor] =
             scope.launch {
-                kotlinx.coroutines.delay(2000L)
+                delay(2000L)
                 resultsMap.remove(sensor)
                 clearJobs.remove(sensor)
             }

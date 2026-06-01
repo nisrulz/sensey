@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.SnackbarHostState
+import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.senseyRegister
 import com.github.nisrulz.senseysample.ui.MainScreen
 import com.github.nisrulz.senseysample.ui.SenseyTheme
@@ -11,9 +13,18 @@ import com.github.nisrulz.senseysample.ui.SensorItem
 import com.github.nisrulz.senseysample.utils.isAudioPermissionGranted
 import com.github.nisrulz.senseysample.utils.registerAudioPermission
 import com.github.nisrulz.senseysample.utils.requestAudioIfNeeded
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private val sensorManager = SenseySensorManager(this, javaClass.name)
+    private val snackbarHostState = SnackbarHostState()
+    private val sensorManager =
+        SenseySensorManager(this, javaClass.name) { label ->
+            CoroutineScope(Dispatchers.Main).launch {
+                snackbarHostState.showSnackbar("$label requires a sensor not available on this device")
+            }
+        }
 
     private val audioPermissionLauncher =
         registerAudioPermission(
@@ -25,12 +36,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        sensorManager.sensey = senseyRegister(sensorDataLoggingEnabled = true) { }
+        sensorManager.sensey =
+            senseyRegister(samplingPeriod = Sensey.SAMPLING_PERIOD_GAME, sensorDataLoggingEnabled = true) { }
 
         setContent {
             SenseyTheme {
                 MainScreen(
                     selectedSensor = sensorManager.selectedSensor,
+                    snackbarHostState = snackbarHostState,
                     sensors =
                         sensorManager.sensors.map { label ->
                             SensorItem(

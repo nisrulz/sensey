@@ -9,9 +9,4 @@ object HapticUtil {
         val view = (context as? Activity)?.window?.decorView ?: return
         view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
     }
-
-    fun confirmation(context: Context) {
-        val view = (context as? Activity)?.window?.decorView ?: return
-        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-    }
 }
