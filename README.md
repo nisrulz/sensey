@@ -1,4 +1,4 @@
-![Banner](img/github_banner.png)
+![Banner](static/img/github_banner.png)
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.nisrulz/sensey)](https://search.maven.org/artifact/com.github.nisrulz/sensey)
 [![GitHub stars](https://img.shields.io/github/stars/nisrulz/sensey.svg?style=social&label=Star)](https://github.com/nisrulz/sensey)

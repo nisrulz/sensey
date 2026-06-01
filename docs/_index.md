@@ -2,6 +2,8 @@
 title: "Sensey"
 ---
 
+![Sensey banner](img/github_banner.png)
+
 # Sensey
 
 Android library which makes playing with sensor events and detecting gestures a breeze. Eliminates boilerplate code for dealing with sensor-based event and gesture detection.
