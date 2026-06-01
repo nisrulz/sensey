@@ -65,6 +65,28 @@ internal fun SensorList(
 
 private fun helperTextForLabel(label: String): String =
     when (label) {
+        "Shake Gesture" -> "Shake / Shake Stopped"
+        "Flip Gesture" -> "Face Up / Face Down"
+        "Orientation Gesture" -> "Top, Bottom, Left, Right Side Up"
+        "Proximity Gesture" -> "Near / Far"
+        "Light Detection" -> "Dark / Light"
+        "Wave Detection" -> "Wave hand over proximity sensor"
+        "Sound Level Detection" -> "Microphone dB level"
+        "Movement Detection" -> "Moved / Stationary"
+        "Chop Detector" -> "Chopping motion"
+        "Wrist Twist Detection" -> "Twist wrist"
+        "Rotation Angle Detection" -> "X, Y, Z rotation in degrees"
+        "Tilt Direction Detection" -> "Clockwise / Anti-clockwise per axis"
+        "Step Detector" -> "Steps, distance, activity type"
+        "Pickup Device Detector" -> "Picked Up / Put Down"
+        "Scoop Detector" -> "Scooping gesture"
+        "Tap On Back" -> "Tap on back of device"
+        "Turn Over" -> "Turn device face down"
+        "Device Spin" -> "Rapid spin on any axis"
+        "Raise To Ear" -> "Raise device to ear"
+        "Clap Detection" -> "Clap hands (requires microphone)"
+        "Nod Gesture" -> "Nod head (yes)"
+        "Head Shake" -> "Shake head (no)"
         "Touch Detection" -> "Single Tap, Double Tap, Long Press, Swipe, Scroll, N-Tap"
         "Pinch Scale Detection" -> "Pinch In / Pinch Out"
         "Edge Swipe" -> "Swipe from composable edge"
@@ -81,8 +103,10 @@ private fun SensorListPreview() {
     PreviewTheme {
         SensorList(
             listOf(
-                SensorItem("Shake Detector", true, "", {}),
-                SensorItem("Flip Detector", false, "", {}),
+                SensorItem("Shake Gesture", true, "", {}),
+                SensorItem("Flip Gesture", false, "", {}),
+                SensorItem("Edge Swipe", false, "", {}),
+                SensorItem("Long Press Drag", false, "", {}),
             ),
         )
     }
