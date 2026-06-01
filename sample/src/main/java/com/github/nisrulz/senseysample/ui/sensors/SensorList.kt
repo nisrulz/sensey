@@ -35,7 +35,7 @@ internal fun SensorList(
             sensors.forEach { sensor ->
                 val isTouch =
                     sensor.label == "Touch Detection" ||
-                        sensor.label == "Pinch Scale Detection" ||
+                        sensor.label == "Pinch Scale" ||
                         sensor.label == "Edge Swipe" ||
                         sensor.label == "Diagonal Swipe" ||
                         sensor.label == "Long Press Drag" ||
@@ -95,7 +95,7 @@ private fun helperTextForLabel(label: String): String =
         "Nod Gesture" -> "Nod your head (yes motion)"
         "Head Shake" -> "Shake your head (no motion)"
         "Touch Detection" -> "Single Tap, Double Tap, Long Press, Swipe, Scroll, N-Tap"
-        "Pinch Scale Detection" -> "Pinch In / Pinch Out"
+        "Pinch Scale" -> "Pinch In / Pinch Out"
         "Edge Swipe" -> "Swipe from composable edge"
         "Diagonal Swipe" -> "Swipe diagonally"
         "Long Press Drag" -> "Long press then drag in any direction"

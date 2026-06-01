@@ -418,8 +418,13 @@ internal class SenseySensorManager(
 
     private val diagonalSwipeDispatcher: (TouchEvent) -> Unit =
         withHaptic {
-            if (it is TouchEvent.Swipe) {
-                setResultText("Diagonal Swipe: ${it.direction}")
+            val direction = when (it) {
+                is TouchEvent.Swipe -> it.direction
+                is TouchEvent.Scroll -> it.direction
+                else -> null
+            }
+            if (direction != null) {
+                setResultText("Diagonal Swipe: $direction")
             }
         }
 

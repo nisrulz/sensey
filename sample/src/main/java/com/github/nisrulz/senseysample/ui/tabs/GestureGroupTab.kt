@@ -50,7 +50,7 @@ fun GestureGroupTab(
 private val TOUCH_LIKE_SENSORS =
     setOf(
         "Touch Detection",
-        "Pinch Scale Detection",
+        "Pinch Scale",
         "Edge Swipe",
         "Diagonal Swipe",
         "Long Press Drag",
