@@ -108,11 +108,11 @@ fun MyScreen(lifecycle: Lifecycle) {
         shakePlugin { event ->
             println(if (event is ShakeEvent.Detected) "Shake!" else "Stopped")
         }
-        touchTypePlugin(context) { event ->
+        touchPlugin(context) { event ->
             when (event) {
-                is TouchTypeEvent.SingleTap -> println("Tap")
-                is TouchTypeEvent.Swipe     -> println("Swipe ${event.direction}")
-                is TouchTypeEvent.NTap      -> println("${event.count}-tap")
+                is TouchEvent.Tap.Single -> println("Tap")
+                is TouchEvent.Swipe      -> println("Swipe ${event.direction}")
+                is TouchEvent.Tap.NTap   -> println("${event.count}-tap")
                 else -> {}
             }
         }

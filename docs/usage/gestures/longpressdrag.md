@@ -1,55 +1,55 @@
 ---
 title: "LongPressDrag"
-weight: 27
+weight: 34
 ---
 
 # LongPressDrag
 
-Detects a long press followed by a directional drag in Compose. Register with `longPressDragPlugin`.
+Detects a long press followed by a directional drag gesture. This is a **convenience wrapper** around `touchPlugin` — internally configures `LongPressDragConfig(enabled = true)`. See [touch plugin](touch.md) for the full event hierarchy.
 
 ## How to perform
 
-Press and hold your finger briefly on the screen, then drag in any direction without lifting.
+Press and hold for a moment, then drag in a direction.
 
 ## Algorithm
 
-Uses Compose's `detectDragGesturesAfterLongPress` to track the drag delta after a long press. Direction is determined by the dominant axis of movement (horizontal wins over vertical). The drag distance is also reported.
+Uses Compose's `detectDragGesturesAfterLongPress`. Once a long press is recognized, subsequent drag movement is tracked. When the drag exceeds `minDragDistance`, the direction is determined by the dominant axis and emitted as `TouchEvent.LongPressDrag`.
 
 ## Events
 
 | Event | Properties | Description |
 |-------|------------|-------------|
-| `LongPressDragEvent` | `direction` — drag direction; `distance` — total drag distance in pixels | Long press + drag detected |
+| `TouchEvent.LongPressDrag` | `direction` — drag direction; `distance` — total drag distance in pixels | Long-press drag detected |
 
-Directions: `LEFT`, `RIGHT`, `UP`, `DOWN`
+Directions: `UP`, `DOWN`, `LEFT`, `RIGHT`
 
 ## Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `minDragDistance` | Minimum drag distance in pixels to qualify | `20f` |
+| `minDragDistance` | Minimum drag distance in pixels | `20f` |
 
 ## Usage
 
 ```kotlin
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent
+
 senseyRegister(lifecycle) {
     longPressDragPlugin(context) { event ->
-        println("Long press drag: ${event.direction}, distance: ${event.distance}")
+        val drag = event as TouchEvent.LongPressDrag
+        println("Long-press drag ${drag.direction}, distance: ${drag.distance}")
     }
 }
-```
 
-Requires `senseyGestures()` on a composable to capture touch input:
-
-```kotlin
 Box(modifier = Modifier.fillMaxSize().senseyGestures())
 ```
+
+Note: `longPressDragPlugin` is equivalent to calling `touchPlugin` with `TouchConfig(longPressDrag = LongPressDragConfig(enabled = true))`.
 
 ## Use cases
 
 | Scenario | Description |
 |----------|-------------|
-| Drag to reorder | Long press then drag to reorder list items |
-| Quick actions | Long press + direction for contextual actions |
-| Game controls | Long press for charging, drag to aim |
-| Drag and drop | Initiate drag-and-drop from a long press |
+| Reorder | Long-press and drag to reorder list items |
+| Move | Long-press and drag to move an element |
+| Quick action | Long-press and drag to trigger an action with direction |

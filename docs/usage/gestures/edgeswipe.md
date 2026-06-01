@@ -1,61 +1,60 @@
 ---
 title: "EdgeSwipe"
-weight: 24
+weight: 31
 ---
 
 # EdgeSwipe
 
-Detects swipes that originate near the edge of a composable. Register with `edgeSwipePlugin`.
+Detects swipes that originate from a screen edge. This is a **convenience wrapper** around `touchPlugin` — internally configures `SwipeConfig(edgeDetection = true)`. See [touch plugin](touch.md) for the full event hierarchy.
 
 ## How to perform
 
-Place your finger at the edge of the screen and swipe inward.
+Place your finger at a screen edge and swipe inward.
 
 ## Algorithm
 
-Tracks drag gestures via Compose's `detectDragGestures`. When a drag starts within `edgeThresholdDp` of any enabled composable edge and travels a sufficient distance, an `EdgeSwipeEvent` is emitted with the originating edge.
+Tracks drag gestures via Compose's `detectDragGestures`. When a drag starts within `edgeThresholdDp` of any enabled edge, the originating edge is identified. Dispatches `TouchEvent.Swipe` with `SwipeOrigin.Edge`.
 
 ## Events
 
 | Event | Description |
 |-------|-------------|
-| `EdgeSwipeEvent(edge)` | Swipe originated from the given edge |
+| `TouchEvent.Swipe(direction, origin = SwipeOrigin.Edge(type), fingerCount = 1)` | Edge swipe detected |
 
-Edges: `Edge.LEFT`, `Edge.RIGHT`, `Edge.TOP`, `Edge.BOTTOM`
+Edges (via `SwipeOrigin.Edge`): `LEFT`, `RIGHT`, `TOP`, `BOTTOM`
+Directions: `UP`, `DOWN`, `LEFT`, `RIGHT`
 
 ## Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `edgeThresholdDp` | Distance from the composable edge (in dp) within which a drag must start to qualify as an edge swipe | `48.dp` |
-| `enabledEdges` | Which composable edges to monitor for edge swipes | `setOf(LEFT, RIGHT, TOP, BOTTOM)` |
+| `edgeThresholdDp` | Distance from the edge (in dp) within which a drag must start | `48.dp` |
+| `enabledEdges` | Which edges to monitor for swipes | `setOf(LEFT, RIGHT, TOP, BOTTOM)` |
 
 ## Usage
 
 ```kotlin
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent.SwipeOrigin
+
 senseyRegister(lifecycle) {
-    edgeSwipePlugin(
-        edgeThresholdDp = 48.dp,
-        enabledEdges = setOf(Edge.LEFT, Edge.RIGHT),
-    ) { event ->
-        println("Edge swipe from: ${event.edge}") // LEFT, RIGHT, TOP, or BOTTOM
+    edgeSwipePlugin(context) { event ->
+        val swipe = event as TouchEvent.Swipe
+        val edge = (swipe.origin as SwipeOrigin.Edge).type
+        println("Edge swipe from $edge going ${swipe.direction}")
     }
 }
-```
 
-Requires `senseyGestures()` on a composable to capture touch input:
-
-```kotlin
 Box(modifier = Modifier.fillMaxSize().senseyGestures())
 ```
+
+Note: `edgeSwipePlugin` is equivalent to calling `touchPlugin` with `TouchConfig(swipes = SwipeConfig(edgeDetection = true))`.
 
 ## Use cases
 
 | Scenario | Description |
 |----------|-------------|
-| Swipe to go back | Swipe from left edge to navigate back |
-| Swipe to reveal | Swipe from right edge to open drawer |
-| Swipe to refresh | Swipe from top edge to pull-to-refresh |
-| Swipe to expand | Swipe from bottom edge to open sheet |
-| Navigation drawer | Open drawer with left-edge swipe |
-| Side menu | Swipe from left or right edge to show menu |
+| Back navigation | Swipe from left or right edge for back gesture |
+| Sidebar | Swipe from left edge to open sidebar |
+| Notifications | Swipe from top edge to open notifications |
+| Quick settings | Swipe from bottom edge to open quick settings |

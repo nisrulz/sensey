@@ -1,63 +1,55 @@
 ---
 title: "DiagonalSwipe"
-weight: 25
+weight: 32
 ---
 
 # DiagonalSwipe
 
-Detects diagonal swipe gestures inside a composable. Register with `diagonalSwipePlugin`.
+Detects diagonal swipe gestures (UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT). This is a **convenience wrapper** around `touchPlugin` — internally configures `SwipeConfig(diagonalOnly = true)`. See [touch plugin](touch.md) for the full event hierarchy.
 
 ## How to perform
 
-Swipe diagonally across the screen — for example, from bottom-left toward top-right.
+Swipe diagonally across the screen (e.g., bottom-left to top-right).
 
 ## Algorithm
 
-Computes the angle of a drag gesture via `atan2`. If the angle falls within `angleToleranceDeg` of a true diagonal (45°, 135°, -135°, -45°) and the total drag distance exceeds `minDragDistance`, a `DiagonalSwipeEvent` is emitted with the matched direction.
-
-Purely horizontal or vertical swipes do not trigger — the angle must be near-diagonal.
+Classifies drag gestures by computing the atan2 angle and checking it falls within diagonal quadrants. Dispatches `TouchEvent.Swipe` with diagonal directions only.
 
 ## Events
 
 | Event | Description |
 |-------|-------------|
-| `DiagonalSwipeEvent(direction)` | Diagonal swipe detected |
+| `TouchEvent.Swipe(direction, origin = Any, fingerCount = 1)` | Diagonal swipe detected |
 
-Directions: `UP_RIGHT`, `DOWN_RIGHT`, `DOWN_LEFT`, `UP_LEFT`
+Directions (diagonal only): `UP_RIGHT`, `UP_LEFT`, `DOWN_RIGHT`, `DOWN_LEFT`
 
 ## Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `minDragDistance` | Minimum total drag distance in pixels to qualify as a swipe | `80f` |
-| `angleToleranceDeg` | Degrees away from true diagonal (45°) to still count as diagonal | `22.5f` |
-
-With the default tolerance, any swipe between 22.5° and 67.5° from horizontal is classified as a diagonal.
+| `minDragDistance` | Minimum drag distance in pixels | `80f` |
 
 ## Usage
 
 ```kotlin
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent
+
 senseyRegister(lifecycle) {
-    diagonalSwipePlugin(
-        minDragDistance = 80f,
-        angleToleranceDeg = 22.5f,
-    ) { event ->
-        println("Diagonal swipe: ${event.direction}") // UP_RIGHT, DOWN_RIGHT, etc.
+    diagonalSwipePlugin(context) { event ->
+        val swipe = event as TouchEvent.Swipe
+        println("Diagonal swipe ${swipe.direction}")
     }
 }
-```
 
-Requires `senseyGestures()` on a composable to capture touch input:
-
-```kotlin
 Box(modifier = Modifier.fillMaxSize().senseyGestures())
 ```
+
+Note: `diagonalSwipePlugin` is equivalent to calling `touchPlugin` with `TouchConfig(swipes = SwipeConfig(diagonalOnly = true))`.
 
 ## Use cases
 
 | Scenario | Description |
 |----------|-------------|
-| Diagonal swipe to navigate | Swipe diagonally to switch between tabs |
-| Game controls | Diagonal swipe for directional input in games |
-| Photo gallery | Diagonal swipe to select multiple photos |
-| Shortcut gesture | Diagonal swipe as a power-user shortcut |
+| Quick capture | Diagonal swipe to capture screenshot |
+| Shortcut | Diagonal swipe to trigger app shortcut |
+| Navigation | Diagonal swipe for custom navigation |

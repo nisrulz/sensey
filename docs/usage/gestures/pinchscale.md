@@ -1,56 +1,55 @@
 ---
 title: "PinchScale"
-weight: 18
+weight: 35
 ---
 
 # PinchScale
 
-Detects pinch-to-zoom gestures (scale in/out) in Compose. Register with `pinchScalePlugin`.
+Detects pinch-in and pinch-out (scale) gestures. This is a **convenience wrapper** around `touchPlugin` — internally configures `PinchScaleConfig(enabled = true)`. See [touch plugin](touch.md) for the full event hierarchy.
 
 ## How to perform
 
-Place two fingers on the screen and pinch them together or spread them apart.
+Place two fingers on the screen and pinch together or spread apart.
 
 ## Algorithm
 
-The algorithm monitors the scale factor from `detectTransformGestures`. When the factor exceeds 1.01 (pinch-in) or falls below 0.99 (pinch-out), consecutive readings are counted. The event is only emitted after a confirmation count (2 consecutive readings) is reached, providing debounce against jittery touch input. Tracks the last emitted direction so opposite-direction events can be reported.
+Uses Compose's `detectTransformGestures` to monitor the scale factor. Events are debounced: consecutive readings must exceed the threshold (1.01 for pinch-in, 0.99 for pinch-out) before the event fires, reducing jitter. Dispatches `TouchEvent.PinchScale`.
 
 ## Events
 
-| Event | Properties |
-|-------|------------|
-| `PinchScaleEvent` | `scaleFactor` — current pinch zoom factor; `isScalingOut` — `true` for pinch-out (zoom out), `false` for pinch-in (zoom in) |
+| Event | Properties | Description |
+|-------|------------|-------------|
+| `TouchEvent.PinchScale` | `scaleFactor` — raw scale factor; `isScalingOut` — `true` for pinch-out, `false` for pinch-in | Pinch/scale detected |
 
 ## Parameters
 
-This plugin has no configurable parameters.
+This wrapper has no configurable parameters.
 
 ## Usage
 
 ```kotlin
-import com.github.nisrulz.sensey.gesture.compose.SenseyGestureEffect
-import com.github.nisrulz.sensey.gesture.compose.senseyGestures
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent
 
-SenseyGestureEffect(lifecycle) {
+senseyRegister(lifecycle) {
     pinchScalePlugin(context) { event ->
-        if (event.isScalingOut) println("Scaling out: ${event.scaleFactor}") // pinch-out (zoom out)
-        else println("Scaling in: ${event.scaleFactor}") // pinch-in (zoom in)
+        val pinch = event as TouchEvent.PinchScale
+        if (pinch.isScalingOut) {
+            println("Zooming out: ${pinch.scaleFactor}")
+        } else {
+            println("Zooming in: ${pinch.scaleFactor}")
+        }
     }
 }
 
-Box(modifier = Modifier.fillMaxSize().senseyGestures()) {
-    // content that receives pinch gestures
-}
+Box(modifier = Modifier.fillMaxSize().senseyGestures())
 ```
+
+Note: `pinchScalePlugin` is equivalent to calling `touchPlugin` with `TouchConfig(pinchScale = PinchScaleConfig(enabled = true))`.
 
 ## Use cases
 
 | Scenario | Description |
 |----------|-------------|
-| Image zoom | Pinch to zoom in/out on images |
-| Map zoom | Zoom in/out on maps with pinch gesture |
-| Text resize | Adjust font size with pinch gesture |
-| Canvas zoom | Zoom in/out on drawing canvas |
-| Photo gallery | Pinch to zoom photo thumbnails |
-| Video timeline | Pinch to zoom video timeline for precision |
-| Document viewer | Pinch to zoom in/out on documents |
+| Zoom | Pinch to zoom in/out on images or maps |
+| Adjust | Pinch to adjust volume, brightness, etc. |
+| Dismiss | Pinch-out to dismiss or close content |

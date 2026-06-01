@@ -1,55 +1,55 @@
 ---
 title: "TwoFingerSwipe"
-weight: 28
+weight: 33
 ---
 
 # TwoFingerSwipe
 
-Detects two-finger directional swipes in Compose. Register with `twoFingerSwipePlugin`.
+Detects directional two-finger swipe gestures. This is a **convenience wrapper** around `touchPlugin` — internally configures `SwipeConfig(enableTwoFinger = true)`. See [touch plugin](touch.md) for the full event hierarchy.
 
 ## How to perform
 
-Place two fingers on the screen and swipe in a direction without pinching or rotating.
+Place two fingers on the screen and swipe in a direction.
 
 ## Algorithm
 
-Uses Compose's `detectTransformGestures` to track the pan offset of the two-finger gesture. The algorithm filters out gestures with significant zoom (< 0.9 or > 1.1) or rotation (> 0.3 radians) to ensure only pure swipes are detected. Direction is determined by the dominant axis of the pan vector.
+Tracks the centroid of two touch points via `awaitPointerEvent`. When the centroid moves beyond `minDragDistance`, the dominant axis direction is determined. Dispatches `TouchEvent.Swipe` with `fingerCount = 2`.
 
 ## Events
 
-| Event | Properties | Description |
-|-------|------------|-------------|
-| `TwoFingerSwipeEvent` | `direction` — swipe direction | Two-finger swipe detected |
+| Event | Description |
+|-------|-------------|
+| `TouchEvent.Swipe(direction, origin = Any, fingerCount = 2)` | Two-finger swipe detected |
 
-Directions: `LEFT`, `RIGHT`, `UP`, `DOWN`
+Directions: `UP`, `DOWN`, `LEFT`, `RIGHT`
 
 ## Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `minDragDistance` | Minimum pan distance in pixels to qualify | `80f` |
+| `minDragDistance` | Minimum drag distance in pixels | `80f` |
 
 ## Usage
 
 ```kotlin
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent
+
 senseyRegister(lifecycle) {
     twoFingerSwipePlugin(context) { event ->
-        println("Two-finger swipe: ${event.direction}")
+        val swipe = event as TouchEvent.Swipe
+        println("Two-finger swipe ${swipe.direction}")
     }
 }
-```
 
-Requires `senseyGestures()` on a composable to capture touch input:
-
-```kotlin
 Box(modifier = Modifier.fillMaxSize().senseyGestures())
 ```
+
+Note: `twoFingerSwipePlugin` is equivalent to calling `touchPlugin` with `TouchConfig(swipes = SwipeConfig(enableTwoFinger = true))`.
 
 ## Use cases
 
 | Scenario | Description |
 |----------|-------------|
-| Navigate tabs | Two-finger swipe left/right between tabs |
-| Scroll pages | Two-finger swipe up/down to scroll |
-| Undo/Redo | Two-finger swipe left/right for undo/redo |
-| Zoom alternative | Two-finger swipe for zoom in certain apps |
+| Zoom to fit | Two-finger swipe to fit content |
+| Navigate tabs | Two-finger swipe to switch tabs |
+| Custom gesture | Two-finger swipe for app-specific action |
