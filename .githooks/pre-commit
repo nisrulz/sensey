@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+
+echo "Running ktlintFormat..."
+
+./gradlew ktlintFormat --daemon > /dev/null 2>&1
+echo "ktlintFormat done"
