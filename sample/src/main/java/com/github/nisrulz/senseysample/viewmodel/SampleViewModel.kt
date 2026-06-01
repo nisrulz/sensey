@@ -36,19 +36,9 @@ class SampleViewModel : ViewModel() {
         }
     }
 
-    fun clearSensorResult(sensor: String) {
-        _uiState.update {
-            it.copy(sensorResults = it.sensorResults - sensor)
-        }
-    }
-
     fun showSnackbar(message: String) {
         viewModelScope.launch {
             _snackbarEvent.emit(message)
         }
-    }
-
-    fun startOver() {
-        _uiState.value = SampleUiState()
     }
 }

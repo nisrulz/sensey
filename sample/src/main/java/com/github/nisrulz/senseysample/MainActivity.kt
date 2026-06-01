@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -17,9 +18,6 @@ import com.github.nisrulz.senseysample.utils.isAudioPermissionGranted
 import com.github.nisrulz.senseysample.utils.registerAudioPermission
 import com.github.nisrulz.senseysample.utils.requestAudioIfNeeded
 import com.github.nisrulz.senseysample.viewmodel.SampleViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private val snackbarHostState = SnackbarHostState()
@@ -30,11 +28,7 @@ class MainActivity : ComponentActivity() {
             activity = this,
             logTag = javaClass.name,
             onSensorUnavailable = { label ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    snackbarHostState.showSnackbar(
-                        "$label requires a sensor not available on this device",
-                    )
-                }
+                viewModel.showSnackbar("$label requires a sensor not available on this device")
             },
             onSensorResult = { sensor, result ->
                 viewModel.updateSensorResult(sensor, result)
@@ -61,6 +55,12 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             viewModel = viewModel()
+
+            LaunchedEffect(Unit) {
+                viewModel.snackbarEvent.collect { message ->
+                    snackbarHostState.showSnackbar(message)
+                }
+            }
 
             SenseyTheme {
                 val state by viewModel.uiState.collectAsStateWithLifecycle()
