@@ -13,6 +13,18 @@ subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 }
 
+//region Git Hooks
+tasks.register("installGitHooks") {
+    doLast {
+        ProcessBuilder("git", "config", "core.hooksPath", ".githooks")
+            .inheritIO()
+            .start()
+            .waitFor()
+        logger.lifecycle("Git hooks installed (.githooks/pre-commit runs ktlintFormat)")
+    }
+}
+//endregion
+
 //region Publishing Tasks
 tasks.register("releaseToMavenLocal") {
     val moduleName = "sensey"
