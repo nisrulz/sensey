@@ -35,7 +35,10 @@ internal fun SensorList(
                 sensor.label == "Touch Detection" ||
                     sensor.label == "Pinch Scale Detection" ||
                     sensor.label == "Edge Swipe" ||
-                    sensor.label == "Diagonal Swipe"
+                    sensor.label == "Diagonal Swipe" ||
+                    sensor.label == "Long Press Drag" ||
+                    sensor.label == "Two Finger Swipe" ||
+                    sensor.label == "Corner Swipe"
             if (isTouch) {
                 key(selectedSensor) {
                     SenseyRadioButtonWithTouchArea(
@@ -50,6 +53,7 @@ internal fun SensorList(
             } else {
                 SenseyRadioButton(
                     label = sensor.label,
+                    helperText = helperTextForLabel(sensor.label),
                     result = sensor.result,
                     selected = sensor.isSelected,
                     onSelect = sensor.onSelect,
@@ -64,7 +68,11 @@ private fun helperTextForLabel(label: String): String =
         "Touch Detection" -> "Single Tap, Double Tap, Long Press, Swipe, Scroll, N-Tap"
         "Pinch Scale Detection" -> "Pinch In / Pinch Out"
         "Edge Swipe" -> "Swipe from composable edge"
-        else -> "Swipe diagonally"
+        "Diagonal Swipe" -> "Swipe diagonally"
+        "Long Press Drag" -> "Long press then drag in any direction"
+        "Two Finger Swipe" -> "Two-finger directional swipe"
+        "Corner Swipe" -> "Swipe from screen corner inward"
+        else -> ""
     }
 
 @PreviewLightDark
