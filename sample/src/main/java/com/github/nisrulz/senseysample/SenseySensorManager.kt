@@ -8,7 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.unit.dp
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.contract.GesturePlugin
 import com.github.nisrulz.sensey.gesture.audio.clap.ClapEvent
@@ -16,14 +15,10 @@ import com.github.nisrulz.sensey.gesture.chop.ChopEvent
 import com.github.nisrulz.sensey.gesture.chopPlugin
 import com.github.nisrulz.sensey.gesture.clapPlugin
 import com.github.nisrulz.sensey.gesture.cornerSwipePlugin
-import com.github.nisrulz.sensey.gesture.cornerswipe.CornerSwipeEvent
 import com.github.nisrulz.sensey.gesture.deviceSpinPlugin
 import com.github.nisrulz.sensey.gesture.devicespin.DeviceSpinEvent
 import com.github.nisrulz.sensey.gesture.diagonalSwipePlugin
-import com.github.nisrulz.sensey.gesture.diagonalswipe.DiagonalSwipeEvent
 import com.github.nisrulz.sensey.gesture.edgeSwipePlugin
-import com.github.nisrulz.sensey.gesture.edgeswipe.Edge
-import com.github.nisrulz.sensey.gesture.edgeswipe.EdgeSwipeEvent
 import com.github.nisrulz.sensey.gesture.flip.FlipEvent
 import com.github.nisrulz.sensey.gesture.flipPlugin
 import com.github.nisrulz.sensey.gesture.headShakePlugin
@@ -31,7 +26,6 @@ import com.github.nisrulz.sensey.gesture.headshake.HeadShakeEvent
 import com.github.nisrulz.sensey.gesture.light.LightEvent
 import com.github.nisrulz.sensey.gesture.lightPlugin
 import com.github.nisrulz.sensey.gesture.longPressDragPlugin
-import com.github.nisrulz.sensey.gesture.longpressdrag.LongPressDragEvent
 import com.github.nisrulz.sensey.gesture.movement.MovementEvent
 import com.github.nisrulz.sensey.gesture.movementPlugin
 import com.github.nisrulz.sensey.gesture.nodGesturePlugin
@@ -41,7 +35,6 @@ import com.github.nisrulz.sensey.gesture.orientationPlugin
 import com.github.nisrulz.sensey.gesture.pickupDevicePlugin
 import com.github.nisrulz.sensey.gesture.pickupdevice.PickupDeviceEvent
 import com.github.nisrulz.sensey.gesture.pinchScalePlugin
-import com.github.nisrulz.sensey.gesture.pinchscale.PinchScaleEvent
 import com.github.nisrulz.sensey.gesture.proximity.ProximityEvent
 import com.github.nisrulz.sensey.gesture.proximityPlugin
 import com.github.nisrulz.sensey.gesture.raiseToEarPlugin
@@ -61,12 +54,11 @@ import com.github.nisrulz.sensey.gesture.tapOnBackPlugin
 import com.github.nisrulz.sensey.gesture.taponback.TapOnBackEvent
 import com.github.nisrulz.sensey.gesture.tiltDirectionPlugin
 import com.github.nisrulz.sensey.gesture.tiltdirection.TiltDirectionEvent
-import com.github.nisrulz.sensey.gesture.touchTypePlugin
-import com.github.nisrulz.sensey.gesture.touchtype.TouchTypeEvent
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent
+import com.github.nisrulz.sensey.gesture.touchPlugin
 import com.github.nisrulz.sensey.gesture.turnOverPlugin
 import com.github.nisrulz.sensey.gesture.turnover.TurnOverEvent
 import com.github.nisrulz.sensey.gesture.twoFingerSwipePlugin
-import com.github.nisrulz.sensey.gesture.twofingerswipe.TwoFingerSwipeEvent
 import com.github.nisrulz.sensey.gesture.wave.WaveEvent
 import com.github.nisrulz.sensey.gesture.wavePlugin
 import com.github.nisrulz.sensey.gesture.wristTwistPlugin
@@ -111,7 +103,7 @@ internal class SenseySensorManager(
         const val NOD_GESTURE = "Nod Gesture"
         const val HEAD_SHAKE = "Head Shake"
         const val TOUCH_DETECTION = "Touch Detection"
-        const val PINCH_SCALE = "Pinch Scale Detection"
+        const val PINCH_SCALE = "Pinch Scale"
         const val EDGE_SWIPE = "Edge Swipe"
         const val DIAGONAL_SWIPE = "Diagonal Swipe"
         const val LONG_PRESS_DRAG = "Long Press Drag"
@@ -273,15 +265,9 @@ internal class SenseySensorManager(
             CLAP -> clapPlugin(activity, dispatchEvents = clapDispatcher, requiredClaps = 2)
             NOD_GESTURE -> nodGesturePlugin(dispatcher = nodGestureDispatcher)
             HEAD_SHAKE -> headShakePlugin(dispatcher = headShakeDispatcher)
-            TOUCH_DETECTION -> touchTypePlugin(activity, dispatcher = touchTypeDispatcher)
+            TOUCH_DETECTION -> touchPlugin(activity, dispatcher = touchDispatcher)
             PINCH_SCALE -> pinchScalePlugin(activity, dispatcher = pinchScaleDispatcher)
-            EDGE_SWIPE ->
-                edgeSwipePlugin(
-                    activity,
-                    edgeThresholdDp = 48.dp,
-                    enabledEdges = setOf(Edge.LEFT, Edge.RIGHT, Edge.TOP, Edge.BOTTOM),
-                    dispatcher = edgeSwipeDispatcher,
-                )
+            EDGE_SWIPE -> edgeSwipePlugin(activity, dispatcher = edgeSwipeDispatcher)
             DIAGONAL_SWIPE -> diagonalSwipePlugin(activity, dispatcher = diagonalSwipeDispatcher)
             LONG_PRESS_DRAG -> longPressDragPlugin(activity, dispatcher = longPressDragDispatcher)
             TWO_FINGER_SWIPE -> twoFingerSwipePlugin(activity, dispatcher = twoFingerSwipeDispatcher)
@@ -422,11 +408,20 @@ internal class SenseySensorManager(
     private val tapOnBackDispatcher: (TapOnBackEvent) -> Unit =
         withHaptic { setResultText("Tap On Back Detected!") }
 
-    private val edgeSwipeDispatcher: (EdgeSwipeEvent) -> Unit =
-        withHaptic { setResultText("Edge Swipe: ${it.edge}") }
+    private val edgeSwipeDispatcher: (TouchEvent) -> Unit =
+        withHaptic {
+            if (it is TouchEvent.Swipe) {
+                val edge = (it.origin as TouchEvent.SwipeOrigin.Edge).type
+                setResultText("Edge Swipe: $edge")
+            }
+        }
 
-    private val diagonalSwipeDispatcher: (DiagonalSwipeEvent) -> Unit =
-        withHaptic { setResultText("Diagonal Swipe: ${it.direction}") }
+    private val diagonalSwipeDispatcher: (TouchEvent) -> Unit =
+        withHaptic {
+            if (it is TouchEvent.Swipe) {
+                setResultText("Diagonal Swipe: ${it.direction}")
+            }
+        }
 
     private val turnOverDispatcher: (TurnOverEvent) -> Unit =
         withHaptic { setResultText("Turn Over Detected!") }
@@ -443,57 +438,69 @@ internal class SenseySensorManager(
     private val raiseToEarDispatcher: (RaiseToEarEvent) -> Unit =
         withHaptic { setResultText("Raised To Ear!") }
 
-    private val longPressDragDispatcher: (LongPressDragEvent) -> Unit =
-        withHaptic { setResultText("LongPress Drag: ${it.direction}") }
-
-    private val twoFingerSwipeDispatcher: (TwoFingerSwipeEvent) -> Unit =
-        withHaptic { setResultText("Two-Finger Swipe: ${it.direction}") }
-
-    private val cornerSwipeDispatcher: (CornerSwipeEvent) -> Unit =
-        withHaptic { setResultText("Corner Swipe: ${it.corner} → ${it.direction}") }
-
-    private val touchTypeDispatcher: (TouchTypeEvent) -> Unit = { event ->
-        val text =
-            when (event) {
-                is TouchTypeEvent.NTap -> "${event.count}-Tap"
-                TouchTypeEvent.DoubleTap -> "Double Tap"
-                TouchTypeEvent.LongPress -> "Long press"
-                TouchTypeEvent.SingleTap -> "Single Tap"
-                is TouchTypeEvent.Swipe -> swipeDirText(event.direction)
-                is TouchTypeEvent.Scroll -> scrollDirText(event.direction)
-                TouchTypeEvent.ThreeFingerSingleTap -> "Three Finger Tap"
-                TouchTypeEvent.TwoFingerSingleTap -> "Two Finger Tap"
+    private val longPressDragDispatcher: (TouchEvent) -> Unit =
+        withHaptic {
+            if (it is TouchEvent.LongPressDrag) {
+                setResultText("LongPress Drag: ${it.direction}")
             }
-        setTouchResult(text)
-    }
-
-    private val pinchScaleDispatcher: (PinchScaleEvent) -> Unit =
-        { setTouchResult(if (it.isScalingOut) "Scaling Out" else "Scaling In") }
-
-    // ── Direction helpers (TouchType) ───────────────────────────────────
-
-    private fun swipeDirText(dir: TouchTypeEvent.Direction): String =
-        when (dir) {
-            TouchTypeEvent.Direction.UP -> "Swipe Up"
-            TouchTypeEvent.Direction.DOWN -> "Swipe Down"
-            TouchTypeEvent.Direction.LEFT -> "Swipe Left"
-            TouchTypeEvent.Direction.RIGHT -> "Swipe Right"
-            TouchTypeEvent.Direction.UP_RIGHT -> "Swipe Up-Right"
-            TouchTypeEvent.Direction.UP_LEFT -> "Swipe Up-Left"
-            TouchTypeEvent.Direction.DOWN_RIGHT -> "Swipe Down-Right"
-            TouchTypeEvent.Direction.DOWN_LEFT -> "Swipe Down-Left"
         }
 
-    private fun scrollDirText(dir: TouchTypeEvent.Direction): String =
+    private val twoFingerSwipeDispatcher: (TouchEvent) -> Unit =
+        withHaptic {
+            if (it is TouchEvent.Swipe) {
+                setResultText("Two-Finger Swipe: ${it.direction}")
+            }
+        }
+
+    private val cornerSwipeDispatcher: (TouchEvent) -> Unit =
+        withHaptic {
+            if (it is TouchEvent.Swipe) {
+                val corner = (it.origin as TouchEvent.SwipeOrigin.Corner).type
+                setResultText("Corner Swipe: $corner → ${it.direction}")
+            }
+        }
+
+    private val touchDispatcher: (TouchEvent) -> Unit = { event ->
+        val text =
+            when (event) {
+                is TouchEvent.Tap.NTap -> "${event.count}-Tap"
+                is TouchEvent.Tap.Double -> "Double Tap"
+                is TouchEvent.LongPress -> "Long press"
+                is TouchEvent.Tap.Single -> "Single Tap"
+                is TouchEvent.Swipe -> swipeDirText(event.direction)
+                is TouchEvent.Scroll -> scrollDirText(event.direction)
+                else -> null
+            }
+        if (text != null) setTouchResult(text)
+    }
+
+    private val pinchScaleDispatcher: (TouchEvent) -> Unit =
+        { if (it is TouchEvent.PinchScale) setTouchResult(if (it.isScalingOut) "Scaling Out" else "Scaling In") }
+
+    // ── Direction helpers ────────────────────────────────────────────────
+
+    private fun swipeDirText(dir: TouchEvent.Direction): String =
         when (dir) {
-            TouchTypeEvent.Direction.UP -> "Scrolling Up"
-            TouchTypeEvent.Direction.DOWN -> "Scrolling Down"
-            TouchTypeEvent.Direction.LEFT -> "Scrolling Left"
-            TouchTypeEvent.Direction.RIGHT -> "Scrolling Right"
-            TouchTypeEvent.Direction.UP_RIGHT -> "Scrolling Up-Right"
-            TouchTypeEvent.Direction.UP_LEFT -> "Scrolling Up-Left"
-            TouchTypeEvent.Direction.DOWN_RIGHT -> "Scrolling Down-Right"
-            TouchTypeEvent.Direction.DOWN_LEFT -> "Scrolling Down-Left"
+            TouchEvent.Direction.UP -> "Swipe Up"
+            TouchEvent.Direction.DOWN -> "Swipe Down"
+            TouchEvent.Direction.LEFT -> "Swipe Left"
+            TouchEvent.Direction.RIGHT -> "Swipe Right"
+            TouchEvent.Direction.UP_RIGHT -> "Swipe Up-Right"
+            TouchEvent.Direction.UP_LEFT -> "Swipe Up-Left"
+            TouchEvent.Direction.DOWN_RIGHT -> "Swipe Down-Right"
+            TouchEvent.Direction.DOWN_LEFT -> "Swipe Down-Left"
+        }
+
+    private fun scrollDirText(dir: TouchEvent.Direction): String =
+        when (dir) {
+            TouchEvent.Direction.UP -> "Scrolling Up"
+            TouchEvent.Direction.DOWN -> "Scrolling Down"
+            TouchEvent.Direction.LEFT -> "Scrolling Left"
+            TouchEvent.Direction.RIGHT -> "Scrolling Right"
+            TouchEvent.Direction.UP_RIGHT -> "Scrolling Up-Right"
+            TouchEvent.Direction.UP_LEFT -> "Scrolling Up-Left"
+            TouchEvent.Direction.DOWN_RIGHT -> "Scrolling Down-Right"
+            TouchEvent.Direction.DOWN_LEFT -> "Scrolling Down-Left"
         }
 
     // ── Result display ──────────────────────────────────────────────────
