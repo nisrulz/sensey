@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.sp
 import com.github.nisrulz.senseysample.ui.core.Paddings
@@ -57,8 +58,9 @@ internal fun RadioButtonRow(
         ) {
             Text(
                 text = label,
-                color = MaterialTheme.colorScheme.secondary,
-                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f).padding(vertical = Paddings.md),
             )
             RadioButton(
@@ -75,7 +77,8 @@ internal fun RadioButtonRow(
         if (showHelperText && helperText.isNotBlank()) {
             Text(
                 text = helperText,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                fontSize = 14.sp,
                 modifier =
                     Modifier.padding(
                         start = Paddings.sm,
