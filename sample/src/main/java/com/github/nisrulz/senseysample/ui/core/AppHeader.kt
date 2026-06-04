@@ -2,20 +2,22 @@
 
 package com.github.nisrulz.senseysample.ui.core
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.github.nisrulz.senseysample.R
 
 @Composable
 internal fun AppHeader(scrollBehavior: TopAppBarScrollBehavior? = null) {
@@ -27,10 +29,11 @@ internal fun AppHeader(scrollBehavior: TopAppBarScrollBehavior? = null) {
             modifier = Modifier.padding(bottom = Paddings.md),
             scrollBehavior = scrollBehavior,
             title = {
-                Text(
-                    text = "Sensey",
-                    fontSize = 45.sp,
-                    fontWeight = FontWeight.Bold,
+                Image(
+                    painter = painterResource(R.drawable.logo),
+                    contentDescription = "Sensey",
+                    modifier = Modifier.height(60.dp),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                 )
             },
             colors =
