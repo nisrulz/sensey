@@ -40,6 +40,17 @@ sealed interface TouchEvent {
      * @property direction 8-direction from atan2 of displacement
      * @property origin where the gesture started (Any, Edge, or Corner)
      * @property fingerCount number of fingers detected (1 or 2)
+     *
+     * To differentiate swipes by both origin edge and direction (e.g. top
+     * edge swiped left vs. top edge swiped right):
+     * ```
+     * when (event.origin) {
+     *     is SwipeOrigin.Edge -> when (event.direction) {
+     *         Direction.LEFT  -> // top edge, swiping left
+     *         Direction.RIGHT -> // top edge, swiping right
+     *     }
+     * }
+     * ```
      */
     data class Swipe(
         val direction: Direction,
