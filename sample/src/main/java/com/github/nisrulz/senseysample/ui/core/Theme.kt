@@ -15,14 +15,14 @@ import androidx.compose.ui.unit.dp
 
 private val DarkColorScheme =
     darkColorScheme(
-        primary = Color(0xFF4FC3F7),
-        onPrimary = Color(0xFF003545),
-        secondary = Color(0xFF81D4FA),
-        onSecondary = Color(0xFF002F45),
-        secondaryContainer = Color(0xFF004D6E),
-        onSecondaryContainer = Color(0xFFC8E6FF),
-        tertiary = Color(0xFFFFB74D),
-        onTertiary = Color(0xFF3A1E00),
+        primary = Color(0xFFFF6D00),
+        onPrimary = Color(0xFFFFFFFF),
+        secondary = Color(0xFFFFB74D),
+        onSecondary = Color(0xFF3A1E00),
+        secondaryContainer = Color(0xFF5C2E00),
+        onSecondaryContainer = Color(0xFFFFDDB3),
+        tertiary = Color(0xFF4DB6AC),
+        onTertiary = Color(0xFF00332E),
         background = Color(0xFF1A1C1E),
         onBackground = Color(0xFFE2E2E6),
         surface = Color(0xFF1A1C1E),
@@ -34,13 +34,13 @@ private val DarkColorScheme =
 
 private val LightColorScheme =
     lightColorScheme(
-        primary = Color(0xFF0288D1),
+        primary = Color(0xFFFF6D00),
         onPrimary = Color(0xFFFFFFFF),
-        secondary = Color(0xFF0288D1),
+        secondary = Color(0xFFFF8F00),
         onSecondary = Color(0xFFFFFFFF),
-        secondaryContainer = Color(0xFFE1F5FE),
-        onSecondaryContainer = Color(0xFF002F45),
-        tertiary = Color(0xFFFF6F00),
+        secondaryContainer = Color(0xFFFFE0B2),
+        onSecondaryContainer = Color(0xFF3A1E00),
+        tertiary = Color(0xFF006A4E),
         onTertiary = Color(0xFFFFFFFF),
         background = Color(0xFFFFFBFE),
         onBackground = Color(0xFF1C1B1F),
