@@ -35,6 +35,7 @@ Directions: `UP`, `DOWN`, `LEFT`, `RIGHT`
 
 ```kotlin
 import com.github.nisrulz.sensey.gesture.touch.TouchEvent
+import com.github.nisrulz.sensey.gesture.touch.TouchEvent.Direction
 import com.github.nisrulz.sensey.gesture.touch.TouchEvent.SwipeOrigin
 
 senseyRegister(lifecycle) {
@@ -42,6 +43,32 @@ senseyRegister(lifecycle) {
         val swipe = event as TouchEvent.Swipe
         val edge = (swipe.origin as SwipeOrigin.Edge).type
         println("Edge swipe from $edge going ${swipe.direction}")
+    }
+}
+
+// Differentiate by both edge AND direction:
+senseyRegister(lifecycle) {
+    edgeSwipePlugin(context) { event ->
+        val swipe = event as TouchEvent.Swipe
+        val origin = swipe.origin as SwipeOrigin.Edge
+        when (origin.type) {
+            TouchEvent.EdgeType.TOP -> when (swipe.direction) {
+                Direction.LEFT  -> // top edge, swiping left
+                Direction.RIGHT -> // top edge, swiping right
+            }
+            TouchEvent.EdgeType.LEFT -> when (swipe.direction) {
+                Direction.UP   -> // left edge, swiping up
+                Direction.DOWN -> // left edge, swiping down
+            }
+            TouchEvent.EdgeType.RIGHT -> when (swipe.direction) {
+                Direction.UP   -> // right edge, swiping up
+                Direction.DOWN -> // right edge, swiping down
+            }
+            TouchEvent.EdgeType.BOTTOM -> when (swipe.direction) {
+                Direction.LEFT  -> // bottom edge, swiping left
+                Direction.RIGHT -> // bottom edge, swiping right
+            }
+        }
     }
 }
 

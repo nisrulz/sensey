@@ -97,6 +97,32 @@ SenseyGestureEffect(lifecycle) {
     }
 }
 
+// Differentiate by both edge origin and direction:
+SenseyGestureEffect(lifecycle) {
+    touchPlugin(
+        context = context,
+        config = TouchConfig(
+            edgeSwipe = EdgeSwipeConfig(enabled = true),
+        ),
+    ) { event ->
+        val swipe = event as? TouchEvent.Swipe ?: return@touchPlugin
+        val origin = swipe.origin as? TouchEvent.SwipeOrigin.Edge ?: return@touchPlugin
+        when (origin.type) {
+            TouchEvent.EdgeType.TOP -> when (swipe.direction) {
+                TouchEvent.Direction.LEFT  -> // top edge, left swipe
+                TouchEvent.Direction.RIGHT -> // top edge, right swipe
+                else -> {}
+            }
+            TouchEvent.EdgeType.BOTTOM -> when (swipe.direction) {
+                TouchEvent.Direction.LEFT  -> // bottom edge, left swipe
+                TouchEvent.Direction.RIGHT -> // bottom edge, right swipe
+                else -> {}
+            }
+            else -> {}
+        }
+    }
+}
+
 Box(modifier = Modifier.fillMaxSize().senseyGestures()) {
     // content that receives touch gestures
 }
