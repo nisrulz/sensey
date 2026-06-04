@@ -418,11 +418,12 @@ internal class SenseySensorManager(
 
     private val diagonalSwipeDispatcher: (TouchEvent) -> Unit =
         withHaptic {
-            val direction = when (it) {
-                is TouchEvent.Swipe -> it.direction
-                is TouchEvent.Scroll -> it.direction
-                else -> null
-            }
+            val direction =
+                when (it) {
+                    is TouchEvent.Swipe -> it.direction
+                    is TouchEvent.Scroll -> it.direction
+                    else -> null
+                }
             if (direction != null) {
                 setResultText("Diagonal Swipe: $direction")
             }
@@ -465,22 +466,29 @@ internal class SenseySensorManager(
             }
         }
 
-    private val touchDispatcher: (TouchEvent) -> Unit = { event ->
-        val text =
-            when (event) {
-                is TouchEvent.Tap.NTap -> "${event.count}-Tap"
-                is TouchEvent.Tap.Double -> "Double Tap"
-                is TouchEvent.LongPress -> "Long press"
-                is TouchEvent.Tap.Single -> "Single Tap"
-                is TouchEvent.Swipe -> swipeDirText(event.direction)
-                is TouchEvent.Scroll -> scrollDirText(event.direction)
-                else -> null
-            }
-        if (text != null) setTouchResult(text)
-    }
+    private val touchDispatcher: (TouchEvent) -> Unit =
+        withHaptic { event ->
+            val text =
+                when (event) {
+                    is TouchEvent.Tap.NTap -> "${event.count}-Tap"
+                    is TouchEvent.Tap.Double -> "Double Tap"
+                    is TouchEvent.LongPress -> "Long press"
+                    is TouchEvent.Tap.Single -> "Single Tap"
+                    is TouchEvent.Swipe -> swipeDirText(event.direction)
+                    is TouchEvent.Scroll -> scrollDirText(event.direction)
+                    else -> null
+                }
+            if (text != null) setTouchResult(text)
+        }
 
     private val pinchScaleDispatcher: (TouchEvent) -> Unit =
-        { if (it is TouchEvent.PinchScale) setTouchResult(if (it.isScalingOut) "Scaling Out" else "Scaling In") }
+        withHaptic {
+            if (it is TouchEvent.PinchScale) {
+                setTouchResult(
+                    if (it.isScalingOut) "Scaling Out" else "Scaling In",
+                )
+            }
+        }
 
     // ── Direction helpers ────────────────────────────────────────────────
 
