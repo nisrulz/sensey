@@ -412,7 +412,7 @@ internal class SenseySensorManager(
         withHaptic {
             if (it is TouchEvent.Swipe) {
                 val edge = (it.origin as TouchEvent.SwipeOrigin.Edge).type
-                setResultText("Edge Swipe: $edge")
+                setResultText("Edge Swipe: $edge → ${it.direction}")
             }
         }
 
