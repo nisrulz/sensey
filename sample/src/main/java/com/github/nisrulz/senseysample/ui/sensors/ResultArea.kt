@@ -22,6 +22,7 @@ import com.github.nisrulz.senseysample.ui.core.PreviewTheme
 internal fun ResultArea(
     text: String,
     modifier: Modifier = Modifier,
+    showTouchIndicator: Boolean = false,
 ) {
     Box(
         modifier =
@@ -29,7 +30,11 @@ internal fun ResultArea(
                 .fillMaxWidth()
                 .height(300.dp)
                 .background(MaterialTheme.colorScheme.inverseOnSurface, RoundedCornerShape(Paddings.md))
-                .padding(Paddings.xl),
+                .padding(Paddings.xl)
+                .touchIndicator(
+                    show = showTouchIndicator,
+                    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.55f),
+                ),
         contentAlignment = Alignment.Center,
     ) {
         Text(

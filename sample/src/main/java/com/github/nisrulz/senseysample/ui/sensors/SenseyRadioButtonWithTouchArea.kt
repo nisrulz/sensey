@@ -27,6 +27,7 @@ internal fun SenseyRadioButtonWithTouchArea(
             ResultArea(
                 text = result.ifBlank { "[ Hit Area ]" },
                 modifier = Modifier.senseyGestures().padding(horizontal = Paddings.sm, vertical = Paddings.md),
+                showTouchIndicator = showHitArea,
             )
         }
     }
