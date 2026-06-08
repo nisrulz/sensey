@@ -1,5 +1,6 @@
 package com.github.nisrulz.senseysample
 
+import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +15,7 @@ import com.github.nisrulz.sensey.senseyRegister
 import com.github.nisrulz.senseysample.navigation.GestureGroup
 import com.github.nisrulz.senseysample.ui.core.SenseyTheme
 import com.github.nisrulz.senseysample.ui.nav.MainScreen
+import com.github.nisrulz.senseysample.utils.SensorLogger
 import com.github.nisrulz.senseysample.utils.isAudioPermissionGranted
 import com.github.nisrulz.senseysample.utils.registerAudioPermission
 import com.github.nisrulz.senseysample.utils.requestAudioIfNeeded
@@ -36,6 +38,10 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    private val sensorLogger by lazy {
+        SensorLogger(getSystemService(SensorManager::class.java)!!)
+    }
+
     private val audioPermissionLauncher by lazy {
         registerAudioPermission(
             onGranted = { sensorManager.startAfterPermissionGranted() },
@@ -46,6 +52,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        sensorLogger.start()
 
         sensorManager.sensey =
             senseyRegister(
@@ -80,6 +88,7 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         sensorManager.stopSelectedDetector()
+        sensorLogger.stop()
     }
 
     override fun onDestroy() {
@@ -90,6 +99,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         sensorManager.startAfterPermissionGranted()
+        sensorLogger.start()
     }
 
     private fun onGroupSelected(group: GestureGroup) {
