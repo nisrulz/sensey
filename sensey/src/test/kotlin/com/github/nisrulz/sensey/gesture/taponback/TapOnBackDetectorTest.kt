@@ -22,32 +22,108 @@ class TapOnBackDetectorTest {
     ) = SensorUtils.testSensorEvent(floatArrayOf(x, y, z), Sensor.TYPE_ACCELEROMETER).also { it.timestamp = tsMicros }
 
     @Test
-    fun dispatchesOnSecondTapWithinInterval() {
+    fun dispatchesOnDoubleTap() {
         val events = mutableListOf<TapOnBackEvent>()
-        val trigger = TapOnBackTrigger(accelThreshold = 2f, minJerk = 2f, tapIntervalMs = 500L, cooldownMs = 2000L)
+        val trigger =
+            TapOnBackTrigger(
+                accelThreshold = 1.5f,
+                minJerk = 2f,
+                preSettleMs = 100L,
+                reboundGuardMs = 100L,
+                tapIntervalMs = 500L,
+                cooldownMs = 2000L,
+            )
         val detector = TapOnBackDetector(trigger, dispatcher = { events.add(it) })
 
-        // Establish gravity baseline at t=0
         detector.onSensorChanged(gravityEvent(z = 9.81f, tsMicros = 0L))
 
-        // Tap 1 at t=300ms: accel [20,0,10] → linearMag=|22.36-9.81|=12.55, jerk=|12.55-1.26|=11.3
-        detector.onSensorChanged(accelEvent(x = 20f, y = 0f, z = 10f, tsMicros = 300_000_000L))
+        // Quiet period before first tap
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 9.81f, tsMicros = 50_000_000L))
+        // Tap 1 at t=300ms — Z-dominant (20 Z, gravity 9.81 → linear Z ≈10)
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 20f, tsMicros = 300_000_000L))
+        // Settle tap 1
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 9.81f, tsMicros = 400_000_000L))
+        // Guard passes
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 9.81f, tsMicros = 550_000_000L))
+        // Tap 2 at t=600ms — Z-dominant
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 18f, tsMicros = 600_000_000L))
+        // Settle tap 2
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 9.81f, tsMicros = 700_000_000L))
 
-        // Tap 2 at t=600ms: accel [15,15,5] → linearMag=|21.79-9.81|=11.98, jerk=|11.98-1.20|=10.8
-        // Both jerks > 3 ✓
-        detector.onSensorChanged(accelEvent(x = 15f, y = 15f, z = 5f, tsMicros = 600_000_000L))
-
-        assertTrue("TapOnBack should fire on second tap", events.contains(TapOnBackEvent))
+        assertTrue("Double tap should fire", events.contains(TapOnBackEvent.Detected))
     }
 
     @Test
     fun noEventOnSingleTap() {
         val events = mutableListOf<TapOnBackEvent>()
-        val detector = TapOnBackDetector(TapOnBackTrigger(), dispatcher = { events.add(it) })
+        val detector =
+            TapOnBackDetector(
+                TapOnBackTrigger(accelThreshold = 1.5f, minJerk = 2f, preSettleMs = 100L, tapIntervalMs = 500L),
+                dispatcher = { events.add(it) },
+            )
 
         detector.onSensorChanged(gravityEvent(z = 9.81f, tsMicros = 0L))
-        detector.onSensorChanged(accelEvent(x = 10f, y = 0f, z = 10f, tsMicros = 300_000_000L))
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 9.81f, tsMicros = 50_000_000L))
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 20f, tsMicros = 300_000_000L))
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 9.81f, tsMicros = 500_000_000L))
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 9.81f, tsMicros = 900_000_000L))
 
         assertTrue("Single tap should not fire", events.isEmpty())
+    }
+
+    @Test
+    fun noEventDuringContinuousShaking() {
+        val events = mutableListOf<TapOnBackEvent>()
+        val detector =
+            TapOnBackDetector(
+                TapOnBackTrigger(
+                    accelThreshold = 1.5f,
+                    minJerk = 2f,
+                    preSettleMs = 100L,
+                    settleWindowMs = 50L,
+                    reboundGuardMs = 100L,
+                    tapIntervalMs = 500L,
+                ),
+                dispatcher = { events.add(it) },
+            )
+
+        detector.onSensorChanged(gravityEvent(z = 9.81f, tsMicros = 0L))
+
+        for (i in 1..20) {
+            val t = i * 20_000_000L
+            val x = if (i % 2 == 0) 15f else -15f
+            detector.onSensorChanged(accelEvent(x = x, y = 0f, z = 10f, tsMicros = t))
+        }
+
+        assertTrue("Continuous shaking should not fire", events.isEmpty())
+    }
+
+    @Test
+    fun noEventWithStableValues() {
+        val events = mutableListOf<TapOnBackEvent>()
+        val detector = TapOnBackDetector(TapOnBackTrigger(preSettleMs = 100L), dispatcher = { events.add(it) })
+
+        detector.onSensorChanged(gravityEvent(z = 9.81f, tsMicros = 0L))
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 9.81f, tsMicros = 100_000_000L))
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 9.81f, tsMicros = 200_000_000L))
+
+        assertTrue("Stable values should not fire", events.isEmpty())
+    }
+
+    @Test
+    fun noEventWithLowJerk() {
+        val events = mutableListOf<TapOnBackEvent>()
+        val detector =
+            TapOnBackDetector(
+                TapOnBackTrigger(accelThreshold = 1.5f, minJerk = 2f, preSettleMs = 100L),
+                dispatcher = { events.add(it) },
+            )
+
+        detector.onSensorChanged(gravityEvent(z = 9.81f, tsMicros = 0L))
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 14f, tsMicros = 100_000_000L))
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 14f, tsMicros = 200_000_000L))
+        detector.onSensorChanged(accelEvent(x = 0f, y = 0f, z = 14f, tsMicros = 300_000_000L))
+
+        assertTrue("Low-jerk movement should not fire", events.isEmpty())
     }
 }
