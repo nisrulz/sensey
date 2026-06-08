@@ -320,10 +320,12 @@ fun pickupDevicePlugin(
     )
 
 fun tapOnBackPlugin(
-    accelThreshold: Float = 2f,
-    minJerk: Float = 2f,
-    tapDebounceMs: Long = 250L,
-    tapIntervalMs: Long = 500L,
+    accelThreshold: Float = 1.5f,
+    minJerk: Float = 2.0f,
+    preSettleMs: Long = 200L,
+    settleWindowMs: Long = 100L,
+    reboundGuardMs: Long = 180L,
+    tapIntervalMs: Long = 400L,
     cooldownMs: Long = 1000L,
     dispatcher: (TapOnBackEvent) -> Unit,
 ): GesturePlugin =
@@ -335,7 +337,9 @@ fun tapOnBackPlugin(
                     TapOnBackTrigger(
                         accelThreshold = accelThreshold,
                         minJerk = minJerk,
-                        tapDebounceMs = tapDebounceMs,
+                        preSettleMs = preSettleMs,
+                        settleWindowMs = settleWindowMs,
+                        reboundGuardMs = reboundGuardMs,
                         tapIntervalMs = tapIntervalMs,
                         cooldownMs = cooldownMs,
                     ),
