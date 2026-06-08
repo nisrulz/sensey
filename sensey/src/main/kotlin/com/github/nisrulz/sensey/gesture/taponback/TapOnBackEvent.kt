@@ -1,4 +1,6 @@
 
 package com.github.nisrulz.sensey.gesture.taponback
 
-object TapOnBackEvent
+sealed interface TapOnBackEvent {
+    data object Detected : TapOnBackEvent
+}
